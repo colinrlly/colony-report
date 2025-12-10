@@ -14,8 +14,8 @@ interface DesktopIconProps {
 function FolderIcon() {
   return (
     <svg
-      width="96"
-      height="96"
+      width="64"
+      height="64"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
@@ -75,8 +75,8 @@ function FolderIcon() {
 function NotebookIcon() {
   return (
     <svg
-      width="96"
-      height="96"
+      width="64"
+      height="64"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
@@ -139,41 +139,41 @@ function NotebookIcon() {
 function BadgeIcon() {
   return (
     <svg
-      width="96"
-      height="96"
+      width="64"
+      height="64"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Clipboard outline - teal/green */}
-      <rect x="5" y="4" width="1" height="1" fill="#1a5c4c" />
-      <rect x="6" y="3" width="20" height="1" fill="#1a5c4c" />
-      <rect x="26" y="4" width="1" height="1" fill="#1a5c4c" />
-      <rect x="27" y="5" width="1" height="24" fill="#1a5c4c" />
-      <rect x="26" y="29" width="1" height="1" fill="#1a5c4c" />
-      <rect x="6" y="30" width="20" height="1" fill="#1a5c4c" />
-      <rect x="5" y="29" width="1" height="1" fill="#1a5c4c" />
-      <rect x="4" y="5" width="1" height="24" fill="#1a5c4c" />
+      {/* Clipboard outline - orange */}
+      <rect x="5" y="4" width="1" height="1" fill="#8B4513" />
+      <rect x="6" y="3" width="20" height="1" fill="#8B4513" />
+      <rect x="26" y="4" width="1" height="1" fill="#8B4513" />
+      <rect x="27" y="5" width="1" height="24" fill="#8B4513" />
+      <rect x="26" y="29" width="1" height="1" fill="#8B4513" />
+      <rect x="6" y="30" width="20" height="1" fill="#8B4513" />
+      <rect x="5" y="29" width="1" height="1" fill="#8B4513" />
+      <rect x="4" y="5" width="1" height="24" fill="#8B4513" />
 
-      {/* Clipboard body - light blue */}
-      <rect x="6" y="4" width="20" height="1" fill="#d0e8f0" />
-      <rect x="5" y="5" width="22" height="24" fill="#d0e8f0" />
-      <rect x="6" y="29" width="20" height="1" fill="#b0d0e0" />
+      {/* Clipboard body - cream/light orange */}
+      <rect x="6" y="4" width="20" height="1" fill="#FFF8E8" />
+      <rect x="5" y="5" width="22" height="24" fill="#FFF5E0" />
+      <rect x="6" y="29" width="20" height="1" fill="#F0E0C0" />
 
       {/* Left highlight */}
-      <rect x="5" y="5" width="1" height="23" fill="#e0f0f8" />
+      <rect x="5" y="5" width="1" height="23" fill="#FFFAF0" />
 
       {/* Right/bottom shadow */}
-      <rect x="26" y="6" width="1" height="23" fill="#a0c0d0" />
+      <rect x="26" y="6" width="1" height="23" fill="#E8D8C0" />
 
       {/* Clip at top */}
-      <rect x="12" y="1" width="8" height="1" fill="#1a5c4c" />
-      <rect x="11" y="2" width="10" height="3" fill="#1a5c4c" />
-      <rect x="12" y="2" width="8" height="1" fill="#2a7c6c" />
-      <rect x="11" y="2" width="1" height="2" fill="#2a7c6c" />
+      <rect x="12" y="1" width="8" height="1" fill="#D2691E" />
+      <rect x="11" y="2" width="10" height="3" fill="#D2691E" />
+      <rect x="12" y="2" width="8" height="1" fill="#E07830" />
+      <rect x="11" y="2" width="1" height="2" fill="#E07830" />
 
       {/* Person profile area - light background */}
-      <rect x="10" y="7" width="12" height="10" fill="#e8f4f8" />
-      <rect x="10" y="7" width="12" height="1" fill="#f0f8fc" />
+      <rect x="10" y="7" width="12" height="10" fill="#FFF8F0" />
+      <rect x="10" y="7" width="12" height="1" fill="#FFFCF8" />
 
       {/* Person head */}
       <rect x="14" y="8" width="4" height="1" fill="#6b5040" />
@@ -182,23 +182,23 @@ function BadgeIcon() {
       <rect x="13" y="10" width="6" height="2" fill="#e8c8a0" />
       <rect x="14" y="12" width="4" height="1" fill="#e8c8a0" />
 
-      {/* Person body - teal shirt */}
-      <rect x="12" y="13" width="8" height="1" fill="#2090a0" />
-      <rect x="11" y="14" width="10" height="3" fill="#2090a0" />
-      <rect x="15" y="13" width="2" height="1" fill="#30a0b0" />
-      <rect x="14" y="14" width="4" height="1" fill="#30a0b0" />
+      {/* Person body - orange shirt */}
+      <rect x="12" y="13" width="8" height="1" fill="#E07020" />
+      <rect x="11" y="14" width="10" height="3" fill="#E07020" />
+      <rect x="15" y="13" width="2" height="1" fill="#F08030" />
+      <rect x="14" y="14" width="4" height="1" fill="#F08030" />
 
       {/* Checkboxes on left */}
-      <rect x="7" y="19" width="3" height="3" fill="#60c0d0" />
-      <rect x="8" y="20" width="1" height="1" fill="#e8f4f8" />
-      <rect x="7" y="24" width="3" height="3" fill="#60c0d0" />
-      <rect x="8" y="25" width="1" height="1" fill="#e8f4f8" />
+      <rect x="7" y="19" width="3" height="3" fill="#F0A050" />
+      <rect x="8" y="20" width="1" height="1" fill="#FFF8F0" />
+      <rect x="7" y="24" width="3" height="3" fill="#F0A050" />
+      <rect x="8" y="25" width="1" height="1" fill="#FFF8F0" />
 
       {/* Text lines on right */}
-      <rect x="12" y="19" width="12" height="1" fill="#1a5c4c" />
-      <rect x="12" y="21" width="10" height="1" fill="#1a5c4c" />
-      <rect x="12" y="24" width="12" height="1" fill="#1a5c4c" />
-      <rect x="12" y="26" width="8" height="1" fill="#1a5c4c" />
+      <rect x="12" y="19" width="12" height="1" fill="#8B4513" />
+      <rect x="12" y="21" width="10" height="1" fill="#8B4513" />
+      <rect x="12" y="24" width="12" height="1" fill="#8B4513" />
+      <rect x="12" y="26" width="8" height="1" fill="#8B4513" />
     </svg>
   );
 }
@@ -206,9 +206,9 @@ function BadgeIcon() {
 function CameraIcon() {
   return (
     <svg
-      width="96"
-      height="96"
-      viewBox="0 0 32 32"
+      width="64"
+      height="64"
+      viewBox="0 4 32 32"
       shapeRendering="crispEdges"
     >
       {/* Camera body outline */}
@@ -281,9 +281,9 @@ function CameraIcon() {
 function VideoCameraIcon() {
   return (
     <svg
-      width="96"
-      height="96"
-      viewBox="0 0 32 32"
+      width="64"
+      height="64"
+      viewBox="0 6 32 32"
       shapeRendering="crispEdges"
     >
       {/* Camera body outline */}
