@@ -18,15 +18,15 @@ export function BeeIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Antennae - dark purple */}
-      <rect x="11" y="2" width="1" height="1" fill="#4a148c" />
-      <rect x="10" y="3" width="1" height="1" fill="#4a148c" />
-      <rect x="11" y="4" width="1" height="2" fill="#6a1b9a" />
-      <rect x="12" y="6" width="1" height="1" fill="#6a1b9a" />
-      <rect x="20" y="2" width="1" height="1" fill="#4a148c" />
-      <rect x="21" y="3" width="1" height="1" fill="#4a148c" />
-      <rect x="20" y="4" width="1" height="2" fill="#6a1b9a" />
-      <rect x="19" y="6" width="1" height="1" fill="#6a1b9a" />
+      {/* Antennae - dark brown */}
+      <rect x="11" y="2" width="1" height="1" fill="#3e2723" />
+      <rect x="10" y="3" width="1" height="1" fill="#3e2723" />
+      <rect x="11" y="4" width="1" height="2" fill="#4e342e" />
+      <rect x="12" y="6" width="1" height="1" fill="#4e342e" />
+      <rect x="20" y="2" width="1" height="1" fill="#3e2723" />
+      <rect x="21" y="3" width="1" height="1" fill="#3e2723" />
+      <rect x="20" y="4" width="1" height="2" fill="#4e342e" />
+      <rect x="19" y="6" width="1" height="1" fill="#4e342e" />
 
       {/* Wings - translucent blue-white, larger */}
       <rect x="3" y="11" width="6" height="1" fill="#b3e5fc" />
@@ -39,47 +39,47 @@ export function BeeIcon() {
       <rect x="22" y="14" width="7" height="2" fill="#b3e5fc" />
       <rect x="23" y="16" width="5" height="1" fill="#81d4fa" />
 
-      {/* Head - dark purple/brown */}
-      <rect x="12" y="6" width="8" height="1" fill="#4a148c" />
-      <rect x="10" y="7" width="12" height="1" fill="#4a148c" />
-      <rect x="9" y="8" width="14" height="3" fill="#6a1b9a" />
-      <rect x="10" y="11" width="12" height="1" fill="#4a148c" />
+      {/* Head - dark brown */}
+      <rect x="12" y="6" width="8" height="1" fill="#3e2723" />
+      <rect x="10" y="7" width="12" height="1" fill="#3e2723" />
+      <rect x="9" y="8" width="14" height="3" fill="#4e342e" />
+      <rect x="10" y="11" width="12" height="1" fill="#3e2723" />
 
       {/* Head highlight */}
-      <rect x="11" y="8" width="3" height="1" fill="#7b1fa2" />
-      <rect x="18" y="8" width="3" height="1" fill="#7b1fa2" />
+      <rect x="11" y="8" width="3" height="1" fill="#5d4037" />
+      <rect x="18" y="8" width="3" height="1" fill="#5d4037" />
 
       {/* Eyes - small dark */}
       <rect x="11" y="9" width="2" height="2" fill="#1a1a2e" />
       <rect x="19" y="9" width="2" height="2" fill="#1a1a2e" />
 
-      {/* Body - dark purple top segment */}
-      <rect x="10" y="12" width="12" height="2" fill="#4a148c" />
-      <rect x="9" y="13" width="1" height="1" fill="#4a148c" />
-      <rect x="22" y="13" width="1" height="1" fill="#4a148c" />
+      {/* Body - dark brown top segment */}
+      <rect x="10" y="12" width="12" height="2" fill="#3e2723" />
+      <rect x="9" y="13" width="1" height="1" fill="#3e2723" />
+      <rect x="22" y="13" width="1" height="1" fill="#3e2723" />
 
       {/* Yellow stripe 1 - golden */}
       <rect x="9" y="14" width="14" height="2" fill="#ffc107" />
       <rect x="10" y="14" width="12" height="1" fill="#ffca28" />
 
       {/* Dark stripe 1 */}
-      <rect x="9" y="16" width="14" height="2" fill="#4a148c" />
+      <rect x="9" y="16" width="14" height="2" fill="#3e2723" />
 
       {/* Yellow stripe 2 - golden */}
       <rect x="10" y="18" width="12" height="2" fill="#ffc107" />
       <rect x="11" y="18" width="10" height="1" fill="#ffca28" />
 
       {/* Dark stripe 2 */}
-      <rect x="11" y="20" width="10" height="2" fill="#4a148c" />
+      <rect x="11" y="20" width="10" height="2" fill="#3e2723" />
 
       {/* Yellow stripe 3 - tail */}
       <rect x="12" y="22" width="8" height="2" fill="#ffc107" />
       <rect x="13" y="22" width="6" height="1" fill="#ffca28" />
 
       {/* Stinger - dark */}
-      <rect x="14" y="24" width="4" height="1" fill="#4a148c" />
-      <rect x="15" y="25" width="2" height="1" fill="#4a148c" />
-      <rect x="15" y="26" width="2" height="1" fill="#311b92" />
+      <rect x="14" y="24" width="4" height="1" fill="#3e2723" />
+      <rect x="15" y="25" width="2" height="1" fill="#3e2723" />
+      <rect x="15" y="26" width="2" height="1" fill="#2d1f1a" />
 
       {/* Legs - small dark */}
       <rect x="10" y="17" width="1" height="2" fill="#1a1a2e" />
