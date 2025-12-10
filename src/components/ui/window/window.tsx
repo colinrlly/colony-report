@@ -101,7 +101,7 @@ export const Window = forwardRef<HTMLDivElement, WindowProps>(
               "p-[3px]",
               "text-win98-text text-[11px]",
               isMaximized
-                ? "!absolute !inset-0 !w-full !h-full"
+                ? "!fixed !top-[36px] !left-0 !right-0 !bottom-[40px] !w-auto !h-auto"
                 : "resize overflow-auto",
               className
             )}
