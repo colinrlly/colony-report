@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
-import { Menubar, MenubarItem, MenubarLogo } from "@/components/ui/menubar";
+import { Menubar, MenubarItem, MenubarLogo, MenubarProfile } from "@/components/ui/menubar";
 
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
@@ -17,11 +17,12 @@ export default function Home() {
         <MenubarItem label="Tools" />
         <MenubarItem label="History" />
         <MenubarItem label="Help" />
+        <MenubarProfile />
       </Menubar>
 
-      <main className="min-h-screen relative p-4 pt-[38px] pb-[50px]">
+      <main className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
         {/* Desktop Icons */}
-        <div className="absolute top-[45px] left-6 flex flex-col gap-1">
+        <div className="absolute top-[53px] left-6 flex flex-col gap-1">
           <DesktopIcon
             label="Colony Reports"
             icon="folder"
