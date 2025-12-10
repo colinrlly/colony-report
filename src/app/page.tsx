@@ -6,11 +6,7 @@ import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
 
-const viewMenuItems: MenuItemData[] = [
-  { label: "Refresh Desktop" },
-  { label: "Show Hidden Files" },
-  { label: "Toggle Wallpaper" },
-];
+// viewMenuItems is defined inside the component to access the refresh handler
 
 const toolsMenuItems: MenuItemData[] = [
   {
@@ -73,6 +69,7 @@ const DESKTOP_ICONS: DesktopIconConfig[] = [
 
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -163,8 +160,49 @@ export default function Home() {
     }
   };
 
+  // Handle refresh desktop - reset all folder positions with flicker animation
+  const handleRefreshDesktop = useCallback(() => {
+    // Trigger flicker animation
+    setIsRefreshing(true);
+
+    // Reset all icon positions to their initial positions
+    setTimeout(() => {
+      setIconPositions(
+        DESKTOP_ICONS.reduce((acc, icon) => {
+          acc[icon.id] = { ...icon.initialPosition };
+          return acc;
+        }, {} as Record<string, { x: number; y: number }>)
+      );
+    }, 100);
+
+    // End the flicker animation after a short delay
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 300);
+  }, []);
+
+  // View menu items - defined here to access the refresh handler
+  const viewMenuItems: MenuItemData[] = [
+    { label: "Refresh Desktop", onClick: handleRefreshDesktop },
+    { label: "Show Hidden Files" },
+    { label: "Toggle Wallpaper" },
+  ];
+
   return (
     <>
+      {/* Screen flicker animation overlay */}
+      {isRefreshing && (
+        <div
+          className="fixed inset-0 z-[9999] pointer-events-none animate-flicker"
+          style={{
+            background: 'linear-gradient(transparent 50%, rgba(0, 0, 0, 0.25) 50%)',
+            backgroundSize: '100% 4px',
+          }}
+        >
+          <div className="absolute inset-0 bg-white/30 animate-pulse" />
+        </div>
+      )}
+
       <Menubar>
         <MenubarLogo />
         <MenubarItem label="View" menuItems={viewMenuItems} />
