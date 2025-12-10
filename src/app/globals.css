@@ -1,26 +1,75 @@
 @import "tailwindcss";
 
+/* Windows 98 Color Palette - Tan/Beige variant */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base surface colors */
+  --win98-surface: #d4c8a0;
+  --win98-surface-light: #e8dcc0;
+  --win98-surface-dark: #b8a888;
+
+  /* Border colors for 3D beveled effect */
+  --win98-highlight: #ffffff;
+  --win98-face: #e8dcc0;
+  --win98-shadow: #808080;
+  --win98-frame: #0a0a0a;
+
+  /* Title bar colors (tan-themed) */
+  --win98-title-active: #8b7355;
+  --win98-title-active-text: #ffffff;
+  --win98-title-inactive: #a09080;
+  --win98-title-inactive-text: #d4c8a0;
+
+  /* Text colors */
+  --win98-text: #222222;
+  --win98-text-disabled: #808080;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-win98-surface: var(--win98-surface);
+  --color-win98-surface-light: var(--win98-surface-light);
+  --color-win98-surface-dark: var(--win98-surface-dark);
+  --color-win98-highlight: var(--win98-highlight);
+  --color-win98-face: var(--win98-face);
+  --color-win98-shadow: var(--win98-shadow);
+  --color-win98-frame: var(--win98-frame);
+  --color-win98-title-active: var(--win98-title-active);
+  --color-win98-title-inactive: var(--win98-title-inactive);
+  --color-win98-text: var(--win98-text);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Beveled 3D Border Utilities */
+@utility win98-border-raised {
+  box-shadow:
+    inset -1px -1px var(--win98-frame),
+    inset 1px 1px var(--win98-highlight),
+    inset -2px -2px var(--win98-shadow),
+    inset 2px 2px var(--win98-face);
+}
+
+@utility win98-border-sunken {
+  box-shadow:
+    inset -1px -1px var(--win98-highlight),
+    inset 1px 1px var(--win98-shadow),
+    inset -2px -2px var(--win98-face),
+    inset 2px 2px var(--win98-frame);
+}
+
+@utility win98-border-pressed {
+  box-shadow:
+    inset 1px 1px var(--win98-frame),
+    inset -1px -1px var(--win98-highlight),
+    inset 2px 2px var(--win98-shadow);
+}
+
+@utility win98-border-status {
+  box-shadow:
+    inset -1px -1px var(--win98-face),
+    inset 1px 1px var(--win98-shadow);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--win98-text);
+  font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
+  font-size: 11px;
 }
