@@ -78,11 +78,15 @@ const HIDDEN_FILE = {
   position: { x: 0, y: 0 }, // Will be calculated based on screen size
 };
 
+// Wallpaper options
+type WallpaperType = 0 | 1 | 2;
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
+  const [currentWallpaper, setCurrentWallpaper] = useState<WallpaperType>(0);
 
   // Nested folder windows state - chain from "Nothing..." to pet monitor
   const [isNothingOpen, setIsNothingOpen] = useState(false);
@@ -209,11 +213,19 @@ export default function Home() {
     setShowHiddenFiles(prev => !prev);
   }, []);
 
+  // Handle wallpaper toggle - cycles through 3 options
+  const handleToggleWallpaper = useCallback(() => {
+    setCurrentWallpaper(prev => ((prev + 1) % 3) as WallpaperType);
+  }, []);
+
+  // Wallpaper names for menu display
+  const wallpaperNames = ["Default", "NEC Formica Division", "New Eden Committee"];
+
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
     { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
-    { label: "Toggle Wallpaper" },
+    { label: `Toggle Wallpaper (${wallpaperNames[currentWallpaper]})`, onClick: handleToggleWallpaper },
   ];
 
   return (
@@ -241,6 +253,75 @@ export default function Home() {
       </Menubar>
 
       <main ref={mainRef} className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
+        {/* Wallpaper Backgrounds */}
+        {currentWallpaper === 0 && (
+          <div className="wallpaper-default absolute inset-0 -z-10" />
+        )}
+        {currentWallpaper === 1 && (
+          <div className="wallpaper-formica absolute inset-0 -z-10">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              {/* NEC FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
+              <div className="text-center">
+                <div className="text-[72px] font-bold tracking-[0.15em] text-[#d4c8a0] drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                  NEC F
+                  <span className="relative inline-block">
+                    <svg className="inline-block w-[60px] h-[60px] align-middle -mt-2" viewBox="0 0 60 60">
+                      {/* Stylized O with earth-like stripes */}
+                      <circle cx="30" cy="30" r="25" fill="none" stroke="#d4c8a0" strokeWidth="6" />
+                      <ellipse cx="30" cy="30" rx="18" ry="8" fill="none" stroke="#d4c8a0" strokeWidth="2" transform="rotate(-20 30 30)" />
+                      <ellipse cx="30" cy="30" rx="18" ry="8" fill="none" stroke="#d4c8a0" strokeWidth="2" transform="rotate(20 30 30)" />
+                    </svg>
+                  </span>
+                  RMICA
+                </div>
+                <div className="text-[28px] tracking-[0.3em] text-[#d4c8a0] mt-4 drop-shadow-[1px_1px_0px_#3d2914]" style={{ fontFamily: 'Arial, sans-serif' }}>
+                  DIVISION
+                </div>
+                <div className="mt-12 text-[12px] text-[#a09080] tracking-wide">
+                  Copyright © NEC Corporation, 2089. All Rights Reserved.
+                </div>
+                <div className="text-[11px] text-[#a09080] tracking-wide">
+                  NEC is a registered trademark of New Eden Committee Corp.
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {currentWallpaper === 2 && (
+          <div className="wallpaper-eden absolute inset-0 -z-10">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              {/* NED EDEN COMMITTEE with large earth logo */}
+              <div className="text-center">
+                {/* Large Smiling Earth */}
+                <svg className="mx-auto mb-6" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Earth circle */}
+                  <circle cx="90" cy="90" r="80" fill="#4A90D9" stroke="#2E5A88" strokeWidth="4" />
+                  {/* Continents/land masses */}
+                  <ellipse cx="60" cy="60" rx="24" ry="32" fill="#5CB85C" />
+                  <ellipse cx="115" cy="75" rx="32" ry="24" fill="#5CB85C" />
+                  <ellipse cx="75" cy="125" rx="24" ry="16" fill="#5CB85C" />
+                  {/* Smiley face */}
+                  <circle cx="68" cy="75" r="10" fill="#333" /> {/* Left eye */}
+                  <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
+                  <path d="M60 105 Q90 140 120 105" stroke="#333" strokeWidth="8" fill="none" strokeLinecap="round" />
+                </svg>
+                <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14] drop-shadow-[0_0_10px_#39ff14] drop-shadow-[2px_2px_0px_#1a4d0a]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                  NEW EDEN
+                </div>
+                <div className="text-[32px] tracking-[0.4em] text-[#39ff14] mt-2 drop-shadow-[0_0_8px_#39ff14] drop-shadow-[1px_1px_0px_#1a4d0a]" style={{ fontFamily: 'Arial, sans-serif' }}>
+                  COMMITTEE
+                </div>
+                <div className="mt-10 text-[12px] text-[#7dff7d] tracking-wide opacity-80">
+                  Cultivating Tomorrow, Today™
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CRT Screen Effect Overlay - applies to all wallpapers */}
+        <div className="crt-overlay fixed inset-0 pointer-events-none z-[100]" />
+
         {/* Desktop Icons - each independently draggable */}
         {DESKTOP_ICONS.map((iconConfig) => (
           <div
