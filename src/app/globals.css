@@ -115,6 +115,29 @@ body {
   animation: flicker 0.3s ease-in-out;
 }
 
+/* Ant leg wiggle animation */
+@keyframes wiggle-left {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px) rotate(-5deg); }
+  75% { transform: translateX(1px) rotate(5deg); }
+}
+
+@keyframes wiggle-right {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(1px) rotate(5deg); }
+  75% { transform: translateX(-1px) rotate(-5deg); }
+}
+
+.ant-leg-left.wiggling {
+  animation: wiggle-left 0.15s ease-in-out 4;
+  transform-origin: right center;
+}
+
+.ant-leg-right.wiggling {
+  animation: wiggle-right 0.15s ease-in-out 4;
+  transform-origin: left center;
+}
+
 /* ============================================
    WALLPAPER STYLES
    ============================================ */

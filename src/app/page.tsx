@@ -87,6 +87,7 @@ export default function Home() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
   const [currentWallpaper, setCurrentWallpaper] = useState<WallpaperType>(0);
+  const [isAntWiggling, setIsAntWiggling] = useState(false);
 
   // Nested folder windows state - chain from "Nothing..." to pet monitor
   const [isNothingOpen, setIsNothingOpen] = useState(false);
@@ -219,6 +220,13 @@ export default function Home() {
     setCurrentWallpaper(prev => ((prev + 1) % 3) as WallpaperType);
   }, []);
 
+  // Handle ant click - wiggle legs
+  const handleAntClick = useCallback(() => {
+    if (isAntWiggling) return; // Don't restart if already wiggling
+    setIsAntWiggling(true);
+    setTimeout(() => setIsAntWiggling(false), 600); // Animation duration: 0.15s * 4 repeats
+  }, [isAntWiggling]);
+
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
@@ -268,15 +276,16 @@ export default function Home() {
                 <div className="text-[36px] font-bold tracking-[0.25em] text-[#d4c8a0] mt-4 drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
                   FORMICA DIVISION
                 </div>
-                {/* Pixel Art Ant Logo - below text */}
+                {/* Pixel Art Ant Logo - below text, clickable */}
                 <svg
-                  className="mx-auto mt-8"
+                  className="mx-auto mt-8 cursor-pointer hover:scale-105 transition-transform"
                   width="80"
                   height="80"
                   viewBox="0 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   style={{ imageRendering: "pixelated" }}
+                  onClick={handleAntClick}
                 >
                   {/* Ant head */}
                   <rect x="8" y="2" width="4" height="3" fill="#1a1a1a" />
@@ -291,23 +300,26 @@ export default function Home() {
                   <rect x="6" y="9" width="8" height="5" fill="#1a1a1a" />
                   <rect x="7" y="14" width="6" height="3" fill="#1a1a1a" />
                   <rect x="8" y="17" width="4" height="2" fill="#1a1a1a" />
-                  {/* Front legs */}
-                  <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
-                  <rect x="13" y="5" width="3" height="1" fill="#1a1a1a" />
-                  <rect x="3" y="6" width="1" height="2" fill="#1a1a1a" />
-                  <rect x="16" y="6" width="1" height="2" fill="#1a1a1a" />
-                  {/* Middle legs */}
-                  <rect x="4" y="8" width="3" height="1" fill="#1a1a1a" />
-                  <rect x="13" y="8" width="3" height="1" fill="#1a1a1a" />
-                  <rect x="2" y="9" width="2" height="1" fill="#1a1a1a" />
-                  <rect x="16" y="9" width="2" height="1" fill="#1a1a1a" />
-                  {/* Back legs */}
-                  <rect x="4" y="11" width="2" height="1" fill="#1a1a1a" />
-                  <rect x="14" y="11" width="2" height="1" fill="#1a1a1a" />
-                  <rect x="2" y="12" width="2" height="1" fill="#1a1a1a" />
-                  <rect x="16" y="12" width="2" height="1" fill="#1a1a1a" />
-                  <rect x="1" y="13" width="1" height="2" fill="#1a1a1a" />
-                  <rect x="18" y="13" width="1" height="2" fill="#1a1a1a" />
+                  {/* Left legs - animated */}
+                  <g className={`ant-leg-left ${isAntWiggling ? 'wiggling' : ''}`}>
+                    <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
+                    <rect x="3" y="6" width="1" height="2" fill="#1a1a1a" />
+                    <rect x="4" y="8" width="3" height="1" fill="#1a1a1a" />
+                    <rect x="2" y="9" width="2" height="1" fill="#1a1a1a" />
+                    <rect x="4" y="11" width="2" height="1" fill="#1a1a1a" />
+                    <rect x="2" y="12" width="2" height="1" fill="#1a1a1a" />
+                    <rect x="1" y="13" width="1" height="2" fill="#1a1a1a" />
+                  </g>
+                  {/* Right legs - animated */}
+                  <g className={`ant-leg-right ${isAntWiggling ? 'wiggling' : ''}`}>
+                    <rect x="13" y="5" width="3" height="1" fill="#1a1a1a" />
+                    <rect x="16" y="6" width="1" height="2" fill="#1a1a1a" />
+                    <rect x="13" y="8" width="3" height="1" fill="#1a1a1a" />
+                    <rect x="16" y="9" width="2" height="1" fill="#1a1a1a" />
+                    <rect x="14" y="11" width="2" height="1" fill="#1a1a1a" />
+                    <rect x="16" y="12" width="2" height="1" fill="#1a1a1a" />
+                    <rect x="18" y="13" width="1" height="2" fill="#1a1a1a" />
+                  </g>
                   {/* Eyes */}
                   <rect x="8" y="3" width="1" height="1" fill="#4a4a4a" />
                   <rect x="11" y="3" width="1" height="1" fill="#4a4a4a" />
