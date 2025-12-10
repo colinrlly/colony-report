@@ -72,48 +72,13 @@
    Chunky vintage 3D-style cursors
    ============================================ */
 
-/* Default arrow cursor - chunky white pixel art with 3D bevel */
-:root {
-  --cursor-default: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M2 2 L2 20 L7 15 L10 22 L13 21 L10 14 L17 14 Z" fill="%23000000"/><path d="M3 3 L3 18 L7 14 L10.5 21 L12 20.5 L9 13.5 L15 13.5 Z" fill="%23ffffff"/><path d="M4 4 L4 15 L7 12 L5 12 L5 5 Z" fill="%23e0e0e0"/><path d="M5 15 L7 13 L9 13 L12 19.5 L11 20 L8 14 L7 15 Z" fill="%23a0a0a0"/></svg>') 2 2, auto;
-
-  --cursor-pointer: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28"><path d="M8 1 L8 17 L11 14 L14 21 L17 20 L14 13 L19 13 L8 1" fill="%23000000" stroke="%23000000" stroke-width="2"/><path d="M8 1 L8 17 L11 14 L14 21 L17 20 L14 13 L19 13 Z" fill="%23ffffff"/><path d="M9 3 L9 14 L11 12 L10 12 L10 4 Z" fill="%23e8e8e8"/><path d="M10 14 L12 12 L13 12 L15.5 18 L14.5 18.5 L12 13 L11 14 Z" fill="%23b0b0b0"/></svg>') 10 1, pointer;
-
-  --cursor-grab: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="12" rx="2" fill="%23000000"/><rect x="4" y="11" width="16" height="10" rx="1" fill="%23ffffff"/><rect x="5" y="12" width="14" height="2" fill="%23e0e0e0"/><rect x="5" y="18" width="14" height="2" fill="%23a0a0a0"/><rect x="5" y="3" width="3" height="9" rx="1" fill="%23000000"/><rect x="6" y="4" width="1" height="7" fill="%23ffffff"/><rect x="9" y="1" width="3" height="11" rx="1" fill="%23000000"/><rect x="10" y="2" width="1" height="9" fill="%23ffffff"/><rect x="13" y="2" width="3" height="10" rx="1" fill="%23000000"/><rect x="14" y="3" width="1" height="8" fill="%23ffffff"/><rect x="17" y="5" width="3" height="7" rx="1" fill="%23000000"/><rect x="18" y="6" width="1" height="5" fill="%23ffffff"/></svg>') 12 12, grab;
-
-  --cursor-grabbing: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="14" rx="2" fill="%23000000"/><rect x="4" y="9" width="16" height="12" rx="1" fill="%23ffffff"/><rect x="5" y="10" width="14" height="2" fill="%23e0e0e0"/><rect x="5" y="18" width="14" height="2" fill="%23a0a0a0"/><rect x="5" y="4" width="3" height="7" rx="1" fill="%23000000"/><rect x="6" y="5" width="1" height="5" fill="%23ffffff"/><rect x="9" y="3" width="3" height="8" rx="1" fill="%23000000"/><rect x="10" y="4" width="1" height="6" fill="%23ffffff"/><rect x="13" y="3" width="3" height="8" rx="1" fill="%23000000"/><rect x="14" y="4" width="1" height="6" fill="%23ffffff"/><rect x="17" y="5" width="3" height="6" rx="1" fill="%23000000"/><rect x="18" y="6" width="1" height="4" fill="%23ffffff"/></svg>') 12 12, grabbing;
-}
-
 /* Apply custom cursors globally to ALL elements */
 *, *::before, *::after {
   cursor: inherit;
 }
 
 html, body {
-  cursor: var(--cursor-default) !important;
-}
-
-body {
-  background: #6b6359;
-  color: var(--win98-text);
-  font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
-  font-size: 11px;
-}
-
-/* Override Tailwind cursor utilities with custom pixel art cursors */
-@utility cursor-default {
-  cursor: var(--cursor-default);
-}
-
-@utility cursor-pointer {
-  cursor: var(--cursor-pointer);
-}
-
-@utility cursor-grab {
-  cursor: var(--cursor-grab);
-}
-
-@utility cursor-grabbing {
-  cursor: var(--cursor-grabbing);
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28"><polygon points="2,2 2,22 7,17 11,26 14,25 10,16 17,16" fill="black"/><polygon points="4,5 4,19 7,16 11,24 12,23.5 8,15 14,15" fill="white"/><polygon points="5,7 5,15 6,14 6,8" fill="%23e8e8e8"/><polygon points="6,15 8,13 9,15 12,22 11,22.5 8,16" fill="%23a0a0a0"/></svg>') 2 2, auto !important;
 }
 
 /* Ensure interactive elements use pointer cursor */
@@ -121,14 +86,21 @@ button, [role="button"], a, select,
 input[type="button"], input[type="submit"],
 input[type="checkbox"], input[type="radio"],
 label[for], .clickable {
-  cursor: var(--cursor-pointer) !important;
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28"><polygon points="2,2 2,22 7,17 11,26 14,25 10,16 17,16" fill="black"/><polygon points="4,5 4,19 7,16 11,24 12,23.5 8,15 14,15" fill="white"/><polygon points="5,7 5,15 6,14 6,8" fill="%23e8e8e8"/><polygon points="6,15 8,13 9,15 12,22 11,22.5 8,16" fill="%23a0a0a0"/></svg>') 2 2, pointer !important;
 }
 
 /* Text inputs use default cursor */
 input[type="text"], input[type="email"], input[type="password"],
 input[type="number"], input[type="search"], input[type="tel"],
 input[type="url"], textarea {
-  cursor: var(--cursor-default) !important;
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28"><polygon points="2,2 2,22 7,17 11,26 14,25 10,16 17,16" fill="black"/><polygon points="4,5 4,19 7,16 11,24 12,23.5 8,15 14,15" fill="white"/><polygon points="5,7 5,15 6,14 6,8" fill="%23e8e8e8"/><polygon points="6,15 8,13 9,15 12,22 11,22.5 8,16" fill="%23a0a0a0"/></svg>') 2 2, auto !important;
+}
+
+body {
+  background: #6b6359;
+  color: var(--win98-text);
+  font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
+  font-size: 11px;
 }
 
 /* Screen flicker animation for refresh desktop effect */
