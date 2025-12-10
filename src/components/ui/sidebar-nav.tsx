@@ -17,7 +17,7 @@ interface SidebarNavProps {
 
 export function SidebarNav({ items, selectedId, onSelect }: SidebarNavProps) {
   return (
-    <nav className="flex flex-col bg-[#5d554d] w-[70px] py-4 gap-2" role="tablist">
+    <nav className="flex flex-col bg-[#5a4d42] w-[70px] py-4 gap-2" role="tablist">
       {items.map((item) => {
         const isSelected = selectedId === item.id;
         return (
@@ -29,8 +29,8 @@ export function SidebarNav({ items, selectedId, onSelect }: SidebarNavProps) {
               "w-full h-[60px]",
               "transition-colors",
               isSelected
-                ? "bg-[#6e655c]"
-                : "hover:bg-[#685f57]"
+                ? "bg-[#6b5d50]"
+                : "hover:bg-[#65574b]"
             )}
             aria-label={item.label}
             role="tab"
