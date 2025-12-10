@@ -16,7 +16,8 @@ export function Menubar({ children }: MenubarProps) {
         "bg-win98-surface",
         "win98-border-raised",
         "flex items-center",
-        "px-2 gap-1"
+        "px-2 gap-1",
+        "z-50"
       )}
     >
       {children}
