@@ -13,7 +13,7 @@ const messages = [
   "Please don't make me come back here.. I'm TIRED. Open a folder",
 ];
 
-// Pixelated sticky note face that changes based on tiredness level (0 = happy, 1 = annoyed, 2 = exhausted)
+// Sticky note with smooth face expressions (no eyebrows)
 function StickyNoteFace({ tirednessLevel }: { tirednessLevel: number }) {
   return (
     <svg
@@ -21,7 +21,6 @@ function StickyNoteFace({ tirednessLevel }: { tirednessLevel: number }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className="w-full h-full drop-shadow-lg"
-      style={{ imageRendering: "pixelated" }}
     >
       {/* Sticky note body */}
       <rect x="2" y="2" width="60" height="60" fill="#FFE566" stroke="#D4B800" strokeWidth="2" />
@@ -35,114 +34,71 @@ function StickyNoteFace({ tirednessLevel }: { tirednessLevel: number }) {
 
       {tirednessLevel === 0 && (
         <>
-          {/* Happy face - pixelated style */}
-          {/* Left eye - pixel blocks */}
-          <rect x="16" y="20" width="4" height="4" fill="white" />
-          <rect x="20" y="20" width="4" height="4" fill="white" />
-          <rect x="16" y="24" width="4" height="4" fill="white" />
-          <rect x="20" y="24" width="4" height="4" fill="white" />
-          <rect x="16" y="28" width="4" height="4" fill="white" />
-          <rect x="20" y="28" width="4" height="4" fill="white" />
-          {/* Left pupil */}
-          <rect x="18" y="24" width="4" height="4" fill="#333" />
+          {/* Happy face - smooth style, no eyebrows */}
+          {/* Left eye */}
+          <ellipse cx="22" cy="26" rx="5" ry="7" fill="white" stroke="#333" strokeWidth="1.5" />
+          <circle cx="23" cy="27" r="3.5" fill="#333" />
+          <circle cx="21" cy="25" r="1.5" fill="white" />
 
-          {/* Right eye - pixel blocks */}
-          <rect x="40" y="20" width="4" height="4" fill="white" />
-          <rect x="44" y="20" width="4" height="4" fill="white" />
-          <rect x="40" y="24" width="4" height="4" fill="white" />
-          <rect x="44" y="24" width="4" height="4" fill="white" />
-          <rect x="40" y="28" width="4" height="4" fill="white" />
-          <rect x="44" y="28" width="4" height="4" fill="white" />
-          {/* Right pupil */}
-          <rect x="42" y="24" width="4" height="4" fill="#333" />
+          {/* Right eye */}
+          <ellipse cx="42" cy="26" rx="5" ry="7" fill="white" stroke="#333" strokeWidth="1.5" />
+          <circle cx="43" cy="27" r="3.5" fill="#333" />
+          <circle cx="41" cy="25" r="1.5" fill="white" />
 
-          {/* Big smile - pixel blocks */}
-          <rect x="18" y="40" width="4" height="4" fill="#333" />
-          <rect x="22" y="44" width="4" height="4" fill="#333" />
-          <rect x="26" y="46" width="4" height="4" fill="#333" />
-          <rect x="30" y="46" width="4" height="4" fill="#333" />
-          <rect x="34" y="46" width="4" height="4" fill="#333" />
-          <rect x="38" y="44" width="4" height="4" fill="#333" />
-          <rect x="42" y="40" width="4" height="4" fill="#333" />
+          {/* Big smile */}
+          <path d="M18 42 Q32 54 46 42" stroke="#333" strokeWidth="2.5" strokeLinecap="round" fill="none" />
 
-          {/* Rosy cheeks - pixel style */}
-          <rect x="10" y="34" width="4" height="4" fill="#FFB6C1" opacity="0.7" />
-          <rect x="14" y="34" width="4" height="4" fill="#FFB6C1" opacity="0.7" />
-          <rect x="46" y="34" width="4" height="4" fill="#FFB6C1" opacity="0.7" />
-          <rect x="50" y="34" width="4" height="4" fill="#FFB6C1" opacity="0.7" />
+          {/* Rosy cheeks */}
+          <circle cx="12" cy="36" r="4" fill="#FFB6C1" opacity="0.6" />
+          <circle cx="52" cy="36" r="4" fill="#FFB6C1" opacity="0.6" />
         </>
       )}
 
       {tirednessLevel === 1 && (
         <>
-          {/* Annoyed face - half-lidded eyes */}
-          {/* Left eye - smaller, half closed */}
-          <rect x="16" y="24" width="4" height="4" fill="white" />
-          <rect x="20" y="24" width="4" height="4" fill="white" />
-          <rect x="16" y="28" width="4" height="4" fill="white" />
-          <rect x="20" y="28" width="4" height="4" fill="white" />
-          {/* Left pupil */}
-          <rect x="18" y="26" width="4" height="4" fill="#333" />
+          {/* Annoyed face - half-lidded eyes, no eyebrows */}
+          {/* Left eye - half closed */}
+          <ellipse cx="22" cy="28" rx="5" ry="4" fill="white" stroke="#333" strokeWidth="1.5" />
+          <circle cx="22" cy="29" r="2.5" fill="#333" />
           {/* Eyelid */}
-          <rect x="14" y="22" width="14" height="4" fill="#E6CF5C" />
+          <path d="M17 26 Q22 22 27 26" fill="#FFE566" stroke="#D4B800" strokeWidth="1" />
 
-          {/* Right eye - smaller, half closed */}
-          <rect x="40" y="24" width="4" height="4" fill="white" />
-          <rect x="44" y="24" width="4" height="4" fill="white" />
-          <rect x="40" y="28" width="4" height="4" fill="white" />
-          <rect x="44" y="28" width="4" height="4" fill="white" />
-          {/* Right pupil */}
-          <rect x="42" y="26" width="4" height="4" fill="#333" />
+          {/* Right eye - half closed */}
+          <ellipse cx="42" cy="28" rx="5" ry="4" fill="white" stroke="#333" strokeWidth="1.5" />
+          <circle cx="42" cy="29" r="2.5" fill="#333" />
           {/* Eyelid */}
-          <rect x="38" y="22" width="14" height="4" fill="#E6CF5C" />
+          <path d="M37 26 Q42 22 47 26" fill="#FFE566" stroke="#D4B800" strokeWidth="1" />
 
-          {/* Flat/slight frown - pixel blocks */}
-          <rect x="20" y="44" width="4" height="4" fill="#333" />
-          <rect x="24" y="46" width="4" height="4" fill="#333" />
-          <rect x="28" y="46" width="4" height="4" fill="#333" />
-          <rect x="32" y="46" width="4" height="4" fill="#333" />
-          <rect x="36" y="46" width="4" height="4" fill="#333" />
-          <rect x="40" y="44" width="4" height="4" fill="#333" />
+          {/* Flat/slight frown */}
+          <path d="M22 44 Q32 40 42 44" stroke="#333" strokeWidth="2.5" strokeLinecap="round" fill="none" />
         </>
       )}
 
       {tirednessLevel === 2 && (
         <>
-          {/* Exhausted face - nearly closed eyes, frown */}
-          {/* Left eye - nearly closed, just a slit */}
-          <rect x="16" y="26" width="4" height="4" fill="white" />
-          <rect x="20" y="26" width="4" height="4" fill="white" />
-          {/* Left pupil - tiny */}
-          <rect x="18" y="26" width="4" height="2" fill="#333" />
+          {/* Exhausted face - droopy eyes, frown, no eyebrows */}
+          {/* Left eye - nearly closed, droopy */}
+          <ellipse cx="22" cy="30" rx="5" ry="2.5" fill="white" stroke="#333" strokeWidth="1.5" />
+          <circle cx="22" cy="30" r="1.5" fill="#333" />
           {/* Heavy eyelid */}
-          <rect x="14" y="22" width="14" height="6" fill="#E6CF5C" />
+          <path d="M17 28 Q22 24 27 28" fill="#FFE566" stroke="#D4B800" strokeWidth="1.5" />
 
-          {/* Right eye - nearly closed, just a slit */}
-          <rect x="40" y="26" width="4" height="4" fill="white" />
-          <rect x="44" y="26" width="4" height="4" fill="white" />
-          {/* Right pupil - tiny */}
-          <rect x="42" y="26" width="4" height="2" fill="#333" />
+          {/* Right eye - nearly closed, droopy */}
+          <ellipse cx="42" cy="30" rx="5" ry="2.5" fill="white" stroke="#333" strokeWidth="1.5" />
+          <circle cx="42" cy="30" r="1.5" fill="#333" />
           {/* Heavy eyelid */}
-          <rect x="38" y="22" width="14" height="6" fill="#E6CF5C" />
+          <path d="M37 28 Q42 24 47 28" fill="#FFE566" stroke="#D4B800" strokeWidth="1.5" />
 
-          {/* Frown - pixel blocks */}
-          <rect x="20" y="48" width="4" height="4" fill="#333" />
-          <rect x="24" y="46" width="4" height="4" fill="#333" />
-          <rect x="28" y="44" width="4" height="4" fill="#333" />
-          <rect x="32" y="44" width="4" height="4" fill="#333" />
-          <rect x="36" y="46" width="4" height="4" fill="#333" />
-          <rect x="40" y="48" width="4" height="4" fill="#333" />
+          {/* Frown */}
+          <path d="M22 48 Q32 42 42 48" stroke="#333" strokeWidth="2.5" strokeLinecap="round" fill="none" />
 
-          {/* Sweat drop - pixel style */}
-          <rect x="52" y="14" width="4" height="4" fill="#87CEEB" />
-          <rect x="52" y="18" width="4" height="4" fill="#87CEEB" />
-          <rect x="50" y="22" width="4" height="4" fill="#87CEEB" />
-          <rect x="54" y="22" width="4" height="4" fill="#87CEEB" />
-          <rect x="52" y="26" width="4" height="4" fill="#87CEEB" />
+          {/* Sweat drop */}
+          <ellipse cx="56" cy="22" rx="3" ry="5" fill="#87CEEB" />
+          <circle cx="56" cy="18" r="2.5" fill="#87CEEB" />
 
-          {/* Bags under eyes - pixel style */}
-          <rect x="16" y="32" width="8" height="2" fill="#D4B800" opacity="0.4" />
-          <rect x="40" y="32" width="8" height="2" fill="#D4B800" opacity="0.4" />
+          {/* Bags under eyes */}
+          <path d="M17 34 Q22 36 27 34" stroke="#D4B800" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.5" />
+          <path d="M37 34 Q42 36 47 34" stroke="#D4B800" strokeWidth="1" strokeLinecap="round" fill="none" opacity="0.5" />
         </>
       )}
     </svg>
@@ -190,12 +146,12 @@ export function TutorialHelper({ clickCount, onAnimationComplete }: TutorialHelp
           : "translate-x-[400px]"
       }`}
     >
-      {/* Speech Bubble - positioned above sticky note */}
-      <div className="relative bg-[#ffffcc] border-2 border-black rounded-lg p-3 max-w-[240px] shadow-lg mb-1 mr-2">
+      {/* Speech Bubble - floating above and to the left */}
+      <div className="relative bg-[#ffffcc] border-2 border-black rounded-lg p-3 max-w-[240px] shadow-lg mb-4 mr-12">
         <p className="text-sm text-black font-sans">{message}</p>
-        {/* Speech bubble tail pointing down */}
+        {/* Speech bubble tail pointing down-right toward character */}
         <div
-          className="absolute -bottom-2 right-6 w-4 h-4 bg-[#ffffcc] border-r-2 border-b-2 border-black"
+          className="absolute -bottom-2 right-4 w-4 h-4 bg-[#ffffcc] border-r-2 border-b-2 border-black"
           style={{ transform: "rotate(45deg)" }}
         />
       </div>
