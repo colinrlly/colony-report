@@ -78,11 +78,16 @@ const HIDDEN_FILE = {
   position: { x: 0, y: 0 }, // Will be calculated based on screen size
 };
 
+// Wallpaper options
+type WallpaperType = 0 | 1 | 2;
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
+  const [currentWallpaper, setCurrentWallpaper] = useState<WallpaperType>(0);
+  const [isAntWiggling, setIsAntWiggling] = useState(false);
 
   // Nested folder windows state - chain from "Nothing..." to pet monitor
   const [isNothingOpen, setIsNothingOpen] = useState(false);
@@ -182,12 +187,12 @@ export default function Home() {
     }
   };
 
-  // Handle refresh desktop - reset all folder positions with flicker animation
+  // Handle refresh desktop - reset all folder positions, wallpaper, with flicker animation
   const handleRefreshDesktop = useCallback(() => {
     // Trigger flicker animation
     setIsRefreshing(true);
 
-    // Reset all icon positions to their initial positions and hide hidden files
+    // Reset all icon positions to their initial positions, hide hidden files, and reset wallpaper
     setTimeout(() => {
       setIconPositions(
         DESKTOP_ICONS.reduce((acc, icon) => {
@@ -196,6 +201,7 @@ export default function Home() {
         }, {} as Record<string, { x: number; y: number }>)
       );
       setShowHiddenFiles(false);
+      setCurrentWallpaper(0);
     }, 100);
 
     // End the flicker animation after a short delay
@@ -209,11 +215,23 @@ export default function Home() {
     setShowHiddenFiles(prev => !prev);
   }, []);
 
+  // Handle wallpaper toggle - cycles through 3 options
+  const handleToggleWallpaper = useCallback(() => {
+    setCurrentWallpaper(prev => ((prev + 1) % 3) as WallpaperType);
+  }, []);
+
+  // Handle ant click - wiggle legs
+  const handleAntClick = useCallback(() => {
+    if (isAntWiggling) return; // Don't restart if already wiggling
+    setIsAntWiggling(true);
+    setTimeout(() => setIsAntWiggling(false), 600); // Animation duration: 0.15s * 4 repeats
+  }, [isAntWiggling]);
+
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
     { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
-    { label: "Toggle Wallpaper" },
+    { label: "Toggle Wallpaper", onClick: handleToggleWallpaper },
   ];
 
   return (
@@ -241,6 +259,125 @@ export default function Home() {
       </Menubar>
 
       <main ref={mainRef} className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
+        {/* Wallpaper Backgrounds */}
+        {currentWallpaper === 0 && (
+          <div className="wallpaper-default absolute inset-0 -z-10" />
+        )}
+        {currentWallpaper === 1 && (
+          <div className="wallpaper-formica absolute inset-0 -z-10" />
+        )}
+        {currentWallpaper === 1 && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+            {/* N.E.C. FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
+            <div className="text-center">
+              {/* N.E.C. on its own line - large with periods */}
+              <div className="text-[96px] font-bold tracking-[0.15em] text-[#d4c8a0] drop-shadow-[3px_3px_0px_#3d2914] leading-none" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                N.E.C.
+              </div>
+              {/* Formica Division on its own line - bold */}
+              <div className="text-[36px] font-bold tracking-[0.25em] text-[#d4c8a0] mt-4 drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                FORMICA DIVISION
+              </div>
+              {/* Pixel Art Ant Logo - below text, clickable */}
+              <svg
+                className="mx-auto mt-8 cursor-pointer hover:scale-105 transition-transform pointer-events-auto"
+                width="80"
+                height="80"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ imageRendering: "pixelated" }}
+                onClick={handleAntClick}
+              >
+                {/* Ant head */}
+                <rect x="8" y="2" width="4" height="3" fill="#1a1a1a" />
+                {/* Antennae */}
+                <rect x="6" y="1" width="1" height="2" fill="#1a1a1a" />
+                <rect x="13" y="1" width="1" height="2" fill="#1a1a1a" />
+                <rect x="5" y="0" width="1" height="1" fill="#1a1a1a" />
+                <rect x="14" y="0" width="1" height="1" fill="#1a1a1a" />
+                {/* Thorax (middle body) */}
+                <rect x="7" y="5" width="6" height="4" fill="#1a1a1a" />
+                {/* Abdomen (back body) */}
+                <rect x="6" y="9" width="8" height="5" fill="#1a1a1a" />
+                <rect x="7" y="14" width="6" height="3" fill="#1a1a1a" />
+                <rect x="8" y="17" width="4" height="2" fill="#1a1a1a" />
+                {/* Left legs - animated */}
+                <g className={`ant-leg-left ${isAntWiggling ? 'wiggling' : ''}`}>
+                  <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="3" y="6" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="4" y="8" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="2" y="9" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="4" y="11" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="2" y="12" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="1" y="13" width="1" height="2" fill="#1a1a1a" />
+                </g>
+                {/* Right legs - animated */}
+                <g className={`ant-leg-right ${isAntWiggling ? 'wiggling' : ''}`}>
+                  <rect x="13" y="5" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="6" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="13" y="8" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="9" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="14" y="11" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="12" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="18" y="13" width="1" height="2" fill="#1a1a1a" />
+                </g>
+                {/* Eyes */}
+                <rect x="8" y="3" width="1" height="1" fill="#4a4a4a" />
+                <rect x="11" y="3" width="1" height="1" fill="#4a4a4a" />
+              </svg>
+              <div className="mt-8 text-[11px] text-[#a09080] tracking-wide">
+                For Authorized Personnel Only
+              </div>
+              <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
+                ColonyOS Workstation v4.2 - Ant Hill Subnetwork
+              </div>
+              <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
+                Property of N.E.C. - Unauthorized access prohibited
+              </div>
+            </div>
+          </div>
+        )}
+        {currentWallpaper === 2 && (
+          <div className="wallpaper-eden absolute inset-0 -z-10">
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              {/* NEW EDEN COMMITTEE with large earth logo */}
+              <div className="text-center">
+                {/* Large Smiling Earth */}
+                <svg className="mx-auto mb-6" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Earth circle */}
+                  <circle cx="90" cy="90" r="80" fill="#4A90D9" stroke="#2E5A88" strokeWidth="4" />
+                  {/* Continents/land masses - organic blobs positioned to avoid face features */}
+                  {/* Top continent - irregular blob */}
+                  <path d="M65 22 Q72 18 85 20 Q100 19 108 24 Q115 30 110 38 Q102 42 88 40 Q74 43 68 36 Q62 28 65 22" fill="#5CB85C" />
+                  {/* Left continent - organic shape */}
+                  <path d="M18 70 Q22 60 28 55 Q36 52 40 58 Q44 68 42 82 Q44 95 38 105 Q30 112 22 108 Q16 100 15 88 Q14 78 18 70" fill="#5CB85C" />
+                  {/* Right continent - asymmetric blob */}
+                  <path d="M155 65 Q162 70 164 80 Q165 92 160 102 Q154 108 148 105 Q142 98 144 85 Q143 72 148 66 Q152 62 155 65" fill="#5CB85C" />
+                  {/* Bottom continent - wide irregular shape */}
+                  <path d="M55 148 Q65 144 80 146 Q95 143 110 147 Q122 150 125 156 Q120 162 105 160 Q88 163 70 160 Q55 158 52 153 Q52 150 55 148" fill="#5CB85C" />
+                  {/* Smiley face */}
+                  <circle cx="68" cy="75" r="10" fill="#333" /> {/* Left eye */}
+                  <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
+                  <path d="M60 105 Q90 140 120 105" stroke="#333" strokeWidth="8" fill="none" strokeLinecap="round" />
+                </svg>
+                <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14]" style={{ fontFamily: 'Arial Black, sans-serif', textShadow: '0 0 4px rgba(57, 255, 20, 0.8), 2px 2px 0px #1a4d0a' }}>
+                  NEW EDEN
+                </div>
+                <div className="text-[32px] tracking-[0.4em] text-[#39ff14] mt-2" style={{ fontFamily: 'Arial, sans-serif', textShadow: '0 0 3px rgba(57, 255, 20, 0.7), 1px 1px 0px #1a4d0a' }}>
+                  COMMITTEE
+                </div>
+                <div className="mt-10 text-[12px] text-[#7dff7d] tracking-wide">
+                  Cultivating Tomorrow, Today™
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* CRT Screen Effect Overlay - behind all content, only affects wallpaper */}
+        <div className="crt-overlay pointer-events-none -z-5" />
+
         {/* Desktop Icons - each independently draggable */}
         {DESKTOP_ICONS.map((iconConfig) => (
           <div
