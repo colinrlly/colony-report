@@ -196,6 +196,23 @@ export default function Home() {
       );
       setShowHiddenFiles(false);
       setCurrentWallpaper(0);
+
+      // Close all open windows
+      setIsColonyReportsOpen(false);
+      setIsColonyReportsMinimized(false);
+      setIsSecretsFolderOpen(false);
+      setIsNothingOpen(false);
+      setIsSeriouslyNothingOpen(false);
+      setIsPleaseStopOpen(false);
+      setIsGoNoFurtherOpen(false);
+      setIsAreYouSeriousOpen(false);
+      setIsUghFineOpen(false);
+      setIsPetMonitorOpen(false);
+      setIsMinesweeperOpen(false);
+      setIsMinesweeperMinimized(false);
+      setIsContactHROpen(false);
+      setIsContactHRMinimized(false);
+      setIsTutorialHelperVisible(false);
     }, 100);
 
     // End the flicker animation after a short delay
