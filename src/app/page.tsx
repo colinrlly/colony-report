@@ -5,30 +5,12 @@ import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
+import { Minesweeper } from "@/components/minesweeper";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
 
-// viewMenuItems is defined inside the component to access the refresh handler
-
-const toolsMenuItems: MenuItemData[] = [
-  {
-    label: "Games",
-    submenu: [
-      { label: "Mine Sweeper" },
-    ],
-  },
-  {
-    label: "Security Cams",
-    submenu: [
-      { label: "Ant Hill- Cam 1" },
-      { label: "Ant Hill- Cam 2" },
-      { label: "Ant Hill- Cam 3" },
-      { label: "Ant Hill- Cam 4" },
-    ],
-  },
-  { label: "Plant Monitor" },
-];
+// viewMenuItems and toolsMenuItems are defined inside the component to access state handlers
 
 const helpMenuItems: MenuItemData[] = [
   { label: "Tutorial" },
@@ -98,6 +80,10 @@ export default function Home() {
   const [isAreYouSeriousOpen, setIsAreYouSeriousOpen] = useState(false);
   const [isUghFineOpen, setIsUghFineOpen] = useState(false);
   const [isPetMonitorOpen, setIsPetMonitorOpen] = useState(false);
+
+  // Minesweeper game state
+  const [isMinesweeperOpen, setIsMinesweeperOpen] = useState(false);
+  const [isMinesweeperMinimized, setIsMinesweeperMinimized] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -233,6 +219,29 @@ export default function Home() {
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
     { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
     { label: "Toggle Wallpaper", onClick: handleToggleWallpaper },
+  ];
+
+  // Tools menu items - defined here to access game handlers
+  const toolsMenuItems: MenuItemData[] = [
+    {
+      label: "Games",
+      submenu: [
+        { label: "Minesweeper", onClick: () => {
+          setIsMinesweeperOpen(true);
+          setIsMinesweeperMinimized(false);
+        }},
+      ],
+    },
+    {
+      label: "Security Cams",
+      submenu: [
+        { label: "Ant Hill- Cam 1" },
+        { label: "Ant Hill- Cam 2" },
+        { label: "Ant Hill- Cam 3" },
+        { label: "Ant Hill- Cam 4" },
+      ],
+    },
+    { label: "Plant Monitor" },
   ];
 
   return (
@@ -502,28 +511,46 @@ export default function Home() {
             setIsNothingOpen(false);
           }} />
         )}
+
+        {/* Minesweeper Game */}
+        {isMinesweeperOpen && !isMinesweeperMinimized && (
+          <Minesweeper
+            onClose={() => {
+              setIsMinesweeperOpen(false);
+              setIsMinesweeperMinimized(false);
+            }}
+            onMinimize={() => setIsMinesweeperMinimized(true)}
+          />
+        )}
       </main>
 
       <Taskbar>
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
-            isActive={!isColonyReportsMinimized && !isSecretsFolderOpen && !isPetMonitorOpen}
+            isActive={!isColonyReportsMinimized && !isSecretsFolderOpen && !isPetMonitorOpen && (!isMinesweeperOpen || isMinesweeperMinimized)}
             onClick={() => setIsColonyReportsMinimized(!isColonyReportsMinimized)}
           />
         )}
         {isSecretsFolderOpen && (
           <TaskbarButton
             title=".secrets"
-            isActive={!isPetMonitorOpen}
+            isActive={!isPetMonitorOpen && (!isMinesweeperOpen || isMinesweeperMinimized)}
             onClick={() => setIsSecretsFolderOpen(true)}
           />
         )}
         {isPetMonitorOpen && (
           <TaskbarButton
             title="secret_pet_monitor"
-            isActive={true}
+            isActive={!isMinesweeperOpen || isMinesweeperMinimized}
             onClick={() => setIsPetMonitorOpen(true)}
+          />
+        )}
+        {isMinesweeperOpen && (
+          <TaskbarButton
+            title="Minesweeper"
+            isActive={!isMinesweeperMinimized}
+            onClick={() => setIsMinesweeperMinimized(!isMinesweeperMinimized)}
           />
         )}
       </Taskbar>
