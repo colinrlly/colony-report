@@ -1,27 +1,61 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, createContext, useContext } from "react";
 import { cn } from "@/lib/utils";
+
+// Context to track which menu is currently open
+interface MenubarContextType {
+  openMenu: string | null;
+  setOpenMenu: (menu: string | null) => void;
+}
+
+const MenubarContext = createContext<MenubarContextType>({
+  openMenu: null,
+  setOpenMenu: () => {},
+});
 
 interface MenubarProps {
   children?: React.ReactNode;
 }
 
 export function Menubar({ children }: MenubarProps) {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const menubarRef = useRef<HTMLDivElement>(null);
+
+  // Close menus when clicking outside the menubar
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menubarRef.current && !menubarRef.current.contains(event.target as Node)) {
+        setOpenMenu(null);
+      }
+    }
+
+    if (openMenu) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [openMenu]);
+
   return (
-    <div
-      className={cn(
-        "fixed top-0 left-0 right-0",
-        "h-[36px]",
-        "bg-win98-surface",
-        "win98-border-raised",
-        "flex items-center",
-        "px-2 gap-1",
-        "z-50"
-      )}
-    >
-      {children}
-    </div>
+    <MenubarContext.Provider value={{ openMenu, setOpenMenu }}>
+      <div
+        ref={menubarRef}
+        className={cn(
+          "fixed top-0 left-0 right-0",
+          "h-[36px]",
+          "bg-win98-surface",
+          "win98-border-raised",
+          "flex items-center",
+          "px-2 gap-1",
+          "z-50"
+        )}
+      >
+        {children}
+      </div>
+    </MenubarContext.Provider>
   );
 }
 
@@ -228,30 +262,23 @@ function MenuDropdownItem({ item, onClose }: { item: MenuItemData; onClose: () =
 }
 
 export function MenubarItem({ label, onClick, menuItems }: MenubarItemProps) {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { openMenu, setOpenMenu } = useContext(MenubarContext);
+  const isOpen = openMenu === label;
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target as Node)
-      ) {
-        setShowDropdown(false);
-      }
+  const handleClick = () => {
+    if (menuItems) {
+      setOpenMenu(isOpen ? null : label);
+    } else {
+      onClick?.();
     }
+  };
 
-    if (showDropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
+  const handleMouseEnter = () => {
+    // If any menu is open, switch to this one on hover
+    if (openMenu !== null && menuItems) {
+      setOpenMenu(label);
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showDropdown]);
+  };
 
   if (!menuItems) {
     return (
@@ -270,23 +297,21 @@ export function MenubarItem({ label, onClick, menuItems }: MenubarItemProps) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" onMouseEnter={handleMouseEnter}>
       <button
-        ref={buttonRef}
-        onClick={() => setShowDropdown(!showDropdown)}
+        onClick={handleClick}
         className={cn(
           "px-2 py-1",
           "text-[14px]",
           "hover:bg-win98-title-active hover:text-white",
-          showDropdown && "bg-win98-title-active text-white"
+          isOpen && "bg-win98-title-active text-white"
         )}
       >
         {label}
       </button>
 
-      {showDropdown && (
+      {isOpen && (
         <div
-          ref={dropdownRef}
           className={cn(
             "absolute top-full left-0 mt-0",
             "bg-win98-surface",
@@ -301,7 +326,7 @@ export function MenubarItem({ label, onClick, menuItems }: MenubarItemProps) {
             <MenuDropdownItem
               key={index}
               item={item}
-              onClose={() => setShowDropdown(false)}
+              onClose={() => setOpenMenu(null)}
             />
           ))}
         </div>
