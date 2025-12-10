@@ -6,16 +6,12 @@ import { SecretsFolder } from "@/components/secrets-folder";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { Germsweeper } from "@/components/minesweeper";
+import { ContactHRForm } from "@/components/contact-hr-form";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
 
-// viewMenuItems and toolsMenuItems are defined inside the component to access state handlers
-
-const helpMenuItems: MenuItemData[] = [
-  { label: "Tutorial" },
-  { label: "Contact HR" },
-];
+// viewMenuItems, toolsMenuItems, and helpMenuItems are defined inside the component to access state handlers
 
 const historyMenuItems: MenuItemData[] = [
   { label: "Internet Browsing History", isHistoryTitle: true },
@@ -84,6 +80,10 @@ export default function Home() {
   // Minesweeper game state
   const [isMinesweeperOpen, setIsMinesweeperOpen] = useState(false);
   const [isMinesweeperMinimized, setIsMinesweeperMinimized] = useState(false);
+
+  // Contact HR form state
+  const [isContactHROpen, setIsContactHROpen] = useState(false);
+  const [isContactHRMinimized, setIsContactHRMinimized] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -242,6 +242,15 @@ export default function Home() {
       ],
     },
     { label: "Plant Monitor" },
+  ];
+
+  // Help menu items - defined here to access contact HR handler
+  const helpMenuItems: MenuItemData[] = [
+    { label: "Tutorial" },
+    { label: "Contact HR", onClick: () => {
+      setIsContactHROpen(true);
+      setIsContactHRMinimized(false);
+    }},
   ];
 
   return (
@@ -522,6 +531,17 @@ export default function Home() {
             onMinimize={() => setIsMinesweeperMinimized(true)}
           />
         )}
+
+        {/* Contact HR Form */}
+        {isContactHROpen && !isContactHRMinimized && (
+          <ContactHRForm
+            onClose={() => {
+              setIsContactHROpen(false);
+              setIsContactHRMinimized(false);
+            }}
+            onMinimize={() => setIsContactHRMinimized(true)}
+          />
+        )}
       </main>
 
       <Taskbar>
@@ -551,6 +571,13 @@ export default function Home() {
             title="Germsweeper"
             isActive={!isMinesweeperMinimized}
             onClick={() => setIsMinesweeperMinimized(!isMinesweeperMinimized)}
+          />
+        )}
+        {isContactHROpen && (
+          <TaskbarButton
+            title="Contact HR"
+            isActive={!isContactHRMinimized}
+            onClick={() => setIsContactHRMinimized(!isContactHRMinimized)}
           />
         )}
       </Taskbar>
