@@ -71,6 +71,41 @@ function CheckmarkIcon() {
   );
 }
 
+// Contained/quarantined germ icon (germ with X overlay) - shown on germs when you win
+function ContainedGermIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ imageRendering: "pixelated" }}
+    >
+      {/* Main germ body - gray (neutralized) */}
+      <rect x="5" y="3" width="4" height="1" fill="#9E9E9E" />
+      <rect x="4" y="4" width="6" height="1" fill="#9E9E9E" />
+      <rect x="3" y="5" width="8" height="4" fill="#9E9E9E" />
+      <rect x="4" y="9" width="6" height="1" fill="#9E9E9E" />
+      <rect x="5" y="10" width="4" height="1" fill="#9E9E9E" />
+      {/* Tentacles - gray */}
+      <rect x="2" y="4" width="1" height="2" fill="#BDBDBD" />
+      <rect x="1" y="3" width="1" height="1" fill="#BDBDBD" />
+      <rect x="11" y="4" width="1" height="2" fill="#BDBDBD" />
+      <rect x="12" y="3" width="1" height="1" fill="#BDBDBD" />
+      {/* Red X overlay */}
+      <rect x="3" y="3" width="2" height="2" fill="#F44336" />
+      <rect x="5" y="5" width="2" height="2" fill="#F44336" />
+      <rect x="7" y="7" width="2" height="2" fill="#F44336" />
+      <rect x="9" y="9" width="2" height="2" fill="#F44336" />
+      <rect x="9" y="3" width="2" height="2" fill="#F44336" />
+      <rect x="7" y="5" width="2" height="2" fill="#F44336" />
+      <rect x="5" y="7" width="2" height="2" fill="#F44336" />
+      <rect x="3" y="9" width="2" height="2" fill="#F44336" />
+    </svg>
+  );
+}
+
 type CellState = {
   isMine: boolean;
   isRevealed: boolean;
@@ -197,7 +232,7 @@ function checkWin(board: CellState[][]): boolean {
 
 const NUMBER_COLORS: Record<number, string> = {
   1: "#0000FF",
-  2: "#008000",
+  2: "#FF0000",  // Red instead of green
   3: "#FF8C00",  // Orange instead of red
   4: "#000080",
   5: "#800000",
@@ -301,7 +336,7 @@ export function Germsweeper({ onClose, onMinimize }: GermsweeperProps) {
   };
 
   return (
-    <Window className="absolute top-[15vh] left-[30vw] flex flex-col">
+    <Window className="absolute top-[15vh] left-[30vw] flex flex-col !resize-none !overflow-hidden">
       <WindowTitleBar>
         <WindowTitle>Germsweeper</WindowTitle>
         <WindowControls showMaximize={false} onClose={onClose} onMinimize={onMinimize} />
