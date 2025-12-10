@@ -38,7 +38,7 @@ export function ColonyReports({ onClose, onMinimize }: ColonyReportsProps) {
     <Window className="aspect-[11/8.5] max-w-[90vw] max-h-[85vh] w-auto h-[85vh] absolute top-[7vh] left-1/2 -translate-x-1/2 flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
-        <WindowControls onMinimize={onMinimize} onClose={onClose} />
+        <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
       <div className="flex flex-1 min-h-0">
