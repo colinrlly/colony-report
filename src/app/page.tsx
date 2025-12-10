@@ -108,9 +108,13 @@ export default function Home() {
 
   const [windowOrder, setWindowOrder] = useState<WindowId[]>([]);
 
-  // Bring a window to the front
+  // Bring a window to the front (only if not already at front)
   const bringToFront = useCallback((windowId: WindowId) => {
     setWindowOrder(prev => {
+      // If already at the front, don't update state (prevents unnecessary re-renders)
+      if (prev.length > 0 && prev[prev.length - 1] === windowId) {
+        return prev;
+      }
       const filtered = prev.filter(id => id !== windowId);
       return [...filtered, windowId];
     });

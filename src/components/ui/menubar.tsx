@@ -50,7 +50,7 @@ export function Menubar({ children }: MenubarProps) {
           "win98-border-raised",
           "flex items-center",
           "px-2 gap-1",
-          "z-50"
+          "z-[1000]"
         )}
       >
         {children}
@@ -130,7 +130,7 @@ export function MenubarLogo() {
             "win98-border-raised",
             "p-3",
             "text-[14px]",
-            "z-50"
+            "z-[1000]"
           )}
         >
           <div className="text-center whitespace-nowrap">
@@ -195,7 +195,7 @@ function MenuDropdownItem({ item, onClose }: { item: MenuItemData; onClose: () =
               "win98-border-raised",
               "py-1",
               "min-w-[140px]",
-              "z-50"
+              "z-[1000]"
             )}
           >
             {item.submenu.map((subItem, index) => (
@@ -318,7 +318,7 @@ export function MenubarItem({ label, onClick, menuItems }: MenubarItemProps) {
             "win98-border-raised",
             "py-1",
             "text-[14px]",
-            "z-50",
+            "z-[1000]",
             "min-w-[160px]"
           )}
         >
@@ -415,7 +415,7 @@ export function MenubarProfile() {
             "win98-border-raised",
             "p-3",
             "text-[14px]",
-            "z-50",
+            "z-[1000]",
             "min-w-[280px]"
           )}
         >

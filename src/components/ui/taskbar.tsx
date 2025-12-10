@@ -78,7 +78,8 @@ function StartMenu({ isOpen, onClose, onRestart }: StartMenuProps) {
         "win98-border-raised",
         "py-1",
         "text-[14px]",
-        "min-w-[140px]"
+        "min-w-[140px]",
+        "z-[1000]"
       )}
     >
       {menuItems.map((item, index) => (
@@ -126,7 +127,8 @@ export function Taskbar({ children, onRestart }: TaskbarProps) {
         "bg-win98-surface",
         "win98-border-raised",
         "flex items-center",
-        "px-1 gap-1"
+        "px-1 gap-1",
+        "z-[1000]"
       )}
     >
       {/* Start Button */}
