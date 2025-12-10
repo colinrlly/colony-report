@@ -94,14 +94,12 @@ export function MenubarLogo() {
             "absolute top-full left-0 mt-1",
             "bg-win98-surface",
             "win98-border-raised",
-            "p-3",
-            "text-[12px]",
-            "whitespace-pre-line",
-            "z-50",
-            "min-w-[180px]"
+            "p-2",
+            "text-[10px]",
+            "z-50"
           )}
         >
-          <div className="text-center">
+          <div className="text-center whitespace-nowrap">
             <div>© N.E.C. New Eden Committee</div>
             <div>Version: 4.2.1</div>
           </div>
