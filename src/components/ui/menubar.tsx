@@ -214,10 +214,11 @@ export function MenubarProfile() {
             "min-w-[280px]"
           )}
         >
-          <div className="whitespace-nowrap space-y-1">
+          <div className="whitespace-nowrap space-y-0.5">
             <div><span className="font-bold">Account User:</span> Dr. Jasmine Thorne</div>
-            <div><span className="font-bold">Account ID:</span> 234561</div>
+            <div><span className="font-bold">Account ID:</span> 2387-F-BT-XV</div>
             <div><span className="font-bold">Division:</span> Formica</div>
+            <div><span className="font-bold">Clearance Level:</span> 3</div>
             <div className="text-[12px] text-[#555]">Dr.JasmineThorne@NECFormica.com</div>
           </div>
         </div>
