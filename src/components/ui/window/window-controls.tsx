@@ -2,6 +2,7 @@
 
 import { forwardRef } from "react";
 import { cn } from "@/lib/utils";
+import { useWindowContext } from "./window";
 import type { WindowControlsProps, WindowControlButtonProps } from "./types";
 
 const MinimizeIcon = () => (
@@ -77,6 +78,13 @@ export const WindowControls = forwardRef<HTMLDivElement, WindowControlsProps>(
     },
     ref
   ) => {
+    const { toggleMaximize } = useWindowContext();
+
+    const handleMaximize = () => {
+      toggleMaximize();
+      onMaximize?.();
+    };
+
     return (
       <div
         ref={ref}
@@ -95,7 +103,7 @@ export const WindowControls = forwardRef<HTMLDivElement, WindowControlsProps>(
           <WindowControlButton
             variant="maximize"
             icon={maximizeIcon}
-            onClick={onMaximize}
+            onClick={handleMaximize}
             aria-label="Maximize"
           />
         )}

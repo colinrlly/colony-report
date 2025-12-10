@@ -26,7 +26,7 @@ export function ColonyReports() {
     <Window className="w-[800px] h-[600px] absolute top-[50px] left-[50px] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
-        <WindowControls showMinimize={false} showMaximize={false} />
+        <WindowControls showMinimize={false} />
       </WindowTitleBar>
 
       <div className="flex flex-1 min-h-0">
