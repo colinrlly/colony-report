@@ -13,10 +13,10 @@ export default function Home() {
     <>
       <Menubar>
         <MenubarLogo />
-        <MenubarItem label="Help" />
         <MenubarItem label="View" />
         <MenubarItem label="Tools" />
         <MenubarItem label="History" />
+        <MenubarItem label="Help" />
       </Menubar>
 
       <main className="min-h-screen relative p-4 pt-[38px] pb-[50px]">
