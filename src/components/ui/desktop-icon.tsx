@@ -23,12 +23,12 @@ export function DesktopIcon({ label, color = "#c44", onClick }: DesktopIconProps
     >
       {/* Placeholder icon */}
       <div
-        className="w-[48px] h-[48px] rounded-sm flex items-center justify-center"
+        className="w-[96px] h-[96px] rounded-sm flex items-center justify-center"
         style={{ backgroundColor: color }}
       >
         <svg
-          width="32"
-          height="32"
+          width="64"
+          height="64"
           viewBox="0 0 32 32"
           fill="white"
           className="opacity-80"
