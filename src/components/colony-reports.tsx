@@ -19,14 +19,18 @@ const navItems = [
   { id: "food", color: "#da6", label: "Dietary Observations" },
 ];
 
-export function ColonyReports() {
+interface ColonyReportsProps {
+  onClose?: () => void;
+}
+
+export function ColonyReports({ onClose }: ColonyReportsProps) {
   const [selectedId, setSelectedId] = useState("specimen");
 
   return (
     <Window className="w-[800px] h-[600px] absolute top-[50px] left-[50px] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
-        <WindowControls showMinimize={false} />
+        <WindowControls showMinimize={false} onClose={onClose} />
       </WindowTitleBar>
 
       <div className="flex flex-1 min-h-0">
