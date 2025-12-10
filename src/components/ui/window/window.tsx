@@ -100,7 +100,7 @@ export function Window({ className, active = true, children, ...props }: WindowP
             "p-[3px]",
             "text-win98-text text-[11px]",
             isMaximized
-              ? "!fixed !top-[36px] !left-0 !right-0 !bottom-[40px] !w-auto !h-auto"
+              ? "!fixed !top-[36px] !left-0 !right-0 !bottom-[40px] !w-auto !h-auto !transform-none !max-w-none !max-h-none"
               : "resize overflow-auto",
             className
           )}
