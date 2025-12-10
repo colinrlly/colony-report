@@ -366,7 +366,7 @@ export default function Home() {
           <div className="wallpaper-formica absolute inset-0 -z-10" />
         )}
         {currentWallpaper === 1 && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-0 pointer-events-none">
             {/* N.E.C. FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
             <div className="text-center">
               {/* N.E.C. on its own line - large with periods */}
@@ -481,7 +481,7 @@ export default function Home() {
         {DESKTOP_ICONS.map((iconConfig) => (
           <div
             key={iconConfig.id}
-            className={`absolute select-none ${draggingIcon === iconConfig.id ? 'cursor-grabbing z-50' : 'cursor-grab'}`}
+            className={`absolute select-none ${draggingIcon === iconConfig.id ? 'cursor-grabbing z-50' : 'cursor-grab z-10'}`}
             style={{
               left: iconPositions[iconConfig.id].x,
               top: iconPositions[iconConfig.id].y,
@@ -499,7 +499,7 @@ export default function Home() {
         {/* Hidden file - appears at bottom right when Show Hidden Files is clicked */}
         {showHiddenFiles && (
           <div
-            className="absolute select-none cursor-pointer"
+            className="absolute select-none cursor-pointer z-10"
             style={{
               right: 24,
               bottom: 70,
