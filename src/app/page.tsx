@@ -186,12 +186,12 @@ export default function Home() {
     }
   };
 
-  // Handle refresh desktop - reset all folder positions with flicker animation
+  // Handle refresh desktop - reset all folder positions, wallpaper, with flicker animation
   const handleRefreshDesktop = useCallback(() => {
     // Trigger flicker animation
     setIsRefreshing(true);
 
-    // Reset all icon positions to their initial positions and hide hidden files
+    // Reset all icon positions to their initial positions, hide hidden files, and reset wallpaper
     setTimeout(() => {
       setIconPositions(
         DESKTOP_ICONS.reduce((acc, icon) => {
@@ -200,6 +200,7 @@ export default function Home() {
         }, {} as Record<string, { x: number; y: number }>)
       );
       setShowHiddenFiles(false);
+      setCurrentWallpaper(0);
     }, 100);
 
     // End the flicker animation after a short delay
@@ -257,13 +258,21 @@ export default function Home() {
         {currentWallpaper === 1 && (
           <div className="wallpaper-formica absolute inset-0 -z-10">
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              {/* NEC FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
+              {/* N.E.C. FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
               <div className="text-center">
-                {/* Pixel Art Ant Logo - larger version */}
+                {/* N.E.C. on its own line - large with periods */}
+                <div className="text-[96px] font-bold tracking-[0.15em] text-[#d4c8a0] drop-shadow-[3px_3px_0px_#3d2914] leading-none" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                  N.E.C.
+                </div>
+                {/* Formica Division on its own line - bold */}
+                <div className="text-[36px] font-bold tracking-[0.25em] text-[#d4c8a0] mt-4 drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                  FORMICA DIVISION
+                </div>
+                {/* Pixel Art Ant Logo - below text */}
                 <svg
-                  className="mx-auto mb-8"
-                  width="100"
-                  height="100"
+                  className="mx-auto mt-8"
+                  width="80"
+                  height="80"
                   viewBox="0 0 20 20"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -303,15 +312,7 @@ export default function Home() {
                   <rect x="8" y="3" width="1" height="1" fill="#4a4a4a" />
                   <rect x="11" y="3" width="1" height="1" fill="#4a4a4a" />
                 </svg>
-                {/* NEC on its own line - large */}
-                <div className="text-[96px] font-bold tracking-[0.2em] text-[#d4c8a0] drop-shadow-[3px_3px_0px_#3d2914] leading-none" style={{ fontFamily: 'Arial Black, sans-serif' }}>
-                  NEC
-                </div>
-                {/* Formica Division on its own line */}
-                <div className="text-[36px] tracking-[0.25em] text-[#d4c8a0] mt-4 drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial, sans-serif' }}>
-                  FORMICA DIVISION
-                </div>
-                <div className="mt-12 text-[11px] text-[#a09080] tracking-wide">
+                <div className="mt-8 text-[11px] text-[#a09080] tracking-wide">
                   For Authorized Personnel Only
                 </div>
                 <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
@@ -349,13 +350,13 @@ export default function Home() {
                   <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
                   <path d="M60 105 Q90 140 120 105" stroke="#333" strokeWidth="8" fill="none" strokeLinecap="round" />
                 </svg>
-                <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14] drop-shadow-[0_0_10px_#39ff14] drop-shadow-[2px_2px_0px_#1a4d0a]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14]" style={{ fontFamily: 'Arial Black, sans-serif', textShadow: '0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 40px #39ff14, 0 0 60px #2ecc0a, 2px 2px 0px #1a4d0a' }}>
                   NEW EDEN
                 </div>
-                <div className="text-[32px] tracking-[0.4em] text-[#39ff14] mt-2 drop-shadow-[0_0_8px_#39ff14] drop-shadow-[1px_1px_0px_#1a4d0a]" style={{ fontFamily: 'Arial, sans-serif' }}>
+                <div className="text-[32px] tracking-[0.4em] text-[#39ff14] mt-2" style={{ fontFamily: 'Arial, sans-serif', textShadow: '0 0 8px #39ff14, 0 0 16px #39ff14, 0 0 32px #2ecc0a, 1px 1px 0px #1a4d0a' }}>
                   COMMITTEE
                 </div>
-                <div className="mt-10 text-[12px] text-[#7dff7d] tracking-wide opacity-80">
+                <div className="mt-10 text-[12px] tracking-wide" style={{ color: '#7dff7d', textShadow: '0 0 6px #39ff14, 0 0 12px #39ff14' }}>
                   Cultivating Tomorrow, Today™
                 </div>
               </div>
