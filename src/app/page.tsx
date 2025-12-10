@@ -68,11 +68,16 @@ export default function Home() {
     let newX = dragStartIconPos.current.x + deltaX;
     let newY = dragStartIconPos.current.y + deltaY;
 
-    // Constrain to bounds (accounting for icon size ~100px width, ~120px height)
+    // Constrain to bounds (accounting for icon size and UI bars)
     const iconWidth = 100;
     const iconHeight = 120;
+    const menubarHeight = 46;  // Height of top menubar
+    const taskbarHeight = 50;  // Height of bottom taskbar
+
+    // Horizontal bounds: 0 to (width - iconWidth)
     newX = Math.max(0, Math.min(newX, bounds.width - iconWidth));
-    newY = Math.max(0, Math.min(newY, bounds.height - iconHeight));
+    // Vertical bounds: below menubar to above taskbar
+    newY = Math.max(menubarHeight, Math.min(newY, bounds.height - iconHeight - taskbarHeight));
 
     setIconPositions(prev => ({
       ...prev,
