@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
-import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
@@ -36,17 +35,74 @@ export default function Home() {
     }, {} as Record<string, { x: number; y: number }>)
   );
 
-  // Refs for each draggable icon (required by react-draggable)
-  const iconRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  // Track which icon is being dragged
+  const [draggingIcon, setDraggingIcon] = useState<string | null>(null);
+  const dragStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const dragStartIconPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const mainRef = useRef<HTMLElement>(null);
+  const hasDragged = useRef(false);
 
-  const handleDrag = (iconId: string) => (_e: DraggableEvent, data: DraggableData) => {
+  const handleMouseDown = useCallback((iconId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setDraggingIcon(iconId);
+    dragStartPos.current = { x: e.clientX, y: e.clientY };
+    dragStartIconPos.current = { ...iconPositions[iconId] };
+    hasDragged.current = false;
+  }, [iconPositions]);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!draggingIcon || !mainRef.current) return;
+
+    const deltaX = e.clientX - dragStartPos.current.x;
+    const deltaY = e.clientY - dragStartPos.current.y;
+
+    // Consider it a drag if moved more than 5 pixels
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      hasDragged.current = true;
+    }
+
+    // Get the bounds of the main container
+    const bounds = mainRef.current.getBoundingClientRect();
+
+    // Calculate new position
+    let newX = dragStartIconPos.current.x + deltaX;
+    let newY = dragStartIconPos.current.y + deltaY;
+
+    // Constrain to bounds (accounting for icon size ~100px width, ~120px height)
+    const iconWidth = 100;
+    const iconHeight = 120;
+    newX = Math.max(0, Math.min(newX, bounds.width - iconWidth));
+    newY = Math.max(0, Math.min(newY, bounds.height - iconHeight));
+
     setIconPositions(prev => ({
       ...prev,
-      [iconId]: { x: data.x, y: data.y }
+      [draggingIcon]: { x: newX, y: newY }
     }));
-  };
+  }, [draggingIcon]);
+
+  const handleMouseUp = useCallback(() => {
+    setDraggingIcon(null);
+  }, []);
+
+  // Add global mouse event listeners when dragging
+  useEffect(() => {
+    if (draggingIcon) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [draggingIcon, handleMouseMove, handleMouseUp]);
 
   const handleIconClick = (iconId: string) => {
+    // Only trigger click if we didn't drag
+    if (hasDragged.current) {
+      hasDragged.current = false;
+      return;
+    }
+
     switch (iconId) {
       case "colony-reports":
         setIsColonyReportsOpen(true);
@@ -66,28 +122,24 @@ export default function Home() {
         <MenubarProfile />
       </Menubar>
 
-      <main className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
+      <main ref={mainRef} className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
         {/* Desktop Icons - each independently draggable */}
         {DESKTOP_ICONS.map((iconConfig) => (
-          <Draggable
+          <div
             key={iconConfig.id}
-            nodeRef={{ current: iconRefs.current[iconConfig.id] }}
-            position={iconPositions[iconConfig.id]}
-            onDrag={handleDrag(iconConfig.id)}
-            bounds="parent"
+            className={`absolute select-none ${draggingIcon === iconConfig.id ? 'cursor-grabbing z-50' : 'cursor-grab'}`}
+            style={{
+              left: iconPositions[iconConfig.id].x,
+              top: iconPositions[iconConfig.id].y,
+            }}
+            onMouseDown={(e) => handleMouseDown(iconConfig.id, e)}
           >
-            <div
-              ref={(el) => { iconRefs.current[iconConfig.id] = el; }}
-              className="absolute cursor-grab active:cursor-grabbing"
-              style={{ left: 0, top: 0 }}
-            >
-              <DesktopIcon
-                label={iconConfig.label}
-                icon={iconConfig.icon}
-                onClick={() => handleIconClick(iconConfig.id)}
-              />
-            </div>
-          </Draggable>
+            <DesktopIcon
+              label={iconConfig.label}
+              icon={iconConfig.icon}
+              onClick={() => handleIconClick(iconConfig.id)}
+            />
+          </div>
         ))}
 
         {/* Windows */}
