@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ColonyReports } from "@/components/colony-reports";
+import { SecretsFolder } from "@/components/secrets-folder";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -77,6 +78,7 @@ const HIDDEN_FILE = {
 
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
+  const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
 
@@ -250,7 +252,7 @@ export default function Home() {
         {/* Hidden file - appears at bottom right when Show Hidden Files is clicked */}
         {showHiddenFiles && (
           <div
-            className="absolute select-none cursor-grab"
+            className="absolute select-none cursor-pointer"
             style={{
               right: 24,
               bottom: 70,
@@ -259,6 +261,7 @@ export default function Home() {
             <DesktopIcon
               label={HIDDEN_FILE.label}
               icon={HIDDEN_FILE.icon}
+              onClick={() => setIsSecretsFolderOpen(true)}
             />
           </div>
         )}
@@ -267,14 +270,24 @@ export default function Home() {
         {isColonyReportsOpen && (
           <ColonyReports onClose={() => setIsColonyReportsOpen(false)} />
         )}
+        {isSecretsFolderOpen && (
+          <SecretsFolder onClose={() => setIsSecretsFolderOpen(false)} />
+        )}
       </main>
 
       <Taskbar>
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
-            isActive={true}
+            isActive={!isSecretsFolderOpen}
             onClick={() => setIsColonyReportsOpen(true)}
+          />
+        )}
+        {isSecretsFolderOpen && (
+          <TaskbarButton
+            title=".secrets"
+            isActive={true}
+            onClick={() => setIsSecretsFolderOpen(true)}
           />
         )}
       </Taskbar>
