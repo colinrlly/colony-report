@@ -186,36 +186,43 @@ body {
 
 /* ============================================
    CRT SCREEN EFFECT OVERLAY
+   Only applies to the desktop wallpaper area
    ============================================ */
 
 .crt-overlay {
-  /* Scanlines */
+  /* Subtle scanlines - reduced opacity */
   background:
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 2px,
-      rgba(0, 0, 0, 0.15) 2px,
-      rgba(0, 0, 0, 0.15) 4px
+      transparent 3px,
+      rgba(0, 0, 0, 0.04) 3px,
+      rgba(0, 0, 0, 0.04) 6px
     );
-  /* Vignette effect */
-  box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.4);
+  /* Subtle vignette effect */
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.15);
+  /* Only cover the desktop area, not menubar or taskbar */
+  top: 46px;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  position: fixed;
 }
 
-/* Add subtle screen curvature illusion */
+/* Add very subtle screen curvature illusion */
 .crt-overlay::before {
   content: '';
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse 80% 60% at 50% 50%,
+    ellipse 90% 70% at 50% 50%,
     transparent 0%,
-    rgba(0, 0, 0, 0.1) 80%,
-    rgba(0, 0, 0, 0.3) 100%
+    rgba(0, 0, 0, 0.05) 85%,
+    rgba(0, 0, 0, 0.12) 100%
   );
 }
 
-/* Add subtle RGB phosphor effect for that authentic CRT look */
+/* Add very subtle RGB phosphor effect */
 .crt-overlay::after {
   content: '';
   position: absolute;
@@ -223,10 +230,10 @@ body {
   background:
     repeating-linear-gradient(
       90deg,
-      rgba(255, 0, 0, 0.02) 0px,
-      rgba(0, 255, 0, 0.02) 1px,
-      rgba(0, 0, 255, 0.02) 2px,
+      rgba(255, 0, 0, 0.008) 0px,
+      rgba(0, 255, 0, 0.008) 1px,
+      rgba(0, 0, 255, 0.008) 2px,
       transparent 3px
     );
-  opacity: 0.5;
+  opacity: 0.4;
 }

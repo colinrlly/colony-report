@@ -218,14 +218,11 @@ export default function Home() {
     setCurrentWallpaper(prev => ((prev + 1) % 3) as WallpaperType);
   }, []);
 
-  // Wallpaper names for menu display
-  const wallpaperNames = ["Default", "NEC Formica Division", "New Eden Committee"];
-
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
     { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
-    { label: `Toggle Wallpaper (${wallpaperNames[currentWallpaper]})`, onClick: handleToggleWallpaper },
+    { label: "Toggle Wallpaper", onClick: handleToggleWallpaper },
   ];
 
   return (
@@ -262,25 +259,59 @@ export default function Home() {
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               {/* NEC FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
               <div className="text-center">
-                <div className="text-[72px] font-bold tracking-[0.15em] text-[#d4c8a0] drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
-                  NEC F
-                  <span className="relative inline-block">
-                    <svg className="inline-block w-[60px] h-[60px] align-middle -mt-2" viewBox="0 0 60 60">
-                      {/* Stylized O with earth-like stripes */}
-                      <circle cx="30" cy="30" r="25" fill="none" stroke="#d4c8a0" strokeWidth="6" />
-                      <ellipse cx="30" cy="30" rx="18" ry="8" fill="none" stroke="#d4c8a0" strokeWidth="2" transform="rotate(-20 30 30)" />
-                      <ellipse cx="30" cy="30" rx="18" ry="8" fill="none" stroke="#d4c8a0" strokeWidth="2" transform="rotate(20 30 30)" />
-                    </svg>
-                  </span>
-                  RMICA
+                {/* Pixel Art Ant Logo - larger version */}
+                <svg
+                  className="mx-auto mb-8"
+                  width="100"
+                  height="100"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  style={{ imageRendering: "pixelated" }}
+                >
+                  {/* Ant head */}
+                  <rect x="8" y="2" width="4" height="3" fill="#1a1a1a" />
+                  {/* Antennae */}
+                  <rect x="6" y="1" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="13" y="1" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="5" y="0" width="1" height="1" fill="#1a1a1a" />
+                  <rect x="14" y="0" width="1" height="1" fill="#1a1a1a" />
+                  {/* Thorax (middle body) */}
+                  <rect x="7" y="5" width="6" height="4" fill="#1a1a1a" />
+                  {/* Abdomen (back body) */}
+                  <rect x="6" y="9" width="8" height="5" fill="#1a1a1a" />
+                  <rect x="7" y="14" width="6" height="3" fill="#1a1a1a" />
+                  <rect x="8" y="17" width="4" height="2" fill="#1a1a1a" />
+                  {/* Front legs */}
+                  <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="13" y="5" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="3" y="6" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="16" y="6" width="1" height="2" fill="#1a1a1a" />
+                  {/* Middle legs */}
+                  <rect x="4" y="8" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="13" y="8" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="2" y="9" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="9" width="2" height="1" fill="#1a1a1a" />
+                  {/* Back legs */}
+                  <rect x="4" y="11" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="14" y="11" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="2" y="12" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="12" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="1" y="13" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="18" y="13" width="1" height="2" fill="#1a1a1a" />
+                  {/* Eyes */}
+                  <rect x="8" y="3" width="1" height="1" fill="#4a4a4a" />
+                  <rect x="11" y="3" width="1" height="1" fill="#4a4a4a" />
+                </svg>
+                {/* NEC on its own line - large */}
+                <div className="text-[96px] font-bold tracking-[0.2em] text-[#d4c8a0] drop-shadow-[3px_3px_0px_#3d2914] leading-none" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                  NEC
                 </div>
-                <div className="text-[28px] tracking-[0.3em] text-[#d4c8a0] mt-4 drop-shadow-[1px_1px_0px_#3d2914]" style={{ fontFamily: 'Arial, sans-serif' }}>
-                  DIVISION
+                {/* Formica Division on its own line */}
+                <div className="text-[36px] tracking-[0.25em] text-[#d4c8a0] mt-4 drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial, sans-serif' }}>
+                  FORMICA DIVISION
                 </div>
-                <div className="mt-12 text-[12px] text-[#a09080] tracking-wide">
-                  Copyright © NEC Corporation, 2089. All Rights Reserved.
-                </div>
-                <div className="text-[11px] text-[#a09080] tracking-wide">
+                <div className="mt-12 text-[11px] text-[#a09080] tracking-wide">
                   NEC is a registered trademark of New Eden Committee Corp.
                 </div>
               </div>
@@ -290,16 +321,18 @@ export default function Home() {
         {currentWallpaper === 2 && (
           <div className="wallpaper-eden absolute inset-0 -z-10">
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              {/* NED EDEN COMMITTEE with large earth logo */}
+              {/* NEW EDEN COMMITTEE with large earth logo */}
               <div className="text-center">
                 {/* Large Smiling Earth */}
                 <svg className="mx-auto mb-6" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
                   {/* Earth circle */}
                   <circle cx="90" cy="90" r="80" fill="#4A90D9" stroke="#2E5A88" strokeWidth="4" />
-                  {/* Continents/land masses */}
-                  <ellipse cx="60" cy="60" rx="24" ry="32" fill="#5CB85C" />
-                  <ellipse cx="115" cy="75" rx="32" ry="24" fill="#5CB85C" />
-                  <ellipse cx="75" cy="125" rx="24" ry="16" fill="#5CB85C" />
+                  {/* Continents/land masses - positioned to avoid face features */}
+                  <ellipse cx="90" cy="28" rx="28" ry="14" fill="#5CB85C" /> {/* Top continent */}
+                  <ellipse cx="28" cy="90" rx="14" ry="28" fill="#5CB85C" /> {/* Left continent */}
+                  <ellipse cx="152" cy="85" rx="14" ry="24" fill="#5CB85C" /> {/* Right continent */}
+                  <ellipse cx="90" cy="155" rx="32" ry="12" fill="#5CB85C" /> {/* Bottom continent */}
+                  <ellipse cx="45" cy="145" rx="16" ry="10" fill="#5CB85C" /> {/* Bottom-left island */}
                   {/* Smiley face */}
                   <circle cx="68" cy="75" r="10" fill="#333" /> {/* Left eye */}
                   <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
