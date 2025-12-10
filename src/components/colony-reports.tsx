@@ -27,7 +27,7 @@ export function ColonyReports({ onClose }: ColonyReportsProps) {
   const [selectedId, setSelectedId] = useState("specimen");
 
   return (
-    <Window className="w-[800px] h-[600px] absolute top-[50px] left-[50px] flex flex-col">
+    <Window className="w-[80vw] h-[80vh] absolute top-[10vh] left-[10vw] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
         <WindowControls showMinimize={false} onClose={onClose} />
