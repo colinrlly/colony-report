@@ -25,9 +25,10 @@ const navItems = [
 
 interface ColonyReportsProps {
   onClose?: () => void;
+  onMinimize?: () => void;
 }
 
-export function ColonyReports({ onClose }: ColonyReportsProps) {
+export function ColonyReports({ onClose, onMinimize }: ColonyReportsProps) {
   const [selectedId, setSelectedId] = useState("bee");
 
   const selectedItem = navItems.find((item) => item.id === selectedId);
@@ -37,7 +38,7 @@ export function ColonyReports({ onClose }: ColonyReportsProps) {
     <Window className="w-[80vw] h-[80vh] absolute top-[10vh] left-[10vw] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
-        <WindowControls showMinimize={false} onClose={onClose} />
+        <WindowControls onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
       <div className="flex flex-1 min-h-0">

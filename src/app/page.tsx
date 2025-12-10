@@ -73,6 +73,7 @@ const DESKTOP_ICONS: DesktopIconConfig[] = [
 
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
+  const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -195,8 +196,14 @@ export default function Home() {
         ))}
 
         {/* Windows */}
-        {isColonyReportsOpen && (
-          <ColonyReports onClose={() => setIsColonyReportsOpen(false)} />
+        {isColonyReportsOpen && !isColonyReportsMinimized && (
+          <ColonyReports
+            onClose={() => {
+              setIsColonyReportsOpen(false);
+              setIsColonyReportsMinimized(false);
+            }}
+            onMinimize={() => setIsColonyReportsMinimized(true)}
+          />
         )}
       </main>
 
@@ -204,8 +211,8 @@ export default function Home() {
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
-            isActive={true}
-            onClick={() => setIsColonyReportsOpen(true)}
+            isActive={!isColonyReportsMinimized}
+            onClick={() => setIsColonyReportsMinimized(!isColonyReportsMinimized)}
           />
         )}
       </Taskbar>
