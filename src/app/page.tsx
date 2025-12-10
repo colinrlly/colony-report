@@ -65,6 +65,8 @@ export default function Home() {
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
   const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isRestarting, setIsRestarting] = useState(false);
+  const [restartPhase, setRestartPhase] = useState<'black' | 'flicker'>('black');
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
   const [currentWallpaper, setCurrentWallpaper] = useState<WallpaperType>(0);
   const [isAntWiggling, setIsAntWiggling] = useState(false);
@@ -202,6 +204,53 @@ export default function Home() {
     }, 300);
   }, []);
 
+  // Handle restart - black screen with neon green text, then flicker back to life
+  const handleRestart = useCallback(() => {
+    setIsRestarting(true);
+    setRestartPhase('black');
+
+    // After showing the "Restarting..." screen, perform the desktop refresh
+    setTimeout(() => {
+      // Reset all icon positions to their initial positions, hide hidden files, and reset wallpaper
+      setIconPositions(
+        DESKTOP_ICONS.reduce((acc, icon) => {
+          acc[icon.id] = { ...icon.initialPosition };
+          return acc;
+        }, {} as Record<string, { x: number; y: number }>)
+      );
+      setShowHiddenFiles(false);
+      setCurrentWallpaper(0);
+
+      // Close all open windows
+      setIsColonyReportsOpen(false);
+      setIsColonyReportsMinimized(false);
+      setIsSecretsFolderOpen(false);
+      setIsNothingOpen(false);
+      setIsSeriouslyNothingOpen(false);
+      setIsPleaseStopOpen(false);
+      setIsGoNoFurtherOpen(false);
+      setIsAreYouSeriousOpen(false);
+      setIsUghFineOpen(false);
+      setIsPetMonitorOpen(false);
+      setIsMinesweeperOpen(false);
+      setIsMinesweeperMinimized(false);
+      setIsContactHROpen(false);
+      setIsContactHRMinimized(false);
+      setIsTutorialHelperVisible(false);
+    }, 1800); // Just after progress bar completes
+
+    // Start the flicker-out phase
+    setTimeout(() => {
+      setRestartPhase('flicker');
+    }, 2000);
+
+    // End the restart animation
+    setTimeout(() => {
+      setIsRestarting(false);
+      setRestartPhase('black');
+    }, 2400);
+  }, []);
+
   // Handle show hidden files toggle
   const handleShowHiddenFiles = useCallback(() => {
     setShowHiddenFiles(prev => !prev);
@@ -277,6 +326,25 @@ export default function Home() {
           }}
         >
           <div className="absolute inset-0 bg-white/30 animate-pulse" />
+        </div>
+      )}
+
+      {/* Restart animation overlay */}
+      {isRestarting && (
+        <div className={`restart-overlay ${restartPhase === 'flicker' ? 'restart-flicker-out' : ''}`}>
+          {restartPhase === 'black' && (
+            <>
+              <div className="restart-text">
+                Restarting
+                <span className="restart-dot-1">.</span>
+                <span className="restart-dot-2">.</span>
+                <span className="restart-dot-3">.</span>
+              </div>
+              <div className="restart-progress-container">
+                <div className="restart-progress-bar" />
+              </div>
+            </>
+          )}
         </div>
       )}
 
@@ -564,7 +632,7 @@ export default function Home() {
         )}
       </main>
 
-      <Taskbar>
+      <Taskbar onRestart={handleRestart}>
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 interface TaskbarProps {
   children?: React.ReactNode;
+  onRestart?: () => void;
 }
 
 function AntIcon() {
@@ -57,13 +58,14 @@ function AntIcon() {
 interface StartMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onRestart?: () => void;
 }
 
-function StartMenu({ isOpen, onClose }: StartMenuProps) {
+function StartMenu({ isOpen, onClose, onRestart }: StartMenuProps) {
   if (!isOpen) return null;
 
   const menuItems = [
-    { label: "Restart...", onClick: () => { onClose(); } },
+    { label: "Restart...", onClick: () => { onClose(); onRestart?.(); } },
     { label: "Sleep", onClick: () => { onClose(); } },
     { label: "Shut Down...", onClick: () => { onClose(); } },
   ];
@@ -95,7 +97,7 @@ function StartMenu({ isOpen, onClose }: StartMenuProps) {
   );
 }
 
-export function Taskbar({ children }: TaskbarProps) {
+export function Taskbar({ children, onRestart }: TaskbarProps) {
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const startButtonRef = useRef<HTMLDivElement>(null);
 
@@ -143,7 +145,7 @@ export function Taskbar({ children }: TaskbarProps) {
           <AntIcon />
           Start
         </button>
-        <StartMenu isOpen={startMenuOpen} onClose={() => setStartMenuOpen(false)} />
+        <StartMenu isOpen={startMenuOpen} onClose={() => setStartMenuOpen(false)} onRestart={onRestart} />
       </div>
 
       {/* Divider */}
