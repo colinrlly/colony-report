@@ -78,7 +78,7 @@ export function DesktopIcon({ label, color = "#c44", onClick }: DesktopIconProps
         {/* Bottom shadow */}
         <rect x="3" y="27" width="25" height="1" fill="#B08010" />
       </svg>
-      <span className="text-[12px] text-center leading-tight max-w-[80px] drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
+      <span className="text-[14px] text-center leading-tight max-w-[100px] drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
         {label}
       </span>
     </button>
