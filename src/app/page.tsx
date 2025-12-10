@@ -21,11 +21,31 @@ export default function Home() {
 
       <main className="min-h-screen relative p-4 pt-[38px] pb-[50px]">
         {/* Desktop Icons */}
-        <div className="absolute top-[60px] left-6 flex flex-col gap-2">
+        <div className="absolute top-[60px] left-6 flex flex-row gap-2">
           <DesktopIcon
             label="Colony Reports"
-            color="#8b7355"
+            icon="folder"
             onClick={() => setIsColonyReportsOpen(true)}
+          />
+          <DesktopIcon
+            label="Field Notes"
+            icon="notebook"
+            onClick={() => {}}
+          />
+          <DesktopIcon
+            label="Employee Files"
+            icon="badge"
+            onClick={() => {}}
+          />
+          <DesktopIcon
+            label="Photo Library"
+            icon="camera"
+            onClick={() => {}}
+          />
+          <DesktopIcon
+            label="Video Logs"
+            icon="video-camera"
+            onClick={() => {}}
           />
         </div>
 
