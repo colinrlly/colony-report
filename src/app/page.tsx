@@ -1,13 +1,120 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile } from "@/components/ui/menubar";
 
+type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera";
+
+interface DesktopIconConfig {
+  id: string;
+  label: string;
+  icon: IconType;
+  initialPosition: { x: number; y: number };
+}
+
+// Define the desktop icons with their initial positions
+const DESKTOP_ICONS: DesktopIconConfig[] = [
+  { id: "colony-reports", label: "Colony Reports", icon: "folder", initialPosition: { x: 24, y: 53 } },
+  { id: "field-notes", label: "Field Notes", icon: "notebook", initialPosition: { x: 24, y: 163 } },
+  { id: "employee-files", label: "Employee Files", icon: "badge", initialPosition: { x: 24, y: 273 } },
+  { id: "photo-library", label: "Photo Library", icon: "camera", initialPosition: { x: 24, y: 383 } },
+  { id: "video-logs", label: "Video Logs", icon: "video-camera", initialPosition: { x: 24, y: 493 } },
+];
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
+
+  // Track positions for each icon - initialized to their starting positions
+  const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
+    () => DESKTOP_ICONS.reduce((acc, icon) => {
+      acc[icon.id] = { ...icon.initialPosition };
+      return acc;
+    }, {} as Record<string, { x: number; y: number }>)
+  );
+
+  // Track which icon is being dragged
+  const [draggingIcon, setDraggingIcon] = useState<string | null>(null);
+  const dragStartPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const dragStartIconPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const mainRef = useRef<HTMLElement>(null);
+  const hasDragged = useRef(false);
+
+  const handleMouseDown = useCallback((iconId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setDraggingIcon(iconId);
+    dragStartPos.current = { x: e.clientX, y: e.clientY };
+    dragStartIconPos.current = { ...iconPositions[iconId] };
+    hasDragged.current = false;
+  }, [iconPositions]);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!draggingIcon || !mainRef.current) return;
+
+    const deltaX = e.clientX - dragStartPos.current.x;
+    const deltaY = e.clientY - dragStartPos.current.y;
+
+    // Consider it a drag if moved more than 5 pixels
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      hasDragged.current = true;
+    }
+
+    // Get the bounds of the main container
+    const bounds = mainRef.current.getBoundingClientRect();
+
+    // Calculate new position
+    let newX = dragStartIconPos.current.x + deltaX;
+    let newY = dragStartIconPos.current.y + deltaY;
+
+    // Constrain to bounds (accounting for icon size and UI bars)
+    const iconWidth = 100;
+    const iconHeight = 120;
+    const menubarHeight = 46;  // Height of top menubar
+    const taskbarHeight = 50;  // Height of bottom taskbar
+
+    // Horizontal bounds: 0 to (width - iconWidth)
+    newX = Math.max(0, Math.min(newX, bounds.width - iconWidth));
+    // Vertical bounds: below menubar to above taskbar
+    newY = Math.max(menubarHeight, Math.min(newY, bounds.height - iconHeight - taskbarHeight));
+
+    setIconPositions(prev => ({
+      ...prev,
+      [draggingIcon]: { x: newX, y: newY }
+    }));
+  }, [draggingIcon]);
+
+  const handleMouseUp = useCallback(() => {
+    setDraggingIcon(null);
+  }, []);
+
+  // Add global mouse event listeners when dragging
+  useEffect(() => {
+    if (draggingIcon) {
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [draggingIcon, handleMouseMove, handleMouseUp]);
+
+  const handleIconClick = (iconId: string) => {
+    // Only trigger click if we didn't drag
+    if (hasDragged.current) {
+      hasDragged.current = false;
+      return;
+    }
+
+    switch (iconId) {
+      case "colony-reports":
+        setIsColonyReportsOpen(true);
+        break;
+      // Add handlers for other icons here when needed
+    }
+  };
 
   return (
     <>
@@ -20,35 +127,25 @@ export default function Home() {
         <MenubarProfile />
       </Menubar>
 
-      <main className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
-        {/* Desktop Icons */}
-        <div className="absolute top-[53px] left-6 flex flex-col gap-1">
-          <DesktopIcon
-            label="Colony Reports"
-            icon="folder"
-            onClick={() => setIsColonyReportsOpen(true)}
-          />
-          <DesktopIcon
-            label="Field Notes"
-            icon="notebook"
-            onClick={() => {}}
-          />
-          <DesktopIcon
-            label="Employee Files"
-            icon="badge"
-            onClick={() => {}}
-          />
-          <DesktopIcon
-            label="Photo Library"
-            icon="camera"
-            onClick={() => {}}
-          />
-          <DesktopIcon
-            label="Video Logs"
-            icon="video-camera"
-            onClick={() => {}}
-          />
-        </div>
+      <main ref={mainRef} className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
+        {/* Desktop Icons - each independently draggable */}
+        {DESKTOP_ICONS.map((iconConfig) => (
+          <div
+            key={iconConfig.id}
+            className={`absolute select-none ${draggingIcon === iconConfig.id ? 'cursor-grabbing z-50' : 'cursor-grab'}`}
+            style={{
+              left: iconPositions[iconConfig.id].x,
+              top: iconPositions[iconConfig.id].y,
+            }}
+            onMouseDown={(e) => handleMouseDown(iconConfig.id, e)}
+          >
+            <DesktopIcon
+              label={iconConfig.label}
+              icon={iconConfig.icon}
+              onClick={() => handleIconClick(iconConfig.id)}
+            />
+          </div>
+        ))}
 
         {/* Windows */}
         {isColonyReportsOpen && (
