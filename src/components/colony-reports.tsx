@@ -35,10 +35,10 @@ export function ColonyReports({ onClose, onMinimize }: ColonyReportsProps) {
   const statusText = selectedItem?.statusText ?? "";
 
   return (
-    <Window className="aspect-[11/8.5] max-w-[90vw] max-h-[85vh] w-auto h-[85vh] absolute top-[7vh] left-1/2 -translate-x-1/2 flex flex-col">
+    <Window className="w-[80vw] h-[80vh] absolute top-[10vh] left-[10vw] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
-        <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
+        <WindowControls onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
       <div className="flex flex-1 min-h-0">
