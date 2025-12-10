@@ -346,7 +346,16 @@ export default function Home() {
 
         {/* Secret Pet Monitor - final destination */}
         {isPetMonitorOpen && (
-          <SecretPetMonitor onClose={() => setIsPetMonitorOpen(false)} />
+          <SecretPetMonitor onClose={() => {
+            // Close pet monitor and all nested folders, but keep .secrets open
+            setIsPetMonitorOpen(false);
+            setIsUghFineOpen(false);
+            setIsAreYouSeriousOpen(false);
+            setIsGoNoFurtherOpen(false);
+            setIsPleaseStopOpen(false);
+            setIsSeriouslyNothingOpen(false);
+            setIsNothingOpen(false);
+          }} />
         )}
       </main>
 
