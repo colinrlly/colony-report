@@ -13,7 +13,7 @@ export function ReportContent({ selectedId }: ReportContentProps) {
         {selectedId === "bee" ? (
           <div className="relative w-full h-full">
             <Image
-              src="/images/bee-illustration.png"
+              src="/images/bee-illustration.jpg"
               alt="Bee Colony Report - Hive Mother Illustration"
               fill
               className="object-cover"
