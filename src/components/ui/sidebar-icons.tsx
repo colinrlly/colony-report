@@ -18,68 +18,74 @@ export function BeeIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Wings - translucent blue-white */}
-      <rect x="6" y="8" width="4" height="1" fill="#b0d4f1" />
-      <rect x="5" y="9" width="6" height="3" fill="#c8e4ff" />
-      <rect x="6" y="12" width="4" height="1" fill="#b0d4f1" />
-      <rect x="22" y="8" width="4" height="1" fill="#b0d4f1" />
-      <rect x="21" y="9" width="6" height="3" fill="#c8e4ff" />
-      <rect x="22" y="12" width="4" height="1" fill="#b0d4f1" />
+      {/* Antennae - dark purple */}
+      <rect x="11" y="2" width="1" height="1" fill="#4a148c" />
+      <rect x="10" y="3" width="1" height="1" fill="#4a148c" />
+      <rect x="11" y="4" width="1" height="2" fill="#6a1b9a" />
+      <rect x="12" y="6" width="1" height="1" fill="#6a1b9a" />
+      <rect x="20" y="2" width="1" height="1" fill="#4a148c" />
+      <rect x="21" y="3" width="1" height="1" fill="#4a148c" />
+      <rect x="20" y="4" width="1" height="2" fill="#6a1b9a" />
+      <rect x="19" y="6" width="1" height="1" fill="#6a1b9a" />
 
-      {/* Body outline - black */}
-      <rect x="10" y="7" width="12" height="1" fill="#000" />
-      <rect x="8" y="8" width="2" height="1" fill="#000" />
-      <rect x="22" y="8" width="2" height="1" fill="#000" />
-      <rect x="7" y="9" width="1" height="3" fill="#000" />
-      <rect x="24" y="9" width="1" height="3" fill="#000" />
-      <rect x="8" y="12" width="2" height="1" fill="#000" />
-      <rect x="22" y="12" width="2" height="1" fill="#000" />
+      {/* Wings - translucent blue-white, larger */}
+      <rect x="3" y="11" width="6" height="1" fill="#b3e5fc" />
+      <rect x="2" y="12" width="8" height="2" fill="#e1f5fe" />
+      <rect x="3" y="14" width="7" height="2" fill="#b3e5fc" />
+      <rect x="4" y="16" width="5" height="1" fill="#81d4fa" />
 
-      {/* Head - black */}
-      <rect x="10" y="8" width="12" height="1" fill="#222" />
-      <rect x="8" y="9" width="16" height="3" fill="#222" />
-      <rect x="10" y="12" width="12" height="1" fill="#222" />
+      <rect x="23" y="11" width="6" height="1" fill="#b3e5fc" />
+      <rect x="22" y="12" width="8" height="2" fill="#e1f5fe" />
+      <rect x="22" y="14" width="7" height="2" fill="#b3e5fc" />
+      <rect x="23" y="16" width="5" height="1" fill="#81d4fa" />
 
-      {/* Eyes - white with black pupil */}
-      <rect x="10" y="9" width="3" height="2" fill="#fff" />
-      <rect x="19" y="9" width="3" height="2" fill="#fff" />
-      <rect x="11" y="10" width="1" height="1" fill="#000" />
-      <rect x="20" y="10" width="1" height="1" fill="#000" />
+      {/* Head - dark purple/brown */}
+      <rect x="12" y="6" width="8" height="1" fill="#4a148c" />
+      <rect x="10" y="7" width="12" height="1" fill="#4a148c" />
+      <rect x="9" y="8" width="14" height="3" fill="#6a1b9a" />
+      <rect x="10" y="11" width="12" height="1" fill="#4a148c" />
 
-      {/* Antennae */}
-      <rect x="11" y="5" width="1" height="2" fill="#222" />
-      <rect x="10" y="4" width="1" height="1" fill="#222" />
-      <rect x="20" y="5" width="1" height="2" fill="#222" />
-      <rect x="21" y="4" width="1" height="1" fill="#222" />
+      {/* Head highlight */}
+      <rect x="11" y="8" width="3" height="1" fill="#7b1fa2" />
+      <rect x="18" y="8" width="3" height="1" fill="#7b1fa2" />
 
-      {/* Body stripes - yellow and black alternating */}
-      {/* Yellow stripe 1 */}
-      <rect x="9" y="13" width="14" height="3" fill="#f5d000" />
-      <rect x="8" y="14" width="1" height="2" fill="#f5d000" />
-      <rect x="23" y="14" width="1" height="2" fill="#f5d000" />
+      {/* Eyes - small dark */}
+      <rect x="11" y="9" width="2" height="2" fill="#1a1a2e" />
+      <rect x="19" y="9" width="2" height="2" fill="#1a1a2e" />
 
-      {/* Black stripe 1 */}
-      <rect x="9" y="16" width="14" height="2" fill="#222" />
-      <rect x="8" y="16" width="1" height="2" fill="#222" />
-      <rect x="23" y="16" width="1" height="2" fill="#222" />
+      {/* Body - dark purple top segment */}
+      <rect x="10" y="12" width="12" height="2" fill="#4a148c" />
+      <rect x="9" y="13" width="1" height="1" fill="#4a148c" />
+      <rect x="22" y="13" width="1" height="1" fill="#4a148c" />
 
-      {/* Yellow stripe 2 */}
-      <rect x="10" y="18" width="12" height="2" fill="#f5d000" />
-      <rect x="9" y="18" width="1" height="2" fill="#f5d000" />
-      <rect x="22" y="18" width="1" height="2" fill="#f5d000" />
+      {/* Yellow stripe 1 - golden */}
+      <rect x="9" y="14" width="14" height="2" fill="#ffc107" />
+      <rect x="10" y="14" width="12" height="1" fill="#ffca28" />
 
-      {/* Black stripe 2 */}
-      <rect x="11" y="20" width="10" height="2" fill="#222" />
-      <rect x="10" y="20" width="1" height="1" fill="#222" />
-      <rect x="21" y="20" width="1" height="1" fill="#222" />
+      {/* Dark stripe 1 */}
+      <rect x="9" y="16" width="14" height="2" fill="#4a148c" />
 
-      {/* Yellow stripe 3 (tail) */}
-      <rect x="12" y="22" width="8" height="2" fill="#f5d000" />
+      {/* Yellow stripe 2 - golden */}
+      <rect x="10" y="18" width="12" height="2" fill="#ffc107" />
+      <rect x="11" y="18" width="10" height="1" fill="#ffca28" />
 
-      {/* Stinger */}
-      <rect x="14" y="24" width="4" height="1" fill="#222" />
-      <rect x="15" y="25" width="2" height="1" fill="#222" />
-      <rect x="15" y="26" width="2" height="1" fill="#333" />
+      {/* Dark stripe 2 */}
+      <rect x="11" y="20" width="10" height="2" fill="#4a148c" />
+
+      {/* Yellow stripe 3 - tail */}
+      <rect x="12" y="22" width="8" height="2" fill="#ffc107" />
+      <rect x="13" y="22" width="6" height="1" fill="#ffca28" />
+
+      {/* Stinger - dark */}
+      <rect x="14" y="24" width="4" height="1" fill="#4a148c" />
+      <rect x="15" y="25" width="2" height="1" fill="#4a148c" />
+      <rect x="15" y="26" width="2" height="1" fill="#311b92" />
+
+      {/* Legs - small dark */}
+      <rect x="10" y="17" width="1" height="2" fill="#1a1a2e" />
+      <rect x="21" y="17" width="1" height="2" fill="#1a1a2e" />
+      <rect x="11" y="20" width="1" height="2" fill="#1a1a2e" />
+      <rect x="20" y="20" width="1" height="2" fill="#1a1a2e" />
     </svg>
   );
 }
@@ -92,74 +98,83 @@ export function SnailIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Shell outline */}
-      <rect x="12" y="5" width="8" height="1" fill="#000" />
-      <rect x="10" y="6" width="2" height="1" fill="#000" />
-      <rect x="20" y="6" width="2" height="1" fill="#000" />
-      <rect x="9" y="7" width="1" height="2" fill="#000" />
-      <rect x="22" y="7" width="1" height="3" fill="#000" />
-      <rect x="8" y="9" width="1" height="4" fill="#000" />
-      <rect x="23" y="10" width="1" height="4" fill="#000" />
-      <rect x="9" y="13" width="1" height="2" fill="#000" />
-      <rect x="22" y="14" width="1" height="2" fill="#000" />
-      <rect x="10" y="15" width="2" height="1" fill="#000" />
-      <rect x="20" y="16" width="2" height="1" fill="#000" />
-      <rect x="12" y="16" width="8" height="1" fill="#000" />
+      {/* Shell outline - brown */}
+      <rect x="14" y="3" width="6" height="1" fill="#5d4037" />
+      <rect x="12" y="4" width="2" height="1" fill="#5d4037" />
+      <rect x="20" y="4" width="2" height="1" fill="#5d4037" />
+      <rect x="10" y="5" width="2" height="1" fill="#5d4037" />
+      <rect x="22" y="5" width="2" height="1" fill="#5d4037" />
+      <rect x="9" y="6" width="1" height="2" fill="#5d4037" />
+      <rect x="24" y="6" width="1" height="2" fill="#5d4037" />
+      <rect x="8" y="8" width="1" height="4" fill="#5d4037" />
+      <rect x="25" y="8" width="1" height="4" fill="#5d4037" />
+      <rect x="9" y="12" width="1" height="2" fill="#5d4037" />
+      <rect x="24" y="12" width="1" height="2" fill="#5d4037" />
+      <rect x="10" y="14" width="2" height="1" fill="#5d4037" />
+      <rect x="22" y="14" width="2" height="1" fill="#5d4037" />
+      <rect x="12" y="15" width="10" height="1" fill="#5d4037" />
 
-      {/* Shell - pink spiral */}
-      <rect x="12" y="6" width="8" height="1" fill="#ffb6c1" />
-      <rect x="10" y="7" width="12" height="2" fill="#ffb6c1" />
-      <rect x="9" y="9" width="14" height="4" fill="#ffb6c1" />
-      <rect x="10" y="13" width="12" height="2" fill="#ffb6c1" />
-      <rect x="12" y="15" width="8" height="1" fill="#ffb6c1" />
+      {/* Shell - pink base */}
+      <rect x="14" y="4" width="6" height="1" fill="#ffb6c1" />
+      <rect x="12" y="5" width="10" height="1" fill="#ffb6c1" />
+      <rect x="10" y="6" width="14" height="2" fill="#ffb6c1" />
+      <rect x="9" y="8" width="16" height="4" fill="#ffb6c1" />
+      <rect x="10" y="12" width="14" height="2" fill="#ffb6c1" />
+      <rect x="12" y="14" width="10" height="1" fill="#ffb6c1" />
 
-      {/* Shell spiral detail - darker pink */}
-      <rect x="14" y="8" width="4" height="1" fill="#ff69b4" />
-      <rect x="13" y="9" width="1" height="1" fill="#ff69b4" />
-      <rect x="18" y="9" width="1" height="1" fill="#ff69b4" />
-      <rect x="12" y="10" width="1" height="2" fill="#ff69b4" />
-      <rect x="19" y="10" width="1" height="2" fill="#ff69b4" />
-      <rect x="13" y="12" width="1" height="1" fill="#ff69b4" />
-      <rect x="18" y="12" width="1" height="1" fill="#ff69b4" />
-      <rect x="14" y="13" width="4" height="1" fill="#ff69b4" />
+      {/* Spiral - darker pink rings */}
+      <rect x="14" y="6" width="6" height="1" fill="#f06292" />
+      <rect x="13" y="7" width="1" height="1" fill="#f06292" />
+      <rect x="20" y="7" width="1" height="1" fill="#f06292" />
+      <rect x="12" y="8" width="1" height="3" fill="#f06292" />
+      <rect x="21" y="8" width="1" height="3" fill="#f06292" />
+      <rect x="13" y="11" width="1" height="1" fill="#f06292" />
+      <rect x="20" y="11" width="1" height="1" fill="#f06292" />
+      <rect x="14" y="12" width="6" height="1" fill="#f06292" />
 
-      {/* Inner spiral */}
-      <rect x="15" y="10" width="2" height="2" fill="#ff1493" />
+      {/* Inner spiral ring */}
+      <rect x="15" y="8" width="4" height="1" fill="#ec407a" />
+      <rect x="14" y="9" width="1" height="1" fill="#ec407a" />
+      <rect x="19" y="9" width="1" height="1" fill="#ec407a" />
+      <rect x="15" y="10" width="4" height="1" fill="#ec407a" />
+
+      {/* Spiral center */}
+      <rect x="16" y="9" width="2" height="1" fill="#d81b60" />
 
       {/* Shell highlight */}
-      <rect x="11" y="8" width="2" height="1" fill="#ffc0cb" />
-      <rect x="10" y="9" width="1" height="2" fill="#ffc0cb" />
+      <rect x="11" y="7" width="2" height="2" fill="#ffc1e3" />
+      <rect x="10" y="9" width="1" height="2" fill="#ffc1e3" />
 
-      {/* Body - lighter pink */}
-      <rect x="3" y="20" width="1" height="1" fill="#000" />
-      <rect x="4" y="19" width="1" height="1" fill="#000" />
-      <rect x="5" y="18" width="3" height="1" fill="#000" />
-      <rect x="8" y="17" width="14" height="1" fill="#000" />
-      <rect x="2" y="21" width="1" height="3" fill="#000" />
-      <rect x="3" y="24" width="1" height="1" fill="#000" />
-      <rect x="4" y="25" width="20" height="1" fill="#000" />
-      <rect x="24" y="24" width="1" height="1" fill="#000" />
-      <rect x="22" y="18" width="2" height="1" fill="#000" />
-      <rect x="24" y="19" width="1" height="5" fill="#000" />
+      {/* Body - cream/beige */}
+      <rect x="2" y="18" width="1" height="1" fill="#8d6e63" />
+      <rect x="3" y="17" width="2" height="1" fill="#8d6e63" />
+      <rect x="5" y="16" width="7" height="1" fill="#8d6e63" />
+      <rect x="1" y="19" width="1" height="4" fill="#8d6e63" />
+      <rect x="2" y="23" width="20" height="1" fill="#8d6e63" />
+      <rect x="22" y="16" width="1" height="7" fill="#8d6e63" />
 
-      {/* Body fill */}
-      <rect x="4" y="20" width="2" height="1" fill="#ffb6c1" />
-      <rect x="3" y="21" width="21" height="3" fill="#ffb6c1" />
-      <rect x="4" y="24" width="20" height="1" fill="#ffb6c1" />
-      <rect x="6" y="19" width="2" height="1" fill="#ffb6c1" />
-      <rect x="8" y="18" width="14" height="1" fill="#ffb6c1" />
-      <rect x="22" y="19" width="2" height="5" fill="#ffb6c1" />
-
-      {/* Eye stalks */}
-      <rect x="5" y="17" width="1" height="2" fill="#ffb6c1" />
-      <rect x="5" y="15" width="1" height="2" fill="#ffb6c1" />
-      <rect x="5" y="14" width="1" height="1" fill="#000" />
-      <rect x="7" y="17" width="1" height="2" fill="#ffb6c1" />
-      <rect x="7" y="15" width="1" height="2" fill="#ffb6c1" />
-      <rect x="7" y="14" width="1" height="1" fill="#000" />
+      {/* Body fill - cream */}
+      <rect x="2" y="19" width="20" height="4" fill="#ffe4c4" />
+      <rect x="3" y="18" width="19" height="1" fill="#ffe4c4" />
+      <rect x="5" y="17" width="17" height="1" fill="#ffe4c4" />
 
       {/* Body highlight */}
-      <rect x="4" y="21" width="18" height="1" fill="#ffc0cb" />
+      <rect x="4" y="19" width="16" height="1" fill="#fff3e0" />
+      <rect x="3" y="20" width="2" height="1" fill="#fff3e0" />
+
+      {/* Body shadow */}
+      <rect x="4" y="22" width="17" height="1" fill="#dcc8b4" />
+
+      {/* Eye stalks */}
+      <rect x="3" y="14" width="1" height="3" fill="#ffe4c4" />
+      <rect x="3" y="13" width="1" height="1" fill="#8d6e63" />
+      <rect x="5" y="14" width="1" height="3" fill="#ffe4c4" />
+      <rect x="5" y="13" width="1" height="1" fill="#8d6e63" />
+
+      {/* Eye stalk outline */}
+      <rect x="2" y="14" width="1" height="2" fill="#8d6e63" />
+      <rect x="4" y="14" width="1" height="2" fill="#8d6e63" />
+      <rect x="6" y="14" width="1" height="2" fill="#8d6e63" />
     </svg>
   );
 }
@@ -245,97 +260,94 @@ export function HandIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Hand outline - dark */}
-      <rect x="4" y="14" width="1" height="1" fill="#000" />
-      <rect x="5" y="13" width="1" height="1" fill="#000" />
-      <rect x="6" y="12" width="1" height="1" fill="#000" />
-      <rect x="7" y="11" width="1" height="1" fill="#000" />
-      <rect x="8" y="10" width="1" height="1" fill="#000" />
-      <rect x="9" y="9" width="1" height="1" fill="#000" />
-      <rect x="10" y="8" width="1" height="1" fill="#000" />
-      <rect x="11" y="4" width="1" height="4" fill="#000" />
-      <rect x="12" y="3" width="2" height="1" fill="#000" />
-      <rect x="14" y="2" width="1" height="1" fill="#000" />
-      <rect x="15" y="1" width="1" height="1" fill="#000" />
-      <rect x="16" y="2" width="1" height="1" fill="#000" />
-      <rect x="17" y="3" width="1" height="4" fill="#000" />
-      <rect x="18" y="2" width="1" height="1" fill="#000" />
-      <rect x="19" y="1" width="1" height="1" fill="#000" />
-      <rect x="20" y="2" width="1" height="1" fill="#000" />
-      <rect x="21" y="3" width="1" height="5" fill="#000" />
-      <rect x="22" y="2" width="1" height="1" fill="#000" />
-      <rect x="23" y="1" width="1" height="1" fill="#000" />
-      <rect x="24" y="2" width="1" height="1" fill="#000" />
-      <rect x="25" y="3" width="1" height="6" fill="#000" />
-      <rect x="26" y="4" width="1" height="1" fill="#000" />
-      <rect x="27" y="5" width="1" height="1" fill="#000" />
-      <rect x="28" y="6" width="1" height="5" fill="#000" />
-      <rect x="27" y="11" width="1" height="8" fill="#000" />
-      <rect x="26" y="19" width="1" height="3" fill="#000" />
-      <rect x="25" y="22" width="1" height="3" fill="#000" />
-      <rect x="24" y="25" width="1" height="2" fill="#000" />
-      <rect x="8" y="27" width="16" height="1" fill="#000" />
-      <rect x="7" y="26" width="1" height="1" fill="#000" />
-      <rect x="6" y="25" width="1" height="1" fill="#000" />
-      <rect x="5" y="24" width="1" height="1" fill="#000" />
-      <rect x="4" y="15" width="1" height="9" fill="#000" />
+      {/* Outline - brown */}
+      {/* Finger 1 (extra pinky) outline */}
+      <rect x="4" y="5" width="1" height="1" fill="#5d4037" />
+      <rect x="5" y="4" width="2" height="1" fill="#5d4037" />
+      <rect x="7" y="5" width="1" height="9" fill="#5d4037" />
 
-      {/* Finger 1 (pinky - extra!) */}
-      <rect x="12" y="4" width="4" height="4" fill="#e8c8a0" />
-      <rect x="13" y="3" width="2" height="1" fill="#e8c8a0" />
-      <rect x="14" y="2" width="1" height="1" fill="#e8c8a0" />
-      <rect x="15" y="2" width="1" height="1" fill="#e8c8a0" />
+      {/* Finger 2 outline */}
+      <rect x="8" y="3" width="1" height="1" fill="#5d4037" />
+      <rect x="9" y="2" width="2" height="1" fill="#5d4037" />
+      <rect x="11" y="3" width="1" height="11" fill="#5d4037" />
+
+      {/* Finger 3 outline */}
+      <rect x="12" y="1" width="1" height="1" fill="#5d4037" />
+      <rect x="13" y="0" width="2" height="1" fill="#5d4037" />
+      <rect x="15" y="1" width="1" height="13" fill="#5d4037" />
+
+      {/* Finger 4 outline */}
+      <rect x="16" y="1" width="1" height="1" fill="#5d4037" />
+      <rect x="17" y="0" width="2" height="1" fill="#5d4037" />
+      <rect x="19" y="1" width="1" height="13" fill="#5d4037" />
+
+      {/* Finger 5 outline */}
+      <rect x="20" y="2" width="1" height="1" fill="#5d4037" />
+      <rect x="21" y="1" width="2" height="1" fill="#5d4037" />
+      <rect x="23" y="2" width="1" height="12" fill="#5d4037" />
+
+      {/* Finger 6 outline */}
+      <rect x="24" y="4" width="1" height="1" fill="#5d4037" />
+      <rect x="25" y="3" width="2" height="1" fill="#5d4037" />
+      <rect x="27" y="4" width="1" height="10" fill="#5d4037" />
+
+      {/* Palm outline */}
+      <rect x="4" y="6" width="1" height="8" fill="#5d4037" />
+      <rect x="5" y="14" width="1" height="5" fill="#5d4037" />
+      <rect x="6" y="19" width="1" height="4" fill="#5d4037" />
+      <rect x="7" y="23" width="19" height="1" fill="#5d4037" />
+      <rect x="26" y="14" width="1" height="9" fill="#5d4037" />
+
+      {/* Thumb outline */}
+      <rect x="3" y="14" width="1" height="1" fill="#5d4037" />
+      <rect x="2" y="15" width="1" height="4" fill="#5d4037" />
+      <rect x="3" y="19" width="3" height="1" fill="#5d4037" />
+
+      {/* Finger fills - skin tone */}
+      {/* Finger 1 */}
+      <rect x="5" y="5" width="2" height="9" fill="#e8c8a0" />
+      <rect x="5" y="4" width="2" height="1" fill="#f0d8b8" />
 
       {/* Finger 2 */}
-      <rect x="16" y="3" width="1" height="5" fill="#e8c8a0" />
-      <rect x="18" y="3" width="2" height="1" fill="#e8c8a0" />
-      <rect x="19" y="2" width="1" height="1" fill="#e8c8a0" />
+      <rect x="8" y="3" width="3" height="11" fill="#e8c8a0" />
+      <rect x="9" y="2" width="2" height="1" fill="#f0d8b8" />
 
       {/* Finger 3 */}
-      <rect x="20" y="3" width="1" height="6" fill="#e8c8a0" />
-      <rect x="22" y="3" width="2" height="1" fill="#e8c8a0" />
-      <rect x="23" y="2" width="1" height="1" fill="#e8c8a0" />
+      <rect x="12" y="1" width="3" height="13" fill="#e8c8a0" />
+      <rect x="13" y="0" width="2" height="1" fill="#f0d8b8" />
 
       {/* Finger 4 */}
-      <rect x="24" y="3" width="1" height="7" fill="#e8c8a0" />
-      <rect x="26" y="5" width="1" height="1" fill="#e8c8a0" />
-      <rect x="27" y="6" width="1" height="4" fill="#e8c8a0" />
+      <rect x="16" y="1" width="3" height="13" fill="#e8c8a0" />
+      <rect x="17" y="0" width="2" height="1" fill="#f0d8b8" />
 
-      {/* Finger 5 (ring finger area) - extra finger */}
-      <rect x="18" y="4" width="2" height="5" fill="#e8c8a0" />
+      {/* Finger 5 */}
+      <rect x="20" y="2" width="3" height="12" fill="#e8c8a0" />
+      <rect x="21" y="1" width="2" height="1" fill="#f0d8b8" />
 
-      {/* Finger 6 (index) */}
-      <rect x="22" y="4" width="2" height="6" fill="#e8c8a0" />
+      {/* Finger 6 */}
+      <rect x="24" y="4" width="3" height="10" fill="#e8c8a0" />
+      <rect x="25" y="3" width="2" height="1" fill="#f0d8b8" />
 
-      {/* Palm and hand body */}
-      <rect x="5" y="14" width="22" height="5" fill="#e8c8a0" />
-      <rect x="6" y="13" width="20" height="1" fill="#e8c8a0" />
-      <rect x="7" y="12" width="19" height="1" fill="#e8c8a0" />
-      <rect x="8" y="11" width="18" height="1" fill="#e8c8a0" />
-      <rect x="9" y="10" width="17" height="1" fill="#e8c8a0" />
-      <rect x="10" y="9" width="16" height="1" fill="#e8c8a0" />
-      <rect x="11" y="8" width="15" height="1" fill="#e8c8a0" />
-      <rect x="5" y="19" width="21" height="3" fill="#e8c8a0" />
-      <rect x="6" y="22" width="19" height="3" fill="#e8c8a0" />
-      <rect x="7" y="25" width="17" height="1" fill="#e8c8a0" />
-      <rect x="8" y="26" width="16" height="1" fill="#e8c8a0" />
+      {/* Palm fill */}
+      <rect x="5" y="14" width="21" height="9" fill="#e8c8a0" />
 
-      {/* Thumb */}
-      <rect x="5" y="15" width="1" height="8" fill="#e8c8a0" />
-      <rect x="6" y="19" width="1" height="6" fill="#e8c8a0" />
+      {/* Thumb fill */}
+      <rect x="3" y="15" width="2" height="4" fill="#e8c8a0" />
+      <rect x="3" y="14" width="1" height="1" fill="#f0d8b8" />
+
+      {/* Palm highlight */}
+      <rect x="8" y="15" width="10" height="3" fill="#f0d8b8" />
 
       {/* Finger separation lines */}
-      <rect x="16" y="8" width="1" height="2" fill="#d4a574" />
-      <rect x="20" y="8" width="1" height="2" fill="#d4a574" />
-      <rect x="24" y="9" width="1" height="2" fill="#d4a574" />
+      <rect x="7" y="9" width="1" height="5" fill="#d4a574" />
+      <rect x="11" y="8" width="1" height="6" fill="#d4a574" />
+      <rect x="15" y="8" width="1" height="6" fill="#d4a574" />
+      <rect x="19" y="8" width="1" height="6" fill="#d4a574" />
+      <rect x="23" y="9" width="1" height="5" fill="#d4a574" />
 
       {/* Palm lines */}
-      <rect x="8" y="17" width="10" height="1" fill="#d4a574" />
-      <rect x="10" y="20" width="8" height="1" fill="#d4a574" />
-
-      {/* Highlight */}
-      <rect x="12" y="5" width="2" height="2" fill="#f0d8b8" />
-      <rect x="6" y="14" width="8" height="2" fill="#f0d8b8" />
+      <rect x="9" y="18" width="8" height="1" fill="#d4a574" />
+      <rect x="11" y="20" width="6" height="1" fill="#d4a574" />
     </svg>
   );
 }
@@ -504,74 +516,77 @@ export function DandelionIcon() {
       shapeRendering="crispEdges"
     >
       {/* Stem */}
-      <rect x="15" y="18" width="2" height="10" fill="#558b2f" />
-      <rect x="14" y="20" width="1" height="1" fill="#558b2f" />
-      <rect x="17" y="23" width="1" height="1" fill="#558b2f" />
+      <rect x="15" y="17" width="2" height="11" fill="#558b2f" />
+      <rect x="14" y="19" width="1" height="1" fill="#689f38" />
+      <rect x="17" y="22" width="1" height="1" fill="#689f38" />
 
-      {/* Leaf on stem */}
-      <rect x="11" y="22" width="3" height="1" fill="#7cb342" />
-      <rect x="10" y="23" width="4" height="1" fill="#689f38" />
-      <rect x="11" y="24" width="3" height="1" fill="#558b2f" />
+      {/* Left leaf - serrated */}
+      <rect x="7" y="22" width="2" height="1" fill="#2e7d32" />
+      <rect x="8" y="21" width="2" height="1" fill="#388e3c" />
+      <rect x="9" y="20" width="2" height="1" fill="#43a047" />
+      <rect x="10" y="21" width="2" height="1" fill="#388e3c" />
+      <rect x="11" y="22" width="3" height="1" fill="#2e7d32" />
+      <rect x="12" y="23" width="2" height="1" fill="#1b5e20" />
+      <rect x="10" y="24" width="4" height="1" fill="#2e7d32" />
+      <rect x="8" y="23" width="3" height="1" fill="#388e3c" />
 
-      {/* Flower center */}
-      <rect x="14" y="8" width="4" height="4" fill="#fdd835" />
-      <rect x="13" y="9" width="1" height="2" fill="#fdd835" />
-      <rect x="18" y="9" width="1" height="2" fill="#fdd835" />
-      <rect x="15" y="7" width="2" height="1" fill="#fdd835" />
-      <rect x="15" y="12" width="2" height="1" fill="#fdd835" />
+      {/* Right leaf - serrated */}
+      <rect x="18" y="23" width="3" height="1" fill="#2e7d32" />
+      <rect x="20" y="22" width="2" height="1" fill="#388e3c" />
+      <rect x="21" y="21" width="2" height="1" fill="#43a047" />
+      <rect x="22" y="22" width="2" height="1" fill="#388e3c" />
+      <rect x="23" y="23" width="2" height="1" fill="#2e7d32" />
 
-      {/* Center detail - darker yellow */}
-      <rect x="15" y="9" width="2" height="2" fill="#f9a825" />
+      {/* Puffball base - cream/white fluffy sphere */}
+      {/* Center core */}
+      <rect x="13" y="8" width="6" height="6" fill="#f5f5dc" />
+      <rect x="12" y="9" width="1" height="4" fill="#f5f5dc" />
+      <rect x="19" y="9" width="1" height="4" fill="#f5f5dc" />
+      <rect x="14" y="7" width="4" height="1" fill="#f5f5dc" />
+      <rect x="14" y="14" width="4" height="1" fill="#f5f5dc" />
 
-      {/* Petals - bright yellow */}
-      {/* Top petals */}
-      <rect x="14" y="3" width="4" height="1" fill="#ffee58" />
-      <rect x="15" y="2" width="2" height="1" fill="#ffee58" />
-      <rect x="13" y="4" width="6" height="1" fill="#ffee58" />
-      <rect x="14" y="5" width="4" height="2" fill="#ffee58" />
+      {/* Fluffy wisps - top */}
+      <rect x="15" y="2" width="2" height="1" fill="#fafafa" />
+      <rect x="14" y="3" width="4" height="1" fill="#f5f5dc" />
+      <rect x="13" y="4" width="6" height="1" fill="#fffde7" />
+      <rect x="12" y="5" width="8" height="1" fill="#f5f5dc" />
+      <rect x="11" y="6" width="10" height="1" fill="#fafafa" />
+      <rect x="12" y="7" width="8" height="1" fill="#f5f5dc" />
 
-      {/* Bottom petals */}
-      <rect x="14" y="13" width="4" height="2" fill="#ffee58" />
-      <rect x="13" y="15" width="6" height="1" fill="#ffee58" />
-      <rect x="14" y="16" width="4" height="1" fill="#ffee58" />
-      <rect x="15" y="17" width="2" height="1" fill="#ffee58" />
+      {/* Fluffy wisps - bottom */}
+      <rect x="12" y="14" width="8" height="1" fill="#f5f5dc" />
+      <rect x="11" y="15" width="10" height="1" fill="#fffde7" />
+      <rect x="13" y="16" width="6" height="1" fill="#f5f5dc" />
 
-      {/* Left petals */}
-      <rect x="7" y="9" width="1" height="2" fill="#ffee58" />
-      <rect x="8" y="8" width="1" height="4" fill="#ffee58" />
-      <rect x="9" y="7" width="2" height="6" fill="#ffee58" />
-      <rect x="11" y="8" width="2" height="4" fill="#ffee58" />
+      {/* Fluffy wisps - left */}
+      <rect x="7" y="9" width="1" height="4" fill="#fafafa" />
+      <rect x="8" y="8" width="1" height="6" fill="#f5f5dc" />
+      <rect x="9" y="7" width="1" height="8" fill="#fffde7" />
+      <rect x="10" y="8" width="1" height="6" fill="#f5f5dc" />
+      <rect x="11" y="8" width="1" height="6" fill="#fafafa" />
 
-      {/* Right petals */}
-      <rect x="24" y="9" width="1" height="2" fill="#ffee58" />
-      <rect x="23" y="8" width="1" height="4" fill="#ffee58" />
-      <rect x="21" y="7" width="2" height="6" fill="#ffee58" />
-      <rect x="19" y="8" width="2" height="4" fill="#ffee58" />
+      {/* Fluffy wisps - right */}
+      <rect x="24" y="9" width="1" height="4" fill="#fafafa" />
+      <rect x="23" y="8" width="1" height="6" fill="#f5f5dc" />
+      <rect x="22" y="7" width="1" height="8" fill="#fffde7" />
+      <rect x="21" y="8" width="1" height="6" fill="#f5f5dc" />
+      <rect x="20" y="8" width="1" height="6" fill="#fafafa" />
 
-      {/* Diagonal petals - top left */}
-      <rect x="9" y="4" width="2" height="2" fill="#ffee58" />
-      <rect x="10" y="5" width="2" height="2" fill="#ffee58" />
-      <rect x="11" y="6" width="2" height="2" fill="#ffee58" />
+      {/* Diagonal wisps */}
+      <rect x="9" y="5" width="2" height="2" fill="#fafafa" />
+      <rect x="21" y="5" width="2" height="2" fill="#fafafa" />
+      <rect x="9" y="14" width="2" height="2" fill="#fffde7" />
+      <rect x="21" y="14" width="2" height="2" fill="#fffde7" />
 
-      {/* Diagonal petals - top right */}
-      <rect x="21" y="4" width="2" height="2" fill="#ffee58" />
-      <rect x="20" y="5" width="2" height="2" fill="#ffee58" />
-      <rect x="19" y="6" width="2" height="2" fill="#ffee58" />
+      {/* Center details - slightly darker/greenish */}
+      <rect x="14" y="9" width="4" height="4" fill="#e8e8d0" />
+      <rect x="15" y="10" width="2" height="2" fill="#d4d4bc" />
 
-      {/* Diagonal petals - bottom left */}
-      <rect x="9" y="14" width="2" height="2" fill="#ffee58" />
-      <rect x="10" y="13" width="2" height="2" fill="#ffee58" />
-      <rect x="11" y="12" width="2" height="2" fill="#ffee58" />
-
-      {/* Diagonal petals - bottom right */}
-      <rect x="21" y="14" width="2" height="2" fill="#ffee58" />
-      <rect x="20" y="13" width="2" height="2" fill="#ffee58" />
-      <rect x="19" y="12" width="2" height="2" fill="#ffee58" />
-
-      {/* Petal highlights */}
-      <rect x="15" y="3" width="1" height="1" fill="#fff59d" />
-      <rect x="8" y="9" width="1" height="1" fill="#fff59d" />
-      <rect x="10" y="5" width="1" height="1" fill="#fff59d" />
+      {/* Highlight spots */}
+      <rect x="13" y="6" width="1" height="1" fill="#ffffff" />
+      <rect x="18" y="5" width="1" height="1" fill="#ffffff" />
+      <rect x="10" y="10" width="1" height="1" fill="#ffffff" />
+      <rect x="21" y="11" width="1" height="1" fill="#ffffff" />
     </svg>
   );
 }
@@ -584,85 +599,96 @@ export function FrogIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Head outline */}
-      <rect x="8" y="6" width="16" height="1" fill="#000" />
-      <rect x="6" y="7" width="2" height="1" fill="#000" />
-      <rect x="24" y="7" width="2" height="1" fill="#000" />
-      <rect x="5" y="8" width="1" height="3" fill="#000" />
-      <rect x="26" y="8" width="1" height="3" fill="#000" />
-      <rect x="4" y="11" width="1" height="6" fill="#000" />
-      <rect x="27" y="11" width="1" height="6" fill="#000" />
-      <rect x="5" y="17" width="1" height="2" fill="#000" />
-      <rect x="26" y="17" width="1" height="2" fill="#000" />
-      <rect x="6" y="19" width="2" height="1" fill="#000" />
-      <rect x="24" y="19" width="2" height="1" fill="#000" />
-      <rect x="8" y="20" width="16" height="1" fill="#000" />
+      {/* Eye area - left */}
+      <rect x="5" y="4" width="1" height="1" fill="#2e7d32" />
+      <rect x="6" y="3" width="4" height="1" fill="#2e7d32" />
+      <rect x="10" y="4" width="1" height="1" fill="#2e7d32" />
+      <rect x="4" y="5" width="1" height="2" fill="#2e7d32" />
+      <rect x="11" y="5" width="1" height="2" fill="#2e7d32" />
+      <rect x="5" y="5" width="6" height="3" fill="#4caf50" />
 
-      {/* Head fill - green */}
-      <rect x="8" y="7" width="16" height="1" fill="#66bb6a" />
-      <rect x="6" y="8" width="20" height="3" fill="#4caf50" />
-      <rect x="5" y="11" width="22" height="6" fill="#4caf50" />
-      <rect x="6" y="17" width="20" height="2" fill="#4caf50" />
-      <rect x="8" y="19" width="16" height="1" fill="#388e3c" />
+      {/* Eye area - right */}
+      <rect x="21" y="4" width="1" height="1" fill="#2e7d32" />
+      <rect x="22" y="3" width="4" height="1" fill="#2e7d32" />
+      <rect x="26" y="4" width="1" height="1" fill="#2e7d32" />
+      <rect x="20" y="5" width="1" height="2" fill="#2e7d32" />
+      <rect x="27" y="5" width="1" height="2" fill="#2e7d32" />
+      <rect x="21" y="5" width="6" height="3" fill="#4caf50" />
 
-      {/* Eye bumps outline */}
-      <rect x="7" y="3" width="4" height="1" fill="#000" />
-      <rect x="21" y="3" width="4" height="1" fill="#000" />
-      <rect x="6" y="4" width="1" height="2" fill="#000" />
-      <rect x="11" y="4" width="1" height="2" fill="#000" />
-      <rect x="20" y="4" width="1" height="2" fill="#000" />
-      <rect x="25" y="4" width="1" height="2" fill="#000" />
+      {/* Eyes - yellowish with black pupil */}
+      <rect x="6" y="4" width="4" height="3" fill="#c5e1a5" />
+      <rect x="22" y="4" width="4" height="3" fill="#c5e1a5" />
+      <rect x="7" y="5" width="2" height="2" fill="#1b5e20" />
+      <rect x="23" y="5" width="2" height="2" fill="#1b5e20" />
 
-      {/* Eye bumps fill */}
-      <rect x="7" y="4" width="4" height="2" fill="#4caf50" />
-      <rect x="21" y="4" width="4" height="2" fill="#4caf50" />
+      {/* Head/face area */}
+      <rect x="5" y="7" width="1" height="1" fill="#2e7d32" />
+      <rect x="26" y="7" width="1" height="1" fill="#2e7d32" />
+      <rect x="4" y="8" width="1" height="3" fill="#2e7d32" />
+      <rect x="27" y="8" width="1" height="3" fill="#2e7d32" />
+      <rect x="6" y="8" width="20" height="4" fill="#4caf50" />
+      <rect x="5" y="8" width="1" height="3" fill="#66bb6a" />
 
-      {/* Eyes - white with black pupil */}
-      <rect x="7" y="5" width="3" height="3" fill="#fff" />
-      <rect x="22" y="5" width="3" height="3" fill="#fff" />
-      <rect x="8" y="6" width="2" height="2" fill="#222" />
-      <rect x="22" y="6" width="2" height="2" fill="#222" />
-      <rect x="9" y="6" width="1" height="1" fill="#fff" />
-      <rect x="23" y="6" width="1" height="1" fill="#fff" />
+      {/* Head highlight */}
+      <rect x="12" y="8" width="8" height="1" fill="#66bb6a" />
+      <rect x="11" y="9" width="10" height="1" fill="#81c784" />
 
-      {/* Nostrils */}
-      <rect x="12" y="12" width="2" height="1" fill="#388e3c" />
-      <rect x="18" y="12" width="2" height="1" fill="#388e3c" />
+      {/* Face center stripe */}
+      <rect x="15" y="8" width="2" height="3" fill="#388e3c" />
 
-      {/* Mouth */}
-      <rect x="10" y="16" width="12" height="1" fill="#388e3c" />
-      <rect x="9" y="15" width="1" height="1" fill="#388e3c" />
-      <rect x="22" y="15" width="1" height="1" fill="#388e3c" />
+      {/* Body - wide */}
+      <rect x="3" y="11" width="1" height="1" fill="#2e7d32" />
+      <rect x="28" y="11" width="1" height="1" fill="#2e7d32" />
+      <rect x="2" y="12" width="1" height="5" fill="#2e7d32" />
+      <rect x="29" y="12" width="1" height="5" fill="#2e7d32" />
+      <rect x="3" y="12" width="26" height="6" fill="#4caf50" />
+      <rect x="4" y="11" width="24" height="1" fill="#4caf50" />
 
-      {/* Body */}
-      <rect x="8" y="21" width="16" height="1" fill="#4caf50" />
-      <rect x="10" y="22" width="12" height="2" fill="#4caf50" />
+      {/* Body highlight - lighter green */}
+      <rect x="4" y="12" width="4" height="3" fill="#66bb6a" />
+      <rect x="24" y="12" width="4" height="3" fill="#66bb6a" />
+      <rect x="8" y="12" width="16" height="2" fill="#81c784" />
 
-      {/* Front legs */}
-      <rect x="4" y="19" width="3" height="1" fill="#000" />
-      <rect x="3" y="20" width="1" height="3" fill="#000" />
-      <rect x="4" y="23" width="4" height="1" fill="#000" />
-      <rect x="4" y="20" width="3" height="3" fill="#4caf50" />
+      {/* Yellow belly */}
+      <rect x="10" y="14" width="12" height="4" fill="#fdd835" />
+      <rect x="11" y="13" width="10" height="1" fill="#ffeb3b" />
+      <rect x="9" y="15" width="1" height="2" fill="#fbc02d" />
+      <rect x="22" y="15" width="1" height="2" fill="#fbc02d" />
 
-      <rect x="25" y="19" width="3" height="1" fill="#000" />
-      <rect x="28" y="20" width="1" height="3" fill="#000" />
-      <rect x="24" y="23" width="4" height="1" fill="#000" />
-      <rect x="25" y="20" width="3" height="3" fill="#4caf50" />
+      {/* Belly highlight */}
+      <rect x="12" y="14" width="8" height="2" fill="#ffee58" />
 
-      {/* Back legs */}
-      <rect x="6" y="24" width="1" height="4" fill="#000" />
-      <rect x="7" y="28" width="5" height="1" fill="#000" />
-      <rect x="7" y="24" width="4" height="4" fill="#4caf50" />
-      <rect x="11" y="26" width="1" height="2" fill="#4caf50" />
+      {/* Body shadow bottom */}
+      <rect x="3" y="17" width="1" height="1" fill="#2e7d32" />
+      <rect x="28" y="17" width="1" height="1" fill="#2e7d32" />
+      <rect x="4" y="18" width="24" height="1" fill="#388e3c" />
+      <rect x="6" y="19" width="20" height="1" fill="#2e7d32" />
 
-      <rect x="25" y="24" width="1" height="4" fill="#000" />
-      <rect x="20" y="28" width="5" height="1" fill="#000" />
-      <rect x="21" y="24" width="4" height="4" fill="#4caf50" />
-      <rect x="20" y="26" width="1" height="2" fill="#4caf50" />
+      {/* Front legs/feet - left */}
+      <rect x="2" y="17" width="2" height="1" fill="#4caf50" />
+      <rect x="1" y="18" width="3" height="2" fill="#4caf50" />
+      <rect x="0" y="20" width="4" height="1" fill="#2e7d32" />
+      <rect x="1" y="19" width="1" height="1" fill="#66bb6a" />
 
-      {/* Highlight */}
-      <rect x="8" y="8" width="4" height="2" fill="#81c784" />
-      <rect x="6" y="9" width="2" height="2" fill="#81c784" />
+      {/* Front legs/feet - right */}
+      <rect x="28" y="17" width="2" height="1" fill="#4caf50" />
+      <rect x="28" y="18" width="3" height="2" fill="#4caf50" />
+      <rect x="28" y="20" width="4" height="1" fill="#2e7d32" />
+      <rect x="30" y="19" width="1" height="1" fill="#66bb6a" />
+
+      {/* Back legs - left */}
+      <rect x="4" y="19" width="3" height="3" fill="#4caf50" />
+      <rect x="3" y="20" width="1" height="3" fill="#388e3c" />
+      <rect x="4" y="22" width="5" height="2" fill="#4caf50" />
+      <rect x="3" y="23" width="1" height="2" fill="#2e7d32" />
+      <rect x="4" y="24" width="6" height="1" fill="#388e3c" />
+
+      {/* Back legs - right */}
+      <rect x="25" y="19" width="3" height="3" fill="#4caf50" />
+      <rect x="28" y="20" width="1" height="3" fill="#388e3c" />
+      <rect x="23" y="22" width="5" height="2" fill="#4caf50" />
+      <rect x="28" y="23" width="1" height="2" fill="#2e7d32" />
+      <rect x="22" y="24" width="6" height="1" fill="#388e3c" />
     </svg>
   );
 }
