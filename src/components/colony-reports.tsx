@@ -13,24 +13,32 @@ import { SidebarNav } from "@/components/ui/sidebar-nav";
 import { ReportContent } from "@/components/ui/report-content";
 
 const navItems = [
-  { id: "specimen", color: "#c44", label: "Specimen" },
-  { id: "hand", color: "#db9", label: "Hand Studies" },
-  { id: "flask", color: "#8bd", label: "Chemical Analysis" },
-  { id: "food", color: "#da6", label: "Dietary Observations" },
+  { id: "bee", icon: "bee" as const, label: "Bee Studies", statusText: "Tracker Placed on Hive Mother // Coordinates relayed to base every 03:00 hours" },
+  { id: "snail", icon: "snail" as const, label: "Snail Research", statusText: "OW-FDA Control Unit // Hallucinations Reported // notes: will need to test again.. for science" },
+  { id: "ladybug", icon: "ladybug" as const, label: "Ladybug Analysis", statusText: "Still Awaiting Ethics Review // Not Approved for Public Release" },
+  { id: "hand", icon: "hand" as const, label: "Hand Studies", statusText: "Awaiting HR Assessment // Unstable Limb Proliferation" },
+  { id: "apricot", icon: "apricot" as const, label: "Apricot Data", statusText: "How-To Guide // Local Food Documentation // FDAA approval pending" },
+  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations", statusText: "Botanical Observation // Specimen Discovery // additional notes: Toby reported numbness at injection site for 7 days after" },
+  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records", statusText: "Botanical Observation // Specimen Response // additional notes: please watch your step, they are getting angry" },
+  { id: "frog", icon: "frog" as const, label: "Frog Documentation", statusText: "Level 4 containment initiated // Intern recovered alive // notes: cancel human autopsy request" },
 ];
 
 interface ColonyReportsProps {
   onClose?: () => void;
+  onMinimize?: () => void;
 }
 
-export function ColonyReports({ onClose }: ColonyReportsProps) {
-  const [selectedId, setSelectedId] = useState("specimen");
+export function ColonyReports({ onClose, onMinimize }: ColonyReportsProps) {
+  const [selectedId, setSelectedId] = useState("bee");
+
+  const selectedItem = navItems.find((item) => item.id === selectedId);
+  const statusText = selectedItem?.statusText ?? "";
 
   return (
     <Window className="w-[80vw] h-[80vh] absolute top-[10vh] left-[10vw] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
-        <WindowControls showMinimize={false} onClose={onClose} />
+        <WindowControls onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
       <div className="flex flex-1 min-h-0">
@@ -44,10 +52,10 @@ export function ColonyReports({ onClose }: ColonyReportsProps) {
 
       <WindowStatusBar>
         <WindowStatusField className="flex-none w-[120px]">
-          Colony Report
+          File Notes
         </WindowStatusField>
-        <WindowStatusField>
-          Still Awaiting Ethics Review // Not Approved for Public Release
+        <WindowStatusField className="text-right">
+          {statusText}
         </WindowStatusField>
       </WindowStatusBar>
     </Window>

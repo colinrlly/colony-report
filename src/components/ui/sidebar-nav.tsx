@@ -1,10 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SidebarIcon, SidebarIconType } from "./sidebar-icons";
 
 interface NavItem {
   id: string;
-  color: string;
+  icon: SidebarIconType;
   label: string;
 }
 
@@ -16,7 +17,7 @@ interface SidebarNavProps {
 
 export function SidebarNav({ items, selectedId, onSelect }: SidebarNavProps) {
   return (
-    <nav className="flex flex-col bg-[#5a5a5a] w-[70px] py-4 gap-2">
+    <nav className="flex flex-col bg-[#5a5a5a] w-[70px] py-4 gap-2" role="tablist">
       {items.map((item) => (
         <button
           key={item.id}
@@ -28,17 +29,15 @@ export function SidebarNav({ items, selectedId, onSelect }: SidebarNavProps) {
             "transition-colors"
           )}
           aria-label={item.label}
+          role="tab"
           aria-selected={selectedId === item.id}
         >
           {/* Green highlight bar */}
           {selectedId === item.id && (
             <div className="absolute left-0 top-1 bottom-1 w-[4px] bg-[#7cb342]" />
           )}
-          {/* Placeholder icon */}
-          <div
-            className="w-[42px] h-[42px] rounded-sm"
-            style={{ backgroundColor: item.color }}
-          />
+          {/* Pixel art icon */}
+          <SidebarIcon icon={item.icon} />
         </button>
       ))}
     </nav>

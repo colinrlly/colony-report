@@ -83,6 +83,7 @@ type WallpaperType = 0 | 1 | 2;
 
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
+  const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
   const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
@@ -415,8 +416,14 @@ export default function Home() {
         )}
 
         {/* Windows */}
-        {isColonyReportsOpen && (
-          <ColonyReports onClose={() => setIsColonyReportsOpen(false)} />
+        {isColonyReportsOpen && !isColonyReportsMinimized && (
+          <ColonyReports
+            onClose={() => {
+              setIsColonyReportsOpen(false);
+              setIsColonyReportsMinimized(false);
+            }}
+            onMinimize={() => setIsColonyReportsMinimized(true)}
+          />
         )}
         {isSecretsFolderOpen && (
           <SecretsFolder
@@ -501,8 +508,8 @@ export default function Home() {
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
-            isActive={!isSecretsFolderOpen && !isPetMonitorOpen}
-            onClick={() => setIsColonyReportsOpen(true)}
+            isActive={!isColonyReportsMinimized && !isSecretsFolderOpen && !isPetMonitorOpen}
+            onClick={() => setIsColonyReportsMinimized(!isColonyReportsMinimized)}
           />
         )}
         {isSecretsFolderOpen && (

@@ -6,27 +6,45 @@ import { useWindowContext } from "./window";
 import type { WindowControlsProps, WindowControlButtonProps } from "./types";
 
 const MinimizeIcon = () => (
-  <svg width="6" height="2" viewBox="0 0 6 2" className="fill-current">
-    <rect width="6" height="2" />
+  <svg width="10" height="3" viewBox="0 0 10 3" className="fill-current">
+    <rect width="10" height="3" />
   </svg>
 );
 
 const MaximizeIcon = () => (
   <svg
-    width="9"
-    height="9"
-    viewBox="0 0 9 9"
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
     className="fill-none stroke-current"
-    strokeWidth="1"
+    strokeWidth="1.5"
   >
-    <rect x="0.5" y="0.5" width="8" height="8" />
-    <rect x="0.5" y="0.5" width="8" height="2" className="fill-current" />
+    <rect x="1" y="1" width="10" height="10" />
+    <rect x="1" y="1" width="10" height="3" className="fill-current" />
+  </svg>
+);
+
+const RestoreIcon = () => (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    className="fill-none stroke-current"
+    strokeWidth="1.5"
+  >
+    {/* Back window */}
+    <rect x="3" y="0.5" width="8" height="8" />
+    <rect x="3" y="0.5" width="8" height="2" className="fill-current" />
+    {/* Front window */}
+    <rect x="0.5" y="3" width="8" height="8" className="fill-win98-surface" />
+    <rect x="0.5" y="3" width="8" height="8" />
+    <rect x="0.5" y="3" width="8" height="2" className="fill-current" />
   </svg>
 );
 
 const CloseIcon = () => (
-  <svg width="8" height="7" viewBox="0 0 8 7" className="fill-current">
-    <path d="M0 0h2l2 3 2-3h2L5.5 3.5 8 7H6L4 4 2 7H0l2.5-3.5z" />
+  <svg width="12" height="11" viewBox="0 0 12 11" className="fill-current">
+    <path d="M0 0h2.5l3.5 4.5 3.5-4.5H12L7.5 5.5 12 11H9.5L6 6.5 2.5 11H0l4.5-5.5z" />
   </svg>
 );
 
@@ -34,9 +52,11 @@ export const WindowControlButton = forwardRef<
   HTMLButtonElement,
   WindowControlButtonProps
 >(({ className, variant, icon, ...props }, ref) => {
+  const { isMaximized } = useWindowContext();
+
   const defaultIcons = {
     minimize: <MinimizeIcon />,
-    maximize: <MaximizeIcon />,
+    maximize: isMaximized ? <RestoreIcon /> : <MaximizeIcon />,
     close: <CloseIcon />,
   };
 
@@ -45,7 +65,7 @@ export const WindowControlButton = forwardRef<
       ref={ref}
       type="button"
       className={cn(
-        "w-[16px] h-[14px]",
+        "w-[22px] h-[20px]",
         "flex items-center justify-center",
         "bg-win98-surface",
         "win98-border-raised",
