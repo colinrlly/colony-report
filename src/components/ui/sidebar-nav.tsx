@@ -17,7 +17,7 @@ interface SidebarNavProps {
 
 export function SidebarNav({ items, selectedId, onSelect }: SidebarNavProps) {
   return (
-    <nav className="flex flex-col bg-[#5a5a5a] w-[70px] py-4 gap-2">
+    <nav className="flex flex-col bg-[#5a5a5a] w-[70px] py-4 gap-2" role="tablist">
       {items.map((item) => (
         <button
           key={item.id}
@@ -29,6 +29,7 @@ export function SidebarNav({ items, selectedId, onSelect }: SidebarNavProps) {
             "transition-colors"
           )}
           aria-label={item.label}
+          role="tab"
           aria-selected={selectedId === item.id}
         >
           {/* Green highlight bar */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef } from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { WindowIconProps } from "./types";
 
@@ -13,7 +14,7 @@ export const WindowIcon = forwardRef<HTMLDivElement, WindowIconProps>(
         {...props}
       >
         {src ? (
-          <img src={src} alt={alt} className="w-full h-full object-contain" />
+          <Image src={src} alt={alt} width={16} height={16} className="w-full h-full object-contain" />
         ) : (
           <svg
             viewBox="0 0 16 16"
