@@ -65,10 +65,10 @@ interface DesktopIconConfig {
 // Define the desktop icons with their initial positions
 const DESKTOP_ICONS: DesktopIconConfig[] = [
   { id: "colony-reports", label: "Colony Reports", icon: "folder", initialPosition: { x: 24, y: 53 } },
-  { id: "field-notes", label: "Field Notes", icon: "notebook", initialPosition: { x: 24, y: 163 } },
-  { id: "employee-files", label: "Employee Files", icon: "badge", initialPosition: { x: 24, y: 273 } },
-  { id: "photo-library", label: "Photo Library", icon: "camera", initialPosition: { x: 24, y: 383 } },
-  { id: "video-logs", label: "Video Logs", icon: "video-camera", initialPosition: { x: 24, y: 493 } },
+  { id: "field-notes", label: "Field Notes", icon: "notebook", initialPosition: { x: 24, y: 183 } },
+  { id: "employee-files", label: "Employee Files", icon: "badge", initialPosition: { x: 24, y: 313 } },
+  { id: "photo-library", label: "Photo Library", icon: "camera", initialPosition: { x: 24, y: 443 } },
+  { id: "video-logs", label: "Video Logs", icon: "video-camera", initialPosition: { x: 24, y: 573 } },
 ];
 
 export default function Home() {
