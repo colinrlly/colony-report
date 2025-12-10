@@ -138,6 +138,8 @@ interface NestedFolderWindowProps {
   onClose?: () => void;
   onOpenChild?: () => void;
   position?: { top: string; left: string };
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 export function NestedFolderWindow({
@@ -147,11 +149,15 @@ export function NestedFolderWindow({
   onClose,
   onOpenChild,
   position = { top: "18vh", left: "35vw" },
+  zIndex,
+  onFocus,
 }: NestedFolderWindowProps) {
   return (
     <Window
       className="w-[350px] h-[220px] absolute flex flex-col"
       style={{ top: position.top, left: position.left }}
+      zIndex={zIndex}
+      onFocus={onFocus}
     >
       <WindowTitleBar>
         <WindowTitle>{title}</WindowTitle>

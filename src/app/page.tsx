@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
@@ -92,6 +92,38 @@ export default function Home() {
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
   const [tutorialClickCount, setTutorialClickCount] = useState(0);
 
+  // Window focus order - last item has highest z-index
+  type WindowId =
+    | "colonyReports"
+    | "secretsFolder"
+    | "nothing"
+    | "seriouslyNothing"
+    | "pleaseStop"
+    | "goNoFurther"
+    | "areYouSerious"
+    | "ughFine"
+    | "petMonitor"
+    | "minesweeper"
+    | "contactHR";
+
+  const [windowOrder, setWindowOrder] = useState<WindowId[]>([]);
+
+  // Bring a window to the front
+  const bringToFront = useCallback((windowId: WindowId) => {
+    setWindowOrder(prev => {
+      const filtered = prev.filter(id => id !== windowId);
+      return [...filtered, windowId];
+    });
+  }, []);
+
+  // Get z-index for a window (base of 100, increments of 10)
+  const getZIndex = useMemo(() => {
+    return (windowId: WindowId) => {
+      const index = windowOrder.indexOf(windowId);
+      return index === -1 ? 100 : 100 + (index * 10);
+    };
+  }, [windowOrder]);
+
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
     () => DESKTOP_ICONS.reduce((acc, icon) => {
@@ -176,6 +208,7 @@ export default function Home() {
     switch (iconId) {
       case "colony-reports":
         setIsColonyReportsOpen(true);
+        bringToFront("colonyReports");
         break;
       // Add handlers for other icons here when needed
     }
@@ -237,6 +270,7 @@ export default function Home() {
       setIsContactHROpen(false);
       setIsContactHRMinimized(false);
       setIsTutorialHelperVisible(false);
+      setWindowOrder([]);
     }, 1800); // Just after progress bar completes
 
     // Start the flicker-out phase
@@ -290,6 +324,7 @@ export default function Home() {
         { label: "Germsweeper", onClick: () => {
           setIsMinesweeperOpen(true);
           setIsMinesweeperMinimized(false);
+          bringToFront("minesweeper");
         }},
       ],
     },
@@ -311,6 +346,7 @@ export default function Home() {
     { label: "Contact HR", onClick: () => {
       setIsContactHROpen(true);
       setIsContactHRMinimized(false);
+      bringToFront("contactHR");
     }},
   ];
 
@@ -508,7 +544,10 @@ export default function Home() {
             <DesktopIcon
               label={HIDDEN_FILE.label}
               icon={HIDDEN_FILE.icon}
-              onClick={() => setIsSecretsFolderOpen(true)}
+              onClick={() => {
+                setIsSecretsFolderOpen(true);
+                bringToFront("secretsFolder");
+              }}
             />
           </div>
         )}
@@ -521,12 +560,19 @@ export default function Home() {
               setIsColonyReportsMinimized(false);
             }}
             onMinimize={() => setIsColonyReportsMinimized(true)}
+            zIndex={getZIndex("colonyReports")}
+            onFocus={() => bringToFront("colonyReports")}
           />
         )}
         {isSecretsFolderOpen && (
           <SecretsFolder
             onClose={() => setIsSecretsFolderOpen(false)}
-            onOpenNothing={() => setIsNothingOpen(true)}
+            onOpenNothing={() => {
+              setIsNothingOpen(true);
+              bringToFront("nothing");
+            }}
+            zIndex={getZIndex("secretsFolder")}
+            onFocus={() => bringToFront("secretsFolder")}
           />
         )}
 
@@ -536,8 +582,13 @@ export default function Home() {
             title="Nothing..."
             childFolderLabel="Seriously Nothing…"
             onClose={() => setIsNothingOpen(false)}
-            onOpenChild={() => setIsSeriouslyNothingOpen(true)}
+            onOpenChild={() => {
+              setIsSeriouslyNothingOpen(true);
+              bringToFront("seriouslyNothing");
+            }}
             position={{ top: "20vh", left: "32vw" }}
+            zIndex={getZIndex("nothing")}
+            onFocus={() => bringToFront("nothing")}
           />
         )}
         {isSeriouslyNothingOpen && (
@@ -545,8 +596,13 @@ export default function Home() {
             title="Seriously Nothing…"
             childFolderLabel="Please Stop"
             onClose={() => setIsSeriouslyNothingOpen(false)}
-            onOpenChild={() => setIsPleaseStopOpen(true)}
+            onOpenChild={() => {
+              setIsPleaseStopOpen(true);
+              bringToFront("pleaseStop");
+            }}
             position={{ top: "22vh", left: "36vw" }}
+            zIndex={getZIndex("seriouslyNothing")}
+            onFocus={() => bringToFront("seriouslyNothing")}
           />
         )}
         {isPleaseStopOpen && (
@@ -554,8 +610,13 @@ export default function Home() {
             title="Please Stop"
             childFolderLabel="Go No Further"
             onClose={() => setIsPleaseStopOpen(false)}
-            onOpenChild={() => setIsGoNoFurtherOpen(true)}
+            onOpenChild={() => {
+              setIsGoNoFurtherOpen(true);
+              bringToFront("goNoFurther");
+            }}
             position={{ top: "24vh", left: "40vw" }}
+            zIndex={getZIndex("pleaseStop")}
+            onFocus={() => bringToFront("pleaseStop")}
           />
         )}
         {isGoNoFurtherOpen && (
@@ -563,8 +624,13 @@ export default function Home() {
             title="Go No Further"
             childFolderLabel="Are You Serious"
             onClose={() => setIsGoNoFurtherOpen(false)}
-            onOpenChild={() => setIsAreYouSeriousOpen(true)}
+            onOpenChild={() => {
+              setIsAreYouSeriousOpen(true);
+              bringToFront("areYouSerious");
+            }}
             position={{ top: "26vh", left: "44vw" }}
+            zIndex={getZIndex("goNoFurther")}
+            onFocus={() => bringToFront("goNoFurther")}
           />
         )}
         {isAreYouSeriousOpen && (
@@ -573,8 +639,13 @@ export default function Home() {
             childFolderLabel="Unbelievable"
             showSkullOnChild={true}
             onClose={() => setIsAreYouSeriousOpen(false)}
-            onOpenChild={() => setIsUghFineOpen(true)}
+            onOpenChild={() => {
+              setIsUghFineOpen(true);
+              bringToFront("ughFine");
+            }}
             position={{ top: "28vh", left: "48vw" }}
+            zIndex={getZIndex("areYouSerious")}
+            onFocus={() => bringToFront("areYouSerious")}
           />
         )}
         {isUghFineOpen && (
@@ -582,23 +653,32 @@ export default function Home() {
             title="Unbelievable 💀"
             childFolderLabel="secret_pet_monitor"
             onClose={() => setIsUghFineOpen(false)}
-            onOpenChild={() => setIsPetMonitorOpen(true)}
+            onOpenChild={() => {
+              setIsPetMonitorOpen(true);
+              bringToFront("petMonitor");
+            }}
             position={{ top: "30vh", left: "52vw" }}
+            zIndex={getZIndex("ughFine")}
+            onFocus={() => bringToFront("ughFine")}
           />
         )}
 
         {/* Secret Pet Monitor - final destination */}
         {isPetMonitorOpen && (
-          <SecretPetMonitor onClose={() => {
-            // Close pet monitor and all nested folders, but keep .secrets open
-            setIsPetMonitorOpen(false);
-            setIsUghFineOpen(false);
-            setIsAreYouSeriousOpen(false);
-            setIsGoNoFurtherOpen(false);
-            setIsPleaseStopOpen(false);
-            setIsSeriouslyNothingOpen(false);
-            setIsNothingOpen(false);
-          }} />
+          <SecretPetMonitor
+            onClose={() => {
+              // Close pet monitor and all nested folders, but keep .secrets open
+              setIsPetMonitorOpen(false);
+              setIsUghFineOpen(false);
+              setIsAreYouSeriousOpen(false);
+              setIsGoNoFurtherOpen(false);
+              setIsPleaseStopOpen(false);
+              setIsSeriouslyNothingOpen(false);
+              setIsNothingOpen(false);
+            }}
+            zIndex={getZIndex("petMonitor")}
+            onFocus={() => bringToFront("petMonitor")}
+          />
         )}
 
         {/* Germsweeper Game */}
@@ -609,6 +689,8 @@ export default function Home() {
               setIsMinesweeperMinimized(false);
             }}
             onMinimize={() => setIsMinesweeperMinimized(true)}
+            zIndex={getZIndex("minesweeper")}
+            onFocus={() => bringToFront("minesweeper")}
           />
         )}
 
@@ -620,6 +702,8 @@ export default function Home() {
               setIsContactHRMinimized(false);
             }}
             onMinimize={() => setIsContactHRMinimized(true)}
+            zIndex={getZIndex("contactHR")}
+            onFocus={() => bringToFront("contactHR")}
           />
         )}
 
@@ -636,36 +720,57 @@ export default function Home() {
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
-            isActive={!isColonyReportsMinimized && !isSecretsFolderOpen && !isPetMonitorOpen && (!isMinesweeperOpen || isMinesweeperMinimized)}
-            onClick={() => setIsColonyReportsMinimized(!isColonyReportsMinimized)}
+            isActive={!isColonyReportsMinimized}
+            onClick={() => {
+              if (isColonyReportsMinimized) {
+                setIsColonyReportsMinimized(false);
+                bringToFront("colonyReports");
+              } else {
+                setIsColonyReportsMinimized(true);
+              }
+            }}
           />
         )}
         {isSecretsFolderOpen && (
           <TaskbarButton
             title=".secrets"
-            isActive={!isPetMonitorOpen && (!isMinesweeperOpen || isMinesweeperMinimized)}
-            onClick={() => setIsSecretsFolderOpen(true)}
+            isActive={true}
+            onClick={() => bringToFront("secretsFolder")}
           />
         )}
         {isPetMonitorOpen && (
           <TaskbarButton
             title="secret_pet_monitor"
-            isActive={!isMinesweeperOpen || isMinesweeperMinimized}
-            onClick={() => setIsPetMonitorOpen(true)}
+            isActive={true}
+            onClick={() => bringToFront("petMonitor")}
           />
         )}
         {isMinesweeperOpen && (
           <TaskbarButton
             title="Germsweeper"
             isActive={!isMinesweeperMinimized}
-            onClick={() => setIsMinesweeperMinimized(!isMinesweeperMinimized)}
+            onClick={() => {
+              if (isMinesweeperMinimized) {
+                setIsMinesweeperMinimized(false);
+                bringToFront("minesweeper");
+              } else {
+                setIsMinesweeperMinimized(true);
+              }
+            }}
           />
         )}
         {isContactHROpen && (
           <TaskbarButton
             title="Contact HR"
             isActive={!isContactHRMinimized}
-            onClick={() => setIsContactHRMinimized(!isContactHRMinimized)}
+            onClick={() => {
+              if (isContactHRMinimized) {
+                setIsContactHRMinimized(false);
+                bringToFront("contactHR");
+              } else {
+                setIsContactHRMinimized(true);
+              }
+            }}
           />
         )}
       </Taskbar>

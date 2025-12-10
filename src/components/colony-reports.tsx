@@ -26,16 +26,18 @@ const navItems = [
 interface ColonyReportsProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
-export function ColonyReports({ onClose, onMinimize }: ColonyReportsProps) {
+export function ColonyReports({ onClose, onMinimize, zIndex, onFocus }: ColonyReportsProps) {
   const [selectedId, setSelectedId] = useState("bee");
 
   const selectedItem = navItems.find((item) => item.id === selectedId);
   const statusText = selectedItem?.statusText ?? "";
 
   return (
-    <Window className="aspect-[11/8.5] max-w-[90vw] max-h-[85vh] w-auto h-[85vh] absolute top-[7vh] left-1/2 -translate-x-1/2 flex flex-col">
+    <Window className="aspect-[11/8.5] max-w-[90vw] max-h-[85vh] w-auto h-[85vh] absolute top-[7vh] left-1/2 -translate-x-1/2 flex flex-col" zIndex={zIndex} onFocus={onFocus}>
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />

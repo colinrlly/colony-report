@@ -22,7 +22,7 @@ export const useWindowContext = () => useContext(WindowContext);
 const MENUBAR_HEIGHT = 36;
 const TASKBAR_HEIGHT = 40;
 
-export function Window({ className, active = true, children, ...props }: WindowProps) {
+export function Window({ className, active = true, children, zIndex, onFocus, ...props }: WindowProps) {
   const nodeRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -82,6 +82,12 @@ export function Window({ className, active = true, children, ...props }: WindowP
     setPosition({ x: data.x, y: data.y });
   };
 
+  const handleMouseDown = () => {
+    if (onFocus) {
+      onFocus();
+    }
+  };
+
   return (
     <WindowContext.Provider value={{ active, isMaximized, toggleMaximize }}>
       <Draggable
@@ -104,6 +110,8 @@ export function Window({ className, active = true, children, ...props }: WindowP
               : "resize overflow-auto",
             className
           )}
+          style={{ zIndex }}
+          onMouseDown={handleMouseDown}
           {...props}
         >
           {children}
