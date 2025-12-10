@@ -2,15 +2,14 @@
 
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ColonyReports } from "@/components/colony-reports";
+import { SecretsFolder } from "@/components/secrets-folder";
+import { NestedFolderWindow } from "@/components/nested-folder-window";
+import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
 
-const viewMenuItems: MenuItemData[] = [
-  { label: "Refresh Desktop" },
-  { label: "Show Hidden Files" },
-  { label: "Toggle Wallpaper" },
-];
+// viewMenuItems is defined inside the component to access the refresh handler
 
 const toolsMenuItems: MenuItemData[] = [
   {
@@ -53,7 +52,7 @@ const historyMenuItems: MenuItemData[] = [
   { label: "How long does it take to grow back eyebrows", isHistoryItem: true },
 ];
 
-type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera";
+type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock";
 
 interface DesktopIconConfig {
   id: string;
@@ -71,8 +70,28 @@ const DESKTOP_ICONS: DesktopIconConfig[] = [
   { id: "video-logs", label: "Video Logs", icon: "video-camera", initialPosition: { x: 24, y: 573 } },
 ];
 
+// Hidden file configuration - appears at bottom right
+const HIDDEN_FILE = {
+  id: "hidden-secrets",
+  label: ".secrets",
+  icon: "lock" as IconType,
+  position: { x: 0, y: 0 }, // Will be calculated based on screen size
+};
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
+  const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showHiddenFiles, setShowHiddenFiles] = useState(false);
+
+  // Nested folder windows state - chain from "Nothing..." to pet monitor
+  const [isNothingOpen, setIsNothingOpen] = useState(false);
+  const [isSeriouslyNothingOpen, setIsSeriouslyNothingOpen] = useState(false);
+  const [isPleaseStopOpen, setIsPleaseStopOpen] = useState(false);
+  const [isGoNoFurtherOpen, setIsGoNoFurtherOpen] = useState(false);
+  const [isAreYouSeriousOpen, setIsAreYouSeriousOpen] = useState(false);
+  const [isUghFineOpen, setIsUghFineOpen] = useState(false);
+  const [isPetMonitorOpen, setIsPetMonitorOpen] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -163,8 +182,55 @@ export default function Home() {
     }
   };
 
+  // Handle refresh desktop - reset all folder positions with flicker animation
+  const handleRefreshDesktop = useCallback(() => {
+    // Trigger flicker animation
+    setIsRefreshing(true);
+
+    // Reset all icon positions to their initial positions and hide hidden files
+    setTimeout(() => {
+      setIconPositions(
+        DESKTOP_ICONS.reduce((acc, icon) => {
+          acc[icon.id] = { ...icon.initialPosition };
+          return acc;
+        }, {} as Record<string, { x: number; y: number }>)
+      );
+      setShowHiddenFiles(false);
+    }, 100);
+
+    // End the flicker animation after a short delay
+    setTimeout(() => {
+      setIsRefreshing(false);
+    }, 300);
+  }, []);
+
+  // Handle show hidden files toggle
+  const handleShowHiddenFiles = useCallback(() => {
+    setShowHiddenFiles(prev => !prev);
+  }, []);
+
+  // View menu items - defined here to access the refresh handler
+  const viewMenuItems: MenuItemData[] = [
+    { label: "Refresh Desktop", onClick: handleRefreshDesktop },
+    { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
+    { label: "Toggle Wallpaper" },
+  ];
+
   return (
     <>
+      {/* Screen flicker animation overlay */}
+      {isRefreshing && (
+        <div
+          className="fixed inset-0 z-[9999] pointer-events-none animate-flicker"
+          style={{
+            background: 'linear-gradient(transparent 50%, rgba(0, 0, 0, 0.25) 50%)',
+            backgroundSize: '100% 4px',
+          }}
+        >
+          <div className="absolute inset-0 bg-white/30 animate-pulse" />
+        </div>
+      )}
+
       <Menubar>
         <MenubarLogo />
         <MenubarItem label="View" menuItems={viewMenuItems} />
@@ -194,9 +260,103 @@ export default function Home() {
           </div>
         ))}
 
+        {/* Hidden file - appears at bottom right when Show Hidden Files is clicked */}
+        {showHiddenFiles && (
+          <div
+            className="absolute select-none cursor-pointer"
+            style={{
+              right: 24,
+              bottom: 70,
+            }}
+          >
+            <DesktopIcon
+              label={HIDDEN_FILE.label}
+              icon={HIDDEN_FILE.icon}
+              onClick={() => setIsSecretsFolderOpen(true)}
+            />
+          </div>
+        )}
+
         {/* Windows */}
         {isColonyReportsOpen && (
           <ColonyReports onClose={() => setIsColonyReportsOpen(false)} />
+        )}
+        {isSecretsFolderOpen && (
+          <SecretsFolder
+            onClose={() => setIsSecretsFolderOpen(false)}
+            onOpenNothing={() => setIsNothingOpen(true)}
+          />
+        )}
+
+        {/* Nested folder chain from Nothing... */}
+        {isNothingOpen && (
+          <NestedFolderWindow
+            title="Nothing..."
+            childFolderLabel="Seriously Nothing…"
+            onClose={() => setIsNothingOpen(false)}
+            onOpenChild={() => setIsSeriouslyNothingOpen(true)}
+            position={{ top: "20vh", left: "32vw" }}
+          />
+        )}
+        {isSeriouslyNothingOpen && (
+          <NestedFolderWindow
+            title="Seriously Nothing…"
+            childFolderLabel="Please Stop"
+            onClose={() => setIsSeriouslyNothingOpen(false)}
+            onOpenChild={() => setIsPleaseStopOpen(true)}
+            position={{ top: "22vh", left: "36vw" }}
+          />
+        )}
+        {isPleaseStopOpen && (
+          <NestedFolderWindow
+            title="Please Stop"
+            childFolderLabel="Go No Further"
+            onClose={() => setIsPleaseStopOpen(false)}
+            onOpenChild={() => setIsGoNoFurtherOpen(true)}
+            position={{ top: "24vh", left: "40vw" }}
+          />
+        )}
+        {isGoNoFurtherOpen && (
+          <NestedFolderWindow
+            title="Go No Further"
+            childFolderLabel="Are You Serious"
+            onClose={() => setIsGoNoFurtherOpen(false)}
+            onOpenChild={() => setIsAreYouSeriousOpen(true)}
+            position={{ top: "26vh", left: "44vw" }}
+          />
+        )}
+        {isAreYouSeriousOpen && (
+          <NestedFolderWindow
+            title="Are You Serious"
+            childFolderLabel="Unbelievable"
+            showSkullOnChild={true}
+            onClose={() => setIsAreYouSeriousOpen(false)}
+            onOpenChild={() => setIsUghFineOpen(true)}
+            position={{ top: "28vh", left: "48vw" }}
+          />
+        )}
+        {isUghFineOpen && (
+          <NestedFolderWindow
+            title="Unbelievable 💀"
+            childFolderLabel="secret_pet_monitor"
+            onClose={() => setIsUghFineOpen(false)}
+            onOpenChild={() => setIsPetMonitorOpen(true)}
+            position={{ top: "30vh", left: "52vw" }}
+          />
+        )}
+
+        {/* Secret Pet Monitor - final destination */}
+        {isPetMonitorOpen && (
+          <SecretPetMonitor onClose={() => {
+            // Close pet monitor and all nested folders, but keep .secrets open
+            setIsPetMonitorOpen(false);
+            setIsUghFineOpen(false);
+            setIsAreYouSeriousOpen(false);
+            setIsGoNoFurtherOpen(false);
+            setIsPleaseStopOpen(false);
+            setIsSeriouslyNothingOpen(false);
+            setIsNothingOpen(false);
+          }} />
         )}
       </main>
 
@@ -204,8 +364,22 @@ export default function Home() {
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
-            isActive={true}
+            isActive={!isSecretsFolderOpen && !isPetMonitorOpen}
             onClick={() => setIsColonyReportsOpen(true)}
+          />
+        )}
+        {isSecretsFolderOpen && (
+          <TaskbarButton
+            title=".secrets"
+            isActive={!isPetMonitorOpen}
+            onClick={() => setIsSecretsFolderOpen(true)}
+          />
+        )}
+        {isPetMonitorOpen && (
+          <TaskbarButton
+            title="secret_pet_monitor"
+            isActive={true}
+            onClick={() => setIsPetMonitorOpen(true)}
           />
         )}
       </Taskbar>

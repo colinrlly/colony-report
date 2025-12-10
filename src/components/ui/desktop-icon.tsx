@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera";
+type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock";
 
 interface DesktopIconProps {
   label: string;
@@ -387,6 +387,69 @@ function VideoCameraIcon() {
   );
 }
 
+function LockIcon() {
+  return (
+    <svg
+      width="80"
+      height="80"
+      viewBox="0 0 32 32"
+      shapeRendering="crispEdges"
+    >
+      {/* Lock shackle outline - black */}
+      <rect x="10" y="4" width="1" height="1" fill="#000" />
+      <rect x="11" y="3" width="10" height="1" fill="#000" />
+      <rect x="21" y="4" width="1" height="1" fill="#000" />
+      <rect x="22" y="5" width="1" height="9" fill="#000" />
+      <rect x="9" y="5" width="1" height="9" fill="#000" />
+
+      {/* Shackle fill - silver/gray */}
+      <rect x="10" y="4" width="1" height="10" fill="#C0C0C0" />
+      <rect x="11" y="3" width="10" height="1" fill="#D8D8D8" />
+      <rect x="11" y="4" width="10" height="1" fill="#E8E8E8" />
+      <rect x="21" y="4" width="1" height="10" fill="#909090" />
+
+      {/* Inner shackle cutout */}
+      <rect x="12" y="6" width="8" height="1" fill="#6b6359" />
+      <rect x="12" y="7" width="8" height="6" fill="#6b6359" />
+      <rect x="11" y="7" width="1" height="6" fill="#A0A0A0" />
+      <rect x="20" y="7" width="1" height="6" fill="#707070" />
+
+      {/* Lock body outline - black */}
+      <rect x="6" y="13" width="1" height="1" fill="#000" />
+      <rect x="7" y="12" width="18" height="1" fill="#000" />
+      <rect x="25" y="13" width="1" height="1" fill="#000" />
+      <rect x="26" y="14" width="1" height="14" fill="#000" />
+      <rect x="25" y="28" width="1" height="1" fill="#000" />
+      <rect x="7" y="29" width="18" height="1" fill="#000" />
+      <rect x="6" y="28" width="1" height="1" fill="#000" />
+      <rect x="5" y="14" width="1" height="14" fill="#000" />
+
+      {/* Lock body - gold/brass fill */}
+      <rect x="7" y="13" width="18" height="1" fill="#E8C850" />
+      <rect x="6" y="14" width="20" height="14" fill="#D4A840" />
+      <rect x="7" y="28" width="18" height="1" fill="#B08020" />
+
+      {/* Lock body highlight - top/left */}
+      <rect x="7" y="13" width="17" height="1" fill="#F0D868" />
+      <rect x="6" y="14" width="1" height="13" fill="#E8C850" />
+
+      {/* Lock body shadow - bottom/right */}
+      <rect x="25" y="15" width="1" height="13" fill="#B08020" />
+
+      {/* Keyhole - black circle and slot */}
+      <rect x="14" y="18" width="4" height="1" fill="#000" />
+      <rect x="13" y="19" width="6" height="1" fill="#000" />
+      <rect x="13" y="20" width="6" height="1" fill="#000" />
+      <rect x="14" y="21" width="4" height="1" fill="#000" />
+      <rect x="15" y="22" width="2" height="4" fill="#000" />
+
+      {/* Keyhole inner highlight */}
+      <rect x="14" y="19" width="2" height="1" fill="#404040" />
+      <rect x="14" y="20" width="1" height="1" fill="#303030" />
+    </svg>
+  );
+}
+
 export function DesktopIcon({ label, icon = "folder", onClick }: DesktopIconProps) {
   const renderIcon = () => {
     switch (icon) {
@@ -398,6 +461,8 @@ export function DesktopIcon({ label, icon = "folder", onClick }: DesktopIconProp
         return <CameraIcon />;
       case "video-camera":
         return <VideoCameraIcon />;
+      case "lock":
+        return <LockIcon />;
       case "folder":
       default:
         return <FolderIcon />;
