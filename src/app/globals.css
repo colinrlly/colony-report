@@ -114,3 +114,153 @@ body {
 .animate-flicker {
   animation: flicker 0.3s ease-in-out;
 }
+
+/* Ant leg wiggle animation */
+@keyframes wiggle-left {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1px) rotate(-5deg); }
+  75% { transform: translateX(1px) rotate(5deg); }
+}
+
+@keyframes wiggle-right {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(1px) rotate(5deg); }
+  75% { transform: translateX(-1px) rotate(-5deg); }
+}
+
+.ant-leg-left.wiggling {
+  animation: wiggle-left 0.15s ease-in-out 4;
+  transform-origin: right center;
+}
+
+.ant-leg-right.wiggling {
+  animation: wiggle-right 0.15s ease-in-out 4;
+  transform-origin: left center;
+}
+
+/* ============================================
+   WALLPAPER STYLES
+   ============================================ */
+
+/* Default Wallpaper - solid color with subtle texture */
+.wallpaper-default {
+  background: #6b6359;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+}
+
+/* NEC Formica Division Wallpaper - Microsoft Windows Premiere Edition style */
+.wallpaper-formica {
+  background: linear-gradient(
+    180deg,
+    #5c4a3a 0%,
+    #6b5a4a 30%,
+    #7a6a5a 50%,
+    #6b5a4a 70%,
+    #5c4a3a 100%
+  );
+  background-image:
+    radial-gradient(
+      ellipse 120% 80% at 50% 40%,
+      rgba(139, 115, 85, 0.4) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      #5c4a3a 0%,
+      #6b5a4a 30%,
+      #7a6a5a 50%,
+      #6b5a4a 70%,
+      #5c4a3a 100%
+    );
+}
+
+/* New Eden Committee Wallpaper - dark with diffuse neon green glow */
+.wallpaper-eden {
+  background: linear-gradient(
+    180deg,
+    #1a1a1a 0%,
+    #2d2d1f 30%,
+    #1f2d1f 50%,
+    #2d2d1f 70%,
+    #1a1a1a 100%
+  );
+  background-image:
+    radial-gradient(
+      ellipse 80% 70% at 50% 45%,
+      rgba(57, 255, 20, 0.08) 0%,
+      rgba(57, 255, 20, 0.04) 30%,
+      rgba(57, 255, 20, 0.01) 60%,
+      transparent 80%
+    ),
+    linear-gradient(
+      180deg,
+      #1a1a1a 0%,
+      #2d2d1f 30%,
+      #1f2d1f 50%,
+      #2d2d1f 70%,
+      #1a1a1a 100%
+    );
+}
+
+/* ============================================
+   CRT SCREEN EFFECT OVERLAY
+   Only applies to the desktop wallpaper area
+   ============================================ */
+
+.crt-overlay {
+  /* Subtle scanlines - reduced opacity */
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0, 0, 0, 0.04) 3px,
+      rgba(0, 0, 0, 0.04) 6px
+    );
+  /* Subtle vignette effect */
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.15);
+  /* Only cover the desktop area, not menubar or taskbar */
+  top: 46px;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  position: fixed;
+  /* Behind all content - only affects wallpaper */
+  z-index: -5;
+}
+
+/* Add very subtle screen curvature illusion */
+.crt-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 50%,
+    transparent 0%,
+    rgba(0, 0, 0, 0.05) 85%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+
+/* Add very subtle RGB phosphor effect */
+.crt-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 0, 0, 0.008) 0px,
+      rgba(0, 255, 0, 0.008) 1px,
+      rgba(0, 0, 255, 0.008) 2px,
+      transparent 3px
+    );
+  opacity: 0.4;
+}
