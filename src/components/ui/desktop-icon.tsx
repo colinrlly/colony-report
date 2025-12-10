@@ -309,66 +309,43 @@ function CameraIcon() {
 function VideoCameraIcon() {
   return (
     <svg
-      width="96"
-      height="96"
+      width="84"
+      height="84"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Circle outline - black */}
-      <rect x="10" y="2" width="12" height="1" fill="#000" />
-      <rect x="7" y="3" width="3" height="1" fill="#000" />
-      <rect x="22" y="3" width="3" height="1" fill="#000" />
-      <rect x="5" y="4" width="2" height="1" fill="#000" />
-      <rect x="25" y="4" width="2" height="1" fill="#000" />
-      <rect x="4" y="5" width="1" height="1" fill="#000" />
-      <rect x="27" y="5" width="1" height="1" fill="#000" />
+      {/* Rounded square outline - black */}
+      <rect x="6" y="4" width="20" height="1" fill="#000" />
+      <rect x="4" y="5" width="2" height="1" fill="#000" />
+      <rect x="26" y="5" width="2" height="1" fill="#000" />
       <rect x="3" y="6" width="1" height="2" fill="#000" />
       <rect x="28" y="6" width="1" height="2" fill="#000" />
-      <rect x="2" y="8" width="1" height="3" fill="#000" />
-      <rect x="29" y="8" width="1" height="3" fill="#000" />
-      <rect x="1" y="11" width="1" height="10" fill="#000" />
-      <rect x="30" y="11" width="1" height="10" fill="#000" />
-      <rect x="2" y="21" width="1" height="3" fill="#000" />
-      <rect x="29" y="21" width="1" height="3" fill="#000" />
+      <rect x="2" y="8" width="1" height="16" fill="#000" />
+      <rect x="29" y="8" width="1" height="16" fill="#000" />
       <rect x="3" y="24" width="1" height="2" fill="#000" />
       <rect x="28" y="24" width="1" height="2" fill="#000" />
-      <rect x="4" y="26" width="1" height="1" fill="#000" />
-      <rect x="27" y="26" width="1" height="1" fill="#000" />
-      <rect x="5" y="27" width="2" height="1" fill="#000" />
-      <rect x="25" y="27" width="2" height="1" fill="#000" />
-      <rect x="7" y="28" width="3" height="1" fill="#000" />
-      <rect x="22" y="28" width="3" height="1" fill="#000" />
-      <rect x="10" y="29" width="12" height="1" fill="#000" />
+      <rect x="4" y="26" width="2" height="1" fill="#000" />
+      <rect x="26" y="26" width="2" height="1" fill="#000" />
+      <rect x="6" y="27" width="20" height="1" fill="#000" />
 
-      {/* Circle fill - orange base */}
-      <rect x="10" y="3" width="12" height="1" fill="#E8A040" />
-      <rect x="7" y="4" width="18" height="1" fill="#E8A040" />
-      <rect x="5" y="5" width="22" height="1" fill="#E8A040" />
+      {/* Rounded square fill - orange base */}
+      <rect x="6" y="5" width="20" height="1" fill="#E8A040" />
       <rect x="4" y="6" width="24" height="2" fill="#E8A040" />
-      <rect x="3" y="8" width="26" height="3" fill="#E8A040" />
-      <rect x="2" y="11" width="28" height="10" fill="#E8A040" />
-      <rect x="3" y="21" width="26" height="3" fill="#E8A040" />
+      <rect x="3" y="8" width="26" height="16" fill="#E8A040" />
       <rect x="4" y="24" width="24" height="2" fill="#E8A040" />
-      <rect x="5" y="26" width="22" height="1" fill="#E8A040" />
-      <rect x="7" y="27" width="18" height="1" fill="#E8A040" />
-      <rect x="10" y="28" width="12" height="1" fill="#E8A040" />
+      <rect x="6" y="26" width="20" height="1" fill="#E8A040" />
 
-      {/* Circle highlight - lighter orange on top/left */}
-      <rect x="10" y="3" width="10" height="1" fill="#F0B860" />
-      <rect x="7" y="4" width="14" height="1" fill="#F0B860" />
-      <rect x="5" y="5" width="16" height="1" fill="#F0B860" />
-      <rect x="4" y="6" width="16" height="1" fill="#F0B860" />
-      <rect x="3" y="7" width="14" height="1" fill="#F0B860" />
-      <rect x="3" y="8" width="10" height="1" fill="#F0B860" />
-      <rect x="2" y="11" width="2" height="6" fill="#F0B860" />
+      {/* Highlight - lighter orange on top/left */}
+      <rect x="6" y="5" width="18" height="1" fill="#F0B860" />
+      <rect x="4" y="6" width="20" height="1" fill="#F0B860" />
+      <rect x="3" y="7" width="18" height="1" fill="#F0B860" />
+      <rect x="3" y="8" width="2" height="10" fill="#F0B860" />
 
-      {/* Circle shadow - darker orange on bottom/right */}
-      <rect x="26" y="22" width="2" height="2" fill="#C08030" />
+      {/* Shadow - darker orange on bottom/right */}
+      <rect x="27" y="16" width="1" height="8" fill="#C08030" />
       <rect x="24" y="24" width="4" height="1" fill="#C08030" />
-      <rect x="22" y="25" width="5" height="1" fill="#C08030" />
-      <rect x="18" y="26" width="9" height="1" fill="#C08030" />
-      <rect x="14" y="27" width="11" height="1" fill="#C08030" />
-      <rect x="12" y="28" width="10" height="1" fill="#C08030" />
+      <rect x="20" y="25" width="8" height="1" fill="#C08030" />
+      <rect x="10" y="26" width="16" height="1" fill="#C08030" />
 
       {/* Play triangle outline - black */}
       <rect x="11" y="10" width="1" height="12" fill="#000" />
