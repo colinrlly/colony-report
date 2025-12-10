@@ -13,9 +13,11 @@ export const WindowTitleBar = forwardRef<HTMLDivElement, WindowTitleBarProps>(
       <div
         ref={ref}
         className={cn(
+          "window-drag-handle",
           "flex items-center justify-between",
           "h-[18px] px-[2px]",
           "select-none",
+          "cursor-grab active:cursor-grabbing",
           active ? "bg-win98-title-active" : "bg-win98-title-inactive",
           className
         )}

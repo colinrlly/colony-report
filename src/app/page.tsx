@@ -11,9 +11,9 @@ import {
 
 export default function Home() {
   return (
-    <main className="min-h-screen p-8 flex flex-col gap-8 items-center justify-center">
+    <main className="min-h-screen relative">
       {/* Active Window Example */}
-      <Window className="w-[400px]">
+      <Window className="w-[400px] absolute top-[50px] left-[50px]">
         <WindowTitleBar>
           <div className="flex items-center gap-1">
             <WindowIcon />
@@ -32,7 +32,7 @@ export default function Home() {
       </Window>
 
       {/* Inactive Window Example */}
-      <Window active={false} className="w-[400px]">
+      <Window active={false} className="w-[400px] absolute top-[100px] left-[200px]">
         <WindowTitleBar>
           <div className="flex items-center gap-1">
             <WindowIcon />
@@ -52,7 +52,7 @@ export default function Home() {
       </Window>
 
       {/* Dialog Example */}
-      <Window className="w-[300px]">
+      <Window className="w-[300px] absolute top-[200px] left-[500px]">
         <WindowTitleBar>
           <WindowTitle>Confirm</WindowTitle>
           <WindowControls showMinimize={false} showMaximize={false} />
