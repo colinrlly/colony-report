@@ -17,29 +17,179 @@ interface ContactHRFormProps {
 
 type SubjectType =
   | ""
-  | "general"
-  | "benefits"
-  | "payroll"
-  | "leave"
-  | "workplace"
-  | "training"
-  | "other";
+  | "feedback"
+  | "bug"
+  | "feature"
+  | "question"
+  | "compliment"
+  | "collaboration";
 
 const subjectOptions: { value: SubjectType; label: string }[] = [
   { value: "", label: "-- Select a Topic --" },
-  { value: "general", label: "General Inquiry" },
-  { value: "benefits", label: "Benefits & Insurance" },
-  { value: "payroll", label: "Payroll & Compensation" },
-  { value: "leave", label: "Leave Request / Time Off" },
-  { value: "workplace", label: "Workplace Concern" },
-  { value: "training", label: "Training & Development" },
-  { value: "other", label: "Other" },
+  { value: "feedback", label: "General Feedback" },
+  { value: "bug", label: "Bug Report" },
+  { value: "feature", label: "Feature Request" },
+  { value: "question", label: "Question About the Project" },
+  { value: "compliment", label: "Pay HR a Compliment" },
+  { value: "collaboration", label: "Collaboration / External Inquiry" },
 ];
+
+type RatingType = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+const ratingLabels: Record<RatingType, string> = {
+  0: "Not rated",
+  1: "Terrible",
+  2: "Bad",
+  3: "Meh",
+  4: "Good",
+  5: "Great",
+  6: "Amazing!",
+};
+
+// Pixel art smiley faces as SVG components
+function SmileyPartyHat({ selected, onClick }: { selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-10 h-12 flex items-center justify-center ${selected ? 'win98-border-pressed bg-white' : 'win98-border-raised bg-win98-surface hover:bg-win98-surface/80'}`}
+      title="Amazing!"
+    >
+      <svg width="24" height="32" viewBox="0 0 24 32" fill="none" style={{ imageRendering: "pixelated" }}>
+        {/* Party hat */}
+        <rect x="10" y="0" width="4" height="2" fill="#ff6b6b" />
+        <rect x="8" y="2" width="8" height="2" fill="#ff6b6b" />
+        <rect x="6" y="4" width="12" height="2" fill="#4ecdc4" />
+        <rect x="4" y="6" width="16" height="2" fill="#ffe66d" />
+        {/* Face - bright yellow */}
+        <rect x="4" y="8" width="16" height="16" fill="#ffdd00" />
+        {/* Big grin eyes (happy squint) */}
+        <rect x="6" y="12" width="4" height="2" fill="#222" />
+        <rect x="14" y="12" width="4" height="2" fill="#222" />
+        {/* Big open grin */}
+        <rect x="6" y="18" width="12" height="4" fill="#222" />
+        <rect x="8" y="18" width="8" height="2" fill="#ff6b6b" />
+      </svg>
+    </button>
+  );
+}
+
+function SmileyBigGrin({ selected, onClick }: { selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-10 h-12 flex items-center justify-center ${selected ? 'win98-border-pressed bg-white' : 'win98-border-raised bg-win98-surface hover:bg-win98-surface/80'}`}
+      title="Great"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ imageRendering: "pixelated" }}>
+        {/* Face - yellow */}
+        <rect x="4" y="4" width="16" height="16" fill="#ffdd00" />
+        {/* Happy eyes */}
+        <rect x="6" y="8" width="4" height="4" fill="#222" />
+        <rect x="14" y="8" width="4" height="4" fill="#222" />
+        {/* Wide smile */}
+        <rect x="6" y="14" width="12" height="2" fill="#222" />
+        <rect x="8" y="16" width="8" height="2" fill="#222" />
+      </svg>
+    </button>
+  );
+}
+
+function SmileyHappy({ selected, onClick }: { selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-10 h-12 flex items-center justify-center ${selected ? 'win98-border-pressed bg-white' : 'win98-border-raised bg-win98-surface hover:bg-win98-surface/80'}`}
+      title="Good"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ imageRendering: "pixelated" }}>
+        {/* Face - yellow */}
+        <rect x="4" y="4" width="16" height="16" fill="#ffdd00" />
+        {/* Eyes */}
+        <rect x="6" y="8" width="4" height="4" fill="#222" />
+        <rect x="14" y="8" width="4" height="4" fill="#222" />
+        {/* Smile */}
+        <rect x="6" y="14" width="2" height="2" fill="#222" />
+        <rect x="8" y="16" width="8" height="2" fill="#222" />
+        <rect x="16" y="14" width="2" height="2" fill="#222" />
+      </svg>
+    </button>
+  );
+}
+
+function SmileyNeutral({ selected, onClick }: { selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-10 h-12 flex items-center justify-center ${selected ? 'win98-border-pressed bg-white' : 'win98-border-raised bg-win98-surface hover:bg-win98-surface/80'}`}
+      title="Meh"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ imageRendering: "pixelated" }}>
+        {/* Face - pale yellow */}
+        <rect x="4" y="4" width="16" height="16" fill="#f0d000" />
+        {/* Eyes */}
+        <rect x="6" y="8" width="4" height="4" fill="#222" />
+        <rect x="14" y="8" width="4" height="4" fill="#222" />
+        {/* Straight line mouth */}
+        <rect x="6" y="14" width="12" height="2" fill="#222" />
+      </svg>
+    </button>
+  );
+}
+
+function SmileySad({ selected, onClick }: { selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-10 h-12 flex items-center justify-center ${selected ? 'win98-border-pressed bg-white' : 'win98-border-raised bg-win98-surface hover:bg-win98-surface/80'}`}
+      title="Bad"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ imageRendering: "pixelated" }}>
+        {/* Face - orange-yellow */}
+        <rect x="4" y="4" width="16" height="16" fill="#ffaa00" />
+        {/* Sad eyes */}
+        <rect x="6" y="8" width="4" height="4" fill="#222" />
+        <rect x="14" y="8" width="4" height="4" fill="#222" />
+        {/* Frown */}
+        <rect x="8" y="14" width="8" height="2" fill="#222" />
+        <rect x="6" y="16" width="2" height="2" fill="#222" />
+        <rect x="16" y="16" width="2" height="2" fill="#222" />
+      </svg>
+    </button>
+  );
+}
+
+function SmileyCrying({ selected, onClick }: { selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`w-10 h-12 flex items-center justify-center ${selected ? 'win98-border-pressed bg-white' : 'win98-border-raised bg-win98-surface hover:bg-win98-surface/80'}`}
+      title="Terrible"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style={{ imageRendering: "pixelated" }}>
+        {/* Face - red */}
+        <rect x="4" y="4" width="16" height="16" fill="#ff4444" />
+        {/* Crying eyes */}
+        <rect x="6" y="8" width="4" height="4" fill="#222" />
+        <rect x="14" y="8" width="4" height="4" fill="#222" />
+        {/* Tears */}
+        <rect x="8" y="12" width="2" height="4" fill="#66ccff" />
+        <rect x="14" y="12" width="2" height="4" fill="#66ccff" />
+        {/* Open frown/wail */}
+        <rect x="8" y="16" width="8" height="4" fill="#222" />
+      </svg>
+    </button>
+  );
+}
 
 export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
   const [employeeName, setEmployeeName] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
-  const [department, setDepartment] = useState("");
+  const [rating, setRating] = useState<RatingType>(0);
   const [subject, setSubject] = useState<SubjectType>("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +199,7 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!employeeName || !subject || !message) {
+    if (!subject || !message) {
       setStatusMessage("Please fill in all required fields");
       return;
     }
@@ -69,9 +219,8 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
           access_key: "f99ee498-61b9-4613-8bcd-10cb61da0a27",
           subject: `[HR Contact Form] ${subjectLabel}`,
           from_name: "N.E.C. HR Portal",
-          name: employeeName,
-          employee_id: employeeId || "Not provided",
-          department: department || "Not specified",
+          name: employeeName || "Anonymous",
+          experience_rating: ratingLabels[rating],
           topic: subjectLabel,
           message: message,
         }),
@@ -84,8 +233,7 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
         setStatusMessage("Message sent successfully!");
         // Reset form
         setEmployeeName("");
-        setEmployeeId("");
-        setDepartment("");
+        setRating(0);
         setSubject("");
         setMessage("");
       } else {
@@ -136,48 +284,36 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-3">
-          {/* Employee Name */}
+          {/* Employee Name - Optional */}
           <div>
             <label className="block text-xs font-bold text-win98-text mb-1">
-              Employee Name <span className="text-red-600">*</span>
+              Your Name
             </label>
             <input
               type="text"
               value={employeeName}
               onChange={(e) => setEmployeeName(e.target.value)}
               className="w-full win98-border-sunken bg-white px-2 py-1 text-sm text-win98-text focus:outline-none"
-              placeholder="Enter your full name"
+              placeholder="You may remain anonymous - HR understands."
               disabled={isSubmitting}
             />
           </div>
 
-          {/* Employee ID and Department Row */}
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <label className="block text-xs font-bold text-win98-text mb-1">
-                Employee ID
-              </label>
-              <input
-                type="text"
-                value={employeeId}
-                onChange={(e) => setEmployeeId(e.target.value)}
-                className="w-full win98-border-sunken bg-white px-2 py-1 text-sm text-win98-text focus:outline-none"
-                placeholder="e.g., NEC-12345"
-                disabled={isSubmitting}
-              />
-            </div>
-            <div className="flex-1">
-              <label className="block text-xs font-bold text-win98-text mb-1">
-                Department
-              </label>
-              <input
-                type="text"
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-                className="w-full win98-border-sunken bg-white px-2 py-1 text-sm text-win98-text focus:outline-none"
-                placeholder="e.g., Research"
-                disabled={isSubmitting}
-              />
+          {/* Experience Rating */}
+          <div>
+            <label className="block text-xs font-bold text-win98-text mb-1">
+              Rate Your Experience
+            </label>
+            <div className="flex gap-1 items-end">
+              <SmileyCrying selected={rating === 1} onClick={() => setRating(1)} />
+              <SmileySad selected={rating === 2} onClick={() => setRating(2)} />
+              <SmileyNeutral selected={rating === 3} onClick={() => setRating(3)} />
+              <SmileyHappy selected={rating === 4} onClick={() => setRating(4)} />
+              <SmileyBigGrin selected={rating === 5} onClick={() => setRating(5)} />
+              <SmileyPartyHat selected={rating === 6} onClick={() => setRating(6)} />
+              {rating > 0 && (
+                <span className="ml-2 text-xs text-win98-text/70 self-center">{ratingLabels[rating]}</span>
+              )}
             </div>
           </div>
 
