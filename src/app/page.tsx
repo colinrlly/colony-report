@@ -343,20 +343,18 @@ export default function Home() {
                   <path d="M155 65 Q162 70 164 80 Q165 92 160 102 Q154 108 148 105 Q142 98 144 85 Q143 72 148 66 Q152 62 155 65" fill="#5CB85C" />
                   {/* Bottom continent - wide irregular shape */}
                   <path d="M55 148 Q65 144 80 146 Q95 143 110 147 Q122 150 125 156 Q120 162 105 160 Q88 163 70 160 Q55 158 52 153 Q52 150 55 148" fill="#5CB85C" />
-                  {/* Small island bottom-left */}
-                  <path d="M35 138 Q42 134 48 137 Q52 142 48 148 Q42 152 36 148 Q32 144 35 138" fill="#5CB85C" />
                   {/* Smiley face */}
                   <circle cx="68" cy="75" r="10" fill="#333" /> {/* Left eye */}
                   <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
                   <path d="M60 105 Q90 140 120 105" stroke="#333" strokeWidth="8" fill="none" strokeLinecap="round" />
                 </svg>
-                <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14]" style={{ fontFamily: 'Arial Black, sans-serif', textShadow: '0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 40px #39ff14, 0 0 60px #2ecc0a, 2px 2px 0px #1a4d0a' }}>
+                <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14]" style={{ fontFamily: 'Arial Black, sans-serif', textShadow: '0 0 4px rgba(57, 255, 20, 0.8), 2px 2px 0px #1a4d0a' }}>
                   NEW EDEN
                 </div>
-                <div className="text-[32px] tracking-[0.4em] text-[#39ff14] mt-2" style={{ fontFamily: 'Arial, sans-serif', textShadow: '0 0 8px #39ff14, 0 0 16px #39ff14, 0 0 32px #2ecc0a, 1px 1px 0px #1a4d0a' }}>
+                <div className="text-[32px] tracking-[0.4em] text-[#39ff14] mt-2" style={{ fontFamily: 'Arial, sans-serif', textShadow: '0 0 3px rgba(57, 255, 20, 0.7), 1px 1px 0px #1a4d0a' }}>
                   COMMITTEE
                 </div>
-                <div className="mt-10 text-[12px] tracking-wide" style={{ color: '#7dff7d', textShadow: '0 0 6px #39ff14, 0 0 12px #39ff14' }}>
+                <div className="mt-10 text-[12px] text-[#7dff7d] tracking-wide">
                   Cultivating Tomorrow, Today™
                 </div>
               </div>
