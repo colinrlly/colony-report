@@ -251,7 +251,7 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
   };
 
   return (
-    <Window className="w-[500px] absolute top-[15vh] left-[calc(50vw-250px)] flex flex-col">
+    <Window className="w-[500px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col">
       <WindowTitleBar>
         <WindowTitle>Contact Human Resources</WindowTitle>
         <WindowControls onMinimize={onMinimize} onClose={onClose} />
