@@ -216,7 +216,7 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          access_key: "f99ee498-61b9-4613-8bcd-10cb61da0a27",
+          access_key: "9e611e62-87a4-4e0a-bae9-80394d012683",
           subject: `[HR Contact Form] ${subjectLabel}`,
           from_name: "N.E.C. HR Portal",
           name: employeeName || "Anonymous",
