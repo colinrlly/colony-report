@@ -144,52 +144,61 @@ function BadgeIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Lanyard */}
-      <rect x="15" y="1" width="2" height="5" fill="#2060A0" />
-      <rect x="14" y="2" width="1" height="3" fill="#3080C0" />
-      <rect x="17" y="2" width="1" height="3" fill="#1850A0" />
+      {/* Clipboard outline - teal/green */}
+      <rect x="5" y="4" width="1" height="1" fill="#1a5c4c" />
+      <rect x="6" y="3" width="20" height="1" fill="#1a5c4c" />
+      <rect x="26" y="4" width="1" height="1" fill="#1a5c4c" />
+      <rect x="27" y="5" width="1" height="24" fill="#1a5c4c" />
+      <rect x="26" y="29" width="1" height="1" fill="#1a5c4c" />
+      <rect x="6" y="30" width="20" height="1" fill="#1a5c4c" />
+      <rect x="5" y="29" width="1" height="1" fill="#1a5c4c" />
+      <rect x="4" y="5" width="1" height="24" fill="#1a5c4c" />
 
-      {/* Badge clip */}
-      <rect x="13" y="5" width="6" height="2" fill="#888" />
-      <rect x="13" y="5" width="6" height="1" fill="#AAA" />
-
-      {/* Badge outline */}
-      <rect x="7" y="7" width="1" height="1" fill="#000" />
-      <rect x="8" y="6" width="16" height="1" fill="#000" />
-      <rect x="24" y="7" width="1" height="1" fill="#000" />
-      <rect x="25" y="8" width="1" height="20" fill="#000" />
-      <rect x="24" y="28" width="1" height="1" fill="#000" />
-      <rect x="8" y="29" width="16" height="1" fill="#000" />
-      <rect x="7" y="28" width="1" height="1" fill="#000" />
-      <rect x="6" y="8" width="1" height="20" fill="#000" />
-
-      {/* Badge body - white */}
-      <rect x="8" y="7" width="16" height="1" fill="#FFF" />
-      <rect x="7" y="8" width="18" height="20" fill="#F8F8F8" />
-      <rect x="8" y="28" width="16" height="1" fill="#E0E0E0" />
+      {/* Clipboard body - light blue */}
+      <rect x="6" y="4" width="20" height="1" fill="#d0e8f0" />
+      <rect x="5" y="5" width="22" height="24" fill="#d0e8f0" />
+      <rect x="6" y="29" width="20" height="1" fill="#b0d0e0" />
 
       {/* Left highlight */}
-      <rect x="7" y="8" width="1" height="19" fill="#FFF" />
+      <rect x="5" y="5" width="1" height="23" fill="#e0f0f8" />
 
-      {/* Right shadow */}
-      <rect x="24" y="9" width="1" height="19" fill="#D0D0D0" />
+      {/* Right/bottom shadow */}
+      <rect x="26" y="6" width="1" height="23" fill="#a0c0d0" />
 
-      {/* Photo area - blue background */}
-      <rect x="10" y="10" width="12" height="10" fill="#4080C0" />
-      <rect x="10" y="10" width="12" height="1" fill="#5090D0" />
-      <rect x="10" y="11" width="1" height="8" fill="#5090D0" />
-      <rect x="21" y="11" width="1" height="9" fill="#3070B0" />
-      <rect x="10" y="19" width="12" height="1" fill="#3070B0" />
+      {/* Clip at top */}
+      <rect x="12" y="1" width="8" height="1" fill="#1a5c4c" />
+      <rect x="11" y="2" width="10" height="3" fill="#1a5c4c" />
+      <rect x="12" y="2" width="8" height="1" fill="#2a7c6c" />
+      <rect x="11" y="2" width="1" height="2" fill="#2a7c6c" />
 
-      {/* Person silhouette */}
-      <rect x="14" y="11" width="4" height="1" fill="#E8D8C0" />
-      <rect x="13" y="12" width="6" height="3" fill="#E8D8C0" />
-      <rect x="14" y="15" width="4" height="1" fill="#E8D8C0" />
-      <rect x="12" y="16" width="8" height="3" fill="#606060" />
+      {/* Person profile area - light background */}
+      <rect x="10" y="7" width="12" height="10" fill="#e8f4f8" />
+      <rect x="10" y="7" width="12" height="1" fill="#f0f8fc" />
 
-      {/* Text lines */}
-      <rect x="9" y="22" width="14" height="2" fill="#333" />
-      <rect x="11" y="25" width="10" height="1" fill="#666" />
+      {/* Person head */}
+      <rect x="14" y="8" width="4" height="1" fill="#6b5040" />
+      <rect x="13" y="9" width="6" height="1" fill="#6b5040" />
+      <rect x="14" y="9" width="4" height="1" fill="#e8c8a0" />
+      <rect x="13" y="10" width="6" height="2" fill="#e8c8a0" />
+      <rect x="14" y="12" width="4" height="1" fill="#e8c8a0" />
+
+      {/* Person body - teal shirt */}
+      <rect x="12" y="13" width="8" height="1" fill="#2090a0" />
+      <rect x="11" y="14" width="10" height="3" fill="#2090a0" />
+      <rect x="15" y="13" width="2" height="1" fill="#30a0b0" />
+      <rect x="14" y="14" width="4" height="1" fill="#30a0b0" />
+
+      {/* Checkboxes on left */}
+      <rect x="7" y="19" width="3" height="3" fill="#60c0d0" />
+      <rect x="8" y="20" width="1" height="1" fill="#e8f4f8" />
+      <rect x="7" y="24" width="3" height="3" fill="#60c0d0" />
+      <rect x="8" y="25" width="1" height="1" fill="#e8f4f8" />
+
+      {/* Text lines on right */}
+      <rect x="12" y="19" width="12" height="1" fill="#1a5c4c" />
+      <rect x="12" y="21" width="10" height="1" fill="#1a5c4c" />
+      <rect x="12" y="24" width="12" height="1" fill="#1a5c4c" />
+      <rect x="12" y="26" width="8" height="1" fill="#1a5c4c" />
     </svg>
   );
 }
