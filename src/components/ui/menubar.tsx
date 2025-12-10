@@ -94,8 +94,8 @@ export function MenubarLogo() {
             "absolute top-full left-0 mt-1",
             "bg-win98-surface",
             "win98-border-raised",
-            "p-2",
-            "text-[10px]",
+            "p-3",
+            "text-[12px]",
             "z-50"
           )}
         >
