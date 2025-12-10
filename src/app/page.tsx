@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
-import { Menubar, MenubarItem } from "@/components/ui/menubar";
+import { Menubar, MenubarItem, MenubarLogo } from "@/components/ui/menubar";
 
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
@@ -12,6 +12,7 @@ export default function Home() {
   return (
     <>
       <Menubar>
+        <MenubarLogo />
         <MenubarItem label="Help" />
         <MenubarItem label="View" />
         <MenubarItem label="Tools" />
