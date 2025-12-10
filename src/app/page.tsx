@@ -7,6 +7,7 @@ import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { Germsweeper } from "@/components/minesweeper";
 import { ContactHRForm } from "@/components/contact-hr-form";
+import { TutorialHelper } from "@/components/tutorial-helper";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -84,6 +85,10 @@ export default function Home() {
   // Contact HR form state
   const [isContactHROpen, setIsContactHROpen] = useState(false);
   const [isContactHRMinimized, setIsContactHRMinimized] = useState(false);
+
+  // Tutorial helper state
+  const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
+  const [tutorialClickCount, setTutorialClickCount] = useState(0);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -214,6 +219,13 @@ export default function Home() {
     setTimeout(() => setIsAntWiggling(false), 600); // Animation duration: 0.15s * 4 repeats
   }, [isAntWiggling]);
 
+  // Handle tutorial click - show Clippy-like helper
+  const handleTutorialClick = useCallback(() => {
+    if (isTutorialHelperVisible) return; // Don't restart if already visible
+    setTutorialClickCount(prev => prev + 1);
+    setIsTutorialHelperVisible(true);
+  }, [isTutorialHelperVisible]);
+
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
@@ -246,7 +258,7 @@ export default function Home() {
 
   // Help menu items - defined here to access contact HR handler
   const helpMenuItems: MenuItemData[] = [
-    { label: "Tutorial" },
+    { label: "Tutorial", onClick: handleTutorialClick },
     { label: "Contact HR", onClick: () => {
       setIsContactHROpen(true);
       setIsContactHRMinimized(false);
@@ -540,6 +552,14 @@ export default function Home() {
               setIsContactHRMinimized(false);
             }}
             onMinimize={() => setIsContactHRMinimized(true)}
+          />
+        )}
+
+        {/* Tutorial Helper (Clippy knockoff) */}
+        {isTutorialHelperVisible && (
+          <TutorialHelper
+            clickCount={tutorialClickCount}
+            onAnimationComplete={() => setIsTutorialHelperVisible(false)}
           />
         )}
       </main>
