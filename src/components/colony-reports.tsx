@@ -13,14 +13,14 @@ import { SidebarNav } from "@/components/ui/sidebar-nav";
 import { ReportContent } from "@/components/ui/report-content";
 
 const navItems = [
-  { id: "bee", icon: "bee" as const, label: "Bee Studies" },
-  { id: "snail", icon: "snail" as const, label: "Snail Research" },
-  { id: "ladybug", icon: "ladybug" as const, label: "Ladybug Analysis" },
-  { id: "hand", icon: "hand" as const, label: "Hand Studies" },
-  { id: "apricot", icon: "apricot" as const, label: "Apricot Data" },
-  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations" },
-  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records" },
-  { id: "frog", icon: "frog" as const, label: "Frog Documentation" },
+  { id: "bee", icon: "bee" as const, label: "Bee Studies", statusText: "Tracker Placed on Hive Mother // Coordinates relayed to base every 03:00 hours" },
+  { id: "snail", icon: "snail" as const, label: "Snail Research", statusText: "OW-FDA Control Unit // Hallucinations Reported // notes: will need to test again.. for science" },
+  { id: "ladybug", icon: "ladybug" as const, label: "Ladybug Analysis", statusText: "Still Awaiting Ethics Review // Not Approved for Public Release" },
+  { id: "hand", icon: "hand" as const, label: "Hand Studies", statusText: "Awaiting HR Assessment // Unstable Limb Proliferation" },
+  { id: "apricot", icon: "apricot" as const, label: "Apricot Data", statusText: "How-To Guide // Local Food Documentation // FDAA approval pending" },
+  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations", statusText: "Botanical Observation // Specimen Discovery // additional notes: Toby reported numbness at injection site for 7 days after" },
+  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records", statusText: "Botanical Observation // Specimen Response // additional notes: please watch your step, they are getting angry" },
+  { id: "frog", icon: "frog" as const, label: "Frog Documentation", statusText: "Level 4 containment initiated // Intern recovered alive // notes: cancel human autopsy request" },
 ];
 
 interface ColonyReportsProps {
@@ -29,6 +29,9 @@ interface ColonyReportsProps {
 
 export function ColonyReports({ onClose }: ColonyReportsProps) {
   const [selectedId, setSelectedId] = useState("bee");
+
+  const selectedItem = navItems.find((item) => item.id === selectedId);
+  const statusText = selectedItem?.statusText ?? "";
 
   return (
     <Window className="w-[80vw] h-[80vh] absolute top-[10vh] left-[10vw] flex flex-col">
@@ -48,10 +51,10 @@ export function ColonyReports({ onClose }: ColonyReportsProps) {
 
       <WindowStatusBar>
         <WindowStatusField className="flex-none w-[120px]">
-          Colony Report
+          File Notes
         </WindowStatusField>
-        <WindowStatusField>
-          Still Awaiting Ethics Review // Not Approved for Public Release
+        <WindowStatusField className="text-right">
+          {statusText}
         </WindowStatusField>
       </WindowStatusBar>
     </Window>
