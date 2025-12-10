@@ -21,7 +21,7 @@ export default function Home() {
 
       <main className="min-h-screen relative p-4 pt-[38px] pb-[50px]">
         {/* Desktop Icons */}
-        <div className="absolute top-[40px] left-4 flex flex-col gap-2">
+        <div className="absolute top-[60px] left-6 flex flex-col gap-2">
           <DesktopIcon
             label="Colony Reports"
             color="#8b7355"
