@@ -69,20 +69,63 @@ function FolderIcon() {
   );
 }
 
+// Small pixel art skull icon
+function SkullIcon() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      shapeRendering="crispEdges"
+      className="inline-block ml-1"
+    >
+      {/* Skull outline */}
+      <rect x="3" y="1" width="6" height="1" fill="#000" />
+      <rect x="2" y="2" width="1" height="1" fill="#000" />
+      <rect x="9" y="2" width="1" height="1" fill="#000" />
+      <rect x="1" y="3" width="1" height="4" fill="#000" />
+      <rect x="10" y="3" width="1" height="4" fill="#000" />
+      <rect x="2" y="7" width="1" height="1" fill="#000" />
+      <rect x="9" y="7" width="1" height="1" fill="#000" />
+      <rect x="3" y="8" width="2" height="1" fill="#000" />
+      <rect x="7" y="8" width="2" height="1" fill="#000" />
+      <rect x="5" y="9" width="2" height="1" fill="#000" />
+      <rect x="4" y="10" width="1" height="1" fill="#000" />
+      <rect x="7" y="10" width="1" height="1" fill="#000" />
+
+      {/* Skull fill - white/bone */}
+      <rect x="3" y="2" width="6" height="1" fill="#F0F0E8" />
+      <rect x="2" y="3" width="8" height="4" fill="#F0F0E8" />
+      <rect x="3" y="7" width="6" height="1" fill="#F0F0E8" />
+      <rect x="5" y="8" width="2" height="1" fill="#F0F0E8" />
+      <rect x="5" y="10" width="2" height="1" fill="#F0F0E8" />
+
+      {/* Eye sockets - black */}
+      <rect x="3" y="4" width="2" height="2" fill="#000" />
+      <rect x="7" y="4" width="2" height="2" fill="#000" />
+
+      {/* Nose hole */}
+      <rect x="5" y="6" width="2" height="1" fill="#000" />
+    </svg>
+  );
+}
+
 interface FolderItemProps {
   label: string;
+  showSkull?: boolean;
   onClick?: () => void;
 }
 
-function FolderItem({ label, onClick }: FolderItemProps) {
+function FolderItem({ label, showSkull, onClick }: FolderItemProps) {
   return (
     <button
       onClick={onClick}
       className="flex flex-col items-center gap-1 p-3 rounded hover:bg-[#000080]/20 focus:bg-[#000080]/30 focus:outline-none cursor-pointer"
     >
       <FolderIcon />
-      <span className="text-[12px] text-center leading-tight max-w-[80px] text-win98-text">
+      <span className="text-[12px] text-center leading-tight max-w-[100px] text-win98-text flex items-center">
         {label}
+        {showSkull && <SkullIcon />}
       </span>
     </button>
   );
@@ -91,6 +134,7 @@ function FolderItem({ label, onClick }: FolderItemProps) {
 interface NestedFolderWindowProps {
   title: string;
   childFolderLabel: string;
+  showSkullOnChild?: boolean;
   onClose?: () => void;
   onOpenChild?: () => void;
   position?: { top: string; left: string };
@@ -99,6 +143,7 @@ interface NestedFolderWindowProps {
 export function NestedFolderWindow({
   title,
   childFolderLabel,
+  showSkullOnChild,
   onClose,
   onOpenChild,
   position = { top: "18vh", left: "35vw" },
@@ -119,7 +164,7 @@ export function NestedFolderWindow({
       {/* Window content area with white background like a file explorer */}
       <div className="flex-1 bg-white win98-border-sunken m-[2px] p-4 overflow-auto">
         <div className="flex justify-center items-center h-full">
-          <FolderItem label={childFolderLabel} onClick={onOpenChild} />
+          <FolderItem label={childFolderLabel} showSkull={showSkullOnChild} onClick={onOpenChild} />
         </div>
       </div>
     </Window>

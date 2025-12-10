@@ -328,7 +328,8 @@ export default function Home() {
         {isAreYouSeriousOpen && (
           <NestedFolderWindow
             title="Are You Serious"
-            childFolderLabel="Ugh Fine"
+            childFolderLabel="Unbelievable"
+            showSkullOnChild={true}
             onClose={() => setIsAreYouSeriousOpen(false)}
             onOpenChild={() => setIsUghFineOpen(true)}
             position={{ top: "28vh", left: "48vw" }}
@@ -336,7 +337,7 @@ export default function Home() {
         )}
         {isUghFineOpen && (
           <NestedFolderWindow
-            title="Ugh Fine"
+            title="Unbelievable 💀"
             childFolderLabel="secret_pet_monitor"
             onClose={() => setIsUghFineOpen(false)}
             onOpenChild={() => setIsPetMonitorOpen(true)}
