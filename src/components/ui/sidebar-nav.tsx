@@ -1,10 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { SidebarIcon, SidebarIconType } from "./sidebar-icons";
 
 interface NavItem {
   id: string;
-  color: string;
+  icon: SidebarIconType;
   label: string;
 }
 
@@ -34,11 +35,8 @@ export function SidebarNav({ items, selectedId, onSelect }: SidebarNavProps) {
           {selectedId === item.id && (
             <div className="absolute left-0 top-1 bottom-1 w-[4px] bg-[#7cb342]" />
           )}
-          {/* Placeholder icon */}
-          <div
-            className="w-[42px] h-[42px] rounded-sm"
-            style={{ backgroundColor: item.color }}
-          />
+          {/* Pixel art icon */}
+          <SidebarIcon icon={item.icon} />
         </button>
       ))}
     </nav>

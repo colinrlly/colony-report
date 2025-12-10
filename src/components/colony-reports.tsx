@@ -13,10 +13,14 @@ import { SidebarNav } from "@/components/ui/sidebar-nav";
 import { ReportContent } from "@/components/ui/report-content";
 
 const navItems = [
-  { id: "specimen", color: "#c44", label: "Specimen" },
-  { id: "hand", color: "#db9", label: "Hand Studies" },
-  { id: "flask", color: "#8bd", label: "Chemical Analysis" },
-  { id: "food", color: "#da6", label: "Dietary Observations" },
+  { id: "bee", icon: "bee" as const, label: "Bee Studies" },
+  { id: "snail", icon: "snail" as const, label: "Snail Research" },
+  { id: "ladybug", icon: "ladybug" as const, label: "Ladybug Analysis" },
+  { id: "hand", icon: "hand" as const, label: "Hand Studies" },
+  { id: "apricot", icon: "apricot" as const, label: "Apricot Data" },
+  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations" },
+  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records" },
+  { id: "frog", icon: "frog" as const, label: "Frog Documentation" },
 ];
 
 interface ColonyReportsProps {
@@ -24,7 +28,7 @@ interface ColonyReportsProps {
 }
 
 export function ColonyReports({ onClose }: ColonyReportsProps) {
-  const [selectedId, setSelectedId] = useState("specimen");
+  const [selectedId, setSelectedId] = useState("bee");
 
   return (
     <Window className="w-[80vw] h-[80vh] absolute top-[10vh] left-[10vw] flex flex-col">
