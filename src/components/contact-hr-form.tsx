@@ -189,6 +189,7 @@ function SmileyCrying({ selected, onClick }: { selected: boolean; onClick: () =>
 
 export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
   const [employeeName, setEmployeeName] = useState("");
+  const [replyEmail, setReplyEmail] = useState("");
   const [rating, setRating] = useState<RatingType>(0);
   const [subject, setSubject] = useState<SubjectType>("");
   const [message, setMessage] = useState("");
@@ -220,6 +221,7 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
           subject: `[HR Contact Form] ${subjectLabel}`,
           from_name: "N.E.C. HR Portal",
           name: employeeName || "Anonymous",
+          reply_to: replyEmail || "No email provided",
           experience_rating: ratingLabels[rating],
           topic: subjectLabel,
           message: message,
@@ -233,6 +235,7 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
         setStatusMessage("Message sent successfully!");
         // Reset form
         setEmployeeName("");
+        setReplyEmail("");
         setRating(0);
         setSubject("");
         setMessage("");
@@ -295,6 +298,21 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
               onChange={(e) => setEmployeeName(e.target.value)}
               className="w-full win98-border-sunken bg-white px-2 py-1 text-sm text-win98-text focus:outline-none"
               placeholder="You may remain anonymous - HR understands."
+              disabled={isSubmitting}
+            />
+          </div>
+
+          {/* Reply Email - Optional */}
+          <div>
+            <label className="block text-xs font-bold text-win98-text mb-1">
+              Want a reply? Leave your email
+            </label>
+            <input
+              type="email"
+              value={replyEmail}
+              onChange={(e) => setReplyEmail(e.target.value)}
+              className="w-full win98-border-sunken bg-white px-2 py-1 text-sm text-win98-text focus:outline-none"
+              placeholder="your.email@example.com (optional)"
               disabled={isSubmitting}
             />
           </div>
