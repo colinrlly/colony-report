@@ -264,75 +264,76 @@ export default function Home() {
           <div className="wallpaper-default absolute inset-0 -z-10" />
         )}
         {currentWallpaper === 1 && (
-          <div className="wallpaper-formica absolute inset-0 -z-10">
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              {/* N.E.C. FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
-              <div className="text-center">
-                {/* N.E.C. on its own line - large with periods */}
-                <div className="text-[96px] font-bold tracking-[0.15em] text-[#d4c8a0] drop-shadow-[3px_3px_0px_#3d2914] leading-none" style={{ fontFamily: 'Arial Black, sans-serif' }}>
-                  N.E.C.
-                </div>
-                {/* Formica Division on its own line - bold */}
-                <div className="text-[36px] font-bold tracking-[0.25em] text-[#d4c8a0] mt-4 drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
-                  FORMICA DIVISION
-                </div>
-                {/* Pixel Art Ant Logo - below text, clickable */}
-                <svg
-                  className="mx-auto mt-8 cursor-pointer hover:scale-105 transition-transform"
-                  width="80"
-                  height="80"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  style={{ imageRendering: "pixelated" }}
-                  onClick={handleAntClick}
-                >
-                  {/* Ant head */}
-                  <rect x="8" y="2" width="4" height="3" fill="#1a1a1a" />
-                  {/* Antennae */}
-                  <rect x="6" y="1" width="1" height="2" fill="#1a1a1a" />
-                  <rect x="13" y="1" width="1" height="2" fill="#1a1a1a" />
-                  <rect x="5" y="0" width="1" height="1" fill="#1a1a1a" />
-                  <rect x="14" y="0" width="1" height="1" fill="#1a1a1a" />
-                  {/* Thorax (middle body) */}
-                  <rect x="7" y="5" width="6" height="4" fill="#1a1a1a" />
-                  {/* Abdomen (back body) */}
-                  <rect x="6" y="9" width="8" height="5" fill="#1a1a1a" />
-                  <rect x="7" y="14" width="6" height="3" fill="#1a1a1a" />
-                  <rect x="8" y="17" width="4" height="2" fill="#1a1a1a" />
-                  {/* Left legs - animated */}
-                  <g className={`ant-leg-left ${isAntWiggling ? 'wiggling' : ''}`}>
-                    <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
-                    <rect x="3" y="6" width="1" height="2" fill="#1a1a1a" />
-                    <rect x="4" y="8" width="3" height="1" fill="#1a1a1a" />
-                    <rect x="2" y="9" width="2" height="1" fill="#1a1a1a" />
-                    <rect x="4" y="11" width="2" height="1" fill="#1a1a1a" />
-                    <rect x="2" y="12" width="2" height="1" fill="#1a1a1a" />
-                    <rect x="1" y="13" width="1" height="2" fill="#1a1a1a" />
-                  </g>
-                  {/* Right legs - animated */}
-                  <g className={`ant-leg-right ${isAntWiggling ? 'wiggling' : ''}`}>
-                    <rect x="13" y="5" width="3" height="1" fill="#1a1a1a" />
-                    <rect x="16" y="6" width="1" height="2" fill="#1a1a1a" />
-                    <rect x="13" y="8" width="3" height="1" fill="#1a1a1a" />
-                    <rect x="16" y="9" width="2" height="1" fill="#1a1a1a" />
-                    <rect x="14" y="11" width="2" height="1" fill="#1a1a1a" />
-                    <rect x="16" y="12" width="2" height="1" fill="#1a1a1a" />
-                    <rect x="18" y="13" width="1" height="2" fill="#1a1a1a" />
-                  </g>
-                  {/* Eyes */}
-                  <rect x="8" y="3" width="1" height="1" fill="#4a4a4a" />
-                  <rect x="11" y="3" width="1" height="1" fill="#4a4a4a" />
-                </svg>
-                <div className="mt-8 text-[11px] text-[#a09080] tracking-wide">
-                  For Authorized Personnel Only
-                </div>
-                <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
-                  ColonyOS Workstation v4.2 - Ant Hill Subnetwork
-                </div>
-                <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
-                  Property of N.E.C. - Unauthorized access prohibited
-                </div>
+          <div className="wallpaper-formica absolute inset-0 -z-10" />
+        )}
+        {currentWallpaper === 1 && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+            {/* N.E.C. FORMICA DIVISION styled like Microsoft Windows Premiere Edition */}
+            <div className="text-center">
+              {/* N.E.C. on its own line - large with periods */}
+              <div className="text-[96px] font-bold tracking-[0.15em] text-[#d4c8a0] drop-shadow-[3px_3px_0px_#3d2914] leading-none" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                N.E.C.
+              </div>
+              {/* Formica Division on its own line - bold */}
+              <div className="text-[36px] font-bold tracking-[0.25em] text-[#d4c8a0] mt-4 drop-shadow-[2px_2px_0px_#3d2914]" style={{ fontFamily: 'Arial Black, sans-serif' }}>
+                FORMICA DIVISION
+              </div>
+              {/* Pixel Art Ant Logo - below text, clickable */}
+              <svg
+                className="mx-auto mt-8 cursor-pointer hover:scale-105 transition-transform pointer-events-auto"
+                width="80"
+                height="80"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                style={{ imageRendering: "pixelated" }}
+                onClick={handleAntClick}
+              >
+                {/* Ant head */}
+                <rect x="8" y="2" width="4" height="3" fill="#1a1a1a" />
+                {/* Antennae */}
+                <rect x="6" y="1" width="1" height="2" fill="#1a1a1a" />
+                <rect x="13" y="1" width="1" height="2" fill="#1a1a1a" />
+                <rect x="5" y="0" width="1" height="1" fill="#1a1a1a" />
+                <rect x="14" y="0" width="1" height="1" fill="#1a1a1a" />
+                {/* Thorax (middle body) */}
+                <rect x="7" y="5" width="6" height="4" fill="#1a1a1a" />
+                {/* Abdomen (back body) */}
+                <rect x="6" y="9" width="8" height="5" fill="#1a1a1a" />
+                <rect x="7" y="14" width="6" height="3" fill="#1a1a1a" />
+                <rect x="8" y="17" width="4" height="2" fill="#1a1a1a" />
+                {/* Left legs - animated */}
+                <g className={`ant-leg-left ${isAntWiggling ? 'wiggling' : ''}`}>
+                  <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="3" y="6" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="4" y="8" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="2" y="9" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="4" y="11" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="2" y="12" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="1" y="13" width="1" height="2" fill="#1a1a1a" />
+                </g>
+                {/* Right legs - animated */}
+                <g className={`ant-leg-right ${isAntWiggling ? 'wiggling' : ''}`}>
+                  <rect x="13" y="5" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="6" width="1" height="2" fill="#1a1a1a" />
+                  <rect x="13" y="8" width="3" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="9" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="14" y="11" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="16" y="12" width="2" height="1" fill="#1a1a1a" />
+                  <rect x="18" y="13" width="1" height="2" fill="#1a1a1a" />
+                </g>
+                {/* Eyes */}
+                <rect x="8" y="3" width="1" height="1" fill="#4a4a4a" />
+                <rect x="11" y="3" width="1" height="1" fill="#4a4a4a" />
+              </svg>
+              <div className="mt-8 text-[11px] text-[#a09080] tracking-wide">
+                For Authorized Personnel Only
+              </div>
+              <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
+                ColonyOS Workstation v4.2 - Ant Hill Subnetwork
+              </div>
+              <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
+                Property of N.E.C. - Unauthorized access prohibited
               </div>
             </div>
           </div>
