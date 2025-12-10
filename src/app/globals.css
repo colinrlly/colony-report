@@ -207,6 +207,8 @@ body {
   left: 0;
   right: 0;
   position: fixed;
+  /* Behind all content - only affects wallpaper */
+  z-index: -5;
 }
 
 /* Add very subtle screen curvature illusion */

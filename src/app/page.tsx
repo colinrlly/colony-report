@@ -312,7 +312,13 @@ export default function Home() {
                   FORMICA DIVISION
                 </div>
                 <div className="mt-12 text-[11px] text-[#a09080] tracking-wide">
-                  NEC is a registered trademark of New Eden Committee Corp.
+                  For Authorized Personnel Only
+                </div>
+                <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
+                  ColonyOS Workstation v4.2 - Ant Hill Subnetwork
+                </div>
+                <div className="text-[11px] text-[#a09080] tracking-wide mt-1">
+                  Property of N.E.C. - Unauthorized access prohibited
                 </div>
               </div>
             </div>
@@ -327,12 +333,17 @@ export default function Home() {
                 <svg className="mx-auto mb-6" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
                   {/* Earth circle */}
                   <circle cx="90" cy="90" r="80" fill="#4A90D9" stroke="#2E5A88" strokeWidth="4" />
-                  {/* Continents/land masses - positioned to avoid face features */}
-                  <ellipse cx="90" cy="28" rx="28" ry="14" fill="#5CB85C" /> {/* Top continent */}
-                  <ellipse cx="28" cy="90" rx="14" ry="28" fill="#5CB85C" /> {/* Left continent */}
-                  <ellipse cx="152" cy="85" rx="14" ry="24" fill="#5CB85C" /> {/* Right continent */}
-                  <ellipse cx="90" cy="155" rx="32" ry="12" fill="#5CB85C" /> {/* Bottom continent */}
-                  <ellipse cx="45" cy="145" rx="16" ry="10" fill="#5CB85C" /> {/* Bottom-left island */}
+                  {/* Continents/land masses - organic blobs positioned to avoid face features */}
+                  {/* Top continent - irregular blob */}
+                  <path d="M65 22 Q72 18 85 20 Q100 19 108 24 Q115 30 110 38 Q102 42 88 40 Q74 43 68 36 Q62 28 65 22" fill="#5CB85C" />
+                  {/* Left continent - organic shape */}
+                  <path d="M18 70 Q22 60 28 55 Q36 52 40 58 Q44 68 42 82 Q44 95 38 105 Q30 112 22 108 Q16 100 15 88 Q14 78 18 70" fill="#5CB85C" />
+                  {/* Right continent - asymmetric blob */}
+                  <path d="M155 65 Q162 70 164 80 Q165 92 160 102 Q154 108 148 105 Q142 98 144 85 Q143 72 148 66 Q152 62 155 65" fill="#5CB85C" />
+                  {/* Bottom continent - wide irregular shape */}
+                  <path d="M55 148 Q65 144 80 146 Q95 143 110 147 Q122 150 125 156 Q120 162 105 160 Q88 163 70 160 Q55 158 52 153 Q52 150 55 148" fill="#5CB85C" />
+                  {/* Small island bottom-left */}
+                  <path d="M35 138 Q42 134 48 137 Q52 142 48 148 Q42 152 36 148 Q32 144 35 138" fill="#5CB85C" />
                   {/* Smiley face */}
                   <circle cx="68" cy="75" r="10" fill="#333" /> {/* Left eye */}
                   <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
@@ -352,8 +363,8 @@ export default function Home() {
           </div>
         )}
 
-        {/* CRT Screen Effect Overlay - applies to all wallpapers */}
-        <div className="crt-overlay fixed inset-0 pointer-events-none z-[100]" />
+        {/* CRT Screen Effect Overlay - behind all content, only affects wallpaper */}
+        <div className="crt-overlay pointer-events-none -z-5" />
 
         {/* Desktop Icons - each independently draggable */}
         {DESKTOP_ICONS.map((iconConfig) => (
