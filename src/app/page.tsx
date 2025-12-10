@@ -5,7 +5,7 @@ import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
-import { Minesweeper } from "@/components/minesweeper";
+import { Germsweeper } from "@/components/minesweeper";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -226,7 +226,7 @@ export default function Home() {
     {
       label: "Games",
       submenu: [
-        { label: "Minesweeper", onClick: () => {
+        { label: "Germsweeper", onClick: () => {
           setIsMinesweeperOpen(true);
           setIsMinesweeperMinimized(false);
         }},
@@ -512,9 +512,9 @@ export default function Home() {
           }} />
         )}
 
-        {/* Minesweeper Game */}
+        {/* Germsweeper Game */}
         {isMinesweeperOpen && !isMinesweeperMinimized && (
-          <Minesweeper
+          <Germsweeper
             onClose={() => {
               setIsMinesweeperOpen(false);
               setIsMinesweeperMinimized(false);
@@ -548,7 +548,7 @@ export default function Home() {
         )}
         {isMinesweeperOpen && (
           <TaskbarButton
-            title="Minesweeper"
+            title="Germsweeper"
             isActive={!isMinesweeperMinimized}
             onClick={() => setIsMinesweeperMinimized(!isMinesweeperMinimized)}
           />

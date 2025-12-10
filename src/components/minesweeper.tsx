@@ -8,9 +8,67 @@ import {
   WindowControls,
 } from "@/components/ui/window";
 
-interface MinesweeperProps {
+interface GermsweeperProps {
   onClose: () => void;
   onMinimize: () => void;
+}
+
+// Pixel art germ icon component
+function GermIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ imageRendering: "pixelated" }}
+    >
+      {/* Main germ body - green blob */}
+      <rect x="5" y="3" width="4" height="1" fill="#4CAF50" />
+      <rect x="4" y="4" width="6" height="1" fill="#4CAF50" />
+      <rect x="3" y="5" width="8" height="4" fill="#4CAF50" />
+      <rect x="4" y="9" width="6" height="1" fill="#4CAF50" />
+      <rect x="5" y="10" width="4" height="1" fill="#4CAF50" />
+      {/* Tentacles/flagella */}
+      <rect x="2" y="4" width="1" height="2" fill="#66BB6A" />
+      <rect x="1" y="3" width="1" height="1" fill="#66BB6A" />
+      <rect x="11" y="4" width="1" height="2" fill="#66BB6A" />
+      <rect x="12" y="3" width="1" height="1" fill="#66BB6A" />
+      <rect x="3" y="10" width="1" height="2" fill="#66BB6A" />
+      <rect x="10" y="10" width="1" height="2" fill="#66BB6A" />
+      <rect x="6" y="11" width="1" height="2" fill="#66BB6A" />
+      <rect x="2" y="7" width="1" height="1" fill="#66BB6A" />
+      <rect x="11" y="7" width="1" height="1" fill="#66BB6A" />
+      {/* Eyes */}
+      <rect x="5" y="6" width="1" height="1" fill="#1a1a1a" />
+      <rect x="8" y="6" width="1" height="1" fill="#1a1a1a" />
+      {/* Angry eyebrows */}
+      <rect x="4" y="5" width="2" height="1" fill="#2E7D32" />
+      <rect x="8" y="5" width="2" height="1" fill="#2E7D32" />
+    </svg>
+  );
+}
+
+// Green checkmark icon component
+function CheckmarkIcon() {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ imageRendering: "pixelated" }}
+    >
+      {/* Checkmark */}
+      <rect x="2" y="6" width="2" height="2" fill="#4CAF50" />
+      <rect x="4" y="7" width="2" height="2" fill="#4CAF50" />
+      <rect x="6" y="5" width="2" height="2" fill="#4CAF50" />
+      <rect x="8" y="3" width="2" height="2" fill="#4CAF50" />
+      <rect x="10" y="1" width="1" height="2" fill="#4CAF50" />
+    </svg>
+  );
 }
 
 type CellState = {
@@ -140,7 +198,7 @@ function checkWin(board: CellState[][]): boolean {
 const NUMBER_COLORS: Record<number, string> = {
   1: "#0000FF",
   2: "#008000",
-  3: "#FF0000",
+  3: "#FF8C00",  // Orange instead of red
   4: "#000080",
   5: "#800000",
   6: "#008080",
@@ -148,7 +206,7 @@ const NUMBER_COLORS: Record<number, string> = {
   8: "#808080",
 };
 
-export function Minesweeper({ onClose, onMinimize }: MinesweeperProps) {
+export function Germsweeper({ onClose, onMinimize }: GermsweeperProps) {
   const [board, setBoard] = useState<CellState[][]>(createEmptyBoard);
   const [gameState, setGameState] = useState<GameState>("playing");
   const [isFirstClick, setIsFirstClick] = useState(true);
@@ -245,7 +303,7 @@ export function Minesweeper({ onClose, onMinimize }: MinesweeperProps) {
   return (
     <Window className="absolute top-[15vh] left-[30vw] flex flex-col">
       <WindowTitleBar>
-        <WindowTitle>Minesweeper</WindowTitle>
+        <WindowTitle>Germsweeper</WindowTitle>
         <WindowControls showMaximize={false} onClose={onClose} onMinimize={onMinimize} />
       </WindowTitleBar>
 
@@ -334,8 +392,8 @@ export function Minesweeper({ onClose, onMinimize }: MinesweeperProps) {
                   onContextMenu={(e) => handleRightClick(e, rowIdx, colIdx)}
                   disabled={cell.isRevealed && !cell.isMine}
                 >
-                  {cell.isFlagged && !cell.isRevealed && "🚩"}
-                  {cell.isRevealed && cell.isMine && "💣"}
+                  {cell.isFlagged && !cell.isRevealed && <CheckmarkIcon />}
+                  {cell.isRevealed && cell.isMine && <GermIcon />}
                   {cell.isRevealed &&
                     !cell.isMine &&
                     cell.adjacentMines > 0 &&
@@ -349,7 +407,7 @@ export function Minesweeper({ onClose, onMinimize }: MinesweeperProps) {
         {/* Game over message */}
         {gameState !== "playing" && (
           <div className="text-center mt-2 text-sm font-bold">
-            {gameState === "won" ? "You Win! 🎉" : "Game Over! 💥"}
+            {gameState === "won" ? "Area Sanitized! 🎉" : "Infected! 🦠"}
           </div>
         )}
       </div>
