@@ -78,7 +78,7 @@
 }
 
 html, body {
-  cursor: url('/cursor.svg') 4 4, auto !important;
+  cursor: url('/cursor.svg') 0 0, auto !important;
 }
 
 /* Ensure interactive elements use pointer cursor */
@@ -86,14 +86,14 @@ button, [role="button"], a, select,
 input[type="button"], input[type="submit"],
 input[type="checkbox"], input[type="radio"],
 label[for], .clickable {
-  cursor: url('/cursor.svg') 4 4, pointer !important;
+  cursor: url('/cursor.svg') 0 0, pointer !important;
 }
 
 /* Text inputs use default cursor */
 input[type="text"], input[type="email"], input[type="password"],
 input[type="number"], input[type="search"], input[type="tel"],
 input[type="url"], textarea {
-  cursor: url('/cursor.svg') 4 4, auto !important;
+  cursor: url('/cursor.svg') 0 0, auto !important;
 }
 
 body {
