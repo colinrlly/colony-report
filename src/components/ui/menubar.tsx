@@ -114,6 +114,7 @@ export interface MenuItemData {
   onClick?: () => void;
   submenu?: MenuItemData[];
   isHistoryItem?: boolean;
+  isHistoryTitle?: boolean;
 }
 
 interface MenubarItemProps {
@@ -180,6 +181,19 @@ function MenuDropdownItem({ item, onClose }: { item: MenuItemData; onClose: () =
             ))}
           </div>
         )}
+      </div>
+    );
+  }
+
+  if (item.isHistoryTitle) {
+    return (
+      <div
+        className={cn(
+          "px-4 py-1 text-[13px] whitespace-nowrap font-bold",
+          "text-[#333] cursor-default border-b border-[#808080] mb-1"
+        )}
+      >
+        {item.label}
       </div>
     );
   }

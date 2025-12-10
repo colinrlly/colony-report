@@ -9,7 +9,7 @@ import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from 
 const viewMenuItems: MenuItemData[] = [
   { label: "Refresh Desktop" },
   { label: "Show Hidden Files" },
-  { label: "Change Wallpaper" },
+  { label: "Toggle Wallpaper" },
 ];
 
 const toolsMenuItems: MenuItemData[] = [
@@ -19,7 +19,15 @@ const toolsMenuItems: MenuItemData[] = [
       { label: "Mine Sweeper" },
     ],
   },
-  { label: "Security Cams" },
+  {
+    label: "Security Cams",
+    submenu: [
+      { label: "Ant Hill- Cam 1" },
+      { label: "Ant Hill- Cam 2" },
+      { label: "Ant Hill- Cam 3" },
+      { label: "Ant Hill- Cam 4" },
+    ],
+  },
   { label: "Plant Monitor" },
 ];
 
@@ -29,6 +37,7 @@ const helpMenuItems: MenuItemData[] = [
 ];
 
 const historyMenuItems: MenuItemData[] = [
+  { label: "Internet Browsing History", isHistoryTitle: true },
   { label: "WebMED  How to treat mild acid burn?", isHistoryItem: true },
   { label: "What to do if I poisoned my coworker by mistake?", isHistoryItem: true },
   { label: "Cute baby animals", isHistoryItem: true },
