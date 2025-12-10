@@ -109,24 +109,190 @@ export function MenubarLogo() {
   );
 }
 
+export interface MenuItemData {
+  label: string;
+  onClick?: () => void;
+  submenu?: MenuItemData[];
+  isHistoryItem?: boolean;
+}
+
 interface MenubarItemProps {
   label: string;
   onClick?: () => void;
+  menuItems?: MenuItemData[];
 }
 
-export function MenubarItem({ label, onClick }: MenubarItemProps) {
+function MenuDropdownItem({ item, onClose }: { item: MenuItemData; onClose: () => void }) {
+  const [showSubmenu, setShowSubmenu] = useState(false);
+  const itemRef = useRef<HTMLDivElement>(null);
+
+  if (item.submenu) {
+    return (
+      <div
+        ref={itemRef}
+        className="relative"
+        onMouseEnter={() => setShowSubmenu(true)}
+        onMouseLeave={() => setShowSubmenu(false)}
+      >
+        <div
+          className={cn(
+            "px-4 py-1 cursor-pointer flex items-center justify-between",
+            "hover:bg-win98-title-active hover:text-white"
+          )}
+        >
+          <span>{item.label}</span>
+          <svg
+            width="8"
+            height="8"
+            viewBox="0 0 8 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="ml-4"
+          >
+            <path d="M2 1L6 4L2 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+        {showSubmenu && (
+          <div
+            className={cn(
+              "absolute left-full top-0 -mt-1",
+              "bg-win98-surface",
+              "win98-border-raised",
+              "py-1",
+              "min-w-[140px]",
+              "z-50"
+            )}
+          >
+            {item.submenu.map((subItem, index) => (
+              <div
+                key={index}
+                onClick={() => {
+                  subItem.onClick?.();
+                  onClose();
+                }}
+                className={cn(
+                  "px-4 py-1 cursor-pointer whitespace-nowrap",
+                  "hover:bg-win98-title-active hover:text-white"
+                )}
+              >
+                {subItem.label}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (item.isHistoryItem) {
+    return (
+      <div
+        className={cn(
+          "px-4 py-0.5 text-[13px] whitespace-nowrap",
+          "text-[#333] cursor-default"
+        )}
+      >
+        {item.label}
+      </div>
+    );
+  }
+
   return (
-    <button
-      onClick={onClick}
+    <div
+      onClick={() => {
+        item.onClick?.();
+        onClose();
+      }}
       className={cn(
-        "px-2 py-1",
-        "text-[14px]",
-        "hover:bg-win98-title-active hover:text-white",
-        "active:win98-border-pressed"
+        "px-4 py-1 cursor-pointer whitespace-nowrap",
+        "hover:bg-win98-title-active hover:text-white"
       )}
     >
-      {label}
-    </button>
+      {item.label}
+    </div>
+  );
+}
+
+export function MenubarItem({ label, onClick, menuItems }: MenubarItemProps) {
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    }
+
+    if (showDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
+
+  if (!menuItems) {
+    return (
+      <button
+        onClick={onClick}
+        className={cn(
+          "px-2 py-1",
+          "text-[14px]",
+          "hover:bg-win98-title-active hover:text-white",
+          "active:win98-border-pressed"
+        )}
+      >
+        {label}
+      </button>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <button
+        ref={buttonRef}
+        onClick={() => setShowDropdown(!showDropdown)}
+        className={cn(
+          "px-2 py-1",
+          "text-[14px]",
+          "hover:bg-win98-title-active hover:text-white",
+          showDropdown && "bg-win98-title-active text-white"
+        )}
+      >
+        {label}
+      </button>
+
+      {showDropdown && (
+        <div
+          ref={dropdownRef}
+          className={cn(
+            "absolute top-full left-0 mt-0",
+            "bg-win98-surface",
+            "win98-border-raised",
+            "py-1",
+            "text-[14px]",
+            "z-50",
+            "min-w-[160px]"
+          )}
+        >
+          {menuItems.map((item, index) => (
+            <MenuDropdownItem
+              key={index}
+              item={item}
+              onClose={() => setShowDropdown(false)}
+            />
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
