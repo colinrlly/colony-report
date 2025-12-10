@@ -14,8 +14,8 @@ interface DesktopIconProps {
 function FolderIcon() {
   return (
     <svg
-      width="64"
-      height="64"
+      width="80"
+      height="80"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
@@ -75,8 +75,8 @@ function FolderIcon() {
 function NotebookIcon() {
   return (
     <svg
-      width="64"
-      height="64"
+      width="80"
+      height="80"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
@@ -139,8 +139,8 @@ function NotebookIcon() {
 function BadgeIcon() {
   return (
     <svg
-      width="64"
-      height="64"
+      width="80"
+      height="80"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
@@ -206,8 +206,8 @@ function BadgeIcon() {
 function CameraIcon() {
   return (
     <svg
-      width="64"
-      height="64"
+      width="80"
+      height="80"
       viewBox="0 4 32 32"
       shapeRendering="crispEdges"
     >
@@ -281,8 +281,8 @@ function CameraIcon() {
 function VideoCameraIcon() {
   return (
     <svg
-      width="64"
-      height="64"
+      width="80"
+      height="80"
       viewBox="0 6 32 32"
       shapeRendering="crispEdges"
     >
