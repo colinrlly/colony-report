@@ -23,13 +23,13 @@ export function ColonyReports() {
   const [selectedId, setSelectedId] = useState("specimen");
 
   return (
-    <Window className="w-[800px] absolute top-[50px] left-[50px]">
+    <Window className="w-[800px] h-[600px] absolute top-[50px] left-[50px] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
         <WindowControls showMinimize={false} showMaximize={false} />
       </WindowTitleBar>
 
-      <div className="flex h-[500px]">
+      <div className="flex flex-1 min-h-0">
         <SidebarNav
           items={navItems}
           selectedId={selectedId}

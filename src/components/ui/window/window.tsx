@@ -22,6 +22,7 @@ export const Window = forwardRef<HTMLDivElement, WindowProps>(
               "win98-border-raised",
               "p-[3px]",
               "text-win98-text text-[11px]",
+              "resize overflow-auto",
               className
             )}
             {...props}
