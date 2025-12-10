@@ -3,6 +3,8 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
+import { NestedFolderWindow } from "@/components/nested-folder-window";
+import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -81,6 +83,15 @@ export default function Home() {
   const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
+
+  // Nested folder windows state - chain from "Nothing..." to pet monitor
+  const [isNothingOpen, setIsNothingOpen] = useState(false);
+  const [isSeriouslyNothingOpen, setIsSeriouslyNothingOpen] = useState(false);
+  const [isPleaseStopOpen, setIsPleaseStopOpen] = useState(false);
+  const [isGoNoFurtherOpen, setIsGoNoFurtherOpen] = useState(false);
+  const [isAreYouSeriousOpen, setIsAreYouSeriousOpen] = useState(false);
+  const [isUghFineOpen, setIsUghFineOpen] = useState(false);
+  const [isPetMonitorOpen, setIsPetMonitorOpen] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -271,7 +282,71 @@ export default function Home() {
           <ColonyReports onClose={() => setIsColonyReportsOpen(false)} />
         )}
         {isSecretsFolderOpen && (
-          <SecretsFolder onClose={() => setIsSecretsFolderOpen(false)} />
+          <SecretsFolder
+            onClose={() => setIsSecretsFolderOpen(false)}
+            onOpenNothing={() => setIsNothingOpen(true)}
+          />
+        )}
+
+        {/* Nested folder chain from Nothing... */}
+        {isNothingOpen && (
+          <NestedFolderWindow
+            title="Nothing..."
+            childFolderLabel="Seriously Nothing…"
+            onClose={() => setIsNothingOpen(false)}
+            onOpenChild={() => setIsSeriouslyNothingOpen(true)}
+            position={{ top: "20vh", left: "32vw" }}
+          />
+        )}
+        {isSeriouslyNothingOpen && (
+          <NestedFolderWindow
+            title="Seriously Nothing…"
+            childFolderLabel="Please Stop"
+            onClose={() => setIsSeriouslyNothingOpen(false)}
+            onOpenChild={() => setIsPleaseStopOpen(true)}
+            position={{ top: "22vh", left: "36vw" }}
+          />
+        )}
+        {isPleaseStopOpen && (
+          <NestedFolderWindow
+            title="Please Stop"
+            childFolderLabel="Go No Further"
+            onClose={() => setIsPleaseStopOpen(false)}
+            onOpenChild={() => setIsGoNoFurtherOpen(true)}
+            position={{ top: "24vh", left: "40vw" }}
+          />
+        )}
+        {isGoNoFurtherOpen && (
+          <NestedFolderWindow
+            title="Go No Further"
+            childFolderLabel="Are You Serious"
+            onClose={() => setIsGoNoFurtherOpen(false)}
+            onOpenChild={() => setIsAreYouSeriousOpen(true)}
+            position={{ top: "26vh", left: "44vw" }}
+          />
+        )}
+        {isAreYouSeriousOpen && (
+          <NestedFolderWindow
+            title="Are You Serious"
+            childFolderLabel="Ugh Fine"
+            onClose={() => setIsAreYouSeriousOpen(false)}
+            onOpenChild={() => setIsUghFineOpen(true)}
+            position={{ top: "28vh", left: "48vw" }}
+          />
+        )}
+        {isUghFineOpen && (
+          <NestedFolderWindow
+            title="Ugh Fine"
+            childFolderLabel="secret_pet_monitor"
+            onClose={() => setIsUghFineOpen(false)}
+            onOpenChild={() => setIsPetMonitorOpen(true)}
+            position={{ top: "30vh", left: "52vw" }}
+          />
+        )}
+
+        {/* Secret Pet Monitor - final destination */}
+        {isPetMonitorOpen && (
+          <SecretPetMonitor onClose={() => setIsPetMonitorOpen(false)} />
         )}
       </main>
 
@@ -279,15 +354,22 @@ export default function Home() {
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
-            isActive={!isSecretsFolderOpen}
+            isActive={!isSecretsFolderOpen && !isPetMonitorOpen}
             onClick={() => setIsColonyReportsOpen(true)}
           />
         )}
         {isSecretsFolderOpen && (
           <TaskbarButton
             title=".secrets"
-            isActive={true}
+            isActive={!isPetMonitorOpen}
             onClick={() => setIsSecretsFolderOpen(true)}
+          />
+        )}
+        {isPetMonitorOpen && (
+          <TaskbarButton
+            title="secret_pet_monitor"
+            isActive={true}
+            onClick={() => setIsPetMonitorOpen(true)}
           />
         )}
       </Taskbar>

@@ -88,30 +88,38 @@ function FolderItem({ label, onClick }: FolderItemProps) {
   );
 }
 
-interface SecretsFolderProps {
+interface NestedFolderWindowProps {
+  title: string;
+  childFolderLabel: string;
   onClose?: () => void;
-  onMinimize?: () => void;
-  onOpenNothing?: () => void;
+  onOpenChild?: () => void;
+  position?: { top: string; left: string };
 }
 
-export function SecretsFolder({ onClose, onMinimize, onOpenNothing }: SecretsFolderProps) {
+export function NestedFolderWindow({
+  title,
+  childFolderLabel,
+  onClose,
+  onOpenChild,
+  position = { top: "18vh", left: "35vw" },
+}: NestedFolderWindowProps) {
   return (
-    <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col">
+    <Window
+      className="w-[350px] h-[220px] absolute flex flex-col"
+      style={{ top: position.top, left: position.left }}
+    >
       <WindowTitleBar>
-        <WindowTitle>.secrets</WindowTitle>
+        <WindowTitle>{title}</WindowTitle>
         <WindowControls
           showMaximize={false}
           onClose={onClose}
-          onMinimize={onMinimize}
         />
       </WindowTitleBar>
 
       {/* Window content area with white background like a file explorer */}
       <div className="flex-1 bg-white win98-border-sunken m-[2px] p-4 overflow-auto">
-        <div className="flex flex-wrap gap-4 justify-start">
-          <FolderItem label="Stress Relief" />
-          <FolderItem label="Music" />
-          <FolderItem label="Nothing..." onClick={onOpenNothing} />
+        <div className="flex justify-center items-center h-full">
+          <FolderItem label={childFolderLabel} onClick={onOpenChild} />
         </div>
       </div>
     </Window>
