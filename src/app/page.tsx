@@ -3,25 +3,46 @@
 import { useState } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
+import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
+import { Menubar, MenubarItem } from "@/components/ui/menubar";
 
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
 
   return (
-    <main className="min-h-screen relative p-4">
-      {/* Desktop Icons */}
-      <div className="absolute top-4 left-4 flex flex-col gap-2">
-        <DesktopIcon
-          label="Colony Reports"
-          color="#8b7355"
-          onClick={() => setIsColonyReportsOpen(true)}
-        />
-      </div>
+    <>
+      <Menubar>
+        <MenubarItem label="File" />
+        <MenubarItem label="Edit" />
+        <MenubarItem label="View" />
+        <MenubarItem label="Help" />
+      </Menubar>
 
-      {/* Windows */}
-      {isColonyReportsOpen && (
-        <ColonyReports onClose={() => setIsColonyReportsOpen(false)} />
-      )}
-    </main>
+      <main className="min-h-screen relative p-4 pt-[38px] pb-[50px]">
+        {/* Desktop Icons */}
+        <div className="absolute top-[40px] left-4 flex flex-col gap-2">
+          <DesktopIcon
+            label="Colony Reports"
+            color="#8b7355"
+            onClick={() => setIsColonyReportsOpen(true)}
+          />
+        </div>
+
+        {/* Windows */}
+        {isColonyReportsOpen && (
+          <ColonyReports onClose={() => setIsColonyReportsOpen(false)} />
+        )}
+      </main>
+
+      <Taskbar>
+        {isColonyReportsOpen && (
+          <TaskbarButton
+            title="COLONY REPORTS"
+            isActive={true}
+            onClick={() => setIsColonyReportsOpen(true)}
+          />
+        )}
+      </Taskbar>
+    </>
   );
 }
