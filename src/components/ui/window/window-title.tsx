@@ -13,7 +13,7 @@ export const WindowTitle = forwardRef<HTMLHeadingElement, WindowTitleProps>(
       <h1
         ref={ref}
         className={cn(
-          "text-[11px] font-bold truncate",
+          "text-[14px] font-bold truncate tracking-wide",
           active ? "text-white" : "text-[var(--win98-title-inactive-text)]",
           className
         )}
