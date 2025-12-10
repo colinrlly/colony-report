@@ -49,7 +49,7 @@ const historyMenuItems: MenuItemData[] = [
   { label: "How long does it take to grow back eyebrows", isHistoryItem: true },
 ];
 
-type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera";
+type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock";
 
 interface DesktopIconConfig {
   id: string;
@@ -67,9 +67,18 @@ const DESKTOP_ICONS: DesktopIconConfig[] = [
   { id: "video-logs", label: "Video Logs", icon: "video-camera", initialPosition: { x: 24, y: 573 } },
 ];
 
+// Hidden file configuration - appears at bottom right
+const HIDDEN_FILE = {
+  id: "hidden-secrets",
+  label: ".secrets",
+  icon: "lock" as IconType,
+  position: { x: 0, y: 0 }, // Will be calculated based on screen size
+};
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [showHiddenFiles, setShowHiddenFiles] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -165,7 +174,7 @@ export default function Home() {
     // Trigger flicker animation
     setIsRefreshing(true);
 
-    // Reset all icon positions to their initial positions
+    // Reset all icon positions to their initial positions and hide hidden files
     setTimeout(() => {
       setIconPositions(
         DESKTOP_ICONS.reduce((acc, icon) => {
@@ -173,6 +182,7 @@ export default function Home() {
           return acc;
         }, {} as Record<string, { x: number; y: number }>)
       );
+      setShowHiddenFiles(false);
     }, 100);
 
     // End the flicker animation after a short delay
@@ -181,10 +191,15 @@ export default function Home() {
     }, 300);
   }, []);
 
+  // Handle show hidden files toggle
+  const handleShowHiddenFiles = useCallback(() => {
+    setShowHiddenFiles(prev => !prev);
+  }, []);
+
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
-    { label: "Show Hidden Files" },
+    { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
     { label: "Toggle Wallpaper" },
   ];
 
@@ -231,6 +246,22 @@ export default function Home() {
             />
           </div>
         ))}
+
+        {/* Hidden file - appears at bottom right when Show Hidden Files is clicked */}
+        {showHiddenFiles && (
+          <div
+            className="absolute select-none cursor-grab"
+            style={{
+              right: 24,
+              bottom: 70,
+            }}
+          >
+            <DesktopIcon
+              label={HIDDEN_FILE.label}
+              icon={HIDDEN_FILE.icon}
+            />
+          </div>
+        )}
 
         {/* Windows */}
         {isColonyReportsOpen && (
