@@ -78,7 +78,7 @@
 }
 
 html, body {
-  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28"><polygon points="2,2 2,22 7,17 11,26 14,25 10,16 17,16" fill="black"/><polygon points="4,5 4,19 7,16 11,24 12,23.5 8,15 14,15" fill="white"/><polygon points="5,7 5,15 6,14 6,8" fill="%23e8e8e8"/><polygon points="6,15 8,13 9,15 12,22 11,22.5 8,16" fill="%23a0a0a0"/></svg>') 2 2, auto !important;
+  cursor: url('/cursor.svg') 4 4, auto !important;
 }
 
 /* Ensure interactive elements use pointer cursor */
@@ -86,14 +86,14 @@ button, [role="button"], a, select,
 input[type="button"], input[type="submit"],
 input[type="checkbox"], input[type="radio"],
 label[for], .clickable {
-  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28"><polygon points="2,2 2,22 7,17 11,26 14,25 10,16 17,16" fill="black"/><polygon points="4,5 4,19 7,16 11,24 12,23.5 8,15 14,15" fill="white"/><polygon points="5,7 5,15 6,14 6,8" fill="%23e8e8e8"/><polygon points="6,15 8,13 9,15 12,22 11,22.5 8,16" fill="%23a0a0a0"/></svg>') 2 2, pointer !important;
+  cursor: url('/cursor.svg') 4 4, pointer !important;
 }
 
 /* Text inputs use default cursor */
 input[type="text"], input[type="email"], input[type="password"],
 input[type="number"], input[type="search"], input[type="tel"],
 input[type="url"], textarea {
-  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28"><polygon points="2,2 2,22 7,17 11,26 14,25 10,16 17,16" fill="black"/><polygon points="4,5 4,19 7,16 11,24 12,23.5 8,15 14,15" fill="white"/><polygon points="5,7 5,15 6,14 6,8" fill="%23e8e8e8"/><polygon points="6,15 8,13 9,15 12,22 11,22.5 8,16" fill="%23a0a0a0"/></svg>') 2 2, auto !important;
+  cursor: url('/cursor.svg') 4 4, auto !important;
 }
 
 body {
