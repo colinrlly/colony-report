@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
+import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { Germsweeper } from "@/components/minesweeper";
@@ -88,6 +89,10 @@ export default function Home() {
   // Contact HR form state
   const [isContactHROpen, setIsContactHROpen] = useState(false);
   const [isContactHRMinimized, setIsContactHRMinimized] = useState(false);
+
+  // Stress Relief gallery state
+  const [isStressReliefOpen, setIsStressReliefOpen] = useState(false);
+  const [isStressReliefMinimized, setIsStressReliefMinimized] = useState(false);
 
   // Tutorial helper state
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
@@ -216,6 +221,8 @@ export default function Home() {
       setIsMinesweeperMinimized(false);
       setIsContactHROpen(false);
       setIsContactHRMinimized(false);
+      setIsStressReliefOpen(false);
+      setIsStressReliefMinimized(false);
       setIsTutorialHelperVisible(false);
     }, 100);
 
@@ -257,6 +264,8 @@ export default function Home() {
       setIsMinesweeperMinimized(false);
       setIsContactHROpen(false);
       setIsContactHRMinimized(false);
+      setIsStressReliefOpen(false);
+      setIsStressReliefMinimized(false);
       setIsTutorialHelperVisible(false);
     }, 1800); // Just after progress bar completes
 
@@ -548,6 +557,10 @@ export default function Home() {
           <SecretsFolder
             onClose={() => setIsSecretsFolderOpen(false)}
             onOpenNothing={() => setIsNothingOpen(true)}
+            onOpenStressRelief={() => {
+              setIsStressReliefOpen(true);
+              setIsStressReliefMinimized(false);
+            }}
           />
         )}
 
@@ -644,6 +657,17 @@ export default function Home() {
           />
         )}
 
+        {/* Stress Relief Gallery */}
+        {isStressReliefOpen && !isStressReliefMinimized && (
+          <StressReliefGallery
+            onClose={() => {
+              setIsStressReliefOpen(false);
+              setIsStressReliefMinimized(false);
+            }}
+            onMinimize={() => setIsStressReliefMinimized(true)}
+          />
+        )}
+
         {/* Tutorial Helper (Clippy knockoff) */}
         {isTutorialHelperVisible && (
           <TutorialHelper
@@ -692,6 +716,13 @@ export default function Home() {
             title="Contact HR"
             isActive={!isContactHRMinimized}
             onClick={() => setIsContactHRMinimized(!isContactHRMinimized)}
+          />
+        )}
+        {isStressReliefOpen && (
+          <TaskbarButton
+            title="Stress Relief"
+            isActive={!isStressReliefMinimized}
+            onClick={() => setIsStressReliefMinimized(!isStressReliefMinimized)}
           />
         )}
       </Taskbar>
