@@ -396,3 +396,44 @@ body {
 .screensaver-hint {
   animation: fadeInHint 2s ease-in 1s forwards;
 }
+
+/* ============================================
+   POPUP NOTIFICATION SYSTEM
+   Slide-in/slide-out notifications from top right
+
+   Shared animations for all notification types:
+   - Calendar events (orange theme)
+   - Future: Alerts, Messages, System notifications, etc.
+   ============================================ */
+
+/* Slide in from right animation - shared by all notification types */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(calc(100% + 20px));
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide out to right animation - shared by all notification types */
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(100% + 20px));
+    opacity: 0;
+  }
+}
+
+.notification-slide-in {
+  animation: slideInFromRight 0.4s ease-out forwards;
+}
+
+.notification-slide-out {
+  animation: slideOutToRight 0.4s ease-in forwards;
+}

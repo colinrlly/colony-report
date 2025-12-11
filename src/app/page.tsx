@@ -12,6 +12,7 @@ import { Germsweeper } from "@/components/minesweeper";
 import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
+import { CalendarNotification } from "@/components/calendar-notification";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -64,6 +65,45 @@ const HIDDEN_FILE = {
 // Wallpaper options
 type WallpaperType = 0 | 1 | 2;
 
+/* ============================================
+   NOTIFICATION SYSTEM DATA
+
+   Architecture for popup notifications:
+   - Notifications cycle automatically with configurable timing
+   - Each notification type (calendar, alerts, etc.) has its own data array
+   - The system shows one notification at a time, cycling through all types
+   - Future: Add more notification types by creating new data arrays and components
+   ============================================ */
+
+// Timing constants for notification system (in milliseconds)
+const NOTIFICATION_INITIAL_DELAY = 3000;  // Delay before first notification
+const NOTIFICATION_GAP = 3000;            // Gap between notifications
+
+// Calendar notification data
+interface CalendarNotificationData {
+  eventName: string;
+  time: string;
+  note?: string;
+}
+
+const CALENDAR_NOTIFICATIONS: CalendarNotificationData[] = [
+  {
+    eventName: "Field Operation",
+    time: "Tomorrow 08:00-18:00",
+    note: "Note to self: bring Hank the experimental morning-cheer tonic.",
+  },
+  {
+    eventName: "Weekly Team Sync",
+    time: "Every Thursday 7:00-7:15",
+    note: "Note to self: Bring updated notes. Don't forget yesterday's field anomaly.",
+  },
+  {
+    eventName: "Specimen 14 Enrichment Session",
+    time: "Every other Monday",
+    note: "Note to self: bring new puzzle object, last one dissolved.",
+  },
+];
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
@@ -111,6 +151,11 @@ export default function Home() {
 
   // Screensaver state
   const [isScreensaverActive, setIsScreensaverActive] = useState(false);
+
+  // Notification system state
+  const [isCalendarNotificationVisible, setIsCalendarNotificationVisible] = useState(false);
+  const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
+  const notificationGapTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -334,6 +379,38 @@ export default function Home() {
   // Handle screensaver exit
   const handleScreensaverExit = useCallback(() => {
     setIsScreensaverActive(false);
+  }, []);
+
+  // Handle notification complete - wait for gap then show next
+  // Future: This will be expanded to handle multiple notification types
+  const handleCalendarNotificationComplete = useCallback(() => {
+    setIsCalendarNotificationVisible(false);
+
+    // Clear any existing gap timer
+    if (notificationGapTimerRef.current) {
+      clearTimeout(notificationGapTimerRef.current);
+    }
+
+    // After gap, show the next notification
+    notificationGapTimerRef.current = setTimeout(() => {
+      setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
+      setIsCalendarNotificationVisible(true);
+    }, NOTIFICATION_GAP);
+  }, []);
+
+  // Start the notification cycle on mount
+  useEffect(() => {
+    const initialTimer = setTimeout(() => {
+      setIsCalendarNotificationVisible(true);
+    }, NOTIFICATION_INITIAL_DELAY);
+
+    return () => {
+      clearTimeout(initialTimer);
+      // Clean up gap timer on unmount
+      if (notificationGapTimerRef.current) {
+        clearTimeout(notificationGapTimerRef.current);
+      }
+    };
   }, []);
 
   // View menu items - defined here to access the refresh handler
@@ -768,6 +845,15 @@ export default function Home() {
           />
         )}
       </main>
+
+      {/* Calendar Notification */}
+      <CalendarNotification
+        isVisible={isCalendarNotificationVisible}
+        onComplete={handleCalendarNotificationComplete}
+        eventName={CALENDAR_NOTIFICATIONS[currentNotificationIndex].eventName}
+        time={CALENDAR_NOTIFICATIONS[currentNotificationIndex].time}
+        note={CALENDAR_NOTIFICATIONS[currentNotificationIndex].note}
+      />
 
       {/* Screensaver */}
       {isScreensaverActive && (
