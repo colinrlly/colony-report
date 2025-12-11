@@ -47,10 +47,6 @@ function StickyNoteFace({ tirednessLevel }: { tirednessLevel: number }) {
 
           {/* Big smile */}
           <path d="M18 42 Q32 54 46 42" stroke="#333" strokeWidth="2.5" strokeLinecap="round" fill="none" />
-
-          {/* Rosy cheeks */}
-          <circle cx="12" cy="36" r="4" fill="#FFB6C1" opacity="0.6" />
-          <circle cx="52" cy="36" r="4" fill="#FFB6C1" opacity="0.6" />
         </>
       )}
 
