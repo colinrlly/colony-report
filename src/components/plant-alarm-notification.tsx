@@ -161,10 +161,10 @@ function HappyPlantIcon() {
       <rect x="9" y="7" width="2" height="2" fill="#1a1a1a" />
       <rect x="6" y="7" width="1" height="1" fill="#ffffff" />
       <rect x="10" y="7" width="1" height="1" fill="#ffffff" />
-      {/* Happy smile */}
-      <rect x="6" y="10" width="4" height="1" fill="#15803d" />
-      <rect x="5" y="9" width="1" height="1" fill="#15803d" />
-      <rect x="10" y="9" width="1" height="1" fill="#15803d" />
+      {/* Happy smile - curved smile shape */}
+      <rect x="6" y="10" width="4" height="1" fill="#1a1a1a" />
+      <rect x="5" y="9" width="1" height="1" fill="#1a1a1a" />
+      <rect x="10" y="9" width="1" height="1" fill="#1a1a1a" />
     </svg>
   );
 }
@@ -201,6 +201,35 @@ function WarningIcon() {
       {/* Exclamation mark */}
       <rect x="7" y="5" width="2" height="4" fill="#1a1a1a" />
       <rect x="7" y="10" width="2" height="2" fill="#1a1a1a" />
+    </svg>
+  );
+}
+
+function CheckmarkIcon() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={pixelArtStyle}
+      shapeRendering="crispEdges"
+    >
+      {/* Green circle background */}
+      <rect x="4" y="1" width="8" height="1" fill="#22c55e" />
+      <rect x="2" y="2" width="12" height="1" fill="#22c55e" />
+      <rect x="1" y="3" width="14" height="1" fill="#22c55e" />
+      <rect x="1" y="4" width="14" height="8" fill="#22c55e" />
+      <rect x="1" y="12" width="14" height="1" fill="#22c55e" />
+      <rect x="2" y="13" width="12" height="1" fill="#22c55e" />
+      <rect x="4" y="14" width="8" height="1" fill="#22c55e" />
+      {/* White checkmark */}
+      <rect x="3" y="7" width="2" height="2" fill="#ffffff" />
+      <rect x="5" y="9" width="2" height="2" fill="#ffffff" />
+      <rect x="7" y="7" width="2" height="2" fill="#ffffff" />
+      <rect x="9" y="5" width="2" height="2" fill="#ffffff" />
+      <rect x="11" y="3" width="2" height="2" fill="#ffffff" />
     </svg>
   );
 }
@@ -331,8 +360,9 @@ export function PlantAlarmNotification({
         style={{
           backgroundColor: isWatered ? COLORS.success.background : COLORS.alarm.background,
           padding: "2px",
-          width: "520px",
+          width: isWatered ? "280px" : "520px",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+          transform: isWatered ? "scale(1.15)" : "none",
         }}
       >
         {/* Title bar */}
@@ -344,7 +374,7 @@ export function PlantAlarmNotification({
               : COLORS.alarm.titleBarGradient,
           }}
         >
-          <WarningIcon />
+          {isWatered ? <CheckmarkIcon /> : <WarningIcon />}
           <span
             className="font-bold text-white tracking-wide uppercase"
             style={{ textShadow: "1px 1px 0px #1a1a1a", fontSize: "12px" }}
