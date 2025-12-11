@@ -366,17 +366,19 @@ export default function Home() {
     setIsScreensaverActive(false);
   }, []);
 
-  // Handle calendar notification trigger
-  const handleTriggerCalendarNotification = useCallback(() => {
+  // Handle calendar notification trigger - can specify which notification to show
+  const handleTriggerCalendarNotification = useCallback((index?: number) => {
     if (!isCalendarNotificationVisible) {
+      if (index !== undefined) {
+        setCurrentNotificationIndex(index);
+      }
       setIsCalendarNotificationVisible(true);
     }
   }, [isCalendarNotificationVisible]);
 
-  // Handle calendar notification complete - cycle to next notification
+  // Handle calendar notification complete
   const handleCalendarNotificationComplete = useCallback(() => {
     setIsCalendarNotificationVisible(false);
-    setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
   }, []);
 
   // View menu items - defined here to access the refresh handler
@@ -384,7 +386,14 @@ export default function Home() {
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
     { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
     { label: "Toggle Wallpaper", onClick: handleToggleWallpaper },
-    { label: "Test Notification", onClick: handleTriggerCalendarNotification },
+    {
+      label: "Test Notifications",
+      submenu: [
+        { label: "Field Operation", onClick: () => handleTriggerCalendarNotification(0) },
+        { label: "Weekly Team Sync", onClick: () => handleTriggerCalendarNotification(1) },
+        { label: "Specimen 14 Enrichment", onClick: () => handleTriggerCalendarNotification(2) },
+      ],
+    },
   ];
 
   // Tools menu items - defined here to access game handlers
