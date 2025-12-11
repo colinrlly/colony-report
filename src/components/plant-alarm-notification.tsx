@@ -123,9 +123,11 @@ function AngryPlantIcon() {
       <rect x="9" y="7" width="2" height="2" fill={COLORS.common.white} />
       <rect x="5" y="8" width="1" height="1" fill={COLORS.common.black} />
       <rect x="10" y="8" width="1" height="1" fill={COLORS.common.black} />
-      {/* Angry eyebrows */}
-      <rect x="4" y="6" width="2" height="1" fill={COLORS.common.black} />
-      <rect x="10" y="6" width="2" height="1" fill={COLORS.common.black} />
+      {/* Angry eyebrows - angled down toward center */}
+      <rect x="4" y="5" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="5" y="6" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="10" y="6" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="11" y="5" width="1" height="1" fill={COLORS.common.black} />
       {/* Angry mouth */}
       <rect x="6" y="10" width="4" height="2" fill={COLORS.common.black} />
       <rect x="7" y="10" width="2" height="1" fill="#fca5a5" />
@@ -166,10 +168,10 @@ function HappyPlantIcon() {
       <rect x="9" y="7" width="2" height="2" fill={COLORS.common.black} />
       <rect x="6" y="7" width="1" height="1" fill={COLORS.common.white} />
       <rect x="10" y="7" width="1" height="1" fill={COLORS.common.white} />
-      {/* Happy smile */}
-      <rect x="6" y="10" width="4" height="1" fill={COLORS.common.black} />
-      <rect x="5" y="9" width="1" height="1" fill={COLORS.common.black} />
-      <rect x="10" y="9" width="1" height="1" fill={COLORS.common.black} />
+      {/* Happy smile - U-shaped curve */}
+      <rect x="6" y="11" width="4" height="1" fill={COLORS.common.black} />
+      <rect x="5" y="10" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="10" y="10" width="1" height="1" fill={COLORS.common.black} />
     </svg>
   );
 }
