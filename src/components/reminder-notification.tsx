@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef, ReactNode } from "react";
+import { ReactNode } from "react";
+import { useNotificationAnimation } from "@/hooks/use-notification-animation";
 
 interface ReminderNotificationProps {
   isVisible: boolean;
@@ -50,48 +51,10 @@ export function ReminderNotification({
   title,
   message,
 }: ReminderNotificationProps) {
-  const [animationClass, setAnimationClass] = useState("");
-  const [shouldRender, setShouldRender] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Display duration - how long the notification stays visible (in ms)
-  const displayDuration = 4000;
-  const animationDuration = 400;
-
-  useEffect(() => {
-    // Clear any existing timeouts
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-
-    if (isVisible) {
-      // Start showing - slide in
-      setShouldRender(true);
-      setAnimationClass("notification-slide-in");
-
-      // After slide-in completes, wait for display duration, then slide out
-      timeoutRef.current = setTimeout(() => {
-        setAnimationClass("notification-slide-out");
-
-        // After slide-out completes, hide and notify parent
-        timeoutRef.current = setTimeout(() => {
-          setShouldRender(false);
-          setAnimationClass("");
-          onComplete();
-        }, animationDuration);
-      }, animationDuration + displayDuration);
-    } else {
-      // If visibility is set to false externally, reset immediately
-      setShouldRender(false);
-      setAnimationClass("");
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, [isVisible, onComplete]);
+  const { shouldRender, animationClass } = useNotificationAnimation({
+    isVisible,
+    onComplete,
+  });
 
   if (!shouldRender) {
     return null;
