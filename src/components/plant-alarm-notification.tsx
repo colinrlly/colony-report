@@ -11,6 +11,12 @@ const SUCCESS_STATE_DURATION_MS = 2000;
 const CONFETTI_PARTICLE_COUNT = 30;
 const POPUP_VERTICAL_OFFSET = "96px";
 
+// Alarm sound configuration
+const ALARM_FREQUENCY_HIGH = 880; // Hz - A5 note
+const ALARM_FREQUENCY_LOW = 440; // Hz - A4 note
+const ALARM_BEEP_DURATION = 150; // ms
+const ALARM_VOLUME = 0.15;
+
 const CONFETTI_COLORS = [
   "#ef4444", // red
   "#14b8a6", // teal
@@ -72,6 +78,91 @@ interface ConfettiParticleProps {
   x: number;
   y: number;
   delay: number;
+}
+
+// ============================================
+// Alarm Sound Hook
+// ============================================
+
+function useAlarmSound() {
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isPlayingRef = useRef(false);
+
+  const playBeep = useCallback((frequency: number) => {
+    if (!audioContextRef.current) return;
+
+    const ctx = audioContextRef.current;
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    oscillator.type = "square";
+    oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+
+    gainNode.gain.setValueAtTime(ALARM_VOLUME, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(
+      0.01,
+      ctx.currentTime + ALARM_BEEP_DURATION / 1000
+    );
+
+    oscillator.start(ctx.currentTime);
+    oscillator.stop(ctx.currentTime + ALARM_BEEP_DURATION / 1000);
+  }, []);
+
+  const startAlarm = useCallback(() => {
+    if (isPlayingRef.current) return;
+
+    // Create audio context on user interaction or when alarm starts
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContext();
+    }
+
+    // Resume context if suspended (browser autoplay policy)
+    if (audioContextRef.current.state === "suspended") {
+      audioContextRef.current.resume();
+    }
+
+    isPlayingRef.current = true;
+    let isHigh = true;
+
+    // Play alternating beeps
+    const playAlarmPattern = () => {
+      if (!isPlayingRef.current) return;
+      playBeep(isHigh ? ALARM_FREQUENCY_HIGH : ALARM_FREQUENCY_LOW);
+      isHigh = !isHigh;
+    };
+
+    // Start immediately
+    playAlarmPattern();
+
+    // Continue pattern
+    intervalRef.current = setInterval(playAlarmPattern, ALARM_BEEP_DURATION * 2);
+  }, [playBeep]);
+
+  const stopAlarm = useCallback(() => {
+    isPlayingRef.current = false;
+
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      stopAlarm();
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+        audioContextRef.current = null;
+      }
+    };
+  }, [stopAlarm]);
+
+  return { startAlarm, stopAlarm };
 }
 
 // ============================================
@@ -340,6 +431,7 @@ export function PlantAlarmNotification({
   const [isWatered, setIsWatered] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { startAlarm, stopAlarm } = useAlarmSound();
 
   const confettiParticles = useMemo(
     () => (showConfetti ? generateConfettiParticles() : []),
@@ -372,12 +464,15 @@ export function PlantAlarmNotification({
       setShowConfetti(false);
       setShouldRender(true);
       setAnimationClass("alarm-slide-in");
+      startAlarm();
     } else {
+      stopAlarm();
       resetState();
     }
-  }, [isVisible, clearPendingTimeout, resetState]);
+  }, [isVisible, clearPendingTimeout, resetState, startAlarm, stopAlarm]);
 
   const handleWaterClick = useCallback(() => {
+    stopAlarm();
     setIsWatered(true);
     setShowConfetti(true);
 
@@ -389,7 +484,7 @@ export function PlantAlarmNotification({
         onDismiss();
       }, ANIMATION_DURATION_MS);
     }, SUCCESS_STATE_DURATION_MS);
-  }, [onDismiss, resetState]);
+  }, [onDismiss, resetState, stopAlarm]);
 
   if (!shouldRender) {
     return null;
