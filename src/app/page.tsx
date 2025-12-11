@@ -366,19 +366,24 @@ export default function Home() {
     setIsScreensaverActive(false);
   }, []);
 
-  // Handle calendar notification trigger - can specify which notification to show
-  const handleTriggerCalendarNotification = useCallback((index?: number) => {
-    if (!isCalendarNotificationVisible) {
-      if (index !== undefined) {
-        setCurrentNotificationIndex(index);
-      }
-      setIsCalendarNotificationVisible(true);
-    }
-  }, [isCalendarNotificationVisible]);
-
-  // Handle calendar notification complete
+  // Handle calendar notification complete - wait 3 seconds then show next
   const handleCalendarNotificationComplete = useCallback(() => {
     setIsCalendarNotificationVisible(false);
+    // After 3 seconds, show the next notification
+    setTimeout(() => {
+      setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
+      setIsCalendarNotificationVisible(true);
+    }, 3000);
+  }, []);
+
+  // Start the notification cycle on mount
+  useEffect(() => {
+    // Initial delay before first notification (3 seconds after page load)
+    const initialTimer = setTimeout(() => {
+      setIsCalendarNotificationVisible(true);
+    }, 3000);
+
+    return () => clearTimeout(initialTimer);
   }, []);
 
   // View menu items - defined here to access the refresh handler
@@ -603,28 +608,6 @@ export default function Home() {
 
         {/* CRT Screen Effect Overlay - behind all content, only affects wallpaper */}
         <div className="crt-overlay pointer-events-none -z-5" />
-
-        {/* TEMPORARY TEST BUTTONS - DELETE LATER */}
-        <div className="absolute bottom-[60px] left-4 flex gap-2 z-50">
-          <button
-            onClick={() => handleTriggerCalendarNotification(0)}
-            className="px-3 py-2 text-xs font-bold win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-pressed"
-          >
-            Test: Field Op
-          </button>
-          <button
-            onClick={() => handleTriggerCalendarNotification(1)}
-            className="px-3 py-2 text-xs font-bold win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-pressed"
-          >
-            Test: Team Sync
-          </button>
-          <button
-            onClick={() => handleTriggerCalendarNotification(2)}
-            className="px-3 py-2 text-xs font-bold win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-pressed"
-          >
-            Test: Specimen 14
-          </button>
-        </div>
 
         {/* Desktop Icons - each independently draggable */}
         {DESKTOP_ICONS.map((iconConfig) => (
