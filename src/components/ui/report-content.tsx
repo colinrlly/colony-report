@@ -23,7 +23,7 @@ export function ReportContent({ selectedId }: ReportContentProps) {
         ) : selectedId === "snail" ? (
           <div className="relative w-full h-full">
             <Image
-              src="/images/Snail 2.jpg"
+              src="/images/Snail 3.jpg"
               alt="Snail Research - OW-FDA Control Unit"
               fill
               className="object-cover"
