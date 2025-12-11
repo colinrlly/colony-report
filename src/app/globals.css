@@ -396,3 +396,49 @@ body {
 .screensaver-hint {
   animation: fadeInHint 2s ease-in 1s forwards;
 }
+
+/* ============================================
+   CALENDAR NOTIFICATION STYLES
+   Slide-in/slide-out notifications from top right
+   ============================================ */
+
+/* Notification colors - Orange theme */
+:root {
+  --notification-orange: #d97706;
+  --notification-orange-light: #f59e0b;
+  --notification-orange-dark: #b45309;
+  --notification-beige: #fef3c7;
+  --notification-brown: #78350f;
+}
+
+/* Slide in from right animation */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(calc(100% + 20px));
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide out to right animation */
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(100% + 20px));
+    opacity: 0;
+  }
+}
+
+.notification-slide-in {
+  animation: slideInFromRight 0.4s ease-out forwards;
+}
+
+.notification-slide-out {
+  animation: slideOutToRight 0.4s ease-in forwards;
+}

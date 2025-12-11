@@ -12,6 +12,7 @@ import { Germsweeper } from "@/components/minesweeper";
 import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
+import { CalendarNotification } from "@/components/calendar-notification";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -111,6 +112,9 @@ export default function Home() {
 
   // Screensaver state
   const [isScreensaverActive, setIsScreensaverActive] = useState(false);
+
+  // Calendar notification state
+  const [isCalendarNotificationVisible, setIsCalendarNotificationVisible] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -336,11 +340,24 @@ export default function Home() {
     setIsScreensaverActive(false);
   }, []);
 
+  // Handle calendar notification trigger
+  const handleTriggerCalendarNotification = useCallback(() => {
+    if (!isCalendarNotificationVisible) {
+      setIsCalendarNotificationVisible(true);
+    }
+  }, [isCalendarNotificationVisible]);
+
+  // Handle calendar notification complete
+  const handleCalendarNotificationComplete = useCallback(() => {
+    setIsCalendarNotificationVisible(false);
+  }, []);
+
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
     { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
     { label: "Toggle Wallpaper", onClick: handleToggleWallpaper },
+    { label: "Test Notification", onClick: handleTriggerCalendarNotification },
   ];
 
   // Tools menu items - defined here to access game handlers
@@ -768,6 +785,15 @@ export default function Home() {
           />
         )}
       </main>
+
+      {/* Calendar Notification */}
+      <CalendarNotification
+        isVisible={isCalendarNotificationVisible}
+        onComplete={handleCalendarNotificationComplete}
+        title="Field Operation"
+        event="Calendar Event — 08:00 Field Operation"
+        note="Note to self: bring Hank the experimental morning-cheer tonic."
+      />
 
       {/* Screensaver */}
       {isScreensaverActive && (
