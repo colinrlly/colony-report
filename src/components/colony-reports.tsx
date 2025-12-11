@@ -35,7 +35,7 @@ export function ColonyReports({ onClose, onMinimize }: ColonyReportsProps) {
   const statusText = selectedItem?.statusText ?? "";
 
   return (
-    <Window resizable={false} className="aspect-[11/8.5] max-w-[100vw] w-auto h-[calc(100vh-76px)] absolute top-[36px] left-1/2 -translate-x-1/2 flex flex-col">
+    <Window resizable={false} className="aspect-[11/8.5] max-w-[calc(100vw-16px)] w-auto h-[calc(100vh-92px)] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
