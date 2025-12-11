@@ -437,3 +437,86 @@ body {
 .notification-slide-out {
   animation: slideOutToRight 0.4s ease-in forwards;
 }
+
+/* ============================================
+   ALARM NOTIFICATION SYSTEM
+   Center scale-in/scale-out animations for alarm popups
+   ============================================ */
+
+/* Scale in from center - bouncy entrance */
+@keyframes alarmScaleIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Scale out to center with fade */
+@keyframes alarmScaleOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.alarm-slide-in {
+  animation: alarmScaleIn 0.4s ease-out forwards;
+}
+
+.alarm-slide-out {
+  animation: alarmScaleOut 0.4s ease-in forwards;
+}
+
+/* ============================================
+   CONFETTI BURST EFFECT
+   Particles burst from center and fall with gravity
+   Uses CSS custom properties for x/y offsets calculated in JS
+   ============================================ */
+
+.confetti-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.confetti-particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: confettiBurst 1.5s ease-out forwards;
+  animation-delay: var(--delay);
+  --x: 0px;
+  --y: 0px;
+}
+
+@keyframes confettiBurst {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: translate(var(--x), calc(var(--y) * -0.5)) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(var(--x) * 1.2), calc(var(--y) * -0.5 + 300px)) rotate(720deg);
+    opacity: 0;
+  }
+}
