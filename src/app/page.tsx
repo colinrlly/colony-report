@@ -82,6 +82,7 @@ export default function Home() {
   const [isAreYouSeriousOpen, setIsAreYouSeriousOpen] = useState(false);
   const [isUghFineOpen, setIsUghFineOpen] = useState(false);
   const [isPetMonitorOpen, setIsPetMonitorOpen] = useState(false);
+  const [isPetMonitorMinimized, setIsPetMonitorMinimized] = useState(false);
 
   // Minesweeper game state
   const [isMinesweeperOpen, setIsMinesweeperOpen] = useState(false);
@@ -222,6 +223,7 @@ export default function Home() {
       setIsAreYouSeriousOpen(false);
       setIsUghFineOpen(false);
       setIsPetMonitorOpen(false);
+      setIsPetMonitorMinimized(false);
       setIsMinesweeperOpen(false);
       setIsMinesweeperMinimized(false);
       setIsContactHROpen(false);
@@ -267,6 +269,7 @@ export default function Home() {
       setIsAreYouSeriousOpen(false);
       setIsUghFineOpen(false);
       setIsPetMonitorOpen(false);
+      setIsPetMonitorMinimized(false);
       setIsMinesweeperOpen(false);
       setIsMinesweeperMinimized(false);
       setIsContactHROpen(false);
@@ -643,17 +646,21 @@ export default function Home() {
         )}
 
         {/* Secret Pet Monitor - final destination */}
-        {isPetMonitorOpen && (
-          <SecretPetMonitor onClose={() => {
-            // Close pet monitor and all nested folders, but keep .secrets open
-            setIsPetMonitorOpen(false);
-            setIsUghFineOpen(false);
-            setIsAreYouSeriousOpen(false);
-            setIsGoNoFurtherOpen(false);
-            setIsPleaseStopOpen(false);
-            setIsSeriouslyNothingOpen(false);
-            setIsNothingOpen(false);
-          }} />
+        {isPetMonitorOpen && !isPetMonitorMinimized && (
+          <SecretPetMonitor
+            onClose={() => {
+              // Close pet monitor and all nested folders, but keep .secrets open
+              setIsPetMonitorOpen(false);
+              setIsPetMonitorMinimized(false);
+              setIsUghFineOpen(false);
+              setIsAreYouSeriousOpen(false);
+              setIsGoNoFurtherOpen(false);
+              setIsPleaseStopOpen(false);
+              setIsSeriouslyNothingOpen(false);
+              setIsNothingOpen(false);
+            }}
+            onMinimize={() => setIsPetMonitorMinimized(true)}
+          />
         )}
 
         {/* Germsweeper Game */}
@@ -736,8 +743,8 @@ export default function Home() {
         {isPetMonitorOpen && (
           <TaskbarButton
             title="secret_pet_monitor"
-            isActive={!isMinesweeperOpen || isMinesweeperMinimized}
-            onClick={() => setIsPetMonitorOpen(true)}
+            isActive={!isPetMonitorMinimized}
+            onClick={() => setIsPetMonitorMinimized(!isPetMonitorMinimized)}
           />
         )}
         {isMinesweeperOpen && (
