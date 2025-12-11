@@ -92,9 +92,10 @@ interface SecretsFolderProps {
   onClose?: () => void;
   onMinimize?: () => void;
   onOpenNothing?: () => void;
+  onOpenStressRelief?: () => void;
 }
 
-export function SecretsFolder({ onClose, onMinimize, onOpenNothing }: SecretsFolderProps) {
+export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStressRelief }: SecretsFolderProps) {
   return (
     <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col">
       <WindowTitleBar>
@@ -109,7 +110,7 @@ export function SecretsFolder({ onClose, onMinimize, onOpenNothing }: SecretsFol
       {/* Window content area with white background like a file explorer */}
       <div className="flex-1 bg-white win98-border-sunken m-[2px] p-4 overflow-auto">
         <div className="flex flex-wrap gap-4 justify-start">
-          <FolderItem label="Stress Relief" />
+          <FolderItem label="Stress Relief" onClick={onOpenStressRelief} />
           <FolderItem label="Music" />
           <FolderItem label="Nothing..." onClick={onOpenNothing} />
         </div>
