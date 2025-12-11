@@ -65,6 +65,20 @@ const HIDDEN_FILE = {
 // Wallpaper options
 type WallpaperType = 0 | 1 | 2;
 
+/* ============================================
+   NOTIFICATION SYSTEM DATA
+
+   Architecture for popup notifications:
+   - Notifications cycle automatically with configurable timing
+   - Each notification type (calendar, alerts, etc.) has its own data array
+   - The system shows one notification at a time, cycling through all types
+   - Future: Add more notification types by creating new data arrays and components
+   ============================================ */
+
+// Timing constants for notification system (in milliseconds)
+const NOTIFICATION_INITIAL_DELAY = 3000;  // Delay before first notification
+const NOTIFICATION_GAP = 3000;            // Gap between notifications
+
 // Calendar notification data
 interface CalendarNotificationData {
   eventName: string;
@@ -138,9 +152,10 @@ export default function Home() {
   // Screensaver state
   const [isScreensaverActive, setIsScreensaverActive] = useState(false);
 
-  // Calendar notification state
+  // Notification system state
   const [isCalendarNotificationVisible, setIsCalendarNotificationVisible] = useState(false);
   const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
+  const notificationGapTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -366,24 +381,36 @@ export default function Home() {
     setIsScreensaverActive(false);
   }, []);
 
-  // Handle calendar notification complete - wait 3 seconds then show next
+  // Handle notification complete - wait for gap then show next
+  // Future: This will be expanded to handle multiple notification types
   const handleCalendarNotificationComplete = useCallback(() => {
     setIsCalendarNotificationVisible(false);
-    // After 3 seconds, show the next notification
-    setTimeout(() => {
+
+    // Clear any existing gap timer
+    if (notificationGapTimerRef.current) {
+      clearTimeout(notificationGapTimerRef.current);
+    }
+
+    // After gap, show the next notification
+    notificationGapTimerRef.current = setTimeout(() => {
       setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
       setIsCalendarNotificationVisible(true);
-    }, 3000);
+    }, NOTIFICATION_GAP);
   }, []);
 
   // Start the notification cycle on mount
   useEffect(() => {
-    // Initial delay before first notification (3 seconds after page load)
     const initialTimer = setTimeout(() => {
       setIsCalendarNotificationVisible(true);
-    }, 3000);
+    }, NOTIFICATION_INITIAL_DELAY);
 
-    return () => clearTimeout(initialTimer);
+    return () => {
+      clearTimeout(initialTimer);
+      // Clean up gap timer on unmount
+      if (notificationGapTimerRef.current) {
+        clearTimeout(notificationGapTimerRef.current);
+      }
+    };
   }, []);
 
   // View menu items - defined here to access the refresh handler

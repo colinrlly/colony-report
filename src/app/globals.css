@@ -398,20 +398,15 @@ body {
 }
 
 /* ============================================
-   CALENDAR NOTIFICATION STYLES
+   POPUP NOTIFICATION SYSTEM
    Slide-in/slide-out notifications from top right
+
+   Shared animations for all notification types:
+   - Calendar events (orange theme)
+   - Future: Alerts, Messages, System notifications, etc.
    ============================================ */
 
-/* Notification colors - Orange theme */
-:root {
-  --notification-orange: #d97706;
-  --notification-orange-light: #f59e0b;
-  --notification-orange-dark: #b45309;
-  --notification-beige: #fef3c7;
-  --notification-brown: #78350f;
-}
-
-/* Slide in from right animation */
+/* Slide in from right animation - shared by all notification types */
 @keyframes slideInFromRight {
   0% {
     transform: translateX(calc(100% + 20px));
@@ -423,7 +418,7 @@ body {
   }
 }
 
-/* Slide out to right animation */
+/* Slide out to right animation - shared by all notification types */
 @keyframes slideOutToRight {
   0% {
     transform: translateX(0);
