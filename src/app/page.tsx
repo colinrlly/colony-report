@@ -117,7 +117,7 @@ const getReminderNotifications = () => [
   },
   {
     title: <>Feed <RedactedText>Specimen X7</RedactedText></>,
-    message: <>Don&apos;t forget to feed… well, you know. The <RedactedText>specimen</RedactedText>.</>,
+    message: <>Don&apos;t forget to feed… well, you know. The specimen.</>,
   },
 ];
 
