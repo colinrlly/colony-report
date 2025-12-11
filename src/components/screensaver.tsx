@@ -21,6 +21,11 @@ function CrawlingAnt({ x, y, angle, size, legPhase }: { x: number; y: number; an
   // Calculate leg offset for walking animation
   const legOffset = Math.sin(legPhase) * 2;
 
+  // Convert movement angle to visual rotation so ant always faces forward
+  // Movement direction is (sin(angle), cos(angle)), but ant SVG faces "up"
+  // So we rotate by (π - angle) to align the ant's head with movement direction
+  const visualRotation = Math.PI - angle;
+
   return (
     <svg
       className="absolute pointer-events-none"
@@ -29,7 +34,7 @@ function CrawlingAnt({ x, y, angle, size, legPhase }: { x: number; y: number; an
         top: y,
         width: size,
         height: size,
-        transform: `rotate(${angle}rad)`,
+        transform: `rotate(${visualRotation}rad)`,
         transformOrigin: 'center center',
         imageRendering: 'pixelated',
       }}
@@ -38,41 +43,41 @@ function CrawlingAnt({ x, y, angle, size, legPhase }: { x: number; y: number; an
       xmlns="http://www.w3.org/2000/svg"
     >
       {/* Ant head */}
-      <rect x="8" y="2" width="4" height="3" fill="#2a2a2a" />
+      <rect x="8" y="2" width="4" height="3" fill="#1a1a1a" />
       {/* Antennae */}
-      <rect x="6" y="1" width="1" height="2" fill="#2a2a2a" />
-      <rect x="13" y="1" width="1" height="2" fill="#2a2a2a" />
-      <rect x="5" y="0" width="1" height="1" fill="#2a2a2a" />
-      <rect x="14" y="0" width="1" height="1" fill="#2a2a2a" />
+      <rect x="6" y="1" width="1" height="2" fill="#1a1a1a" />
+      <rect x="13" y="1" width="1" height="2" fill="#1a1a1a" />
+      <rect x="5" y="0" width="1" height="1" fill="#1a1a1a" />
+      <rect x="14" y="0" width="1" height="1" fill="#1a1a1a" />
       {/* Thorax (middle body) */}
-      <rect x="7" y="5" width="6" height="4" fill="#2a2a2a" />
+      <rect x="7" y="5" width="6" height="4" fill="#1a1a1a" />
       {/* Abdomen (back body) */}
-      <rect x="6" y="9" width="8" height="5" fill="#2a2a2a" />
-      <rect x="7" y="14" width="6" height="3" fill="#2a2a2a" />
-      <rect x="8" y="17" width="4" height="2" fill="#2a2a2a" />
+      <rect x="6" y="9" width="8" height="5" fill="#1a1a1a" />
+      <rect x="7" y="14" width="6" height="3" fill="#1a1a1a" />
+      <rect x="8" y="17" width="4" height="2" fill="#1a1a1a" />
       {/* Left legs - animated */}
       <g style={{ transform: `translateX(${-legOffset}px)` }}>
-        <rect x="4" y="5" width="3" height="1" fill="#2a2a2a" />
-        <rect x="3" y="6" width="1" height="2" fill="#2a2a2a" />
-        <rect x="4" y="8" width="3" height="1" fill="#2a2a2a" />
-        <rect x="2" y="9" width="2" height="1" fill="#2a2a2a" />
-        <rect x="4" y="11" width="2" height="1" fill="#2a2a2a" />
-        <rect x="2" y="12" width="2" height="1" fill="#2a2a2a" />
-        <rect x="1" y="13" width="1" height="2" fill="#2a2a2a" />
+        <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
+        <rect x="3" y="6" width="1" height="2" fill="#1a1a1a" />
+        <rect x="4" y="8" width="3" height="1" fill="#1a1a1a" />
+        <rect x="2" y="9" width="2" height="1" fill="#1a1a1a" />
+        <rect x="4" y="11" width="2" height="1" fill="#1a1a1a" />
+        <rect x="2" y="12" width="2" height="1" fill="#1a1a1a" />
+        <rect x="1" y="13" width="1" height="2" fill="#1a1a1a" />
       </g>
       {/* Right legs - animated (opposite phase) */}
       <g style={{ transform: `translateX(${legOffset}px)` }}>
-        <rect x="13" y="5" width="3" height="1" fill="#2a2a2a" />
-        <rect x="16" y="6" width="1" height="2" fill="#2a2a2a" />
-        <rect x="13" y="8" width="3" height="1" fill="#2a2a2a" />
-        <rect x="16" y="9" width="2" height="1" fill="#2a2a2a" />
-        <rect x="14" y="11" width="2" height="1" fill="#2a2a2a" />
-        <rect x="16" y="12" width="2" height="1" fill="#2a2a2a" />
-        <rect x="18" y="13" width="1" height="2" fill="#2a2a2a" />
+        <rect x="13" y="5" width="3" height="1" fill="#1a1a1a" />
+        <rect x="16" y="6" width="1" height="2" fill="#1a1a1a" />
+        <rect x="13" y="8" width="3" height="1" fill="#1a1a1a" />
+        <rect x="16" y="9" width="2" height="1" fill="#1a1a1a" />
+        <rect x="14" y="11" width="2" height="1" fill="#1a1a1a" />
+        <rect x="16" y="12" width="2" height="1" fill="#1a1a1a" />
+        <rect x="18" y="13" width="1" height="2" fill="#1a1a1a" />
       </g>
       {/* Eyes - slightly lighter */}
-      <rect x="8" y="3" width="1" height="1" fill="#4a4a4a" />
-      <rect x="11" y="3" width="1" height="1" fill="#4a4a4a" />
+      <rect x="8" y="3" width="1" height="1" fill="#3a3a3a" />
+      <rect x="11" y="3" width="1" height="1" fill="#3a3a3a" />
     </svg>
   );
 }
@@ -218,7 +223,7 @@ export function Screensaver({ onExit }: ScreensaverProps) {
         position: 'fixed',
         inset: 0,
         zIndex: 99999,
-        background: '#0a0a0a',
+        background: '#5c4a3a',
         cursor: 'none',
         overflow: 'hidden',
       }}
@@ -228,7 +233,7 @@ export function Screensaver({ onExit }: ScreensaverProps) {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.01) 2px, rgba(255,255,255,0.01) 4px)',
+          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)',
           pointerEvents: 'none',
         }}
       />
@@ -254,7 +259,7 @@ export function Screensaver({ onExit }: ScreensaverProps) {
           left: 0,
           right: 0,
           textAlign: 'center',
-          color: 'rgba(139, 115, 85, 0.3)',
+          color: 'rgba(60, 45, 35, 0.5)',
           fontSize: '11px',
           fontFamily: '"MS Sans Serif", "Segoe UI", Tahoma, sans-serif',
           letterSpacing: '1px',
