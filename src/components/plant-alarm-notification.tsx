@@ -77,6 +77,8 @@ interface ConfettiParticleProps {
   color: string;
   x: number;
   y: number;
+  startX: number;
+  startY: number;
   delay: number;
 }
 
@@ -320,7 +322,7 @@ function CheckmarkIcon() {
 // Confetti
 // ============================================
 
-function ConfettiParticle({ color, x, y, delay }: ConfettiParticleProps) {
+function ConfettiParticle({ color, x, y, startX, startY, delay }: ConfettiParticleProps) {
   return (
     <div
       className="confetti-particle"
@@ -328,6 +330,8 @@ function ConfettiParticle({ color, x, y, delay }: ConfettiParticleProps) {
         {
           "--x": `${x}px`,
           "--y": `${y}px`,
+          "--start-x": `${startX}px`,
+          "--start-y": `${startY}px`,
           "--delay": `${delay}ms`,
           backgroundColor: color,
         } as React.CSSProperties
@@ -337,14 +341,55 @@ function ConfettiParticle({ color, x, y, delay }: ConfettiParticleProps) {
 }
 
 function generateConfettiParticles(): ConfettiParticleProps[] {
+  // Window dimensions in success state (280px width * 1.15 scale)
+  const windowWidth = 322;
+  const windowHeight = 115; // Approximate height scaled
+  const halfWidth = windowWidth / 2;
+  const halfHeight = windowHeight / 2;
+
+  // Calculate perimeter for distributing particles
+  const perimeter = 2 * (windowWidth + windowHeight);
+
   return Array.from({ length: CONFETTI_PARTICLE_COUNT }, (_, i) => {
-    const angle = (i / CONFETTI_PARTICLE_COUNT) * 360 + Math.random() * 30;
-    const radians = (angle * Math.PI) / 180;
-    const distance = 150 + Math.random() * 100;
+    // Distribute particles evenly around the perimeter
+    const perimeterPosition = (i / CONFETTI_PARTICLE_COUNT) * perimeter;
+    const randomOffset = (Math.random() - 0.5) * 20; // Small random variation
+
+    let startX: number;
+    let startY: number;
+    let outwardAngle: number;
+
+    if (perimeterPosition < windowWidth) {
+      // Top edge
+      startX = -halfWidth + perimeterPosition + randomOffset;
+      startY = -halfHeight;
+      outwardAngle = -90 + (Math.random() - 0.5) * 60; // Upward with spread
+    } else if (perimeterPosition < windowWidth + windowHeight) {
+      // Right edge
+      startX = halfWidth;
+      startY = -halfHeight + (perimeterPosition - windowWidth) + randomOffset;
+      outwardAngle = 0 + (Math.random() - 0.5) * 60; // Rightward with spread
+    } else if (perimeterPosition < 2 * windowWidth + windowHeight) {
+      // Bottom edge
+      startX = halfWidth - (perimeterPosition - windowWidth - windowHeight) + randomOffset;
+      startY = halfHeight;
+      outwardAngle = 90 + (Math.random() - 0.5) * 60; // Downward with spread
+    } else {
+      // Left edge
+      startX = -halfWidth;
+      startY = halfHeight - (perimeterPosition - 2 * windowWidth - windowHeight) + randomOffset;
+      outwardAngle = 180 + (Math.random() - 0.5) * 60; // Leftward with spread
+    }
+
+    const radians = (outwardAngle * Math.PI) / 180;
+    const distance = 120 + Math.random() * 80;
+
     return {
       color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
       x: Math.cos(radians) * distance,
       y: Math.sin(radians) * distance,
+      startX,
+      startY,
       delay: Math.random() * 200,
     };
   });

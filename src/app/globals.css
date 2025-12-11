@@ -504,19 +504,21 @@ body {
   animation-delay: var(--delay);
   --x: 0px;
   --y: 0px;
+  --start-x: 0px;
+  --start-y: 0px;
 }
 
 @keyframes confettiBurst {
   0% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: translate(var(--start-x), var(--start-y)) rotate(0deg);
     opacity: 1;
   }
   30% {
-    transform: translate(var(--x), calc(var(--y) * -0.5)) rotate(180deg);
+    transform: translate(calc(var(--start-x) + var(--x) * 0.6), calc(var(--start-y) + var(--y) * 0.6)) rotate(180deg);
     opacity: 1;
   }
   100% {
-    transform: translate(calc(var(--x) * 1.2), calc(var(--y) * -0.5 + 300px)) rotate(720deg);
+    transform: translate(calc(var(--start-x) + var(--x)), calc(var(--start-y) + var(--y) + 200px)) rotate(720deg);
     opacity: 0;
   }
 }
