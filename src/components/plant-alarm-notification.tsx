@@ -111,8 +111,8 @@ function AngryPlantIcon() {
       <rect x="5" y="8" width="1" height="1" fill="#1a1a1a" />
       <rect x="10" y="8" width="1" height="1" fill="#1a1a1a" />
       {/* Angry eyebrows */}
-      <rect x="4" y="6" width="2" height="1" fill="#7f1d1d" />
-      <rect x="10" y="6" width="2" height="1" fill="#7f1d1d" />
+      <rect x="4" y="6" width="2" height="1" fill="#1a1a1a" />
+      <rect x="10" y="6" width="2" height="1" fill="#1a1a1a" />
       {/* Angry mouth */}
       <rect x="6" y="10" width="4" height="2" fill="#1a1a1a" />
       <rect x="7" y="10" width="2" height="1" fill="#fca5a5" />
@@ -314,7 +314,7 @@ export function PlantAlarmNotification({
   return (
     <div
       className={`fixed inset-0 z-[9500] flex items-center justify-center ${animationClass}`}
-      style={{ pointerEvents: "auto" }}
+      style={{ pointerEvents: "auto", paddingBottom: "96px" }}
     >
       {/* Confetti */}
       {showConfetti && (
@@ -349,7 +349,7 @@ export function PlantAlarmNotification({
             className="font-bold text-white tracking-wide uppercase"
             style={{ textShadow: "1px 1px 0px #1a1a1a", fontSize: "12px" }}
           >
-            {isWatered ? "Plant Watered!" : "Plant Alarm"}
+            {isWatered ? "Plants Watered!" : "Plants Alarm"}
           </span>
         </div>
 
@@ -398,7 +398,7 @@ export function PlantAlarmNotification({
                     paddingBottom: "1px",
                   }}
                 >
-                  Water the exploding beanfang plant!
+                  Water the exploding beanfang plants!
                 </span>
               </div>
               {/* Icon and body text */}
@@ -440,7 +440,7 @@ export function PlantAlarmNotification({
                 fontSize: "13px",
               }}
             >
-              Water Plant Remotely
+              Water Plants Remotely
             </button>
           </div>
         )}
