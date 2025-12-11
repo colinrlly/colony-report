@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface CalendarNotificationProps {
   isVisible: boolean;
@@ -60,65 +60,52 @@ export function CalendarNotification({
   time,
   note,
 }: CalendarNotificationProps) {
-  const [animationPhase, setAnimationPhase] = useState<"in" | "visible" | "out" | "hidden">("hidden");
+  const [animationClass, setAnimationClass] = useState("");
+  const [shouldRender, setShouldRender] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Display duration - how long the notification stays visible (in ms)
   const displayDuration = 4000;
+  const animationDuration = 400;
 
   useEffect(() => {
-    if (isVisible && animationPhase === "hidden") {
-      // Start slide in
-      setAnimationPhase("in");
-
-      // After slide in animation completes, mark as visible
-      const slideInTimer = setTimeout(() => {
-        setAnimationPhase("visible");
-      }, 400);
-
-      return () => clearTimeout(slideInTimer);
+    // Clear any existing timeouts
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
-  }, [isVisible, animationPhase]);
 
-  useEffect(() => {
-    if (animationPhase === "visible") {
-      // Wait for display duration, then slide out
-      const displayTimer = setTimeout(() => {
-        setAnimationPhase("out");
-      }, displayDuration);
+    if (isVisible) {
+      // Start showing - slide in
+      setShouldRender(true);
+      setAnimationClass("notification-slide-in");
 
-      return () => clearTimeout(displayTimer);
+      // After slide-in completes, wait for display duration, then slide out
+      timeoutRef.current = setTimeout(() => {
+        setAnimationClass("notification-slide-out");
+
+        // After slide-out completes, hide and notify parent
+        timeoutRef.current = setTimeout(() => {
+          setShouldRender(false);
+          setAnimationClass("");
+          onComplete();
+        }, animationDuration);
+      }, animationDuration + displayDuration);
+    } else {
+      // If visibility is set to false externally, reset immediately
+      setShouldRender(false);
+      setAnimationClass("");
     }
-  }, [animationPhase]);
 
-  useEffect(() => {
-    if (animationPhase === "out") {
-      // After slide out animation completes, hide and notify parent
-      const slideOutTimer = setTimeout(() => {
-        setAnimationPhase("hidden");
-        onComplete();
-      }, 400);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [isVisible, onComplete]);
 
-      return () => clearTimeout(slideOutTimer);
-    }
-  }, [animationPhase, onComplete]);
-
-  // Reset when visibility changes to hidden
-  useEffect(() => {
-    if (!isVisible) {
-      setAnimationPhase("hidden");
-    }
-  }, [isVisible]);
-
-  if (animationPhase === "hidden") {
+  if (!shouldRender) {
     return null;
   }
-
-  const animationClass =
-    animationPhase === "in"
-      ? "notification-slide-in"
-      : animationPhase === "out"
-      ? "notification-slide-out"
-      : "";
 
   return (
     <div
