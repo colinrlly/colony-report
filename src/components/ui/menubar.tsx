@@ -92,31 +92,14 @@ export function MenubarLogo() {
         onClick={() => setShowPopup(!showPopup)}
         className="flex items-center gap-1 hover:bg-win98-title-active hover:bg-opacity-20 rounded px-1 cursor-pointer"
       >
-        {/* Earth with smiley face */}
-        <svg
+        {/* Earth logo */}
+        <img
+          src="/earth logo.png"
+          alt="Earth logo"
           width="20"
           height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Earth circle */}
-          <circle cx="12" cy="12" r="10" fill="#4A90D9" stroke="#2E5A88" strokeWidth="1" />
-          {/* Continents/land masses */}
-          <ellipse cx="8" cy="8" rx="3" ry="4" fill="#5CB85C" />
-          <ellipse cx="15" cy="10" rx="4" ry="3" fill="#5CB85C" />
-          <ellipse cx="10" cy="16" rx="3" ry="2" fill="#5CB85C" />
-          {/* Smiley face */}
-          <circle cx="9" cy="10" r="1.5" fill="#333" /> {/* Left eye */}
-          <circle cx="15" cy="10" r="1.5" fill="#333" /> {/* Right eye */}
-          <path
-            d="M8 14 Q12 18 16 14"
-            stroke="#333"
-            strokeWidth="1.5"
-            fill="none"
-            strokeLinecap="round"
-          /> {/* Smile */}
-        </svg>
+          style={{ imageRendering: "auto" }}
+        />
         {/* NEC text */}
         <span className="text-[14px] font-bold text-[#333]">NEC</span>
       </button>
