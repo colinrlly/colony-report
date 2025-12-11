@@ -14,6 +14,7 @@ import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
 import { CalendarNotification } from "@/components/calendar-notification";
 import { ReminderNotification, RedactedText } from "@/components/reminder-notification";
+import { PlantAlarmNotification } from "@/components/plant-alarm-notification";
 import { NOTIFICATION_TIMING } from "@/hooks/use-notification-animation";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
@@ -176,6 +177,10 @@ export default function Home() {
   const [isReminderNotificationVisible, setIsReminderNotificationVisible] = useState(false);
   const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
   const reminderGapTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Plant alarm notification state
+  const [isPlantAlarmVisible, setIsPlantAlarmVisible] = useState(false);
+  const plantAlarmTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -429,6 +434,20 @@ export default function Home() {
     }, NOTIFICATION_TIMING.GAP_BETWEEN);
   }, []);
 
+  // Handle plant alarm dismiss - wait 30 seconds then show again
+  const handlePlantAlarmDismiss = useCallback(() => {
+    setIsPlantAlarmVisible(false);
+
+    if (plantAlarmTimerRef.current) {
+      clearTimeout(plantAlarmTimerRef.current);
+    }
+
+    // Reappear every 30 seconds after being dismissed
+    plantAlarmTimerRef.current = setTimeout(() => {
+      setIsPlantAlarmVisible(true);
+    }, 30000);
+  }, []);
+
   // Start calendar notification cycle on mount
   useEffect(() => {
     const initialTimer = setTimeout(() => {
@@ -453,6 +472,20 @@ export default function Home() {
       clearTimeout(reminderTimer);
       if (reminderGapTimerRef.current) {
         clearTimeout(reminderGapTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Start plant alarm on mount (10 seconds after page load)
+  useEffect(() => {
+    const plantAlarmTimer = setTimeout(() => {
+      setIsPlantAlarmVisible(true);
+    }, 10000);
+
+    return () => {
+      clearTimeout(plantAlarmTimer);
+      if (plantAlarmTimerRef.current) {
+        clearTimeout(plantAlarmTimerRef.current);
       }
     };
   }, []);
@@ -905,6 +938,12 @@ export default function Home() {
         onComplete={handleReminderNotificationComplete}
         title={getReminderNotifications()[currentReminderIndex].title}
         message={getReminderNotifications()[currentReminderIndex].message}
+      />
+
+      {/* Plant Alarm Notification - requires user action to dismiss */}
+      <PlantAlarmNotification
+        isVisible={isPlantAlarmVisible}
+        onDismiss={handlePlantAlarmDismiss}
       />
 
       {/* Screensaver */}
