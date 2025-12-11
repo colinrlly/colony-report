@@ -459,24 +459,14 @@ export default function Home() {
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               {/* NEW EDEN COMMITTEE with large earth logo */}
               <div className="text-center">
-                {/* Large Smiling Earth */}
-                <svg className="mx-auto mb-6" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Earth circle */}
-                  <circle cx="90" cy="90" r="80" fill="#4A90D9" stroke="#2E5A88" strokeWidth="4" />
-                  {/* Continents/land masses - organic blobs positioned to avoid face features */}
-                  {/* Top continent - irregular blob */}
-                  <path d="M65 22 Q72 18 85 20 Q100 19 108 24 Q115 30 110 38 Q102 42 88 40 Q74 43 68 36 Q62 28 65 22" fill="#5CB85C" />
-                  {/* Left continent - organic shape */}
-                  <path d="M18 70 Q22 60 28 55 Q36 52 40 58 Q44 68 42 82 Q44 95 38 105 Q30 112 22 108 Q16 100 15 88 Q14 78 18 70" fill="#5CB85C" />
-                  {/* Right continent - asymmetric blob */}
-                  <path d="M155 65 Q162 70 164 80 Q165 92 160 102 Q154 108 148 105 Q142 98 144 85 Q143 72 148 66 Q152 62 155 65" fill="#5CB85C" />
-                  {/* Bottom continent - wide irregular shape */}
-                  <path d="M55 148 Q65 144 80 146 Q95 143 110 147 Q122 150 125 156 Q120 162 105 160 Q88 163 70 160 Q55 158 52 153 Q52 150 55 148" fill="#5CB85C" />
-                  {/* Smiley face */}
-                  <circle cx="68" cy="75" r="10" fill="#333" /> {/* Left eye */}
-                  <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
-                  <path d="M60 105 Q90 140 120 105" stroke="#333" strokeWidth="8" fill="none" strokeLinecap="round" />
-                </svg>
+                {/* Large Earth Logo */}
+                <img
+                  className="mx-auto mb-6"
+                  src="/earth logo2.png"
+                  alt="Earth logo"
+                  width="180"
+                  height="180"
+                />
                 <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14]" style={{ fontFamily: 'Arial Black, sans-serif', textShadow: '0 0 4px rgba(57, 255, 20, 0.8), 2px 2px 0px #1a4d0a' }}>
                   NEW EDEN
                 </div>
