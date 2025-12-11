@@ -22,7 +22,7 @@ export const useWindowContext = () => useContext(WindowContext);
 const MENUBAR_HEIGHT = 36;
 const TASKBAR_HEIGHT = 40;
 
-export function Window({ className, active = true, children, ...props }: WindowProps) {
+export function Window({ className, active = true, resizable = true, children, ...props }: WindowProps) {
   const nodeRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -101,7 +101,7 @@ export function Window({ className, active = true, children, ...props }: WindowP
             "text-win98-text text-[11px]",
             isMaximized
               ? "!fixed !top-[36px] !left-0 !right-0 !bottom-[40px] !w-auto !h-auto !transform-none !max-w-none !max-h-none"
-              : "resize overflow-auto",
+              : resizable ? "resize overflow-auto" : "overflow-auto",
             className
           )}
           {...props}
