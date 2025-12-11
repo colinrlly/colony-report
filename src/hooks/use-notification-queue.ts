@@ -139,14 +139,22 @@ export function useNotificationQueue(
     };
   }, [queueState, initialDelay]);
 
+  // Use ref to always have latest activeItem
+  const activeItemRef = useRef(activeItem);
+  activeItemRef.current = activeItem;
+
   // Handle notification completion
   const completeNotification = useCallback((completedItem: NotificationItem) => {
-    if (activeItem !== completedItem) {
-      console.log('[Queue] Ignored completion for', completedItem, '- active is', activeItem);
+    const currentActive = activeItemRef.current;
+
+    console.log('[Queue] completeNotification called with:', completedItem, '- current active:', currentActive);
+
+    if (currentActive !== completedItem) {
+      console.log('[Queue] Ignored - mismatch');
       return;
     }
 
-    console.log('[Queue] Completed:', completedItem);
+    console.log('[Queue] Completing:', completedItem);
     setActiveItem(null);
 
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -177,7 +185,7 @@ export function useNotificationQueue(
 
       return newState;
     });
-  }, [activeItem, gapBetween]);
+  }, [gapBetween]);
 
   // Parse notification item to get type and sub-index
   const getNotificationInfo = (item: NotificationItem | null) => {
@@ -206,24 +214,30 @@ export function useNotificationQueue(
     calendarIndex: info.type === 'calendar' ? info.subIndex : 0,
     reminderIndex: info.type === 'reminder' ? info.subIndex : 0,
 
-    // Completion handlers
+    // Completion handlers - use refs to avoid stale closures
     handleCalendarComplete: useCallback(() => {
-      if (activeItem?.startsWith('calendar-')) {
-        completeNotification(activeItem);
+      const current = activeItemRef.current;
+      console.log('[Queue] handleCalendarComplete called, activeItem:', current);
+      if (current?.startsWith('calendar-')) {
+        completeNotification(current);
       }
-    }, [activeItem, completeNotification]),
+    }, [completeNotification]),
 
     handleReminderComplete: useCallback(() => {
-      if (activeItem?.startsWith('reminder-')) {
-        completeNotification(activeItem);
+      const current = activeItemRef.current;
+      console.log('[Queue] handleReminderComplete called, activeItem:', current);
+      if (current?.startsWith('reminder-')) {
+        completeNotification(current);
       }
-    }, [activeItem, completeNotification]),
+    }, [completeNotification]),
 
     handlePlantAlarmComplete: useCallback(() => {
+      console.log('[Queue] handlePlantAlarmComplete called');
       completeNotification('plant-alarm');
     }, [completeNotification]),
 
     handleSecurityWarningComplete: useCallback(() => {
+      console.log('[Queue] handleSecurityWarningComplete called');
       completeNotification('security-warning');
     }, [completeNotification]),
 
