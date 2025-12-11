@@ -114,7 +114,7 @@ interface ReminderNotificationData {
 const REMINDER_NOTIFICATIONS: ReminderNotificationData[] = [
   {
     title: "Desk Cleanup Reminder",
-    message: "Reminder: Prep your workstation before next Friday's lab check. You know how Facility Ops gets about \"organizational standards.\"",
+    message: "Prep your workstation before next Friday's lab check. You know how Facility Ops gets about \"organizational standards.\"",
   },
 ];
 
