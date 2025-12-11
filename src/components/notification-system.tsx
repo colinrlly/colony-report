@@ -294,12 +294,13 @@ interface AlarmModalProps {
 
 function AlarmModal({ onDismiss }: AlarmModalProps) {
   const audioRef = useRef<AudioContext | null>(null);
-  const oscillatorRef = useRef<OscillatorNode | null>(null);
-  const gainRef = useRef<GainNode | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isStoppedRef = useRef(false);
 
   // Play alarm sound using Web Audio API
   useEffect(() => {
+    isStoppedRef.current = false;
+
     const playAlarmSound = () => {
       try {
         if (!audioRef.current) {
@@ -310,27 +311,40 @@ function AlarmModal({ onDismiss }: AlarmModalProps) {
 
         // Create a beeping pattern
         const beep = () => {
-          const oscillator = ctx.createOscillator();
-          const gain = ctx.createGain();
+          // Don't beep if stopped
+          if (isStoppedRef.current || !audioRef.current) return;
 
-          oscillator.connect(gain);
-          gain.connect(ctx.destination);
+          try {
+            const oscillator = ctx.createOscillator();
+            const gain = ctx.createGain();
 
-          oscillator.frequency.value = 800;
-          oscillator.type = "square";
+            oscillator.connect(gain);
+            gain.connect(ctx.destination);
 
-          // Keep it quiet
-          gain.gain.value = 0.08;
+            oscillator.frequency.value = 800;
+            oscillator.type = "square";
 
-          oscillator.start();
+            // Keep it quiet
+            gain.gain.value = 0.08;
 
-          // Stop after short beep
-          setTimeout(() => {
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+            oscillator.start();
+
+            // Stop after short beep
             setTimeout(() => {
-              oscillator.stop();
-            }, 100);
-          }, 150);
+              if (!isStoppedRef.current) {
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+              }
+              setTimeout(() => {
+                try {
+                  oscillator.stop();
+                } catch {
+                  // Already stopped
+                }
+              }, 100);
+            }, 150);
+          } catch {
+            // Audio context may be closed
+          }
         };
 
         // Initial beep
@@ -346,29 +360,34 @@ function AlarmModal({ onDismiss }: AlarmModalProps) {
     playAlarmSound();
 
     return () => {
+      isStoppedRef.current = true;
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
-      }
-      if (oscillatorRef.current) {
-        try {
-          oscillatorRef.current.stop();
-        } catch {
-          // Oscillator may already be stopped
-        }
+        intervalRef.current = null;
       }
       if (audioRef.current) {
-        audioRef.current.close();
+        try {
+          audioRef.current.close();
+        } catch {
+          // Already closed
+        }
         audioRef.current = null;
       }
     };
   }, []);
 
   const handleTurnOff = () => {
+    isStoppedRef.current = true;
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
+      intervalRef.current = null;
     }
     if (audioRef.current) {
-      audioRef.current.close();
+      try {
+        audioRef.current.close();
+      } catch {
+        // Already closed
+      }
       audioRef.current = null;
     }
     onDismiss();
