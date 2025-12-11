@@ -437,3 +437,153 @@ body {
 .notification-slide-out {
   animation: slideOutToRight 0.4s ease-in forwards;
 }
+
+/* ============================================
+   ALARM NOTIFICATION STYLES
+   Center-screen popup with confetti burst
+   ============================================ */
+
+/* Alarm slide in from center - scale up */
+@keyframes alarmSlideIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Alarm slide out to center - scale down */
+@keyframes alarmSlideOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+}
+
+.alarm-slide-in {
+  animation: alarmSlideIn 0.4s ease-out forwards;
+}
+
+.alarm-slide-out {
+  animation: alarmSlideOut 0.4s ease-in forwards;
+}
+
+/* Confetti container - positioned at center */
+.confetti-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+/* Individual confetti particle */
+.confetti-particle {
+  position: absolute;
+  width: var(--size, 8px);
+  height: var(--size, 8px);
+  border-radius: 2px;
+  animation: confettiBurst 1s ease-out var(--delay, 0s) forwards;
+  transform-origin: center;
+}
+
+/* Confetti burst animation - particles fly outward and fall */
+@keyframes confettiBurst {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 1;
+  }
+  20% {
+    transform:
+      translate(
+        calc(-50% + cos(var(--angle)) * var(--distance)),
+        calc(-50% + sin(var(--angle)) * var(--distance) - 40px)
+      )
+      rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform:
+      translate(
+        calc(-50% + cos(var(--angle)) * var(--distance) * 1.2),
+        calc(-50% + sin(var(--angle)) * var(--distance) + 100px)
+      )
+      rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Fallback for browsers that don't support cos/sin in calc */
+@supports not (transform: translate(calc(cos(0deg) * 1px), 0)) {
+  .confetti-particle:nth-child(1) { animation: confettiSimple1 1s ease-out forwards; }
+  .confetti-particle:nth-child(2) { animation: confettiSimple2 1s ease-out 0.05s forwards; }
+  .confetti-particle:nth-child(3) { animation: confettiSimple3 1s ease-out 0.1s forwards; }
+  .confetti-particle:nth-child(4) { animation: confettiSimple4 1s ease-out 0.15s forwards; }
+  .confetti-particle:nth-child(5) { animation: confettiSimple5 1s ease-out 0.2s forwards; }
+  .confetti-particle:nth-child(6) { animation: confettiSimple6 1s ease-out forwards; }
+  .confetti-particle:nth-child(7) { animation: confettiSimple7 1s ease-out 0.05s forwards; }
+  .confetti-particle:nth-child(8) { animation: confettiSimple8 1s ease-out 0.1s forwards; }
+  .confetti-particle:nth-child(9) { animation: confettiSimple1 1s ease-out 0.15s forwards; }
+  .confetti-particle:nth-child(10) { animation: confettiSimple2 1s ease-out 0.2s forwards; }
+  .confetti-particle:nth-child(n+11) { animation: confettiSimple3 1s ease-out 0.1s forwards; }
+}
+
+@keyframes confettiSimple1 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(80px, -60px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(100px, 80px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes confettiSimple2 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(-70px, -50px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(-90px, 90px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes confettiSimple3 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(40px, -80px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(60px, 70px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes confettiSimple4 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(-60px, -70px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(-80px, 60px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes confettiSimple5 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(0px, -90px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(10px, 100px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes confettiSimple6 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(90px, -30px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(110px, 50px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes confettiSimple7 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(-90px, -20px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(-100px, 70px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes confettiSimple8 {
+  0% { transform: translate(-50%, -50%); opacity: 1; }
+  20% { transform: translate(30px, -85px) rotate(180deg); opacity: 1; }
+  100% { transform: translate(40px, 90px) rotate(720deg); opacity: 0; }
+}

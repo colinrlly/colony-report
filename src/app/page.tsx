@@ -14,6 +14,7 @@ import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
 import { CalendarNotification } from "@/components/calendar-notification";
 import { ReminderNotification, RedactedText } from "@/components/reminder-notification";
+import { AlarmNotification } from "@/components/alarm-notification";
 import { NOTIFICATION_TIMING } from "@/hooks/use-notification-animation";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
@@ -176,6 +177,10 @@ export default function Home() {
   const [isReminderNotificationVisible, setIsReminderNotificationVisible] = useState(false);
   const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
   const reminderGapTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Alarm notification state (plant watering alarm)
+  const [isAlarmNotificationVisible, setIsAlarmNotificationVisible] = useState(false);
+  const alarmTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -429,6 +434,20 @@ export default function Home() {
     }, NOTIFICATION_TIMING.GAP_BETWEEN);
   }, []);
 
+  // Handle alarm notification dismiss - schedule next alarm
+  const handleAlarmDismiss = useCallback(() => {
+    setIsAlarmNotificationVisible(false);
+
+    if (alarmTimerRef.current) {
+      clearTimeout(alarmTimerRef.current);
+    }
+
+    // Show again after a longer delay (30 seconds)
+    alarmTimerRef.current = setTimeout(() => {
+      setIsAlarmNotificationVisible(true);
+    }, 30000);
+  }, []);
+
   // Start calendar notification cycle on mount
   useEffect(() => {
     const initialTimer = setTimeout(() => {
@@ -453,6 +472,20 @@ export default function Home() {
       clearTimeout(reminderTimer);
       if (reminderGapTimerRef.current) {
         clearTimeout(reminderGapTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Start alarm notification on mount (longer delay to not overlap with others)
+  useEffect(() => {
+    const alarmTimer = setTimeout(() => {
+      setIsAlarmNotificationVisible(true);
+    }, 10000); // Show after 10 seconds
+
+    return () => {
+      clearTimeout(alarmTimer);
+      if (alarmTimerRef.current) {
+        clearTimeout(alarmTimerRef.current);
       }
     };
   }, []);
@@ -905,6 +938,12 @@ export default function Home() {
         onComplete={handleReminderNotificationComplete}
         title={getReminderNotifications()[currentReminderIndex].title}
         message={getReminderNotifications()[currentReminderIndex].message}
+      />
+
+      {/* Alarm Notification - plant watering alarm */}
+      <AlarmNotification
+        isVisible={isAlarmNotificationVisible}
+        onDismiss={handleAlarmDismiss}
       />
 
       {/* Screensaver */}
