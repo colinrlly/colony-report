@@ -6,6 +6,7 @@ import { SecretsFolder } from "@/components/secrets-folder";
 import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
+import { SecurityCameraFeed } from "@/components/security-camera-feed";
 import { Germsweeper } from "@/components/minesweeper";
 import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
@@ -89,6 +90,10 @@ export default function Home() {
   // Contact HR form state
   const [isContactHROpen, setIsContactHROpen] = useState(false);
   const [isContactHRMinimized, setIsContactHRMinimized] = useState(false);
+
+  // Security camera state (4 cameras)
+  const [openCameras, setOpenCameras] = useState<Record<number, boolean>>({});
+  const [minimizedCameras, setMinimizedCameras] = useState<Record<number, boolean>>({});
 
   // Stress Relief gallery state
   const [isStressReliefOpen, setIsStressReliefOpen] = useState(false);
@@ -224,6 +229,8 @@ export default function Home() {
       setIsStressReliefOpen(false);
       setIsStressReliefMinimized(false);
       setIsTutorialHelperVisible(false);
+      setOpenCameras({});
+      setMinimizedCameras({});
     }, 100);
 
     // End the flicker animation after a short delay
@@ -267,6 +274,8 @@ export default function Home() {
       setIsStressReliefOpen(false);
       setIsStressReliefMinimized(false);
       setIsTutorialHelperVisible(false);
+      setOpenCameras({});
+      setMinimizedCameras({});
     }, 1800); // Just after progress bar completes
 
     // Start the flicker-out phase
@@ -336,10 +345,22 @@ export default function Home() {
     {
       label: "Security Cams",
       submenu: [
-        { label: "Ant Hill- Cam 1" },
-        { label: "Ant Hill- Cam 2" },
-        { label: "Ant Hill- Cam 3" },
-        { label: "Ant Hill- Cam 4" },
+        { label: "Ant Hill- Cam 1", onClick: () => {
+          setOpenCameras(prev => ({ ...prev, 1: true }));
+          setMinimizedCameras(prev => ({ ...prev, 1: false }));
+        }},
+        { label: "Ant Hill- Cam 2", onClick: () => {
+          setOpenCameras(prev => ({ ...prev, 2: true }));
+          setMinimizedCameras(prev => ({ ...prev, 2: false }));
+        }},
+        { label: "Ant Hill- Cam 3", onClick: () => {
+          setOpenCameras(prev => ({ ...prev, 3: true }));
+          setMinimizedCameras(prev => ({ ...prev, 3: false }));
+        }},
+        { label: "Ant Hill- Cam 4", onClick: () => {
+          setOpenCameras(prev => ({ ...prev, 4: true }));
+          setMinimizedCameras(prev => ({ ...prev, 4: false }));
+        }},
       ],
     },
     { label: "Plant Monitor" },
@@ -657,6 +678,21 @@ export default function Home() {
           />
         )}
 
+        {/* Security Camera Feeds */}
+        {[1, 2, 3, 4].map((camNum) => (
+          openCameras[camNum] && !minimizedCameras[camNum] && (
+            <SecurityCameraFeed
+              key={camNum}
+              cameraNumber={camNum}
+              onClose={() => {
+                setOpenCameras(prev => ({ ...prev, [camNum]: false }));
+                setMinimizedCameras(prev => ({ ...prev, [camNum]: false }));
+              }}
+              onMinimize={() => setMinimizedCameras(prev => ({ ...prev, [camNum]: true }))}
+            />
+          )
+        ))}
+
         {/* Stress Relief Gallery */}
         {isStressReliefOpen && !isStressReliefMinimized && (
           <StressReliefGallery
@@ -718,6 +754,16 @@ export default function Home() {
             onClick={() => setIsContactHRMinimized(!isContactHRMinimized)}
           />
         )}
+        {[1, 2, 3, 4].map((camNum) => (
+          openCameras[camNum] && (
+            <TaskbarButton
+              key={`cam-${camNum}`}
+              title={`Cam ${camNum}`}
+              isActive={!minimizedCameras[camNum]}
+              onClick={() => setMinimizedCameras(prev => ({ ...prev, [camNum]: !prev[camNum] }))}
+            />
+          )
+        ))}
         {isStressReliefOpen && (
           <TaskbarButton
             title="Stress Relief"
