@@ -18,6 +18,10 @@ const INITIAL_WIDTH = 560;
 const INITIAL_HEIGHT = 480;
 const ASPECT_RATIO = INITIAL_WIDTH / INITIAL_HEIGHT;
 
+// Minimum dimensions (prevents window from shrinking too small)
+const MIN_WIDTH = 560;
+const MIN_HEIGHT = 480;
+
 // Different signal lost messages for variety
 const SIGNAL_MESSAGES = [
   "SIGNAL LOST",
@@ -208,12 +212,18 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
 
       if (widthDelta > heightDelta) {
         // Width changed more, adjust height to match
-        newWidth = width;
-        newHeight = width / ASPECT_RATIO;
+        newWidth = Math.max(width, MIN_WIDTH);
+        newHeight = newWidth / ASPECT_RATIO;
       } else {
         // Height changed more, adjust width to match
-        newHeight = height;
-        newWidth = height * ASPECT_RATIO;
+        newHeight = Math.max(height, MIN_HEIGHT);
+        newWidth = newHeight * ASPECT_RATIO;
+      }
+
+      // Ensure both dimensions respect minimums
+      if (newWidth < MIN_WIDTH || newHeight < MIN_HEIGHT) {
+        newWidth = MIN_WIDTH;
+        newHeight = MIN_HEIGHT;
       }
 
       // Apply the constrained dimensions
@@ -241,6 +251,8 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
         top: "10vh",
         left: "50%",
         transform: "translateX(-50%)",
+        minWidth: `${MIN_WIDTH}px`,
+        minHeight: `${MIN_HEIGHT}px`,
       }}
     >
       <WindowTitleBar>
