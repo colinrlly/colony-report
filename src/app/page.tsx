@@ -386,14 +386,6 @@ export default function Home() {
     { label: "Refresh Desktop", onClick: handleRefreshDesktop },
     { label: showHiddenFiles ? "Hide Hidden Files" : "Show Hidden Files", onClick: handleShowHiddenFiles },
     { label: "Toggle Wallpaper", onClick: handleToggleWallpaper },
-    {
-      label: "Test Notifications",
-      submenu: [
-        { label: "Field Operation", onClick: () => handleTriggerCalendarNotification(0) },
-        { label: "Weekly Team Sync", onClick: () => handleTriggerCalendarNotification(1) },
-        { label: "Specimen 14 Enrichment", onClick: () => handleTriggerCalendarNotification(2) },
-      ],
-    },
   ];
 
   // Tools menu items - defined here to access game handlers
@@ -611,6 +603,28 @@ export default function Home() {
 
         {/* CRT Screen Effect Overlay - behind all content, only affects wallpaper */}
         <div className="crt-overlay pointer-events-none -z-5" />
+
+        {/* TEMPORARY TEST BUTTONS - DELETE LATER */}
+        <div className="absolute bottom-[60px] left-4 flex gap-2 z-50">
+          <button
+            onClick={() => handleTriggerCalendarNotification(0)}
+            className="px-3 py-2 text-xs font-bold win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-pressed"
+          >
+            Test: Field Op
+          </button>
+          <button
+            onClick={() => handleTriggerCalendarNotification(1)}
+            className="px-3 py-2 text-xs font-bold win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-pressed"
+          >
+            Test: Team Sync
+          </button>
+          <button
+            onClick={() => handleTriggerCalendarNotification(2)}
+            className="px-3 py-2 text-xs font-bold win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-pressed"
+          >
+            Test: Specimen 14
+          </button>
+        </div>
 
         {/* Desktop Icons - each independently draggable */}
         {DESKTOP_ICONS.map((iconConfig) => (
