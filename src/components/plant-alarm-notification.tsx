@@ -164,10 +164,10 @@ function HappyPlantIcon() {
       <rect x="4" y="4" width="1" height="1" fill="#15803d" />
       <rect x="11" y="4" width="1" height="1" fill="#15803d" />
       {/* Happy eyes */}
-      <rect x="5" y="7" width="2" height="2" fill={COLORS.common.black} />
-      <rect x="9" y="7" width="2" height="2" fill={COLORS.common.black} />
-      <rect x="6" y="7" width="1" height="1" fill={COLORS.common.white} />
-      <rect x="10" y="7" width="1" height="1" fill={COLORS.common.white} />
+      <rect x="5" y="6" width="2" height="2" fill={COLORS.common.black} />
+      <rect x="9" y="6" width="2" height="2" fill={COLORS.common.black} />
+      <rect x="6" y="6" width="1" height="1" fill={COLORS.common.white} />
+      <rect x="10" y="6" width="1" height="1" fill={COLORS.common.white} />
       {/* Happy smile - small U-shaped curve */}
       <rect x="7" y="10" width="2" height="1" fill={COLORS.common.black} />
       <rect x="6" y="9" width="1" height="1" fill={COLORS.common.black} />
