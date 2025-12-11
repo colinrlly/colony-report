@@ -292,7 +292,7 @@ export function PlantAlarmNotification({
       <div
         className="win98-border-raised"
         style={{
-          backgroundColor: isWatered ? "#dcfce7" : "#fef2f2",
+          backgroundColor: isWatered ? "#dcfce7" : "#d4c8b8",
           padding: "2px",
           width: "480px",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
@@ -322,7 +322,7 @@ export function PlantAlarmNotification({
         <div
           className="px-4 py-4"
           style={{
-            backgroundColor: isWatered ? "#dcfce7" : "#d6d3d1",
+            backgroundColor: isWatered ? "#dcfce7" : "#d4c8b8",
             borderTop: isWatered ? "1px solid #15803d" : "1px solid #b91c1c",
           }}
         >
@@ -346,30 +346,32 @@ export function PlantAlarmNotification({
               </div>
             </div>
           ) : (
-            // Alarm state
-            <div className="flex gap-4">
-              <AngryPlantIcon />
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <span
-                    className="text-2xl font-bold"
-                    style={{ color: "#dc2626" }}
-                  >
-                    WARNING!
-                  </span>
-                  <span
-                    className="text-lg font-semibold"
-                    style={{
-                      color: "#7f1d1d",
-                      textDecoration: "underline",
-                      textDecorationColor: "#b91c1c",
-                    }}
-                  >
-                    Water the exploding beanfang plant!
-                  </span>
-                </div>
+            // Alarm state - WARNING line on top, then icon + body text below
+            <div>
+              {/* Warning header line */}
+              <div className="flex items-center gap-3 mb-4">
+                <span
+                  className="text-2xl font-bold"
+                  style={{ color: "#dc2626" }}
+                >
+                  WARNING!
+                </span>
+                <span
+                  className="text-lg font-semibold"
+                  style={{
+                    color: "#7f1d1d",
+                    textDecoration: "underline",
+                    textDecorationColor: "#b91c1c",
+                  }}
+                >
+                  Water the exploding beanfang plant!
+                </span>
+              </div>
+              {/* Icon and body text */}
+              <div className="flex items-start gap-4">
+                <AngryPlantIcon />
                 <div
-                  className="text-sm leading-relaxed"
+                  className="text-sm leading-relaxed pt-2"
                   style={{ color: "#44403c" }}
                 >
                   You know what happens when you forget.. we can&apos;t have
@@ -385,15 +387,15 @@ export function PlantAlarmNotification({
           <div
             className="px-4 py-3 flex justify-center"
             style={{
-              backgroundColor: "#a8a29e",
-              borderTop: "1px solid #78716c",
+              backgroundColor: "#b8a898",
+              borderTop: "1px solid #a09080",
             }}
           >
             <button
               onClick={handleWaterClick}
               className="win98-border-raised px-6 py-2 font-bold text-sm cursor-pointer hover:brightness-95 active:win98-border-pressed"
               style={{
-                backgroundColor: "#d6d3d1",
+                backgroundColor: "#d4c8b8",
                 color: "#1c1917",
               }}
             >
