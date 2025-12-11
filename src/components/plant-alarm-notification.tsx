@@ -11,8 +11,8 @@ interface PlantAlarmNotificationProps {
 function AngryPlantIcon() {
   return (
     <svg
-      width="64"
-      height="80"
+      width="100"
+      height="125"
       viewBox="0 0 16 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +294,7 @@ export function PlantAlarmNotification({
         style={{
           backgroundColor: isWatered ? "#dcfce7" : "#d4c8b8",
           padding: "2px",
-          width: "480px",
+          width: "560px",
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
         }}
       >
@@ -349,30 +349,40 @@ export function PlantAlarmNotification({
             // Alarm state - WARNING line on top, then icon + body text below
             <div>
               {/* Warning header line */}
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-baseline gap-4 mb-1">
                 <span
-                  className="text-2xl font-bold"
-                  style={{ color: "#dc2626" }}
+                  className="font-bold"
+                  style={{
+                    color: "#b91c1c",
+                    fontSize: "32px",
+                  }}
                 >
                   WARNING!
                 </span>
                 <span
-                  className="text-lg font-semibold"
+                  className="font-semibold"
                   style={{
                     color: "#7f1d1d",
-                    textDecoration: "underline",
-                    textDecorationColor: "#b91c1c",
+                    fontSize: "20px",
+                    borderBottom: "2px solid #991b1b",
+                    paddingBottom: "2px",
                   }}
                 >
                   Water the exploding beanfang plant!
                 </span>
               </div>
               {/* Icon and body text */}
-              <div className="flex items-start gap-4">
-                <AngryPlantIcon />
+              <div className="flex items-start gap-6 mt-4">
+                <div className="flex-shrink-0">
+                  <AngryPlantIcon />
+                </div>
                 <div
-                  className="text-sm leading-relaxed pt-2"
-                  style={{ color: "#44403c" }}
+                  className="leading-relaxed pt-4"
+                  style={{
+                    color: "#57534e",
+                    fontSize: "15px",
+                    fontStyle: "italic",
+                  }}
                 >
                   You know what happens when you forget.. we can&apos;t have
                   another incident report like that on our record so soon.
@@ -385,18 +395,19 @@ export function PlantAlarmNotification({
         {/* Button area - only show when not watered */}
         {!isWatered && (
           <div
-            className="px-4 py-3 flex justify-center"
+            className="px-6 py-4 flex justify-center"
             style={{
-              backgroundColor: "#b8a898",
-              borderTop: "1px solid #a09080",
+              backgroundColor: "#c8b8a8",
+              borderTop: "2px solid #a8a098",
             }}
           >
             <button
               onClick={handleWaterClick}
-              className="win98-border-raised px-6 py-2 font-bold text-sm cursor-pointer hover:brightness-95 active:win98-border-pressed"
+              className="win98-border-raised px-12 py-2 font-bold cursor-pointer hover:brightness-95 active:win98-border-pressed"
               style={{
-                backgroundColor: "#d4c8b8",
+                backgroundColor: "#e8e0d8",
                 color: "#1c1917",
+                fontSize: "16px",
               }}
             >
               Water Plant Remotely
