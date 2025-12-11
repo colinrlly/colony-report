@@ -13,6 +13,8 @@ import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
 import { CalendarNotification } from "@/components/calendar-notification";
+import { ReminderNotification, RedactedText } from "@/components/reminder-notification";
+import { NOTIFICATION_TIMING } from "@/hooks/use-notification-animation";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -69,15 +71,12 @@ type WallpaperType = 0 | 1 | 2;
    NOTIFICATION SYSTEM DATA
 
    Architecture for popup notifications:
-   - Notifications cycle automatically with configurable timing
-   - Each notification type (calendar, alerts, etc.) has its own data array
-   - The system shows one notification at a time, cycling through all types
-   - Future: Add more notification types by creating new data arrays and components
+   - Shared animation logic in: src/hooks/use-notification-animation.ts
+   - Timing constants centralized in NOTIFICATION_TIMING
+   - Each notification type has its own component and data array
+   - Currently running: Calendar (top) and Reminder (below) notifications
+   - Future: Combine into unified queue system with single notification slot
    ============================================ */
-
-// Timing constants for notification system (in milliseconds)
-const NOTIFICATION_INITIAL_DELAY = 3000;  // Delay before first notification
-const NOTIFICATION_GAP = 3000;            // Gap between notifications
 
 // Calendar notification data
 interface CalendarNotificationData {
@@ -101,6 +100,22 @@ const CALENDAR_NOTIFICATIONS: CalendarNotificationData[] = [
     eventName: "Specimen 14 Enrichment Session",
     time: "Every other Monday",
     note: "Note to self: bring new puzzle object, last one dissolved.",
+  },
+];
+
+// Reminder notification data - function returns array to support JSX content
+const getReminderNotifications = () => [
+  {
+    title: "Desk Cleanup Reminder",
+    message: "Prep your workstation before next Friday's lab check. You know how Facility Ops gets about \"organizational standards.\"",
+  },
+  {
+    title: "Teach Toby to Feed Specimen H1",
+    message: "Walk Toby through the H1 feeding protocol. Could be a good teaching moment… and he'll get used to the risk. Eventually.",
+  },
+  {
+    title: <>Feed <RedactedText>Specimen X7</RedactedText></>,
+    message: <>Don&apos;t forget to feed… well, you know. The specimen.</>,
   },
 ];
 
@@ -156,6 +171,11 @@ export default function Home() {
   const [isCalendarNotificationVisible, setIsCalendarNotificationVisible] = useState(false);
   const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
   const notificationGapTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Reminder notification state
+  const [isReminderNotificationVisible, setIsReminderNotificationVisible] = useState(false);
+  const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
+  const reminderGapTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -381,34 +401,58 @@ export default function Home() {
     setIsScreensaverActive(false);
   }, []);
 
-  // Handle notification complete - wait for gap then show next
-  // Future: This will be expanded to handle multiple notification types
+  // Handle calendar notification complete - wait for gap then show next
   const handleCalendarNotificationComplete = useCallback(() => {
     setIsCalendarNotificationVisible(false);
 
-    // Clear any existing gap timer
     if (notificationGapTimerRef.current) {
       clearTimeout(notificationGapTimerRef.current);
     }
 
-    // After gap, show the next notification
     notificationGapTimerRef.current = setTimeout(() => {
       setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
       setIsCalendarNotificationVisible(true);
-    }, NOTIFICATION_GAP);
+    }, NOTIFICATION_TIMING.GAP_BETWEEN);
   }, []);
 
-  // Start the notification cycle on mount
+  // Handle reminder notification complete - wait for gap then show next
+  const handleReminderNotificationComplete = useCallback(() => {
+    setIsReminderNotificationVisible(false);
+
+    if (reminderGapTimerRef.current) {
+      clearTimeout(reminderGapTimerRef.current);
+    }
+
+    reminderGapTimerRef.current = setTimeout(() => {
+      setCurrentReminderIndex((prev) => (prev + 1) % getReminderNotifications().length);
+      setIsReminderNotificationVisible(true);
+    }, NOTIFICATION_TIMING.GAP_BETWEEN);
+  }, []);
+
+  // Start calendar notification cycle on mount
   useEffect(() => {
     const initialTimer = setTimeout(() => {
       setIsCalendarNotificationVisible(true);
-    }, NOTIFICATION_INITIAL_DELAY);
+    }, NOTIFICATION_TIMING.INITIAL_DELAY);
 
     return () => {
       clearTimeout(initialTimer);
-      // Clean up gap timer on unmount
       if (notificationGapTimerRef.current) {
         clearTimeout(notificationGapTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Start reminder notification cycle on mount (offset to avoid overlap)
+  useEffect(() => {
+    const reminderTimer = setTimeout(() => {
+      setIsReminderNotificationVisible(true);
+    }, NOTIFICATION_TIMING.INITIAL_DELAY + 1500);
+
+    return () => {
+      clearTimeout(reminderTimer);
+      if (reminderGapTimerRef.current) {
+        clearTimeout(reminderGapTimerRef.current);
       }
     };
   }, []);
@@ -853,6 +897,14 @@ export default function Home() {
         eventName={CALENDAR_NOTIFICATIONS[currentNotificationIndex].eventName}
         time={CALENDAR_NOTIFICATIONS[currentNotificationIndex].time}
         note={CALENDAR_NOTIFICATIONS[currentNotificationIndex].note}
+      />
+
+      {/* Reminder Notification - cycles through reminders */}
+      <ReminderNotification
+        isVisible={isReminderNotificationVisible}
+        onComplete={handleReminderNotificationComplete}
+        title={getReminderNotifications()[currentReminderIndex].title}
+        message={getReminderNotifications()[currentReminderIndex].message}
       />
 
       {/* Screensaver */}
