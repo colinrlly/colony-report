@@ -639,7 +639,17 @@ export default function Home() {
           <NestedFolderWindow
             title="Unbelievable 💀"
             childFolderLabel="secret_pet_monitor"
-            onClose={() => setIsUghFineOpen(false)}
+            onClose={() => {
+              // Close this folder, pet monitor, and all nested folders, but keep .secrets open
+              setIsUghFineOpen(false);
+              setIsPetMonitorOpen(false);
+              setIsPetMonitorMinimized(false);
+              setIsAreYouSeriousOpen(false);
+              setIsGoNoFurtherOpen(false);
+              setIsPleaseStopOpen(false);
+              setIsSeriouslyNothingOpen(false);
+              setIsNothingOpen(false);
+            }}
             onOpenChild={() => setIsPetMonitorOpen(true)}
             position={{ top: "30vh", left: "52vw" }}
           />
