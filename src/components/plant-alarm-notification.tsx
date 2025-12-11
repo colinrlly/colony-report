@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 // ============================================
 
 const ANIMATION_DURATION = 400;
-const SUCCESS_STATE_DURATION = 3000;
+const SUCCESS_STATE_DURATION = 2000;
 const CONFETTI_PARTICLE_COUNT = 30;
 
 const CONFETTI_COLORS = [
