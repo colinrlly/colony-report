@@ -83,7 +83,7 @@ function CrawlingAnt({ x, y, angle, size, legPhase }: { x: number; y: number; an
   );
 }
 
-// Pixel art ladybug component
+// Ladybug component with circular body
 function CrawlingLadybug({ x, y, angle, size, legPhase }: { x: number; y: number; angle: number; size: number; legPhase: number }) {
   const legOffset = Math.sin(legPhase) * 1.5;
   const visualRotation = Math.PI - angle;
@@ -98,53 +98,48 @@ function CrawlingLadybug({ x, y, angle, size, legPhase }: { x: number; y: number
         height: size,
         transform: `rotate(${visualRotation}rad)`,
         transformOrigin: 'center center',
-        imageRendering: 'pixelated',
       }}
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Head - black */}
-      <rect x="8" y="2" width="4" height="3" fill="#1a1a1a" />
-      {/* Antennae */}
-      <rect x="7" y="1" width="1" height="2" fill="#1a1a1a" />
-      <rect x="12" y="1" width="1" height="2" fill="#1a1a1a" />
-      <rect x="6" y="0" width="1" height="1" fill="#1a1a1a" />
-      <rect x="13" y="0" width="1" height="1" fill="#1a1a1a" />
-      {/* Body - red shell */}
-      <rect x="5" y="5" width="10" height="12" fill="#cc2222" />
-      <rect x="6" y="4" width="8" height="1" fill="#cc2222" />
-      <rect x="6" y="17" width="8" height="1" fill="#cc2222" />
-      {/* Center line - black */}
-      <rect x="9" y="5" width="2" height="13" fill="#1a1a1a" />
-      {/* Spots - black */}
-      <rect x="6" y="7" width="2" height="2" fill="#1a1a1a" />
-      <rect x="12" y="7" width="2" height="2" fill="#1a1a1a" />
-      <rect x="7" y="12" width="2" height="2" fill="#1a1a1a" />
-      <rect x="11" y="12" width="2" height="2" fill="#1a1a1a" />
-      <rect x="6" y="15" width="2" height="2" fill="#1a1a1a" />
-      <rect x="12" y="15" width="2" height="2" fill="#1a1a1a" />
-      {/* Left legs - animated */}
+      {/* Left legs - animated (behind body) */}
       <g style={{ transform: `translateX(${-legOffset}px)` }}>
-        <rect x="3" y="6" width="2" height="1" fill="#1a1a1a" />
-        <rect x="2" y="7" width="1" height="2" fill="#1a1a1a" />
-        <rect x="3" y="10" width="2" height="1" fill="#1a1a1a" />
-        <rect x="2" y="11" width="1" height="2" fill="#1a1a1a" />
-        <rect x="3" y="14" width="2" height="1" fill="#1a1a1a" />
-        <rect x="2" y="15" width="1" height="2" fill="#1a1a1a" />
+        <rect x="3" y="7" width="2" height="1" fill="#1a1a1a" />
+        <rect x="2" y="8" width="1" height="2" fill="#1a1a1a" />
+        <rect x="3" y="11" width="2" height="1" fill="#1a1a1a" />
+        <rect x="2" y="12" width="1" height="2" fill="#1a1a1a" />
+        <rect x="3" y="15" width="2" height="1" fill="#1a1a1a" />
+        <rect x="2" y="16" width="1" height="2" fill="#1a1a1a" />
       </g>
-      {/* Right legs - animated */}
+      {/* Right legs - animated (behind body) */}
       <g style={{ transform: `translateX(${legOffset}px)` }}>
-        <rect x="15" y="6" width="2" height="1" fill="#1a1a1a" />
-        <rect x="17" y="7" width="1" height="2" fill="#1a1a1a" />
-        <rect x="15" y="10" width="2" height="1" fill="#1a1a1a" />
-        <rect x="17" y="11" width="1" height="2" fill="#1a1a1a" />
-        <rect x="15" y="14" width="2" height="1" fill="#1a1a1a" />
-        <rect x="17" y="15" width="1" height="2" fill="#1a1a1a" />
+        <rect x="15" y="7" width="2" height="1" fill="#1a1a1a" />
+        <rect x="17" y="8" width="1" height="2" fill="#1a1a1a" />
+        <rect x="15" y="11" width="2" height="1" fill="#1a1a1a" />
+        <rect x="17" y="12" width="1" height="2" fill="#1a1a1a" />
+        <rect x="15" y="15" width="2" height="1" fill="#1a1a1a" />
+        <rect x="17" y="16" width="1" height="2" fill="#1a1a1a" />
       </g>
+      {/* Head - black circle */}
+      <circle cx="10" cy="4" r="2.5" fill="#1a1a1a" />
+      {/* Antennae */}
+      <line x1="8" y1="2" x2="6" y2="0" stroke="#1a1a1a" strokeWidth="1" />
+      <line x1="12" y1="2" x2="14" y2="0" stroke="#1a1a1a" strokeWidth="1" />
+      {/* Body - red circular shell */}
+      <ellipse cx="10" cy="12" rx="6" ry="7" fill="#cc2222" />
+      {/* Center line - black */}
+      <line x1="10" y1="5" x2="10" y2="19" stroke="#1a1a1a" strokeWidth="1.5" />
+      {/* Spots - black circles */}
+      <circle cx="7" cy="8" r="1.3" fill="#1a1a1a" />
+      <circle cx="13" cy="8" r="1.3" fill="#1a1a1a" />
+      <circle cx="6.5" cy="12" r="1.3" fill="#1a1a1a" />
+      <circle cx="13.5" cy="12" r="1.3" fill="#1a1a1a" />
+      <circle cx="7" cy="16" r="1.3" fill="#1a1a1a" />
+      <circle cx="13" cy="16" r="1.3" fill="#1a1a1a" />
       {/* Eyes */}
-      <rect x="8" y="3" width="1" height="1" fill="#3a3a3a" />
-      <rect x="11" y="3" width="1" height="1" fill="#3a3a3a" />
+      <circle cx="9" cy="3.5" r="0.5" fill="#3a3a3a" />
+      <circle cx="11" cy="3.5" r="0.5" fill="#3a3a3a" />
     </svg>
   );
 }
