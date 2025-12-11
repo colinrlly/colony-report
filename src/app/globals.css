@@ -381,3 +381,18 @@ body {
     );
   opacity: 0.4;
 }
+
+/* ============================================
+   SCREENSAVER STYLES
+   Ant screensaver with crawling ants
+   ============================================ */
+
+/* Hint text fade-in animation */
+@keyframes fadeInHint {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.screensaver-hint {
+  animation: fadeInHint 2s ease-in 1s forwards;
+}
