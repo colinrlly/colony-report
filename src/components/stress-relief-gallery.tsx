@@ -73,7 +73,7 @@ export function StressReliefGallery({ onClose, onMinimize }: StressReliefGallery
   };
 
   return (
-    <Window className="w-[500px] h-[450px] absolute top-[10vh] left-[25vw] flex flex-col">
+    <Window className="w-[500px] h-[450px] absolute top-[15vh] left-1/2 -translate-x-1/2 flex flex-col">
       <WindowTitleBar>
         <WindowTitle>Stress Relief - Baby Animals</WindowTitle>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
