@@ -447,9 +447,9 @@ export function NotificationSystem() {
     // Check if we should show alarm (after a few regular notifications)
     notificationCount.current++;
 
-    // Show alarm roughly every 8-12 notifications, but only once per session initially
-    // then can repeat after all regular notifications have cycled
-    if (notificationCount.current >= 8 && !hasShownAlarm.current && Math.random() < 0.3) {
+    // Show alarm after a few notifications
+    // TODO: TEMP - reduced for testing (was >= 8)
+    if (notificationCount.current >= 4 && !hasShownAlarm.current && Math.random() < 0.5) {
       hasShownAlarm.current = true;
       setShowAlarm(true);
       return;
@@ -494,13 +494,15 @@ export function NotificationSystem() {
     refillQueue();
 
     // Show first notification after a short delay
+    // TODO: TEMP - reduced for testing (was 15000ms)
     const initialDelay = setTimeout(() => {
       showNextNotification();
-    }, 15000); // First notification after 15 seconds
+    }, 2000); // First notification after 2 seconds
 
-    // Then show notifications at random intervals (30-90 seconds)
+    // Then show notifications at random intervals
+    // TODO: TEMP - reduced for testing (was 30000 + random * 60000)
     const scheduleNext = () => {
-      const delay = 30000 + Math.random() * 60000; // 30-90 seconds
+      const delay = 3000 + Math.random() * 2000; // 3-5 seconds for testing
       return setTimeout(() => {
         if (!showAlarm) {
           showNextNotification();
