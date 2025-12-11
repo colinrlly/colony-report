@@ -15,6 +15,7 @@ import { Screensaver } from "@/components/screensaver";
 import { CalendarNotification } from "@/components/calendar-notification";
 import { ReminderNotification, RedactedText } from "@/components/reminder-notification";
 import { PlantAlarmNotification } from "@/components/plant-alarm-notification";
+import { SecurityWarningNotification } from "@/components/security-warning-notification";
 import { NOTIFICATION_TIMING } from "@/hooks/use-notification-animation";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
@@ -182,6 +183,11 @@ export default function Home() {
   const [isPlantAlarmVisible, setIsPlantAlarmVisible] = useState(false);
   const plantAlarmTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Security warning notification state
+  const [isSecurityWarningVisible, setIsSecurityWarningVisible] = useState(false);
+  const [isCam3WarningMode, setIsCam3WarningMode] = useState(false);
+  const securityWarningTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
     () => DESKTOP_ICONS.reduce((acc, icon) => {
@@ -310,6 +316,7 @@ export default function Home() {
       setMinimizedCameras({});
       setIsAllCamerasOpen(false);
       setIsAllCamerasMinimized(false);
+      setIsCam3WarningMode(false);
     }, 100);
 
     // End the flicker animation after a short delay
@@ -358,6 +365,7 @@ export default function Home() {
       setMinimizedCameras({});
       setIsAllCamerasOpen(false);
       setIsAllCamerasMinimized(false);
+      setIsCam3WarningMode(false);
     }, 1800); // Just after progress bar completes
 
     // Start the flicker-out phase
@@ -448,6 +456,34 @@ export default function Home() {
     }, 30000);
   }, []);
 
+  // Handle security warning "View Camera" button click
+  const handleSecurityWarningViewCamera = useCallback(() => {
+    // Hide the notification
+    setIsSecurityWarningVisible(false);
+
+    // Open camera 3 in warning mode
+    setIsCam3WarningMode(true);
+    setIsAllCamerasOpen(false);
+    setIsAllCamerasMinimized(false);
+    setOpenCameras(prev => ({ ...prev, 3: true }));
+    setMinimizedCameras(prev => ({ ...prev, 3: false }));
+
+    // Schedule next warning notification
+    if (securityWarningTimerRef.current) {
+      clearTimeout(securityWarningTimerRef.current);
+    }
+    securityWarningTimerRef.current = setTimeout(() => {
+      setIsSecurityWarningVisible(true);
+    }, 45000);
+  }, []);
+
+  // Handle camera 3 close - reset warning mode
+  const handleCam3Close = useCallback(() => {
+    setOpenCameras(prev => ({ ...prev, 3: false }));
+    setMinimizedCameras(prev => ({ ...prev, 3: false }));
+    setIsCam3WarningMode(false); // Reset warning mode when closed
+  }, []);
+
   // Start calendar notification cycle on mount
   useEffect(() => {
     const initialTimer = setTimeout(() => {
@@ -486,6 +522,20 @@ export default function Home() {
       clearTimeout(plantAlarmTimer);
       if (plantAlarmTimerRef.current) {
         clearTimeout(plantAlarmTimerRef.current);
+      }
+    };
+  }, []);
+
+  // Start security warning notification cycle on mount (offset from other notifications)
+  useEffect(() => {
+    const securityWarningTimer = setTimeout(() => {
+      setIsSecurityWarningVisible(true);
+    }, NOTIFICATION_TIMING.INITIAL_DELAY + 6000); // 9 seconds after page load
+
+    return () => {
+      clearTimeout(securityWarningTimer);
+      if (securityWarningTimerRef.current) {
+        clearTimeout(securityWarningTimerRef.current);
       }
     };
   }, []);
@@ -531,6 +581,7 @@ export default function Home() {
           setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 3: true }));
           setMinimizedCameras(prev => ({ ...prev, 3: false }));
+          setIsCam3WarningMode(false); // Reset warning mode when opening from menu
         }},
         { label: "Ant Hill- Cam 4", onClick: () => {
           // Close grid view when opening single camera
@@ -878,7 +929,7 @@ export default function Home() {
         )}
 
         {/* Security Camera Feeds */}
-        {[1, 2, 3, 4].map((camNum) => (
+        {[1, 2, 4].map((camNum) => (
           openCameras[camNum] && !minimizedCameras[camNum] && (
             <SecurityCameraFeed
               key={camNum}
@@ -891,6 +942,16 @@ export default function Home() {
             />
           )
         ))}
+
+        {/* Camera 3 - special handling for warning mode */}
+        {openCameras[3] && !minimizedCameras[3] && (
+          <SecurityCameraFeed
+            cameraNumber={3}
+            warningMode={isCam3WarningMode}
+            onClose={handleCam3Close}
+            onMinimize={() => setMinimizedCameras(prev => ({ ...prev, 3: true }))}
+          />
+        )}
 
         {/* Security Camera Grid (All Cameras) */}
         {isAllCamerasOpen && !isAllCamerasMinimized && (
@@ -944,6 +1005,12 @@ export default function Home() {
       <PlantAlarmNotification
         isVisible={isPlantAlarmVisible}
         onDismiss={handlePlantAlarmDismiss}
+      />
+
+      {/* Security Warning Notification - stays until button clicked */}
+      <SecurityWarningNotification
+        isVisible={isSecurityWarningVisible}
+        onViewCamera={handleSecurityWarningViewCamera}
       />
 
       {/* Screensaver */}
