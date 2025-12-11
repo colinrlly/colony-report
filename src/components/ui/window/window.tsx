@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useRef, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useRef, useState, useEffect, useCallback, forwardRef, useImperativeHandle } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { cn } from "@/lib/utils";
 import type { WindowProps } from "./types";
@@ -22,8 +22,11 @@ export const useWindowContext = () => useContext(WindowContext);
 const MENUBAR_HEIGHT = 36;
 const TASKBAR_HEIGHT = 40;
 
-export function Window({ className, active = true, resizable = true, children, ...props }: WindowProps) {
+export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ className, active = true, resizable = true, children, ...props }, ref) {
   const nodeRef = useRef<HTMLDivElement>(null);
+
+  // Expose the internal ref to the parent via forwardRef
+  useImperativeHandle(ref, () => nodeRef.current!, []);
   const [isMaximized, setIsMaximized] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [savedPosition, setSavedPosition] = useState({ x: 0, y: 0 });
@@ -111,4 +114,4 @@ export function Window({ className, active = true, resizable = true, children, .
       </Draggable>
     </WindowContext.Provider>
   );
-}
+});

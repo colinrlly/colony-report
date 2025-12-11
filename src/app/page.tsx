@@ -7,6 +7,7 @@ import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { SecurityCameraFeed } from "@/components/security-camera-feed";
+import { SecurityCameraGrid } from "@/components/security-camera-grid";
 import { Germsweeper } from "@/components/minesweeper";
 import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
@@ -95,6 +96,10 @@ export default function Home() {
   // Security camera state (4 cameras)
   const [openCameras, setOpenCameras] = useState<Record<number, boolean>>({});
   const [minimizedCameras, setMinimizedCameras] = useState<Record<number, boolean>>({});
+
+  // Security camera grid view state (all cameras)
+  const [isAllCamerasOpen, setIsAllCamerasOpen] = useState(false);
+  const [isAllCamerasMinimized, setIsAllCamerasMinimized] = useState(false);
 
   // Stress Relief gallery state
   const [isStressReliefOpen, setIsStressReliefOpen] = useState(false);
@@ -233,6 +238,8 @@ export default function Home() {
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
+      setIsAllCamerasOpen(false);
+      setIsAllCamerasMinimized(false);
     }, 100);
 
     // End the flicker animation after a short delay
@@ -279,6 +286,8 @@ export default function Home() {
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
+      setIsAllCamerasOpen(false);
+      setIsAllCamerasMinimized(false);
     }, 1800); // Just after progress bar completes
 
     // Start the flicker-out phase
@@ -349,20 +358,39 @@ export default function Home() {
       label: "Security Cams",
       submenu: [
         { label: "Ant Hill- Cam 1", onClick: () => {
+          // Close grid view when opening single camera
+          setIsAllCamerasOpen(false);
+          setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 1: true }));
           setMinimizedCameras(prev => ({ ...prev, 1: false }));
         }},
         { label: "Ant Hill- Cam 2", onClick: () => {
+          // Close grid view when opening single camera
+          setIsAllCamerasOpen(false);
+          setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 2: true }));
           setMinimizedCameras(prev => ({ ...prev, 2: false }));
         }},
         { label: "Ant Hill- Cam 3", onClick: () => {
+          // Close grid view when opening single camera
+          setIsAllCamerasOpen(false);
+          setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 3: true }));
           setMinimizedCameras(prev => ({ ...prev, 3: false }));
         }},
         { label: "Ant Hill- Cam 4", onClick: () => {
+          // Close grid view when opening single camera
+          setIsAllCamerasOpen(false);
+          setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 4: true }));
           setMinimizedCameras(prev => ({ ...prev, 4: false }));
+        }},
+        { label: "See all security cameras", onClick: () => {
+          // Close all single cameras when opening grid view
+          setOpenCameras({});
+          setMinimizedCameras({});
+          setIsAllCamerasOpen(true);
+          setIsAllCamerasMinimized(false);
         }},
       ],
     },
@@ -710,6 +738,17 @@ export default function Home() {
           )
         ))}
 
+        {/* Security Camera Grid (All Cameras) */}
+        {isAllCamerasOpen && !isAllCamerasMinimized && (
+          <SecurityCameraGrid
+            onClose={() => {
+              setIsAllCamerasOpen(false);
+              setIsAllCamerasMinimized(false);
+            }}
+            onMinimize={() => setIsAllCamerasMinimized(true)}
+          />
+        )}
+
         {/* Stress Relief Gallery */}
         {isStressReliefOpen && !isStressReliefMinimized && (
           <StressReliefGallery
@@ -781,6 +820,13 @@ export default function Home() {
             />
           )
         ))}
+        {isAllCamerasOpen && (
+          <TaskbarButton
+            title="All Cameras"
+            isActive={!isAllCamerasMinimized}
+            onClick={() => setIsAllCamerasMinimized(!isAllCamerasMinimized)}
+          />
+        )}
         {isStressReliefOpen && (
           <TaskbarButton
             title="Stress Relief"
