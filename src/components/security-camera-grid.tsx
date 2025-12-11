@@ -18,6 +18,10 @@ const INITIAL_WIDTH = 560;
 const INITIAL_HEIGHT = 480;
 const ASPECT_RATIO = INITIAL_WIDTH / INITIAL_HEIGHT;
 
+// Minimum dimensions (prevents window from shrinking too small)
+const MIN_WIDTH = 560;
+const MIN_HEIGHT = 480;
+
 // Different signal lost messages for variety
 const SIGNAL_MESSAGES = [
   "SIGNAL LOST",
@@ -171,25 +175,21 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
 export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridProps) {
   const windowRef = useRef<HTMLDivElement>(null);
   const lastDimensions = useRef({ width: INITIAL_WIDTH, height: INITIAL_HEIGHT });
-  const isResizing = useRef(false);
-  const isFirstObservation = useRef(true);
+  const isAdjusting = useRef(false);
+  const rafId = useRef<number | null>(null);
 
   // Aspect ratio locking on resize
   useEffect(() => {
     const element = windowRef.current;
     if (!element) return;
 
-    const resizeObserver = new ResizeObserver(() => {
-      // Skip the first observation (initial mount)
-      if (isFirstObservation.current) {
-        isFirstObservation.current = false;
-        lastDimensions.current = { width: element.offsetWidth, height: element.offsetHeight };
-        return;
-      }
+    // Initialize dimensions
+    lastDimensions.current = { width: element.offsetWidth, height: element.offsetHeight };
 
-      if (isResizing.current) return; // Prevent recursive calls
+    const handleResize = () => {
+      // Skip if we're currently adjusting to prevent feedback loop
+      if (isAdjusting.current) return;
 
-      // Use offsetWidth/offsetHeight for actual element dimensions
       const width = element.offsetWidth;
       const height = element.offsetHeight;
       const lastWidth = lastDimensions.current.width;
@@ -201,36 +201,59 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
 
       if (widthDelta < 1 && heightDelta < 1) return; // No significant change
 
-      isResizing.current = true;
-
       let newWidth: number;
       let newHeight: number;
 
       if (widthDelta > heightDelta) {
         // Width changed more, adjust height to match
-        newWidth = width;
-        newHeight = width / ASPECT_RATIO;
+        newWidth = Math.max(width, MIN_WIDTH);
+        newHeight = newWidth / ASPECT_RATIO;
       } else {
         // Height changed more, adjust width to match
-        newHeight = height;
-        newWidth = height * ASPECT_RATIO;
+        newHeight = Math.max(height, MIN_HEIGHT);
+        newWidth = newHeight * ASPECT_RATIO;
       }
 
-      // Apply the constrained dimensions
-      element.style.width = `${newWidth}px`;
-      element.style.height = `${newHeight}px`;
+      // Ensure both dimensions respect minimums
+      if (newWidth < MIN_WIDTH || newHeight < MIN_HEIGHT) {
+        newWidth = MIN_WIDTH;
+        newHeight = MIN_HEIGHT;
+      }
+
+      // Only update if dimensions actually changed
+      if (Math.abs(newWidth - width) > 0.5 || Math.abs(newHeight - height) > 0.5) {
+        isAdjusting.current = true;
+        element.style.width = `${newWidth}px`;
+        element.style.height = `${newHeight}px`;
+
+        // Use double RAF to ensure browser has applied changes before allowing new observations
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            isAdjusting.current = false;
+          });
+        });
+      }
 
       lastDimensions.current = { width: newWidth, height: newHeight };
+    };
 
-      // Reset the flag after a short delay
-      requestAnimationFrame(() => {
-        isResizing.current = false;
-      });
+    const resizeObserver = new ResizeObserver(() => {
+      // Cancel any pending RAF to avoid stacking
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+      // Throttle using RAF for smooth updates
+      rafId.current = requestAnimationFrame(handleResize);
     });
 
     resizeObserver.observe(element);
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      resizeObserver.disconnect();
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
   }, []);
 
   return (
@@ -241,6 +264,8 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
         top: "10vh",
         left: "50%",
         transform: "translateX(-50%)",
+        minWidth: `${MIN_WIDTH}px`,
+        minHeight: `${MIN_HEIGHT}px`,
       }}
     >
       <WindowTitleBar>
