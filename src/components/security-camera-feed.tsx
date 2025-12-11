@@ -29,7 +29,7 @@ const CAMERA_LOCATIONS: Record<number, string> = {
   1: "MAIN TUNNEL - ENTRANCE",
   2: "FOOD STORAGE - SECTOR B",
   3: "NURSERY CHAMBER",
-  4: "QUEEN'S QUARTERS - RESTRICTED",
+  4: "WEST HALLWAY A",
 };
 
 export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize }: SecurityCameraFeedProps) {
