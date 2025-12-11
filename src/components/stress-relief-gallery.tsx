@@ -13,12 +13,12 @@ import {
 
 // Baby animal gallery items - images will be uploaded later
 const galleryItems = [
-  { id: "bunny", label: "Baby Bunny", image: "/images/stress-relief/bunny.jpg" },
-  { id: "kitten", label: "Baby Kitten", image: "/images/stress-relief/kitten.jpg" },
-  { id: "puppy", label: "Baby Puppy", image: "/images/stress-relief/puppy.jpg" },
-  { id: "duckling", label: "Baby Duckling", image: "/images/stress-relief/duckling.jpg" },
-  { id: "chick", label: "Baby Chick", image: "/images/stress-relief/chick.jpg" },
-  { id: "lamb", label: "Baby Lamb", image: "/images/stress-relief/lamb.jpg" },
+  { id: "bunny", label: "Baby Bunny", image: "/images/stress-relief/bunny.jpg", message: "Take a deep breath and relax..." },
+  { id: "kitten", label: "Baby Kitten", image: "/images/stress-relief/kitten.jpg", message: "Hang in there!" },
+  { id: "puppy", label: "Baby Puppy", image: "/images/stress-relief/puppy.jpg", message: "Everyone makes mistakes..." },
+  { id: "duckling", label: "Baby Duckling", image: "/images/stress-relief/duckling.jpg", message: "One step at a time..." },
+  { id: "piglet", label: "Baby Piglet", image: "/images/stress-relief/piglet.jpg", message: "You're doing great!" },
+  { id: "lamb", label: "Baby Lamb", image: "/images/stress-relief/lamb.jpg", message: "Tomorrow is a new day..." },
 ];
 
 interface StressReliefGalleryProps {
@@ -135,7 +135,7 @@ export function StressReliefGallery({ onClose, onMinimize }: StressReliefGallery
           {currentIndex + 1} of {galleryItems.length}
         </WindowStatusField>
         <WindowStatusField className="text-right">
-          {currentItem.label} - Take a deep breath and relax...
+          {currentItem.label} - {currentItem.message}
         </WindowStatusField>
       </WindowStatusBar>
     </Window>
