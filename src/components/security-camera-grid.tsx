@@ -172,52 +172,60 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
   const windowRef = useRef<HTMLDivElement>(null);
   const lastDimensions = useRef({ width: INITIAL_WIDTH, height: INITIAL_HEIGHT });
   const isResizing = useRef(false);
+  const isFirstObservation = useRef(true);
 
   // Aspect ratio locking on resize
   useEffect(() => {
     const element = windowRef.current;
     if (!element) return;
 
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        if (isResizing.current) return; // Prevent recursive calls
-
-        const { width, height } = entry.contentRect;
-        const lastWidth = lastDimensions.current.width;
-        const lastHeight = lastDimensions.current.height;
-
-        // Determine which dimension changed more (that's the one being dragged)
-        const widthDelta = Math.abs(width - lastWidth);
-        const heightDelta = Math.abs(height - lastHeight);
-
-        if (widthDelta < 1 && heightDelta < 1) return; // No significant change
-
-        isResizing.current = true;
-
-        let newWidth: number;
-        let newHeight: number;
-
-        if (widthDelta > heightDelta) {
-          // Width changed more, adjust height to match
-          newWidth = width;
-          newHeight = width / ASPECT_RATIO;
-        } else {
-          // Height changed more, adjust width to match
-          newHeight = height;
-          newWidth = height * ASPECT_RATIO;
-        }
-
-        // Apply the constrained dimensions
-        element.style.width = `${newWidth}px`;
-        element.style.height = `${newHeight}px`;
-
-        lastDimensions.current = { width: newWidth, height: newHeight };
-
-        // Reset the flag after a short delay
-        requestAnimationFrame(() => {
-          isResizing.current = false;
-        });
+    const resizeObserver = new ResizeObserver(() => {
+      // Skip the first observation (initial mount)
+      if (isFirstObservation.current) {
+        isFirstObservation.current = false;
+        lastDimensions.current = { width: element.offsetWidth, height: element.offsetHeight };
+        return;
       }
+
+      if (isResizing.current) return; // Prevent recursive calls
+
+      // Use offsetWidth/offsetHeight for actual element dimensions
+      const width = element.offsetWidth;
+      const height = element.offsetHeight;
+      const lastWidth = lastDimensions.current.width;
+      const lastHeight = lastDimensions.current.height;
+
+      // Determine which dimension changed more (that's the one being dragged)
+      const widthDelta = Math.abs(width - lastWidth);
+      const heightDelta = Math.abs(height - lastHeight);
+
+      if (widthDelta < 1 && heightDelta < 1) return; // No significant change
+
+      isResizing.current = true;
+
+      let newWidth: number;
+      let newHeight: number;
+
+      if (widthDelta > heightDelta) {
+        // Width changed more, adjust height to match
+        newWidth = width;
+        newHeight = width / ASPECT_RATIO;
+      } else {
+        // Height changed more, adjust width to match
+        newHeight = height;
+        newWidth = height * ASPECT_RATIO;
+      }
+
+      // Apply the constrained dimensions
+      element.style.width = `${newWidth}px`;
+      element.style.height = `${newHeight}px`;
+
+      lastDimensions.current = { width: newWidth, height: newHeight };
+
+      // Reset the flag after a short delay
+      requestAnimationFrame(() => {
+        isResizing.current = false;
+      });
     });
 
     resizeObserver.observe(element);
