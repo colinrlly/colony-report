@@ -16,7 +16,7 @@ import { CalendarNotification } from "@/components/calendar-notification";
 import { ReminderNotification, RedactedText } from "@/components/reminder-notification";
 import { PlantAlarmNotification } from "@/components/plant-alarm-notification";
 import { SecurityWarningNotification } from "@/components/security-warning-notification";
-import { NOTIFICATION_TIMING } from "@/hooks/use-notification-animation";
+import { useNotificationQueue } from "@/hooks/use-notification-queue";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -73,11 +73,16 @@ type WallpaperType = 0 | 1 | 2;
    NOTIFICATION SYSTEM DATA
 
    Architecture for popup notifications:
-   - Shared animation logic in: src/hooks/use-notification-animation.ts
-   - Timing constants centralized in NOTIFICATION_TIMING
-   - Each notification type has its own component and data array
-   - Currently running: Calendar (top) and Reminder (below) notifications
-   - Future: Combine into unified queue system with single notification slot
+   - Unified queue system in: src/hooks/use-notification-queue.ts
+   - Shows ONE notification at a time from a pool of 8:
+     * 3 Calendar events (auto-dismiss after animation)
+     * 3 Reminders (auto-dismiss after animation)
+     * 1 Plant Alarm (requires clicking "Water Plants Remotely")
+     * 1 Security Warning (requires clicking "View Camera 3")
+   - Randomized order each cycle, all 8 shown before repeating
+   - State persisted to localStorage (survives page refresh)
+   - 5 second gap between notifications (for testing)
+   - Each notification type has its own component
    ============================================ */
 
 // Calendar notification data
@@ -169,24 +174,15 @@ export default function Home() {
   // Screensaver state
   const [isScreensaverActive, setIsScreensaverActive] = useState(false);
 
-  // Notification system state
-  const [isCalendarNotificationVisible, setIsCalendarNotificationVisible] = useState(false);
-  const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
-  const notificationGapTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Unified notification queue system
+  const {
+    currentNotification,
+    isNotificationVisible,
+    handleNotificationComplete,
+  } = useNotificationQueue();
 
-  // Reminder notification state
-  const [isReminderNotificationVisible, setIsReminderNotificationVisible] = useState(false);
-  const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
-  const reminderGapTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Plant alarm notification state
-  const [isPlantAlarmVisible, setIsPlantAlarmVisible] = useState(false);
-  const plantAlarmTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Security warning notification state
-  const [isSecurityWarningVisible, setIsSecurityWarningVisible] = useState(false);
+  // Camera 3 warning mode (separate from notification visibility)
   const [isCam3WarningMode, setIsCam3WarningMode] = useState(false);
-  const securityWarningTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -414,53 +410,8 @@ export default function Home() {
     setIsScreensaverActive(false);
   }, []);
 
-  // Handle calendar notification complete - wait for gap then show next
-  const handleCalendarNotificationComplete = useCallback(() => {
-    setIsCalendarNotificationVisible(false);
-
-    if (notificationGapTimerRef.current) {
-      clearTimeout(notificationGapTimerRef.current);
-    }
-
-    notificationGapTimerRef.current = setTimeout(() => {
-      setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
-      setIsCalendarNotificationVisible(true);
-    }, NOTIFICATION_TIMING.GAP_BETWEEN);
-  }, []);
-
-  // Handle reminder notification complete - wait for gap then show next
-  const handleReminderNotificationComplete = useCallback(() => {
-    setIsReminderNotificationVisible(false);
-
-    if (reminderGapTimerRef.current) {
-      clearTimeout(reminderGapTimerRef.current);
-    }
-
-    reminderGapTimerRef.current = setTimeout(() => {
-      setCurrentReminderIndex((prev) => (prev + 1) % getReminderNotifications().length);
-      setIsReminderNotificationVisible(true);
-    }, NOTIFICATION_TIMING.GAP_BETWEEN);
-  }, []);
-
-  // Handle plant alarm dismiss - wait 30 seconds then show again
-  const handlePlantAlarmDismiss = useCallback(() => {
-    setIsPlantAlarmVisible(false);
-
-    if (plantAlarmTimerRef.current) {
-      clearTimeout(plantAlarmTimerRef.current);
-    }
-
-    // Reappear every 30 seconds after being dismissed
-    plantAlarmTimerRef.current = setTimeout(() => {
-      setIsPlantAlarmVisible(true);
-    }, 30000);
-  }, []);
-
   // Handle security warning "View Camera" button click
   const handleSecurityWarningViewCamera = useCallback(() => {
-    // Hide the notification
-    setIsSecurityWarningVisible(false);
-
     // Open camera 3 in warning mode
     setIsCam3WarningMode(true);
     setIsAllCamerasOpen(false);
@@ -468,14 +419,9 @@ export default function Home() {
     setOpenCameras(prev => ({ ...prev, 3: true }));
     setMinimizedCameras(prev => ({ ...prev, 3: false }));
 
-    // Schedule next warning notification
-    if (securityWarningTimerRef.current) {
-      clearTimeout(securityWarningTimerRef.current);
-    }
-    securityWarningTimerRef.current = setTimeout(() => {
-      setIsSecurityWarningVisible(true);
-    }, 45000);
-  }, []);
+    // Complete the notification (advances to next in queue)
+    handleNotificationComplete();
+  }, [handleNotificationComplete]);
 
   // Handle camera 3 close - reset warning mode
   const handleCam3Close = useCallback(() => {
@@ -484,61 +430,6 @@ export default function Home() {
     setIsCam3WarningMode(false); // Reset warning mode when closed
   }, []);
 
-  // Start calendar notification cycle on mount
-  useEffect(() => {
-    const initialTimer = setTimeout(() => {
-      setIsCalendarNotificationVisible(true);
-    }, NOTIFICATION_TIMING.INITIAL_DELAY);
-
-    return () => {
-      clearTimeout(initialTimer);
-      if (notificationGapTimerRef.current) {
-        clearTimeout(notificationGapTimerRef.current);
-      }
-    };
-  }, []);
-
-  // Start reminder notification cycle on mount (offset to avoid overlap)
-  useEffect(() => {
-    const reminderTimer = setTimeout(() => {
-      setIsReminderNotificationVisible(true);
-    }, NOTIFICATION_TIMING.INITIAL_DELAY + 1500);
-
-    return () => {
-      clearTimeout(reminderTimer);
-      if (reminderGapTimerRef.current) {
-        clearTimeout(reminderGapTimerRef.current);
-      }
-    };
-  }, []);
-
-  // Start plant alarm on mount (10 seconds after page load)
-  useEffect(() => {
-    const plantAlarmTimer = setTimeout(() => {
-      setIsPlantAlarmVisible(true);
-    }, 10000);
-
-    return () => {
-      clearTimeout(plantAlarmTimer);
-      if (plantAlarmTimerRef.current) {
-        clearTimeout(plantAlarmTimerRef.current);
-      }
-    };
-  }, []);
-
-  // Start security warning notification cycle on mount (offset from other notifications)
-  useEffect(() => {
-    const securityWarningTimer = setTimeout(() => {
-      setIsSecurityWarningVisible(true);
-    }, NOTIFICATION_TIMING.INITIAL_DELAY + 6000); // 9 seconds after page load
-
-    return () => {
-      clearTimeout(securityWarningTimer);
-      if (securityWarningTimerRef.current) {
-        clearTimeout(securityWarningTimerRef.current);
-      }
-    };
-  }, []);
 
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
@@ -984,32 +875,59 @@ export default function Home() {
         )}
       </main>
 
-      {/* Calendar Notification */}
+      {/* Unified Notification System - shows one notification at a time */}
+      {/* Calendar Notifications */}
       <CalendarNotification
-        isVisible={isCalendarNotificationVisible}
-        onComplete={handleCalendarNotificationComplete}
-        eventName={CALENDAR_NOTIFICATIONS[currentNotificationIndex].eventName}
-        time={CALENDAR_NOTIFICATIONS[currentNotificationIndex].time}
-        note={CALENDAR_NOTIFICATIONS[currentNotificationIndex].note}
+        isVisible={isNotificationVisible && currentNotification === "calendar-1"}
+        onComplete={handleNotificationComplete}
+        eventName={CALENDAR_NOTIFICATIONS[0].eventName}
+        time={CALENDAR_NOTIFICATIONS[0].time}
+        note={CALENDAR_NOTIFICATIONS[0].note}
+      />
+      <CalendarNotification
+        isVisible={isNotificationVisible && currentNotification === "calendar-2"}
+        onComplete={handleNotificationComplete}
+        eventName={CALENDAR_NOTIFICATIONS[1].eventName}
+        time={CALENDAR_NOTIFICATIONS[1].time}
+        note={CALENDAR_NOTIFICATIONS[1].note}
+      />
+      <CalendarNotification
+        isVisible={isNotificationVisible && currentNotification === "calendar-3"}
+        onComplete={handleNotificationComplete}
+        eventName={CALENDAR_NOTIFICATIONS[2].eventName}
+        time={CALENDAR_NOTIFICATIONS[2].time}
+        note={CALENDAR_NOTIFICATIONS[2].note}
       />
 
-      {/* Reminder Notification - cycles through reminders */}
+      {/* Reminder Notifications */}
       <ReminderNotification
-        isVisible={isReminderNotificationVisible}
-        onComplete={handleReminderNotificationComplete}
-        title={getReminderNotifications()[currentReminderIndex].title}
-        message={getReminderNotifications()[currentReminderIndex].message}
+        isVisible={isNotificationVisible && currentNotification === "reminder-1"}
+        onComplete={handleNotificationComplete}
+        title={getReminderNotifications()[0].title}
+        message={getReminderNotifications()[0].message}
+      />
+      <ReminderNotification
+        isVisible={isNotificationVisible && currentNotification === "reminder-2"}
+        onComplete={handleNotificationComplete}
+        title={getReminderNotifications()[1].title}
+        message={getReminderNotifications()[1].message}
+      />
+      <ReminderNotification
+        isVisible={isNotificationVisible && currentNotification === "reminder-3"}
+        onComplete={handleNotificationComplete}
+        title={getReminderNotifications()[2].title}
+        message={getReminderNotifications()[2].message}
       />
 
       {/* Plant Alarm Notification - requires user action to dismiss */}
       <PlantAlarmNotification
-        isVisible={isPlantAlarmVisible}
-        onDismiss={handlePlantAlarmDismiss}
+        isVisible={isNotificationVisible && currentNotification === "plant-alarm"}
+        onDismiss={handleNotificationComplete}
       />
 
       {/* Security Warning Notification - stays until button clicked */}
       <SecurityWarningNotification
-        isVisible={isSecurityWarningVisible}
+        isVisible={isNotificationVisible && currentNotification === "security-warning"}
         onViewCamera={handleSecurityWarningViewCamera}
       />
 
