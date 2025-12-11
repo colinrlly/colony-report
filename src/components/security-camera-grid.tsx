@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Window,
   WindowTitleBar,
@@ -12,6 +12,11 @@ interface SecurityCameraGridProps {
   onClose?: () => void;
   onMinimize?: () => void;
 }
+
+// Initial dimensions and aspect ratio
+const INITIAL_WIDTH = 560;
+const INITIAL_HEIGHT = 480;
+const ASPECT_RATIO = INITIAL_WIDTH / INITIAL_HEIGHT;
 
 // Different signal lost messages for variety
 const SIGNAL_MESSAGES = [
@@ -164,8 +169,65 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
 }
 
 export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridProps) {
+  const windowRef = useRef<HTMLDivElement>(null);
+  const lastDimensions = useRef({ width: INITIAL_WIDTH, height: INITIAL_HEIGHT });
+  const isResizing = useRef(false);
+
+  // Aspect ratio locking on resize
+  useEffect(() => {
+    const element = windowRef.current;
+    if (!element) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        if (isResizing.current) return; // Prevent recursive calls
+
+        const { width, height } = entry.contentRect;
+        const lastWidth = lastDimensions.current.width;
+        const lastHeight = lastDimensions.current.height;
+
+        // Determine which dimension changed more (that's the one being dragged)
+        const widthDelta = Math.abs(width - lastWidth);
+        const heightDelta = Math.abs(height - lastHeight);
+
+        if (widthDelta < 1 && heightDelta < 1) return; // No significant change
+
+        isResizing.current = true;
+
+        let newWidth: number;
+        let newHeight: number;
+
+        if (widthDelta > heightDelta) {
+          // Width changed more, adjust height to match
+          newWidth = width;
+          newHeight = width / ASPECT_RATIO;
+        } else {
+          // Height changed more, adjust width to match
+          newHeight = height;
+          newWidth = height * ASPECT_RATIO;
+        }
+
+        // Apply the constrained dimensions
+        element.style.width = `${newWidth}px`;
+        element.style.height = `${newHeight}px`;
+
+        lastDimensions.current = { width: newWidth, height: newHeight };
+
+        // Reset the flag after a short delay
+        requestAnimationFrame(() => {
+          isResizing.current = false;
+        });
+      }
+    });
+
+    resizeObserver.observe(element);
+
+    return () => resizeObserver.disconnect();
+  }, []);
+
   return (
     <Window
+      ref={windowRef}
       className="w-[560px] h-[480px] absolute flex flex-col"
       style={{
         top: "10vh",
