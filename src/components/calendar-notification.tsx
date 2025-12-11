@@ -5,8 +5,8 @@ import { useState, useEffect, useCallback } from "react";
 interface CalendarNotificationProps {
   isVisible: boolean;
   onComplete: () => void;
-  title: string;
-  event: string;
+  eventName: string;
+  time: string;
   note?: string;
 }
 
@@ -44,18 +44,6 @@ function CalendarIcon() {
       <rect x="5" y="6" width="1" height="9" fill="#d4a574" />
       <rect x="10" y="6" width="1" height="9" fill="#d4a574" />
 
-      {/* Date number "8" in orange */}
-      <rect x="7" y="9" width="1" height="1" fill="#b45309" />
-      <rect x="8" y="9" width="1" height="1" fill="#b45309" />
-      <rect x="6" y="10" width="1" height="1" fill="#b45309" />
-      <rect x="9" y="10" width="1" height="1" fill="#b45309" />
-      <rect x="7" y="11" width="1" height="1" fill="#b45309" />
-      <rect x="8" y="11" width="1" height="1" fill="#b45309" />
-      <rect x="6" y="12" width="1" height="1" fill="#b45309" />
-      <rect x="9" y="12" width="1" height="1" fill="#b45309" />
-      <rect x="7" y="13" width="1" height="1" fill="#b45309" />
-      <rect x="8" y="13" width="1" height="1" fill="#b45309" />
-
       {/* Border - dark brown */}
       <rect x="0" y="3" width="1" height="12" fill="#78350f" />
       <rect x="15" y="3" width="1" height="12" fill="#78350f" />
@@ -68,8 +56,8 @@ function CalendarIcon() {
 export function CalendarNotification({
   isVisible,
   onComplete,
-  title,
-  event,
+  eventName,
+  time,
   note,
 }: CalendarNotificationProps) {
   const [animationPhase, setAnimationPhase] = useState<"in" | "visible" | "out" | "hidden">("hidden");
@@ -155,12 +143,12 @@ export function CalendarNotification({
         >
           <CalendarIcon />
           <span
-            className="font-bold text-white text-sm tracking-wide"
+            className="font-bold text-white text-sm tracking-wide uppercase"
             style={{
               textShadow: "1px 1px 0px #78350f",
             }}
           >
-            {title}
+            Calendar Event
           </span>
         </div>
 
@@ -172,12 +160,20 @@ export function CalendarNotification({
             borderTop: "1px solid #d4a574",
           }}
         >
-          {/* Event line */}
+          {/* Event name */}
           <div
             className="text-sm font-semibold"
             style={{ color: "#78350f" }}
           >
-            {event}
+            Event: {eventName}
+          </div>
+
+          {/* Time */}
+          <div
+            className="text-sm mt-1"
+            style={{ color: "#78350f" }}
+          >
+            {time}
           </div>
 
           {/* Note line (if provided) */}

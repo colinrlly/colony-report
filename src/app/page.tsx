@@ -790,8 +790,8 @@ export default function Home() {
       <CalendarNotification
         isVisible={isCalendarNotificationVisible}
         onComplete={handleCalendarNotificationComplete}
-        title="Field Operation"
-        event="Calendar Event — 08:00 Field Operation"
+        eventName="Field Operation"
+        time="Tomorrow 08:00-18:00"
         note="Note to self: bring Hank the experimental morning-cheer tonic."
       />
 
