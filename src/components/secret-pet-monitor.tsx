@@ -9,15 +9,17 @@ import {
 
 interface SecretPetMonitorProps {
   onClose?: () => void;
+  onMinimize?: () => void;
 }
 
-export function SecretPetMonitor({ onClose }: SecretPetMonitorProps) {
+export function SecretPetMonitor({ onClose, onMinimize }: SecretPetMonitorProps) {
   return (
     <Window className="w-[480px] h-[400px] absolute top-[12vh] left-[25vw] flex flex-col">
       <WindowTitleBar>
         <WindowTitle>secret_pet_monitor</WindowTitle>
         <WindowControls
           showMaximize={false}
+          onMinimize={onMinimize}
           onClose={onClose}
         />
       </WindowTitleBar>
