@@ -85,6 +85,19 @@ export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ 
     setPosition({ x: data.x, y: data.y });
   };
 
+  const handleDragStop = (_e: DraggableEvent, data: DraggableData) => {
+    if (!nodeRef.current || !props.leftSnapBoundary) return;
+
+    const windowRect = nodeRef.current.getBoundingClientRect();
+    const leftSnapBoundary = props.leftSnapBoundary;
+
+    // If the window's left edge is within the snap zone, push it to the right
+    if (windowRect.left < leftSnapBoundary) {
+      const adjustment = leftSnapBoundary - windowRect.left;
+      setPosition({ x: data.x + adjustment, y: data.y });
+    }
+  };
+
   return (
     <WindowContext.Provider value={{ active, isMaximized, toggleMaximize }}>
       <Draggable
@@ -93,6 +106,7 @@ export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ 
         disabled={isMaximized}
         position={isMaximized ? { x: 0, y: 0 } : position}
         onDrag={handleDrag}
+        onStop={handleDragStop}
         bounds={bounds}
       >
         <div
