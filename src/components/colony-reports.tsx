@@ -34,8 +34,11 @@ export function ColonyReports({ onClose, onMinimize }: ColonyReportsProps) {
   const selectedItem = navItems.find((item) => item.id === selectedId);
   const statusText = selectedItem?.statusText ?? "";
 
+  // Desktop icons are at x=24 with ~100px width, so snap boundary is at 132px (124 + 8px margin)
+  const ICON_COLUMN_RIGHT_EDGE = 132;
+
   return (
-    <Window resizable={false} className="aspect-[11/8.5] max-w-[calc(100vw-16px)] w-auto h-[calc(100vh-92px)] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col">
+    <Window resizable={false} leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE} className="z-20 aspect-[11/8.5] max-w-[calc(100vw-16px)] w-auto h-[calc(100vh-92px)] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col">
       <WindowTitleBar>
         <WindowTitle>COLONY REPORTS</WindowTitle>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
