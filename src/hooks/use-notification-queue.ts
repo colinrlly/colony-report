@@ -133,9 +133,11 @@ export function useNotificationQueue(
   // Track if initial mount effect has run
   const hasInitialized = useRef(false);
 
-  // Track the latest order for use in timeout callbacks
+  // Track the latest order and index for use in timeout callbacks
   const orderRef = useRef(order);
   orderRef.current = order;
+  const currentIndexRef = useRef(currentIndex);
+  currentIndexRef.current = currentIndex;
 
   // Save order to localStorage when it changes
   useEffect(() => {
@@ -158,16 +160,17 @@ export function useNotificationQueue(
     }
   }, [itemIndices]);
 
-  // Start the queue on mount
+  // Start the queue on mount only
   useEffect(() => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
     initialTimerRef.current = setTimeout(() => {
-      const nextType = orderRef.current[currentIndex];
+      const nextType = orderRef.current[currentIndexRef.current];
       setActiveNotification(nextType);
     }, initialDelay);
 
+    // Only cleanup on unmount, not on re-renders
     return () => {
       if (initialTimerRef.current) {
         clearTimeout(initialTimerRef.current);
@@ -176,7 +179,8 @@ export function useNotificationQueue(
         clearTimeout(gapTimerRef.current);
       }
     };
-  }, [initialDelay, currentIndex]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Handle notification complete - called when any notification finishes
   const handleNotificationComplete = useCallback((type: NotificationType) => {
@@ -200,19 +204,19 @@ export function useNotificationQueue(
       clearTimeout(gapTimerRef.current);
     }
 
-    // Calculate next index
-    const nextIndex = (currentIndex + 1) % ALL_NOTIFICATIONS.length;
+    // Calculate next index using ref for latest value
+    const nextIndex = (currentIndexRef.current + 1) % ALL_NOTIFICATIONS.length;
 
     // If we've completed a full cycle, reshuffle
-    let newOrder = orderRef.current;
     if (nextIndex === 0) {
-      newOrder = shuffleArray(ALL_NOTIFICATIONS);
+      const newOrder = shuffleArray(ALL_NOTIFICATIONS);
       setOrder(newOrder);
       orderRef.current = newOrder;
     }
 
     // Update the index
     setCurrentIndex(nextIndex);
+    currentIndexRef.current = nextIndex;
 
     // After gap, show the next notification
     gapTimerRef.current = setTimeout(() => {
@@ -220,7 +224,7 @@ export function useNotificationQueue(
       const nextType = orderRef.current[nextIndex];
       setActiveNotification(nextType);
     }, gapBetween);
-  }, [activeNotification, currentIndex, gapBetween]);
+  }, [activeNotification, gapBetween]);
 
   // Create stable completion handlers for each notification type
   const handleCalendarComplete = useCallback(() => {
