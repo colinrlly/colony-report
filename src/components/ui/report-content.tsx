@@ -9,7 +9,7 @@ interface ReportContentProps {
 export function ReportContent({ selectedId }: ReportContentProps) {
   return (
     <div className="flex-1 bg-[#c8b9a9] p-2 flex items-center justify-center">
-      <div className={`win98-border-sunken w-full h-full flex items-center justify-center overflow-hidden ${selectedId === "bee" || selectedId === "snail" || selectedId === "ladybug" || selectedId === "dandelion" ? "bg-[#baa895]" : "bg-[#a8a8a8]"}`}>
+      <div className={`win98-border-sunken w-full h-full flex items-center justify-center overflow-hidden ${selectedId === "bee" || selectedId === "snail" || selectedId === "ladybug" || selectedId === "dandelion" || selectedId === "frog" ? "bg-[#baa895]" : "bg-[#a8a8a8]"}`}>
         {selectedId === "bee" ? (
           <div className="relative w-full h-full">
             <Image
@@ -45,6 +45,16 @@ export function ReportContent({ selectedId }: ReportContentProps) {
             <Image
               src="/images/Dandelion.jpg"
               alt="Dandelion Report"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        ) : selectedId === "frog" ? (
+          <div className="relative w-full h-full">
+            <Image
+              src="/images/Frog.jpg"
+              alt="Frog Report"
               fill
               className="object-cover"
               priority
