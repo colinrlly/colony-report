@@ -1,12 +1,13 @@
 "use client";
 
-import { useNotificationAnimation } from "@/hooks/use-notification-animation";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 interface SecurityWarningNotificationProps {
   isVisible: boolean;
-  onComplete: () => void;
   onViewCamera: () => void;
 }
+
+const ANIMATION_DURATION_MS = 400;
 
 // Pixel art warning/shield icon component
 function WarningIcon() {
@@ -47,14 +48,38 @@ function WarningIcon() {
 
 export function SecurityWarningNotification({
   isVisible,
-  onComplete,
   onViewCamera,
 }: SecurityWarningNotificationProps) {
-  const { shouldRender, animationClass } = useNotificationAnimation({
-    isVisible,
-    onComplete,
-    displayDuration: 8000, // Longer display for warnings
-  });
+  const [shouldRender, setShouldRender] = useState(false);
+  const [animationClass, setAnimationClass] = useState("");
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const clearPendingTimeout = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => clearPendingTimeout, [clearPendingTimeout]);
+
+  // Handle visibility changes
+  useEffect(() => {
+    clearPendingTimeout();
+
+    if (isVisible) {
+      setShouldRender(true);
+      setAnimationClass("notification-slide-in");
+    } else {
+      // Slide out animation
+      setAnimationClass("notification-slide-out");
+      timeoutRef.current = setTimeout(() => {
+        setShouldRender(false);
+        setAnimationClass("");
+      }, ANIMATION_DURATION_MS);
+    }
+  }, [isVisible, clearPendingTimeout]);
 
   if (!shouldRender) {
     return null;
@@ -74,7 +99,7 @@ export function SecurityWarningNotification({
       <div
         className="win98-border-raised"
         style={{
-          backgroundColor: "#fef2f2",
+          backgroundColor: "#d4c8b8",
           padding: "2px",
           width: "340px",
         }}
@@ -101,8 +126,8 @@ export function SecurityWarningNotification({
         <div
           className="px-3 py-2"
           style={{
-            backgroundColor: "#fef2f2",
-            borderTop: "1px solid #fca5a5",
+            backgroundColor: "#d4c8b8",
+            borderTop: "1px solid #b91c1c",
           }}
         >
           {/* Warning message */}
@@ -116,7 +141,7 @@ export function SecurityWarningNotification({
           {/* Description */}
           <div
             className="text-xs mt-1 leading-relaxed"
-            style={{ color: "#b91c1c" }}
+            style={{ color: "#57534e" }}
           >
             Unusual movement detected in security cam 3.
           </div>
@@ -124,9 +149,9 @@ export function SecurityWarningNotification({
           {/* View Camera Button */}
           <button
             onClick={handleViewCamera}
-            className="mt-3 w-full win98-border-raised px-3 py-1.5 text-xs font-semibold cursor-pointer hover:bg-gray-100 active:win98-border-sunken"
+            className="mt-3 w-full win98-border-raised px-3 py-1.5 text-xs font-semibold cursor-pointer hover:brightness-95 active:win98-border-sunken"
             style={{
-              backgroundColor: "#e5e5e5",
+              backgroundColor: "#e8e0d8",
               color: "#1a1a1a",
             }}
           >

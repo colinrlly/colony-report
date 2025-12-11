@@ -456,20 +456,6 @@ export default function Home() {
     }, 30000);
   }, []);
 
-  // Handle security warning notification complete - wait for gap then show again
-  const handleSecurityWarningComplete = useCallback(() => {
-    setIsSecurityWarningVisible(false);
-
-    if (securityWarningTimerRef.current) {
-      clearTimeout(securityWarningTimerRef.current);
-    }
-
-    // Reappear every 45 seconds after completing
-    securityWarningTimerRef.current = setTimeout(() => {
-      setIsSecurityWarningVisible(true);
-    }, 45000);
-  }, []);
-
   // Handle security warning "View Camera" button click
   const handleSecurityWarningViewCamera = useCallback(() => {
     // Hide the notification
@@ -1021,10 +1007,9 @@ export default function Home() {
         onDismiss={handlePlantAlarmDismiss}
       />
 
-      {/* Security Warning Notification - cycles with button to view camera */}
+      {/* Security Warning Notification - stays until button clicked */}
       <SecurityWarningNotification
         isVisible={isSecurityWarningVisible}
-        onComplete={handleSecurityWarningComplete}
         onViewCamera={handleSecurityWarningViewCamera}
       />
 
