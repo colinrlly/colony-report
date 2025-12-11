@@ -65,6 +65,31 @@ const HIDDEN_FILE = {
 // Wallpaper options
 type WallpaperType = 0 | 1 | 2;
 
+// Calendar notification data
+interface CalendarNotificationData {
+  eventName: string;
+  time: string;
+  note?: string;
+}
+
+const CALENDAR_NOTIFICATIONS: CalendarNotificationData[] = [
+  {
+    eventName: "Field Operation",
+    time: "Tomorrow 08:00-18:00",
+    note: "Note to self: bring Hank the experimental morning-cheer tonic.",
+  },
+  {
+    eventName: "Weekly Team Sync",
+    time: "Every Thursday 7:00-7:15",
+    note: "Note to self: Bring updated notes. Don't forget yesterday's field anomaly.",
+  },
+  {
+    eventName: "Specimen 14 Enrichment Session",
+    time: "Every other Monday",
+    note: "Note to self: bring new puzzle object, last one dissolved.",
+  },
+];
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
@@ -115,6 +140,7 @@ export default function Home() {
 
   // Calendar notification state
   const [isCalendarNotificationVisible, setIsCalendarNotificationVisible] = useState(false);
+  const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -347,9 +373,10 @@ export default function Home() {
     }
   }, [isCalendarNotificationVisible]);
 
-  // Handle calendar notification complete
+  // Handle calendar notification complete - cycle to next notification
   const handleCalendarNotificationComplete = useCallback(() => {
     setIsCalendarNotificationVisible(false);
+    setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
   }, []);
 
   // View menu items - defined here to access the refresh handler
@@ -790,9 +817,9 @@ export default function Home() {
       <CalendarNotification
         isVisible={isCalendarNotificationVisible}
         onComplete={handleCalendarNotificationComplete}
-        eventName="Field Operation"
-        time="Tomorrow 08:00-18:00"
-        note="Note to self: bring Hank the experimental morning-cheer tonic."
+        eventName={CALENDAR_NOTIFICATIONS[currentNotificationIndex].eventName}
+        time={CALENDAR_NOTIFICATIONS[currentNotificationIndex].time}
+        note={CALENDAR_NOTIFICATIONS[currentNotificationIndex].note}
       />
 
       {/* Screensaver */}
