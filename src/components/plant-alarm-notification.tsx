@@ -6,9 +6,10 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 // Constants
 // ============================================
 
-const ANIMATION_DURATION = 400;
-const SUCCESS_STATE_DURATION = 2000;
+const ANIMATION_DURATION_MS = 400;
+const SUCCESS_STATE_DURATION_MS = 2000;
 const CONFETTI_PARTICLE_COUNT = 30;
+const POPUP_VERTICAL_OFFSET = "96px";
 
 const CONFETTI_COLORS = [
   "#ef4444", // red
@@ -22,7 +23,6 @@ const CONFETTI_COLORS = [
 ] as const;
 
 const COLORS = {
-  // Alarm state
   alarm: {
     titleBarGradient: "linear-gradient(180deg, #ef4444 0%, #b91c1c 100%)",
     background: "#d4c8b8",
@@ -33,7 +33,6 @@ const COLORS = {
     actionUnderline: "#991b1b",
     bodyText: "#57534e",
   },
-  // Success state
   success: {
     titleBarGradient: "linear-gradient(180deg, #22c55e 0%, #15803d 100%)",
     background: "#dcfce7",
@@ -42,13 +41,21 @@ const COLORS = {
     titleText: "#15803d",
     bodyText: "#166534",
   },
-  // Button area
   button: {
     background: "#c8b8a8",
     border: "#a8a098",
     buttonBg: "#e8e0d8",
     buttonText: "#1c1917",
   },
+  common: {
+    black: "#1a1a1a",
+    white: "#ffffff",
+  },
+} as const;
+
+const WINDOW_WIDTH = {
+  alarm: "520px",
+  success: "280px",
 } as const;
 
 // ============================================
@@ -68,22 +75,28 @@ interface ConfettiParticleProps {
 }
 
 // ============================================
+// Shared Styles
+// ============================================
+
+const pixelArtSvgProps = {
+  fill: "none",
+  xmlns: "http://www.w3.org/2000/svg",
+  style: { imageRendering: "pixelated" as const },
+  shapeRendering: "crispEdges" as const,
+};
+
+const titleTextStyle = {
+  textShadow: `1px 1px 0px ${COLORS.common.black}`,
+  fontSize: "12px",
+};
+
+// ============================================
 // Pixel Art Icon Components
 // ============================================
 
-const pixelArtStyle = { imageRendering: "pixelated" as const };
-
 function AngryPlantIcon() {
   return (
-    <svg
-      width="64"
-      height="80"
-      viewBox="0 0 16 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={pixelArtStyle}
-      shapeRendering="crispEdges"
-    >
+    <svg width="64" height="80" viewBox="0 0 16 20" {...pixelArtSvgProps}>
       {/* Pot */}
       <rect x="4" y="15" width="8" height="5" fill="#d97706" />
       <rect x="3" y="15" width="10" height="1" fill="#f59e0b" />
@@ -106,15 +119,15 @@ function AngryPlantIcon() {
       <rect x="3" y="0" width="1" height="2" fill="#15803d" />
       <rect x="12" y="0" width="1" height="2" fill="#15803d" />
       {/* Angry eyes */}
-      <rect x="5" y="7" width="2" height="2" fill="#ffffff" />
-      <rect x="9" y="7" width="2" height="2" fill="#ffffff" />
-      <rect x="5" y="8" width="1" height="1" fill="#1a1a1a" />
-      <rect x="10" y="8" width="1" height="1" fill="#1a1a1a" />
+      <rect x="5" y="7" width="2" height="2" fill={COLORS.common.white} />
+      <rect x="9" y="7" width="2" height="2" fill={COLORS.common.white} />
+      <rect x="5" y="8" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="10" y="8" width="1" height="1" fill={COLORS.common.black} />
       {/* Angry eyebrows */}
-      <rect x="4" y="6" width="2" height="1" fill="#1a1a1a" />
-      <rect x="10" y="6" width="2" height="1" fill="#1a1a1a" />
+      <rect x="4" y="6" width="2" height="1" fill={COLORS.common.black} />
+      <rect x="10" y="6" width="2" height="1" fill={COLORS.common.black} />
       {/* Angry mouth */}
-      <rect x="6" y="10" width="4" height="2" fill="#1a1a1a" />
+      <rect x="6" y="10" width="4" height="2" fill={COLORS.common.black} />
       <rect x="7" y="10" width="2" height="1" fill="#fca5a5" />
     </svg>
   );
@@ -122,15 +135,7 @@ function AngryPlantIcon() {
 
 function HappyPlantIcon() {
   return (
-    <svg
-      width="52"
-      height="65"
-      viewBox="0 0 16 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={pixelArtStyle}
-      shapeRendering="crispEdges"
-    >
+    <svg width="52" height="65" viewBox="0 0 16 20" {...pixelArtSvgProps}>
       {/* Pot */}
       <rect x="4" y="15" width="8" height="5" fill="#d97706" />
       <rect x="3" y="15" width="10" height="1" fill="#f59e0b" />
@@ -157,65 +162,49 @@ function HappyPlantIcon() {
       <rect x="4" y="4" width="1" height="1" fill="#15803d" />
       <rect x="11" y="4" width="1" height="1" fill="#15803d" />
       {/* Happy eyes */}
-      <rect x="5" y="7" width="2" height="2" fill="#1a1a1a" />
-      <rect x="9" y="7" width="2" height="2" fill="#1a1a1a" />
-      <rect x="6" y="7" width="1" height="1" fill="#ffffff" />
-      <rect x="10" y="7" width="1" height="1" fill="#ffffff" />
-      {/* Happy smile - curved smile shape */}
-      <rect x="6" y="10" width="4" height="1" fill="#1a1a1a" />
-      <rect x="5" y="9" width="1" height="1" fill="#1a1a1a" />
-      <rect x="10" y="9" width="1" height="1" fill="#1a1a1a" />
+      <rect x="5" y="7" width="2" height="2" fill={COLORS.common.black} />
+      <rect x="9" y="7" width="2" height="2" fill={COLORS.common.black} />
+      <rect x="6" y="7" width="1" height="1" fill={COLORS.common.white} />
+      <rect x="10" y="7" width="1" height="1" fill={COLORS.common.white} />
+      {/* Happy smile */}
+      <rect x="6" y="10" width="4" height="1" fill={COLORS.common.black} />
+      <rect x="5" y="9" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="10" y="9" width="1" height="1" fill={COLORS.common.black} />
     </svg>
   );
 }
 
 function WarningIcon() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={pixelArtStyle}
-      shapeRendering="crispEdges"
-    >
+    <svg width="24" height="24" viewBox="0 0 16 16" {...pixelArtSvgProps}>
       {/* Yellow triangle */}
       <polygon points="8,1 15,14 1,14" fill="#facc15" />
       <polygon points="8,2 14,13 2,13" fill="#fde047" />
       {/* Border */}
-      <rect x="7" y="2" width="2" height="1" fill="#1a1a1a" />
-      <rect x="6" y="3" width="1" height="1" fill="#1a1a1a" />
-      <rect x="9" y="3" width="1" height="1" fill="#1a1a1a" />
-      <rect x="5" y="4" width="1" height="1" fill="#1a1a1a" />
-      <rect x="10" y="4" width="1" height="1" fill="#1a1a1a" />
-      <rect x="4" y="5" width="1" height="2" fill="#1a1a1a" />
-      <rect x="11" y="5" width="1" height="2" fill="#1a1a1a" />
-      <rect x="3" y="7" width="1" height="2" fill="#1a1a1a" />
-      <rect x="12" y="7" width="1" height="2" fill="#1a1a1a" />
-      <rect x="2" y="9" width="1" height="2" fill="#1a1a1a" />
-      <rect x="13" y="9" width="1" height="2" fill="#1a1a1a" />
-      <rect x="1" y="11" width="1" height="2" fill="#1a1a1a" />
-      <rect x="14" y="11" width="1" height="2" fill="#1a1a1a" />
-      <rect x="1" y="13" width="14" height="1" fill="#1a1a1a" />
+      <rect x="7" y="2" width="2" height="1" fill={COLORS.common.black} />
+      <rect x="6" y="3" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="9" y="3" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="5" y="4" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="10" y="4" width="1" height="1" fill={COLORS.common.black} />
+      <rect x="4" y="5" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="11" y="5" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="3" y="7" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="12" y="7" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="2" y="9" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="13" y="9" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="1" y="11" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="14" y="11" width="1" height="2" fill={COLORS.common.black} />
+      <rect x="1" y="13" width="14" height="1" fill={COLORS.common.black} />
       {/* Exclamation mark */}
-      <rect x="7" y="5" width="2" height="4" fill="#1a1a1a" />
-      <rect x="7" y="10" width="2" height="2" fill="#1a1a1a" />
+      <rect x="7" y="5" width="2" height="4" fill={COLORS.common.black} />
+      <rect x="7" y="10" width="2" height="2" fill={COLORS.common.black} />
     </svg>
   );
 }
 
 function CheckmarkIcon() {
   return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={pixelArtStyle}
-      shapeRendering="crispEdges"
-    >
+    <svg width="24" height="24" viewBox="0 0 16 16" {...pixelArtSvgProps}>
       {/* Green circle background */}
       <rect x="4" y="1" width="8" height="1" fill="#22c55e" />
       <rect x="2" y="2" width="12" height="1" fill="#22c55e" />
@@ -225,47 +214,115 @@ function CheckmarkIcon() {
       <rect x="2" y="13" width="12" height="1" fill="#22c55e" />
       <rect x="4" y="14" width="8" height="1" fill="#22c55e" />
       {/* White checkmark */}
-      <rect x="3" y="7" width="2" height="2" fill="#ffffff" />
-      <rect x="5" y="9" width="2" height="2" fill="#ffffff" />
-      <rect x="7" y="7" width="2" height="2" fill="#ffffff" />
-      <rect x="9" y="5" width="2" height="2" fill="#ffffff" />
-      <rect x="11" y="3" width="2" height="2" fill="#ffffff" />
+      <rect x="3" y="7" width="2" height="2" fill={COLORS.common.white} />
+      <rect x="5" y="9" width="2" height="2" fill={COLORS.common.white} />
+      <rect x="7" y="7" width="2" height="2" fill={COLORS.common.white} />
+      <rect x="9" y="5" width="2" height="2" fill={COLORS.common.white} />
+      <rect x="11" y="3" width="2" height="2" fill={COLORS.common.white} />
     </svg>
   );
 }
 
 // ============================================
-// Confetti Component
+// Confetti
 // ============================================
 
 function ConfettiParticle({ color, x, y, delay }: ConfettiParticleProps) {
   return (
     <div
       className="confetti-particle"
-      style={{
-        "--x": `${x}px`,
-        "--y": `${y}px`,
-        "--delay": `${delay}ms`,
-        backgroundColor: color,
-      } as React.CSSProperties}
+      style={
+        {
+          "--x": `${x}px`,
+          "--y": `${y}px`,
+          "--delay": `${delay}ms`,
+          backgroundColor: color,
+        } as React.CSSProperties
+      }
     />
   );
 }
 
-function generateConfettiParticles() {
-  const particles: ConfettiParticleProps[] = [];
-  for (let i = 0; i < CONFETTI_PARTICLE_COUNT; i++) {
+function generateConfettiParticles(): ConfettiParticleProps[] {
+  return Array.from({ length: CONFETTI_PARTICLE_COUNT }, (_, i) => {
     const angle = (i / CONFETTI_PARTICLE_COUNT) * 360 + Math.random() * 30;
     const radians = (angle * Math.PI) / 180;
     const distance = 150 + Math.random() * 100;
-    particles.push({
+    return {
       color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
       x: Math.cos(radians) * distance,
       y: Math.sin(radians) * distance,
       delay: Math.random() * 200,
-    });
-  }
-  return particles;
+    };
+  });
+}
+
+// ============================================
+// Content Components
+// ============================================
+
+function SuccessContent() {
+  return (
+    <div className="flex items-center gap-3">
+      <HappyPlantIcon />
+      <div>
+        <div
+          className="font-bold"
+          style={{ color: COLORS.success.titleText, fontSize: "16px" }}
+        >
+          Watered!
+        </div>
+        <div
+          className="mt-1"
+          style={{ color: COLORS.success.bodyText, fontSize: "12px" }}
+        >
+          The beanfang plants are happy now.
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AlarmContent() {
+  return (
+    <div>
+      <div className="flex items-baseline gap-3 mb-1">
+        <span
+          className="font-bold"
+          style={{ color: COLORS.alarm.warningText, fontSize: "26px" }}
+        >
+          WARNING!
+        </span>
+        <span
+          className="font-semibold"
+          style={{
+            color: COLORS.alarm.actionText,
+            fontSize: "16px",
+            borderBottom: `2px solid ${COLORS.alarm.actionUnderline}`,
+            paddingBottom: "1px",
+          }}
+        >
+          Water the exploding beanfang plants!
+        </span>
+      </div>
+      <div className="flex items-start gap-4 mt-2">
+        <div className="flex-shrink-0">
+          <AngryPlantIcon />
+        </div>
+        <div
+          className="leading-relaxed pt-1"
+          style={{
+            color: COLORS.alarm.bodyText,
+            fontSize: "12px",
+            fontStyle: "italic",
+          }}
+        >
+          You know what happens when you forget.. we can&apos;t have another
+          incident report like that on our record so soon.
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // ============================================
@@ -282,26 +339,31 @@ export function PlantAlarmNotification({
   const [showConfetti, setShowConfetti] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Generate confetti particles once when confetti is shown
   const confettiParticles = useMemo(
     () => (showConfetti ? generateConfettiParticles() : []),
     [showConfetti]
   );
 
-  // Clear timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
+  const clearPendingTimeout = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
   }, []);
+
+  const resetState = useCallback(() => {
+    setShouldRender(false);
+    setAnimationClass("");
+    setIsWatered(false);
+    setShowConfetti(false);
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => clearPendingTimeout, [clearPendingTimeout]);
 
   // Handle visibility changes
   useEffect(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    clearPendingTimeout();
 
     if (isVisible) {
       setIsWatered(false);
@@ -309,30 +371,23 @@ export function PlantAlarmNotification({
       setShouldRender(true);
       setAnimationClass("alarm-slide-in");
     } else {
-      setShouldRender(false);
-      setAnimationClass("");
-      setIsWatered(false);
-      setShowConfetti(false);
+      resetState();
     }
-  }, [isVisible]);
+  }, [isVisible, clearPendingTimeout, resetState]);
 
   const handleWaterClick = useCallback(() => {
     setIsWatered(true);
     setShowConfetti(true);
 
-    // Animate out after success state duration
     timeoutRef.current = setTimeout(() => {
       setAnimationClass("alarm-slide-out");
 
       timeoutRef.current = setTimeout(() => {
-        setShouldRender(false);
-        setAnimationClass("");
-        setIsWatered(false);
-        setShowConfetti(false);
+        resetState();
         onDismiss();
-      }, ANIMATION_DURATION);
-    }, SUCCESS_STATE_DURATION);
-  }, [onDismiss]);
+      }, ANIMATION_DURATION_MS);
+    }, SUCCESS_STATE_DURATION_MS);
+  }, [onDismiss, resetState]);
 
   if (!shouldRender) {
     return null;
@@ -343,9 +398,8 @@ export function PlantAlarmNotification({
   return (
     <div
       className={`fixed inset-0 z-[9500] flex items-center justify-center ${animationClass}`}
-      style={{ pointerEvents: "auto", paddingBottom: "96px" }}
+      style={{ pointerEvents: "auto", paddingBottom: POPUP_VERTICAL_OFFSET }}
     >
-      {/* Confetti */}
       {showConfetti && (
         <div className="confetti-container">
           {confettiParticles.map((particle, i) => (
@@ -354,13 +408,12 @@ export function PlantAlarmNotification({
         </div>
       )}
 
-      {/* Notification container */}
       <div
         className="win98-border-raised"
         style={{
-          backgroundColor: isWatered ? COLORS.success.background : COLORS.alarm.background,
+          backgroundColor: colors.background,
           padding: "2px",
-          width: isWatered ? "280px" : "520px",
+          width: isWatered ? WINDOW_WIDTH.success : WINDOW_WIDTH.alarm,
           boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
           transform: isWatered ? "scale(1.15)" : "none",
         }}
@@ -368,16 +421,12 @@ export function PlantAlarmNotification({
         {/* Title bar */}
         <div
           className="flex items-center gap-2 px-2 py-1"
-          style={{
-            background: isWatered
-              ? COLORS.success.titleBarGradient
-              : COLORS.alarm.titleBarGradient,
-          }}
+          style={{ background: colors.titleBarGradient }}
         >
           {isWatered ? <CheckmarkIcon /> : <WarningIcon />}
           <span
             className="font-bold text-white tracking-wide uppercase"
-            style={{ textShadow: "1px 1px 0px #1a1a1a", fontSize: "12px" }}
+            style={titleTextStyle}
           >
             {isWatered ? "Plants Watered!" : "Plants Alarm"}
           </span>
@@ -387,69 +436,11 @@ export function PlantAlarmNotification({
         <div
           className="px-3 py-2"
           style={{
-            backgroundColor: isWatered ? COLORS.success.background : COLORS.alarm.background,
+            backgroundColor: colors.background,
             borderTop: `1px solid ${colors.border}`,
           }}
         >
-          {isWatered ? (
-            <div className="flex items-center gap-3">
-              <HappyPlantIcon />
-              <div>
-                <div
-                  className="font-bold"
-                  style={{ color: COLORS.success.titleText, fontSize: "16px" }}
-                >
-                  Watered!
-                </div>
-                <div
-                  className="mt-1"
-                  style={{ color: COLORS.success.bodyText, fontSize: "12px" }}
-                >
-                  The beanfang plants are happy now.
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div>
-              {/* Warning header */}
-              <div className="flex items-baseline gap-3 mb-1">
-                <span
-                  className="font-bold"
-                  style={{ color: COLORS.alarm.warningText, fontSize: "26px" }}
-                >
-                  WARNING!
-                </span>
-                <span
-                  className="font-semibold"
-                  style={{
-                    color: COLORS.alarm.actionText,
-                    fontSize: "16px",
-                    borderBottom: `2px solid ${COLORS.alarm.actionUnderline}`,
-                    paddingBottom: "1px",
-                  }}
-                >
-                  Water the exploding beanfang plants!
-                </span>
-              </div>
-              {/* Icon and body text */}
-              <div className="flex items-start gap-4 mt-2">
-                <div className="flex-shrink-0">
-                  <AngryPlantIcon />
-                </div>
-                <div
-                  className="leading-relaxed pt-1"
-                  style={{
-                    color: COLORS.alarm.bodyText,
-                    fontSize: "12px",
-                    fontStyle: "italic",
-                  }}
-                >
-                  You know what happens when you forget.. we can&apos;t have
-                  another incident report like that on our record so soon.
-                </div>
-              </div>
-            </div>
-          )}
+          {isWatered ? <SuccessContent /> : <AlarmContent />}
         </div>
 
         {/* Button area */}
@@ -476,14 +467,7 @@ export function PlantAlarmNotification({
         )}
 
         {/* Bottom accent bar */}
-        <div
-          style={{
-            height: "3px",
-            background: isWatered
-              ? COLORS.success.accentGradient
-              : COLORS.alarm.accentGradient,
-          }}
-        />
+        <div style={{ height: "3px", background: colors.accentGradient }} />
       </div>
     </div>
   );
