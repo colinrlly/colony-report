@@ -2,6 +2,7 @@ import { HTMLAttributes, ReactNode, ButtonHTMLAttributes } from "react";
 
 export interface WindowProps extends HTMLAttributes<HTMLDivElement> {
   active?: boolean;
+  resizable?: boolean;
   children: ReactNode;
 }
 
