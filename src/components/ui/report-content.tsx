@@ -33,7 +33,7 @@ export function ReportContent({ selectedId }: ReportContentProps) {
         ) : selectedId === "ladybug" ? (
           <div className="relative w-full h-full">
             <Image
-              src="/images/Ladybug2.jpg"
+              src="/images/Ladybug3.jpg"
               alt="Ladybug Report"
               fill
               className="object-cover"
