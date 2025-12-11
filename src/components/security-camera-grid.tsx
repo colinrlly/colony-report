@@ -175,25 +175,21 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
 export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridProps) {
   const windowRef = useRef<HTMLDivElement>(null);
   const lastDimensions = useRef({ width: INITIAL_WIDTH, height: INITIAL_HEIGHT });
-  const isResizing = useRef(false);
-  const isFirstObservation = useRef(true);
+  const isAdjusting = useRef(false);
+  const rafId = useRef<number | null>(null);
 
   // Aspect ratio locking on resize
   useEffect(() => {
     const element = windowRef.current;
     if (!element) return;
 
-    const resizeObserver = new ResizeObserver(() => {
-      // Skip the first observation (initial mount)
-      if (isFirstObservation.current) {
-        isFirstObservation.current = false;
-        lastDimensions.current = { width: element.offsetWidth, height: element.offsetHeight };
-        return;
-      }
+    // Initialize dimensions
+    lastDimensions.current = { width: element.offsetWidth, height: element.offsetHeight };
 
-      if (isResizing.current) return; // Prevent recursive calls
+    const handleResize = () => {
+      // Skip if we're currently adjusting to prevent feedback loop
+      if (isAdjusting.current) return;
 
-      // Use offsetWidth/offsetHeight for actual element dimensions
       const width = element.offsetWidth;
       const height = element.offsetHeight;
       const lastWidth = lastDimensions.current.width;
@@ -204,8 +200,6 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
       const heightDelta = Math.abs(height - lastHeight);
 
       if (widthDelta < 1 && heightDelta < 1) return; // No significant change
-
-      isResizing.current = true;
 
       let newWidth: number;
       let newHeight: number;
@@ -226,21 +220,40 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
         newHeight = MIN_HEIGHT;
       }
 
-      // Apply the constrained dimensions
-      element.style.width = `${newWidth}px`;
-      element.style.height = `${newHeight}px`;
+      // Only update if dimensions actually changed
+      if (Math.abs(newWidth - width) > 0.5 || Math.abs(newHeight - height) > 0.5) {
+        isAdjusting.current = true;
+        element.style.width = `${newWidth}px`;
+        element.style.height = `${newHeight}px`;
+
+        // Use double RAF to ensure browser has applied changes before allowing new observations
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            isAdjusting.current = false;
+          });
+        });
+      }
 
       lastDimensions.current = { width: newWidth, height: newHeight };
+    };
 
-      // Reset the flag after a short delay
-      requestAnimationFrame(() => {
-        isResizing.current = false;
-      });
+    const resizeObserver = new ResizeObserver(() => {
+      // Cancel any pending RAF to avoid stacking
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+      // Throttle using RAF for smooth updates
+      rafId.current = requestAnimationFrame(handleResize);
     });
 
     resizeObserver.observe(element);
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      resizeObserver.disconnect();
+      if (rafId.current) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
   }, []);
 
   return (
