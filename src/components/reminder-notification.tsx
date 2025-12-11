@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, ReactNode } from "react";
 
 interface ReminderNotificationProps {
   isVisible: boolean;
-  title: string;
-  message: string;
+  onComplete: () => void;
+  title: ReactNode;
+  message: ReactNode;
 }
 
 // Pixel art clipboard/reminder icon component
@@ -45,23 +46,52 @@ function ReminderIcon() {
 
 export function ReminderNotification({
   isVisible,
+  onComplete,
   title,
   message,
 }: ReminderNotificationProps) {
   const [animationClass, setAnimationClass] = useState("");
   const [shouldRender, setShouldRender] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Display duration - how long the notification stays visible (in ms)
+  const displayDuration = 4000;
+  const animationDuration = 400;
 
   useEffect(() => {
+    // Clear any existing timeouts
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     if (isVisible) {
-      // Start showing - slide in and stay
+      // Start showing - slide in
       setShouldRender(true);
       setAnimationClass("notification-slide-in");
+
+      // After slide-in completes, wait for display duration, then slide out
+      timeoutRef.current = setTimeout(() => {
+        setAnimationClass("notification-slide-out");
+
+        // After slide-out completes, hide and notify parent
+        timeoutRef.current = setTimeout(() => {
+          setShouldRender(false);
+          setAnimationClass("");
+          onComplete();
+        }, animationDuration);
+      }, animationDuration + displayDuration);
     } else {
       // If visibility is set to false externally, reset immediately
       setShouldRender(false);
       setAnimationClass("");
     }
-  }, [isVisible]);
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [isVisible, onComplete]);
 
   if (!shouldRender) {
     return null;
@@ -133,5 +163,22 @@ export function ReminderNotification({
         />
       </div>
     </div>
+  );
+}
+
+// Helper component for redacted text
+export function RedactedText({ children }: { children: string }) {
+  return (
+    <span
+      style={{
+        backgroundColor: "#1a1a1a",
+        color: "#1a1a1a",
+        padding: "0 4px",
+        borderRadius: "2px",
+        userSelect: "none",
+      }}
+    >
+      {children}
+    </span>
   );
 }

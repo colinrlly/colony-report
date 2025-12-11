@@ -13,7 +13,7 @@ import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
 import { CalendarNotification } from "@/components/calendar-notification";
-import { ReminderNotification } from "@/components/reminder-notification";
+import { ReminderNotification, RedactedText } from "@/components/reminder-notification";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -105,16 +105,19 @@ const CALENDAR_NOTIFICATIONS: CalendarNotificationData[] = [
   },
 ];
 
-// Reminder notification data
-interface ReminderNotificationData {
-  title: string;
-  message: string;
-}
-
-const REMINDER_NOTIFICATIONS: ReminderNotificationData[] = [
+// Reminder notification data - messages are defined as a function to support JSX
+const getReminderNotifications = () => [
   {
     title: "Desk Cleanup Reminder",
     message: "Prep your workstation before next Friday's lab check. You know how Facility Ops gets about \"organizational standards.\"",
+  },
+  {
+    title: "Teach Toby to Feed Specimen H1",
+    message: "Walk Toby through the H1 feeding protocol. Could be a good teaching moment… and he'll get used to the risk. Eventually.",
+  },
+  {
+    title: <>Feed <RedactedText>Specimen X7</RedactedText></>,
+    message: <>Don&apos;t forget to feed… well, you know. The <RedactedText>specimen</RedactedText>.</>,
   },
 ];
 
@@ -171,8 +174,10 @@ export default function Home() {
   const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
   const notificationGapTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Reminder notification state (for testing - stays visible)
+  // Reminder notification state
   const [isReminderNotificationVisible, setIsReminderNotificationVisible] = useState(false);
+  const [currentReminderIndex, setCurrentReminderIndex] = useState(0);
+  const reminderGapTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -399,7 +404,6 @@ export default function Home() {
   }, []);
 
   // Handle notification complete - wait for gap then show next
-  // Future: This will be expanded to handle multiple notification types
   const handleCalendarNotificationComplete = useCallback(() => {
     setIsCalendarNotificationVisible(false);
 
@@ -412,6 +416,22 @@ export default function Home() {
     notificationGapTimerRef.current = setTimeout(() => {
       setCurrentNotificationIndex((prev) => (prev + 1) % CALENDAR_NOTIFICATIONS.length);
       setIsCalendarNotificationVisible(true);
+    }, NOTIFICATION_GAP);
+  }, []);
+
+  // Handle reminder notification complete - wait for gap then show next
+  const handleReminderNotificationComplete = useCallback(() => {
+    setIsReminderNotificationVisible(false);
+
+    // Clear any existing gap timer
+    if (reminderGapTimerRef.current) {
+      clearTimeout(reminderGapTimerRef.current);
+    }
+
+    // After gap, show the next reminder
+    reminderGapTimerRef.current = setTimeout(() => {
+      setCurrentReminderIndex((prev) => (prev + 1) % getReminderNotifications().length);
+      setIsReminderNotificationVisible(true);
     }, NOTIFICATION_GAP);
   }, []);
 
@@ -430,13 +450,18 @@ export default function Home() {
     };
   }, []);
 
-  // Show reminder notification on mount (for testing - slides in and stays)
+  // Start the reminder notification cycle on mount (offset from calendar notifications)
   useEffect(() => {
     const reminderTimer = setTimeout(() => {
       setIsReminderNotificationVisible(true);
-    }, 1000); // Show after 1 second for testing
+    }, NOTIFICATION_INITIAL_DELAY + 1500); // Offset by 1.5s from calendar notifications
 
-    return () => clearTimeout(reminderTimer);
+    return () => {
+      clearTimeout(reminderTimer);
+      if (reminderGapTimerRef.current) {
+        clearTimeout(reminderGapTimerRef.current);
+      }
+    };
   }, []);
 
   // View menu items - defined here to access the refresh handler
@@ -881,11 +906,12 @@ export default function Home() {
         note={CALENDAR_NOTIFICATIONS[currentNotificationIndex].note}
       />
 
-      {/* Reminder Notification (for testing - slides in and stays) */}
+      {/* Reminder Notification - cycles through reminders */}
       <ReminderNotification
         isVisible={isReminderNotificationVisible}
-        title={REMINDER_NOTIFICATIONS[0].title}
-        message={REMINDER_NOTIFICATIONS[0].message}
+        onComplete={handleReminderNotificationComplete}
+        title={getReminderNotifications()[currentReminderIndex].title}
+        message={getReminderNotifications()[currentReminderIndex].message}
       />
 
       {/* Screensaver */}
