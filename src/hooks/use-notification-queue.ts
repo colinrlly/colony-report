@@ -2,16 +2,25 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// Notification types in the queue
-export type NotificationType = 'calendar' | 'reminder' | 'plant-alarm' | 'security-warning';
+// Individual notification items in the queue
+// Format: "type" or "type-index" for types with multiple items
+export type NotificationItem =
+  | 'calendar-0' | 'calendar-1' | 'calendar-2'
+  | 'reminder-0' | 'reminder-1' | 'reminder-2'
+  | 'plant-alarm'
+  | 'security-warning';
 
-// All notification types
-const ALL_NOTIFICATIONS: NotificationType[] = ['calendar', 'reminder', 'plant-alarm', 'security-warning'];
+// All 8 individual notifications
+const ALL_NOTIFICATIONS: NotificationItem[] = [
+  'calendar-0', 'calendar-1', 'calendar-2',
+  'reminder-0', 'reminder-1', 'reminder-2',
+  'plant-alarm',
+  'security-warning',
+];
 
 // LocalStorage keys
-const STORAGE_KEY_ORDER = 'notification-queue-order';
-const STORAGE_KEY_INDEX = 'notification-queue-index';
-const STORAGE_KEY_ITEM_INDICES = 'notification-item-indices';
+const STORAGE_KEY_ORDER = 'notification-queue-order-v2';
+const STORAGE_KEY_INDEX = 'notification-queue-index-v2';
 
 // Timing constants
 export const QUEUE_TIMING = {
@@ -19,37 +28,39 @@ export const QUEUE_TIMING = {
   GAP_BETWEEN: 25000,       // 25 seconds between notifications (infrequent)
 } as const;
 
-// Item counts for notification types that have multiple items
-const ITEM_COUNTS: Partial<Record<NotificationType, number>> = {
-  'calendar': 3,  // 3 calendar events
-  'reminder': 3,  // 3 reminders
-};
-
 /**
- * Fisher-Yates shuffle algorithm
+ * Fisher-Yates shuffle algorithm with constraint: no same item twice in a row
+ * When reshuffling, ensures first item of new order isn't same as last item of previous order
  */
-function shuffleArray<T>(array: T[]): T[] {
+function shuffleArray<T>(array: T[], lastItem?: T): T[] {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
+
+  // If the first item matches lastItem, swap it with a random other position
+  if (lastItem !== undefined && shuffled[0] === lastItem && shuffled.length > 1) {
+    const swapIndex = 1 + Math.floor(Math.random() * (shuffled.length - 1));
+    [shuffled[0], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[0]];
+  }
+
   return shuffled;
 }
 
 /**
  * Get or create the shuffled order from localStorage
  */
-function getStoredOrder(): NotificationType[] {
+function getStoredOrder(): NotificationItem[] {
   if (typeof window === 'undefined') return shuffleArray(ALL_NOTIFICATIONS);
 
   try {
     const stored = localStorage.getItem(STORAGE_KEY_ORDER);
     if (stored) {
-      const parsed = JSON.parse(stored) as NotificationType[];
-      // Validate that it contains all expected notification types
+      const parsed = JSON.parse(stored) as NotificationItem[];
+      // Validate that it contains all expected notification items
       if (parsed.length === ALL_NOTIFICATIONS.length &&
-          ALL_NOTIFICATIONS.every(type => parsed.includes(type))) {
+          ALL_NOTIFICATIONS.every(item => parsed.includes(item))) {
         return parsed;
       }
     }
@@ -85,46 +96,38 @@ function getStoredIndex(): number {
 }
 
 /**
- * Get stored item indices for notification types with multiple items
+ * Parse a notification item to get its type and index
  */
-function getStoredItemIndices(): Record<string, number> {
-  if (typeof window === 'undefined') return {};
-
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY_ITEM_INDICES);
-    if (stored) {
-      return JSON.parse(stored);
-    }
-  } catch {
-    // If parsing fails, return empty
+function parseNotificationItem(item: NotificationItem): { type: string; index: number } {
+  if (item === 'plant-alarm' || item === 'security-warning') {
+    return { type: item, index: 0 };
   }
-
-  return {};
+  const parts = item.split('-');
+  const index = parseInt(parts[parts.length - 1], 10);
+  const type = parts.slice(0, -1).join('-');
+  return { type, index };
 }
 
 /**
- * Hook to manage a unified notification queue that cycles through all notification types.
+ * Hook to manage a unified notification queue that cycles through all 8 individual notifications.
  *
  * Features:
  * - Shows one notification at a time
+ * - All 8 notifications shown once before reshuffling (no repeats in a cycle)
  * - Random order persisted across page refreshes via localStorage
- * - Each notification shown once before reshuffling
+ * - Never shows the same notification twice in a row (even across reshuffles)
  * - Infrequent display with configurable gap between notifications
- * - Tracks item indices within notification types that have multiple items
  */
 export function useNotificationQueue(
   initialDelay: number = QUEUE_TIMING.INITIAL_DELAY,
   gapBetween: number = QUEUE_TIMING.GAP_BETWEEN
 ) {
   // State for the queue order and current position
-  const [order, setOrder] = useState<NotificationType[]>(() => getStoredOrder());
+  const [order, setOrder] = useState<NotificationItem[]>(() => getStoredOrder());
   const [currentIndex, setCurrentIndex] = useState<number>(() => getStoredIndex());
 
-  // Track which item to show within each notification type (for calendar/reminder)
-  const [itemIndices, setItemIndices] = useState<Record<string, number>>(() => getStoredItemIndices());
-
-  // Which notification is currently visible (null = none)
-  const [activeNotification, setActiveNotification] = useState<NotificationType | null>(null);
+  // Which notification item is currently visible (null = none)
+  const [activeItem, setActiveItem] = useState<NotificationItem | null>(null);
 
   // Timer refs
   const gapTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -153,21 +156,14 @@ export function useNotificationQueue(
     }
   }, [currentIndex]);
 
-  // Save item indices to localStorage when they change
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY_ITEM_INDICES, JSON.stringify(itemIndices));
-    }
-  }, [itemIndices]);
-
   // Start the queue on mount only
   useEffect(() => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
     initialTimerRef.current = setTimeout(() => {
-      const nextType = orderRef.current[currentIndexRef.current];
-      setActiveNotification(nextType);
+      const nextItem = orderRef.current[currentIndexRef.current];
+      setActiveItem(nextItem);
     }, initialDelay);
 
     // Only cleanup on unmount, not on re-renders
@@ -183,21 +179,12 @@ export function useNotificationQueue(
   }, []);
 
   // Handle notification complete - called when any notification finishes
-  const handleNotificationComplete = useCallback((type: NotificationType) => {
+  const handleNotificationComplete = useCallback((item: NotificationItem) => {
     // Only process if this is the active notification
-    if (activeNotification !== type) return;
+    if (activeItem !== item) return;
 
     // Hide the notification
-    setActiveNotification(null);
-
-    // Update item index for this notification type if it has multiple items
-    const itemCount = ITEM_COUNTS[type];
-    if (itemCount) {
-      setItemIndices(prev => ({
-        ...prev,
-        [type]: ((prev[type] || 0) + 1) % itemCount,
-      }));
-    }
+    setActiveItem(null);
 
     // Clear any existing gap timer
     if (gapTimerRef.current) {
@@ -206,10 +193,11 @@ export function useNotificationQueue(
 
     // Calculate next index using ref for latest value
     const nextIndex = (currentIndexRef.current + 1) % ALL_NOTIFICATIONS.length;
+    const lastItem = orderRef.current[currentIndexRef.current];
 
-    // If we've completed a full cycle, reshuffle
+    // If we've completed a full cycle, reshuffle (ensuring no repeat)
     if (nextIndex === 0) {
-      const newOrder = shuffleArray(ALL_NOTIFICATIONS);
+      const newOrder = shuffleArray(ALL_NOTIFICATIONS, lastItem);
       setOrder(newOrder);
       orderRef.current = newOrder;
     }
@@ -221,19 +209,26 @@ export function useNotificationQueue(
     // After gap, show the next notification
     gapTimerRef.current = setTimeout(() => {
       // Use the ref to get the most up-to-date order
-      const nextType = orderRef.current[nextIndex];
-      setActiveNotification(nextType);
+      const nextItem = orderRef.current[nextIndex];
+      setActiveItem(nextItem);
     }, gapBetween);
-  }, [activeNotification, gapBetween]);
+  }, [activeItem, gapBetween]);
 
-  // Create stable completion handlers for each notification type
+  // Parse active item to get type and index
+  const parsed = activeItem ? parseNotificationItem(activeItem) : null;
+
+  // Create completion handlers that match the specific active item
   const handleCalendarComplete = useCallback(() => {
-    handleNotificationComplete('calendar');
-  }, [handleNotificationComplete]);
+    if (activeItem?.startsWith('calendar-')) {
+      handleNotificationComplete(activeItem);
+    }
+  }, [activeItem, handleNotificationComplete]);
 
   const handleReminderComplete = useCallback(() => {
-    handleNotificationComplete('reminder');
-  }, [handleNotificationComplete]);
+    if (activeItem?.startsWith('reminder-')) {
+      handleNotificationComplete(activeItem);
+    }
+  }, [activeItem, handleNotificationComplete]);
 
   const handlePlantAlarmComplete = useCallback(() => {
     handleNotificationComplete('plant-alarm');
@@ -244,18 +239,18 @@ export function useNotificationQueue(
   }, [handleNotificationComplete]);
 
   return {
-    // Which notification should be visible
-    activeNotification,
+    // Which notification item should be visible
+    activeItem,
 
     // Convenience booleans for each notification type
-    isCalendarVisible: activeNotification === 'calendar',
-    isReminderVisible: activeNotification === 'reminder',
-    isPlantAlarmVisible: activeNotification === 'plant-alarm',
-    isSecurityWarningVisible: activeNotification === 'security-warning',
+    isCalendarVisible: activeItem?.startsWith('calendar-') ?? false,
+    isReminderVisible: activeItem?.startsWith('reminder-') ?? false,
+    isPlantAlarmVisible: activeItem === 'plant-alarm',
+    isSecurityWarningVisible: activeItem === 'security-warning',
 
     // Item indices for notification types with multiple items
-    calendarIndex: itemIndices['calendar'] || 0,
-    reminderIndex: itemIndices['reminder'] || 0,
+    calendarIndex: parsed?.type === 'calendar' ? parsed.index : 0,
+    reminderIndex: parsed?.type === 'reminder' ? parsed.index : 0,
 
     // Completion handlers for each notification type
     handleCalendarComplete,
