@@ -8,6 +8,7 @@ import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { Germsweeper } from "@/components/minesweeper";
 import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
+import { Screensaver } from "@/components/screensaver";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -91,6 +92,9 @@ export default function Home() {
   // Tutorial helper state
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
   const [tutorialClickCount, setTutorialClickCount] = useState(0);
+
+  // Screensaver state
+  const [isScreensaverActive, setIsScreensaverActive] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -291,6 +295,16 @@ export default function Home() {
     setTutorialClickCount(prev => prev + 1);
     setIsTutorialHelperVisible(true);
   }, [isTutorialHelperVisible]);
+
+  // Handle sleep - activate screensaver
+  const handleSleep = useCallback(() => {
+    setIsScreensaverActive(true);
+  }, []);
+
+  // Handle screensaver exit
+  const handleScreensaverExit = useCallback(() => {
+    setIsScreensaverActive(false);
+  }, []);
 
   // View menu items - defined here to access the refresh handler
   const viewMenuItems: MenuItemData[] = [
@@ -639,7 +653,12 @@ export default function Home() {
         )}
       </main>
 
-      <Taskbar onRestart={handleRestart}>
+      {/* Screensaver */}
+      {isScreensaverActive && (
+        <Screensaver onExit={handleScreensaverExit} />
+      )}
+
+      <Taskbar onRestart={handleRestart} onSleep={handleSleep}>
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
