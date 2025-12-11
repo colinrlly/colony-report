@@ -25,7 +25,7 @@ const STORAGE_KEY_INDEX = 'notification-queue-index-v2';
 // Timing constants
 export const QUEUE_TIMING = {
   INITIAL_DELAY: 5000,      // 5 seconds before first notification
-  GAP_BETWEEN: 25000,       // 25 seconds between notifications (infrequent)
+  GAP_BETWEEN: 5000,        // 5 seconds between notifications (for testing)
 } as const;
 
 /**
@@ -161,8 +161,16 @@ export function useNotificationQueue(
     if (hasInitialized.current) return;
     hasInitialized.current = true;
 
+    // Debug: log initial queue state
+    console.log('[NotificationQueue] Starting queue:', {
+      order: orderRef.current,
+      index: currentIndexRef.current,
+      firstItem: orderRef.current[currentIndexRef.current],
+    });
+
     initialTimerRef.current = setTimeout(() => {
       const nextItem = orderRef.current[currentIndexRef.current];
+      console.log('[NotificationQueue] Showing first notification:', nextItem, 'at index', currentIndexRef.current);
       setActiveItem(nextItem);
     }, initialDelay);
 
@@ -181,7 +189,12 @@ export function useNotificationQueue(
   // Handle notification complete - called when any notification finishes
   const handleNotificationComplete = useCallback((item: NotificationItem) => {
     // Only process if this is the active notification
-    if (activeItem !== item) return;
+    if (activeItem !== item) {
+      console.log('[NotificationQueue] Ignored completion for', item, '- active is', activeItem);
+      return;
+    }
+
+    console.log('[NotificationQueue] Completing:', item, 'at index', currentIndexRef.current);
 
     // Hide the notification
     setActiveItem(null);
@@ -197,7 +210,9 @@ export function useNotificationQueue(
 
     // If we've completed a full cycle, reshuffle (ensuring no repeat)
     if (nextIndex === 0) {
+      console.log('[NotificationQueue] Cycle complete! Reshuffling...');
       const newOrder = shuffleArray(ALL_NOTIFICATIONS, lastItem);
+      console.log('[NotificationQueue] New order:', newOrder);
       setOrder(newOrder);
       orderRef.current = newOrder;
     }
@@ -210,6 +225,7 @@ export function useNotificationQueue(
     gapTimerRef.current = setTimeout(() => {
       // Use the ref to get the most up-to-date order
       const nextItem = orderRef.current[nextIndex];
+      console.log('[NotificationQueue] Showing next:', nextItem, 'at index', nextIndex);
       setActiveItem(nextItem);
     }, gapBetween);
   }, [activeItem, gapBetween]);
