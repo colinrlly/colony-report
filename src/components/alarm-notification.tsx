@@ -59,113 +59,134 @@ function CautionIcon({ size = 32 }: { size?: number }) {
   );
 }
 
-// Pixel art angry plant icon - matches the reference image style
+// Pixel art angry RED plant icon - matches the mockup
 function AngryPlantIcon() {
   return (
     <svg
-      width="64"
-      height="80"
-      viewBox="0 0 13 16"
+      width="80"
+      height="100"
+      viewBox="0 0 16 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{ imageRendering: "pixelated" }}
       shapeRendering="crispEdges"
     >
       {/* Pot */}
-      <rect x="3" y="12" width="7" height="4" fill="#8B4513" />
-      <rect x="4" y="12" width="5" height="1" fill="#A0522D" />
+      <rect x="5" y="16" width="6" height="4" fill="#CD853F" />
+      <rect x="4" y="15" width="8" height="1" fill="#DEB887" />
 
       {/* Stem */}
-      <rect x="6" y="9" width="1" height="3" fill="#228B22" />
+      <rect x="7" y="13" width="2" height="3" fill="#228B22" />
 
-      {/* Main cactus body */}
-      <rect x="4" y="3" width="5" height="7" fill="#32CD32" />
-      <rect x="5" y="2" width="3" height="1" fill="#32CD32" />
+      {/* Main body - RED angry plant */}
+      <rect x="4" y="5" width="8" height="9" fill="#DC2626" />
+      <rect x="5" y="4" width="6" height="1" fill="#DC2626" />
+      <rect x="6" y="3" width="4" height="1" fill="#DC2626" />
 
-      {/* Left arm */}
-      <rect x="2" y="4" width="2" height="1" fill="#32CD32" />
-      <rect x="1" y="2" width="1" height="3" fill="#32CD32" />
-      <rect x="0" y="1" width="1" height="2" fill="#32CD32" />
+      {/* Darker red shading */}
+      <rect x="4" y="10" width="8" height="3" fill="#B91C1C" />
 
-      {/* Right arm */}
-      <rect x="9" y="4" width="2" height="1" fill="#32CD32" />
-      <rect x="11" y="2" width="1" height="3" fill="#32CD32" />
-      <rect x="12" y="1" width="1" height="2" fill="#32CD32" />
+      {/* Green spiky leaves/arms - left side */}
+      <rect x="2" y="6" width="2" height="1" fill="#22C55E" />
+      <rect x="1" y="5" width="2" height="1" fill="#22C55E" />
+      <rect x="0" y="3" width="2" height="2" fill="#22C55E" />
+      <rect x="0" y="2" width="1" height="1" fill="#22C55E" />
 
-      {/* Angry eyebrows */}
-      <rect x="4" y="4" width="2" height="1" fill="#8B0000" />
-      <rect x="7" y="4" width="2" height="1" fill="#8B0000" />
+      {/* Green spiky leaves/arms - right side */}
+      <rect x="12" y="6" width="2" height="1" fill="#22C55E" />
+      <rect x="13" y="5" width="2" height="1" fill="#22C55E" />
+      <rect x="14" y="3" width="2" height="2" fill="#22C55E" />
+      <rect x="15" y="2" width="1" height="1" fill="#22C55E" />
 
-      {/* Eyes */}
-      <rect x="5" y="5" width="1" height="2" fill="#1a1a1a" />
-      <rect x="7" y="5" width="1" height="2" fill="#1a1a1a" />
+      {/* Green top spikes */}
+      <rect x="5" y="2" width="1" height="2" fill="#22C55E" />
+      <rect x="4" y="1" width="1" height="1" fill="#22C55E" />
+      <rect x="10" y="2" width="1" height="2" fill="#22C55E" />
+      <rect x="11" y="1" width="1" height="1" fill="#22C55E" />
 
-      {/* Frowny mouth */}
-      <rect x="5" y="8" width="1" height="1" fill="#1a1a1a" />
-      <rect x="6" y="9" width="1" height="1" fill="#1a1a1a" />
-      <rect x="7" y="8" width="1" height="1" fill="#1a1a1a" />
+      {/* Angry eyebrows - dark black V shape */}
+      <rect x="4" y="5" width="3" height="1" fill="#1a1a1a" />
+      <rect x="5" y="6" width="2" height="1" fill="#1a1a1a" />
+      <rect x="9" y="5" width="3" height="1" fill="#1a1a1a" />
+      <rect x="9" y="6" width="2" height="1" fill="#1a1a1a" />
+
+      {/* Eyes - white with black pupils */}
+      <rect x="5" y="7" width="2" height="3" fill="#FFFFFF" />
+      <rect x="9" y="7" width="2" height="3" fill="#FFFFFF" />
+      <rect x="6" y="8" width="1" height="2" fill="#1a1a1a" />
+      <rect x="9" y="8" width="1" height="2" fill="#1a1a1a" />
+
+      {/* Angry mouth - open showing teeth */}
+      <rect x="5" y="11" width="6" height="2" fill="#1a1a1a" />
+      <rect x="6" y="11" width="1" height="1" fill="#FFFFFF" />
+      <rect x="8" y="11" width="1" height="1" fill="#FFFFFF" />
+      <rect x="10" y="11" width="1" height="1" fill="#FFFFFF" />
     </svg>
   );
 }
 
-// Pixel art happy plant icon
+// Pixel art happy plant icon - green and content
 function HappyPlantIcon() {
   return (
     <svg
-      width="64"
-      height="80"
-      viewBox="0 0 13 16"
+      width="80"
+      height="100"
+      viewBox="0 0 16 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       style={{ imageRendering: "pixelated" }}
       shapeRendering="crispEdges"
     >
       {/* Pot */}
-      <rect x="3" y="12" width="7" height="4" fill="#8B4513" />
-      <rect x="4" y="12" width="5" height="1" fill="#A0522D" />
+      <rect x="5" y="16" width="6" height="4" fill="#CD853F" />
+      <rect x="4" y="15" width="8" height="1" fill="#DEB887" />
 
-      {/* Water drops */}
-      <rect x="4" y="13" width="1" height="1" fill="#4FC3F7" />
-      <rect x="8" y="14" width="1" height="1" fill="#4FC3F7" />
+      {/* Water drops on pot */}
+      <rect x="5" y="17" width="1" height="1" fill="#4FC3F7" />
+      <rect x="9" y="18" width="1" height="1" fill="#4FC3F7" />
 
       {/* Stem */}
-      <rect x="6" y="9" width="1" height="3" fill="#228B22" />
+      <rect x="7" y="13" width="2" height="3" fill="#228B22" />
 
-      {/* Main cactus body */}
-      <rect x="4" y="3" width="5" height="7" fill="#32CD32" />
-      <rect x="5" y="2" width="3" height="1" fill="#32CD32" />
+      {/* Main body - GREEN happy plant */}
+      <rect x="4" y="5" width="8" height="9" fill="#32CD32" />
+      <rect x="5" y="4" width="6" height="1" fill="#32CD32" />
+      <rect x="6" y="3" width="4" height="1" fill="#32CD32" />
 
-      {/* Left arm - relaxed/down */}
-      <rect x="2" y="5" width="2" height="1" fill="#32CD32" />
-      <rect x="1" y="5" width="1" height="3" fill="#32CD32" />
-      <rect x="0" y="7" width="1" height="2" fill="#32CD32" />
+      {/* Lighter green highlight */}
+      <rect x="5" y="5" width="6" height="3" fill="#4ADE80" />
 
-      {/* Right arm - relaxed/down */}
-      <rect x="9" y="5" width="2" height="1" fill="#32CD32" />
-      <rect x="11" y="5" width="1" height="3" fill="#32CD32" />
-      <rect x="12" y="7" width="1" height="2" fill="#32CD32" />
+      {/* Green leaves - relaxed/droopy */}
+      <rect x="2" y="7" width="2" height="1" fill="#22C55E" />
+      <rect x="1" y="8" width="2" height="1" fill="#22C55E" />
+      <rect x="0" y="9" width="2" height="2" fill="#22C55E" />
 
-      {/* Happy eyes - closed ^^ */}
-      <rect x="5" y="5" width="1" height="1" fill="#1a1a1a" />
-      <rect x="4" y="6" width="1" height="1" fill="#1a1a1a" />
-      <rect x="6" y="6" width="1" height="1" fill="#1a1a1a" />
-      <rect x="7" y="5" width="1" height="1" fill="#1a1a1a" />
-      <rect x="6" y="6" width="1" height="1" fill="#1a1a1a" />
-      <rect x="8" y="6" width="1" height="1" fill="#1a1a1a" />
-
-      {/* Happy smile */}
-      <rect x="5" y="7" width="1" height="1" fill="#1a1a1a" />
-      <rect x="6" y="8" width="1" height="1" fill="#1a1a1a" />
-      <rect x="7" y="7" width="1" height="1" fill="#1a1a1a" />
-
-      {/* Rosy cheeks */}
-      <rect x="4" y="6" width="1" height="1" fill="#FFB6C1" />
-      <rect x="8" y="6" width="1" height="1" fill="#FFB6C1" />
+      <rect x="12" y="7" width="2" height="1" fill="#22C55E" />
+      <rect x="13" y="8" width="2" height="1" fill="#22C55E" />
+      <rect x="14" y="9" width="2" height="2" fill="#22C55E" />
 
       {/* Little flower on top */}
+      <rect x="7" y="1" width="2" height="2" fill="#32CD32" />
+      <rect x="7" y="0" width="2" height="1" fill="#FF69B4" />
       <rect x="6" y="1" width="1" height="1" fill="#FF69B4" />
-      <rect x="5" y="2" width="1" height="1" fill="#FF69B4" />
-      <rect x="7" y="2" width="1" height="1" fill="#FF69B4" />
+      <rect x="9" y="1" width="1" height="1" fill="#FF69B4" />
+
+      {/* Happy closed eyes ^^ */}
+      <rect x="5" y="6" width="1" height="1" fill="#1a1a1a" />
+      <rect x="6" y="7" width="1" height="1" fill="#1a1a1a" />
+      <rect x="7" y="6" width="1" height="1" fill="#1a1a1a" />
+      <rect x="8" y="6" width="1" height="1" fill="#1a1a1a" />
+      <rect x="9" y="7" width="1" height="1" fill="#1a1a1a" />
+      <rect x="10" y="6" width="1" height="1" fill="#1a1a1a" />
+
+      {/* Happy smile */}
+      <rect x="6" y="9" width="1" height="1" fill="#1a1a1a" />
+      <rect x="7" y="10" width="2" height="1" fill="#1a1a1a" />
+      <rect x="9" y="9" width="1" height="1" fill="#1a1a1a" />
+
+      {/* Rosy cheeks */}
+      <rect x="4" y="8" width="1" height="1" fill="#FFB6C1" />
+      <rect x="11" y="8" width="1" height="1" fill="#FFB6C1" />
     </svg>
   );
 }
@@ -275,36 +296,36 @@ export function AlarmNotification({
         style={{
           backgroundColor: "#c8b9a9",
           padding: "2px",
-          width: "440px",
+          width: "480px",
         }}
       >
-        {/* Title bar - red */}
+        {/* Title bar - red gradient */}
         <div
           className="flex items-center gap-2 px-2 py-1"
           style={{
             background: isWatered
               ? "linear-gradient(180deg, #28a745 0%, #1e7e34 100%)"
-              : "#b91c1c",
+              : "linear-gradient(180deg, #c53030 0%, #9b2c2c 100%)",
           }}
         >
-          <CautionIcon size={28} />
-          <span className="text-lg">&#9888;</span>
+          <CautionIcon size={36} />
           <span
-            className="font-bold text-white tracking-wide uppercase"
+            className="font-bold tracking-wide uppercase"
             style={{
-              fontSize: "14px",
+              fontSize: "18px",
+              color: isWatered ? "#FFFFFF" : "#FFD700",
               textShadow: "1px 1px 0px rgba(0,0,0,0.5)",
             }}
           >
-            {isWatered ? "Plant Watered!" : "URGENT ALARM"}
+            {isWatered ? "Plant Watered!" : "PLANT ALARM"}
           </span>
         </div>
 
         {/* Content area */}
         <div
-          className="px-4 py-4"
+          className="px-5 py-4"
           style={{
-            backgroundColor: "#c8b9a9",
+            backgroundColor: "#d4caba",
           }}
         >
           {isWatered ? (
@@ -315,7 +336,7 @@ export function AlarmNotification({
               </div>
               <div>
                 <div
-                  className="text-xl font-bold mb-1"
+                  className="text-2xl font-bold mb-1"
                   style={{ color: "#155724" }}
                 >
                   Watered!
@@ -330,30 +351,44 @@ export function AlarmNotification({
             </div>
           ) : (
             /* Alert state */
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0">
-                <AngryPlantIcon />
-              </div>
-              <div>
-                {/* Warning heading */}
-                <div
-                  className="font-bold mb-2"
+            <>
+              {/* Top row: WARNING! + underlined message */}
+              <div className="flex items-baseline gap-3 mb-4">
+                <span
+                  className="font-bold"
                   style={{
+                    fontSize: "28px",
                     color: "#991b1b",
-                    fontSize: "16px",
                   }}
                 >
-                  Warning! Water the exploding beanfang plant!
-                </div>
-                {/* Message */}
-                <div
-                  className="text-sm leading-relaxed"
-                  style={{ color: "#1a1a1a" }}
+                  WARNING!
+                </span>
+                <span
+                  style={{
+                    fontSize: "18px",
+                    color: "#7f1d1d",
+                    textDecoration: "underline",
+                    textDecorationColor: "#991b1b",
+                    textUnderlineOffset: "3px",
+                  }}
                 >
-                  You know what happens when you forget... we can&apos;t have another incident report like that on our record so soon.
+                  Water the exploding beanfang plant!
+                </span>
+              </div>
+
+              {/* Plant icon + message side by side */}
+              <div className="flex items-start gap-5">
+                <div className="flex-shrink-0">
+                  <AngryPlantIcon />
+                </div>
+                <div
+                  className="text-sm leading-relaxed pt-2"
+                  style={{ color: "#44403c" }}
+                >
+                  You know what happens when you forget.. we can&apos;t have another incident report like that on our record so soon.
                 </div>
               </div>
-            </div>
+            </>
           )}
         </div>
 
@@ -361,7 +396,7 @@ export function AlarmNotification({
         <div
           className="px-4 py-3 flex justify-center"
           style={{
-            backgroundColor: "#d4caba",
+            backgroundColor: "#c8b9a9",
             borderTop: "1px solid #a09080",
           }}
         >
@@ -370,9 +405,9 @@ export function AlarmNotification({
             className="win98-border-raised cursor-pointer active:win98-border-pressed"
             style={{
               backgroundColor: "#e8e0d0",
-              padding: "6px 24px",
-              fontSize: "13px",
-              minWidth: "120px",
+              padding: "8px 32px",
+              fontSize: "14px",
+              minWidth: "180px",
             }}
           >
             {isWatered ? "Done!" : "Water Plant Remotely"}
