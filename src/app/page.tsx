@@ -13,6 +13,7 @@ import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
 import { CalendarNotification } from "@/components/calendar-notification";
+import { ReminderNotification } from "@/components/reminder-notification";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -104,6 +105,19 @@ const CALENDAR_NOTIFICATIONS: CalendarNotificationData[] = [
   },
 ];
 
+// Reminder notification data
+interface ReminderNotificationData {
+  title: string;
+  message: string;
+}
+
+const REMINDER_NOTIFICATIONS: ReminderNotificationData[] = [
+  {
+    title: "Desk Cleanup Reminder",
+    message: "Reminder: Prep your workstation before next Friday's lab check. You know how Facility Ops gets about \"organizational standards.\"",
+  },
+];
+
 export default function Home() {
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
@@ -156,6 +170,9 @@ export default function Home() {
   const [isCalendarNotificationVisible, setIsCalendarNotificationVisible] = useState(false);
   const [currentNotificationIndex, setCurrentNotificationIndex] = useState(0);
   const notificationGapTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Reminder notification state (for testing - stays visible)
+  const [isReminderNotificationVisible, setIsReminderNotificationVisible] = useState(false);
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -411,6 +428,15 @@ export default function Home() {
         clearTimeout(notificationGapTimerRef.current);
       }
     };
+  }, []);
+
+  // Show reminder notification on mount (for testing - slides in and stays)
+  useEffect(() => {
+    const reminderTimer = setTimeout(() => {
+      setIsReminderNotificationVisible(true);
+    }, 1000); // Show after 1 second for testing
+
+    return () => clearTimeout(reminderTimer);
   }, []);
 
   // View menu items - defined here to access the refresh handler
@@ -853,6 +879,13 @@ export default function Home() {
         eventName={CALENDAR_NOTIFICATIONS[currentNotificationIndex].eventName}
         time={CALENDAR_NOTIFICATIONS[currentNotificationIndex].time}
         note={CALENDAR_NOTIFICATIONS[currentNotificationIndex].note}
+      />
+
+      {/* Reminder Notification (for testing - slides in and stays) */}
+      <ReminderNotification
+        isVisible={isReminderNotificationVisible}
+        title={REMINDER_NOTIFICATIONS[0].title}
+        message={REMINDER_NOTIFICATIONS[0].message}
       />
 
       {/* Screensaver */}
