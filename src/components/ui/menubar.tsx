@@ -100,19 +100,33 @@ export function MenubarLogo() {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Earth circle */}
-          <circle cx="12" cy="12" r="10" fill="#4A90D9" stroke="#2E5A88" strokeWidth="1" />
-          {/* Continents/land masses */}
-          <ellipse cx="8" cy="8" rx="3" ry="4" fill="#5CB85C" />
-          <ellipse cx="15" cy="10" rx="4" ry="3" fill="#5CB85C" />
-          <ellipse cx="10" cy="16" rx="3" ry="2" fill="#5CB85C" />
+          <defs>
+            {/* Horizontal stripe pattern for ocean */}
+            <pattern id="oceanStripes" patternUnits="userSpaceOnUse" width="24" height="2">
+              <rect width="24" height="1" fill="#4A9FD9" />
+              <rect y="1" width="24" height="1" fill="#3D8BC7" />
+            </pattern>
+            <clipPath id="earthClipSmall">
+              <circle cx="12" cy="12" r="9.5" />
+            </clipPath>
+          </defs>
+          {/* Earth circle with stripe pattern */}
+          <circle cx="12" cy="12" r="10" fill="#4A90D9" stroke="#3A6B99" strokeWidth="1.5" />
+          <circle cx="12" cy="12" r="9.5" fill="url(#oceanStripes)" clipPath="url(#earthClipSmall)" />
+          {/* Continents/land masses matching reference */}
+          {/* Top-right continent */}
+          <path d="M14 4 Q16 3.5 18 5 Q19.5 7 18.5 9 Q17 10 15 9 Q13.5 7.5 14 5 Z" fill="#4DB84D" />
+          {/* Left continent */}
+          <path d="M3 8 Q4.5 6 6 7 Q7.5 9 7 12 Q7.5 15 6 17 Q4 18 3 16 Q2 13 2.5 10 Z" fill="#4DB84D" />
+          {/* Bottom continent */}
+          <path d="M13 18 Q16 17 18 18.5 Q19 20 17 21 Q14 21.5 12 20.5 Q11 19 13 18 Z" fill="#4DB84D" />
           {/* Smiley face */}
-          <circle cx="9" cy="10" r="1.5" fill="#333" /> {/* Left eye */}
-          <circle cx="15" cy="10" r="1.5" fill="#333" /> {/* Right eye */}
+          <ellipse cx="9" cy="10.5" rx="1.3" ry="1.5" fill="#2D2D2D" /> {/* Left eye */}
+          <ellipse cx="15" cy="10.5" rx="1.3" ry="1.5" fill="#2D2D2D" /> {/* Right eye */}
           <path
-            d="M8 14 Q12 18 16 14"
-            stroke="#333"
-            strokeWidth="1.5"
+            d="M8.5 14 Q12 17 15.5 14"
+            stroke="#2D2D2D"
+            strokeWidth="1.3"
             fill="none"
             strokeLinecap="round"
           /> {/* Smile */}

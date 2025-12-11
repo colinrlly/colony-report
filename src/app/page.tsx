@@ -461,21 +461,30 @@ export default function Home() {
               <div className="text-center">
                 {/* Large Smiling Earth */}
                 <svg className="mx-auto mb-6" width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Earth circle */}
-                  <circle cx="90" cy="90" r="80" fill="#4A90D9" stroke="#2E5A88" strokeWidth="4" />
-                  {/* Continents/land masses - organic blobs positioned to avoid face features */}
-                  {/* Top continent - irregular blob */}
-                  <path d="M65 22 Q72 18 85 20 Q100 19 108 24 Q115 30 110 38 Q102 42 88 40 Q74 43 68 36 Q62 28 65 22" fill="#5CB85C" />
-                  {/* Left continent - organic shape */}
-                  <path d="M18 70 Q22 60 28 55 Q36 52 40 58 Q44 68 42 82 Q44 95 38 105 Q30 112 22 108 Q16 100 15 88 Q14 78 18 70" fill="#5CB85C" />
-                  {/* Right continent - asymmetric blob */}
-                  <path d="M155 65 Q162 70 164 80 Q165 92 160 102 Q154 108 148 105 Q142 98 144 85 Q143 72 148 66 Q152 62 155 65" fill="#5CB85C" />
-                  {/* Bottom continent - wide irregular shape */}
-                  <path d="M55 148 Q65 144 80 146 Q95 143 110 147 Q122 150 125 156 Q120 162 105 160 Q88 163 70 160 Q55 158 52 153 Q52 150 55 148" fill="#5CB85C" />
+                  <defs>
+                    {/* Horizontal stripe pattern for ocean */}
+                    <pattern id="oceanStripesLarge" patternUnits="userSpaceOnUse" width="180" height="6">
+                      <rect width="180" height="3" fill="#4A9FD9" />
+                      <rect y="3" width="180" height="3" fill="#3D8BC7" />
+                    </pattern>
+                    <clipPath id="earthClipLarge">
+                      <circle cx="90" cy="90" r="76" />
+                    </clipPath>
+                  </defs>
+                  {/* Earth circle with stripe pattern */}
+                  <circle cx="90" cy="90" r="80" fill="#4A90D9" stroke="#3A6B99" strokeWidth="5" />
+                  <circle cx="90" cy="90" r="76" fill="url(#oceanStripesLarge)" clipPath="url(#earthClipLarge)" />
+                  {/* Continents/land masses matching reference */}
+                  {/* Top-right continent */}
+                  <path d="M105 20 Q120 18 140 28 Q155 42 150 60 Q140 68 125 62 Q108 52 105 35 Q102 25 105 20 Z" fill="#4DB84D" />
+                  {/* Left continent - extends from top-left to bottom-left */}
+                  <path d="M18 50 Q30 35 42 42 Q52 55 50 75 Q54 100 48 120 Q42 138 28 135 Q14 125 12 100 Q10 70 18 50 Z" fill="#4DB84D" />
+                  {/* Bottom-right continent */}
+                  <path d="M100 140 Q125 132 148 142 Q160 155 150 165 Q130 172 105 168 Q85 165 90 152 Q92 145 100 140 Z" fill="#4DB84D" />
                   {/* Smiley face */}
-                  <circle cx="68" cy="75" r="10" fill="#333" /> {/* Left eye */}
-                  <circle cx="112" cy="75" r="10" fill="#333" /> {/* Right eye */}
-                  <path d="M60 105 Q90 140 120 105" stroke="#333" strokeWidth="8" fill="none" strokeLinecap="round" />
+                  <ellipse cx="68" cy="80" rx="10" ry="12" fill="#2D2D2D" /> {/* Left eye */}
+                  <ellipse cx="112" cy="80" rx="10" ry="12" fill="#2D2D2D" /> {/* Right eye */}
+                  <path d="M62 108 Q90 138 118 108" stroke="#2D2D2D" strokeWidth="7" fill="none" strokeLinecap="round" />
                 </svg>
                 <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14]" style={{ fontFamily: 'Arial Black, sans-serif', textShadow: '0 0 4px rgba(57, 255, 20, 0.8), 2px 2px 0px #1a4d0a' }}>
                   NEW EDEN
