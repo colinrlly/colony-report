@@ -12,6 +12,7 @@ interface SecurityCameraFeedProps {
   cameraNumber: number;
   onClose?: () => void;
   onMinimize?: () => void;
+  warningMode?: boolean;
 }
 
 // Different signal lost messages for variety
@@ -32,7 +33,7 @@ const CAMERA_LOCATIONS: Record<number, string> = {
   4: "WEST HALLWAY A",
 };
 
-export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize }: SecurityCameraFeedProps) {
+export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize, warningMode = false }: SecurityCameraFeedProps) {
   const [isFlickering, setIsFlickering] = useState(false);
   const [isSignalLost, setIsSignalLost] = useState(false);
   const [signalMessage, setSignalMessage] = useState(SIGNAL_MESSAGES[0]);
@@ -137,8 +138,18 @@ export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize }: Securi
                 CAM_{cameraNumber.toString().padStart(2, '0')} // {location}
               </div>
             </div>
+          ) : warningMode ? (
+            // Warning mode - special animation placeholder for security alert
+            <div className="text-red-500 font-mono text-sm flex flex-col items-center gap-2">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                <span className="animate-pulse">ALERT - MOVEMENT DETECTED</span>
+              </div>
+              <span className="text-xs text-red-400/80">[Warning GIF Placeholder]</span>
+              <span className="text-xs text-red-400/60 mt-2">Unusual Activity Recorded</span>
+            </div>
           ) : (
-            // Active feed placeholder
+            // Active feed placeholder - normal mode
             <div className="text-green-500 font-mono text-sm flex flex-col items-center gap-2">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
