@@ -92,11 +92,13 @@ interface SecretsFolderProps {
   onClose?: () => void;
   onMinimize?: () => void;
   onOpenNothing?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
-export function SecretsFolder({ onClose, onMinimize, onOpenNothing }: SecretsFolderProps) {
+export function SecretsFolder({ onClose, onMinimize, onOpenNothing, zIndex, onFocus }: SecretsFolderProps) {
   return (
-    <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col">
+    <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col" zIndex={zIndex} onFocus={onFocus}>
       <WindowTitleBar>
         <WindowTitle>.secrets</WindowTitle>
         <WindowControls

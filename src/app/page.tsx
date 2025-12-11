@@ -12,6 +12,7 @@ import { Screensaver } from "@/components/screensaver";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
+import { useWindowZIndex, WindowId } from "@/hooks/use-window-z-index";
 
 // viewMenuItems, toolsMenuItems, and helpMenuItems are defined inside the component to access state handlers
 
@@ -95,6 +96,9 @@ export default function Home() {
 
   // Screensaver state
   const [isScreensaverActive, setIsScreensaverActive] = useState(false);
+
+  // Window z-index management
+  const { getZIndex, bringToFront, registerWindow, unregisterWindow } = useWindowZIndex();
 
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
@@ -180,6 +184,8 @@ export default function Home() {
     switch (iconId) {
       case "colony-reports":
         setIsColonyReportsOpen(true);
+        setIsColonyReportsMinimized(false);
+        registerWindow("colony-reports");
         break;
       // Add handlers for other icons here when needed
     }
@@ -321,6 +327,7 @@ export default function Home() {
         { label: "Germsweeper", onClick: () => {
           setIsMinesweeperOpen(true);
           setIsMinesweeperMinimized(false);
+          registerWindow("minesweeper");
         }},
       ],
     },
@@ -342,6 +349,7 @@ export default function Home() {
     { label: "Contact HR", onClick: () => {
       setIsContactHROpen(true);
       setIsContactHRMinimized(false);
+      registerWindow("contact-hr");
     }},
   ];
 
@@ -529,7 +537,10 @@ export default function Home() {
             <DesktopIcon
               label={HIDDEN_FILE.label}
               icon={HIDDEN_FILE.icon}
-              onClick={() => setIsSecretsFolderOpen(true)}
+              onClick={() => {
+                setIsSecretsFolderOpen(true);
+                registerWindow("secrets-folder");
+              }}
             />
           </div>
         )}
@@ -540,14 +551,25 @@ export default function Home() {
             onClose={() => {
               setIsColonyReportsOpen(false);
               setIsColonyReportsMinimized(false);
+              unregisterWindow("colony-reports");
             }}
             onMinimize={() => setIsColonyReportsMinimized(true)}
+            zIndex={getZIndex("colony-reports")}
+            onFocus={() => bringToFront("colony-reports")}
           />
         )}
         {isSecretsFolderOpen && (
           <SecretsFolder
-            onClose={() => setIsSecretsFolderOpen(false)}
-            onOpenNothing={() => setIsNothingOpen(true)}
+            onClose={() => {
+              setIsSecretsFolderOpen(false);
+              unregisterWindow("secrets-folder");
+            }}
+            onOpenNothing={() => {
+              setIsNothingOpen(true);
+              registerWindow("nothing");
+            }}
+            zIndex={getZIndex("secrets-folder")}
+            onFocus={() => bringToFront("secrets-folder")}
           />
         )}
 
@@ -556,36 +578,68 @@ export default function Home() {
           <NestedFolderWindow
             title="Nothing..."
             childFolderLabel="Seriously Nothing…"
-            onClose={() => setIsNothingOpen(false)}
-            onOpenChild={() => setIsSeriouslyNothingOpen(true)}
+            onClose={() => {
+              setIsNothingOpen(false);
+              unregisterWindow("nothing");
+            }}
+            onOpenChild={() => {
+              setIsSeriouslyNothingOpen(true);
+              registerWindow("seriously-nothing");
+            }}
             position={{ top: "20vh", left: "32vw" }}
+            zIndex={getZIndex("nothing")}
+            onFocus={() => bringToFront("nothing")}
           />
         )}
         {isSeriouslyNothingOpen && (
           <NestedFolderWindow
             title="Seriously Nothing…"
             childFolderLabel="Please Stop"
-            onClose={() => setIsSeriouslyNothingOpen(false)}
-            onOpenChild={() => setIsPleaseStopOpen(true)}
+            onClose={() => {
+              setIsSeriouslyNothingOpen(false);
+              unregisterWindow("seriously-nothing");
+            }}
+            onOpenChild={() => {
+              setIsPleaseStopOpen(true);
+              registerWindow("please-stop");
+            }}
             position={{ top: "22vh", left: "36vw" }}
+            zIndex={getZIndex("seriously-nothing")}
+            onFocus={() => bringToFront("seriously-nothing")}
           />
         )}
         {isPleaseStopOpen && (
           <NestedFolderWindow
             title="Please Stop"
             childFolderLabel="Go No Further"
-            onClose={() => setIsPleaseStopOpen(false)}
-            onOpenChild={() => setIsGoNoFurtherOpen(true)}
+            onClose={() => {
+              setIsPleaseStopOpen(false);
+              unregisterWindow("please-stop");
+            }}
+            onOpenChild={() => {
+              setIsGoNoFurtherOpen(true);
+              registerWindow("go-no-further");
+            }}
             position={{ top: "24vh", left: "40vw" }}
+            zIndex={getZIndex("please-stop")}
+            onFocus={() => bringToFront("please-stop")}
           />
         )}
         {isGoNoFurtherOpen && (
           <NestedFolderWindow
             title="Go No Further"
             childFolderLabel="Are You Serious"
-            onClose={() => setIsGoNoFurtherOpen(false)}
-            onOpenChild={() => setIsAreYouSeriousOpen(true)}
+            onClose={() => {
+              setIsGoNoFurtherOpen(false);
+              unregisterWindow("go-no-further");
+            }}
+            onOpenChild={() => {
+              setIsAreYouSeriousOpen(true);
+              registerWindow("are-you-serious");
+            }}
             position={{ top: "26vh", left: "44vw" }}
+            zIndex={getZIndex("go-no-further")}
+            onFocus={() => bringToFront("go-no-further")}
           />
         )}
         {isAreYouSeriousOpen && (
@@ -593,33 +647,61 @@ export default function Home() {
             title="Are You Serious"
             childFolderLabel="Unbelievable"
             showSkullOnChild={true}
-            onClose={() => setIsAreYouSeriousOpen(false)}
-            onOpenChild={() => setIsUghFineOpen(true)}
+            onClose={() => {
+              setIsAreYouSeriousOpen(false);
+              unregisterWindow("are-you-serious");
+            }}
+            onOpenChild={() => {
+              setIsUghFineOpen(true);
+              registerWindow("ugh-fine");
+            }}
             position={{ top: "28vh", left: "48vw" }}
+            zIndex={getZIndex("are-you-serious")}
+            onFocus={() => bringToFront("are-you-serious")}
           />
         )}
         {isUghFineOpen && (
           <NestedFolderWindow
             title="Unbelievable 💀"
             childFolderLabel="secret_pet_monitor"
-            onClose={() => setIsUghFineOpen(false)}
-            onOpenChild={() => setIsPetMonitorOpen(true)}
+            onClose={() => {
+              setIsUghFineOpen(false);
+              unregisterWindow("ugh-fine");
+            }}
+            onOpenChild={() => {
+              setIsPetMonitorOpen(true);
+              registerWindow("pet-monitor");
+            }}
             position={{ top: "30vh", left: "52vw" }}
+            zIndex={getZIndex("ugh-fine")}
+            onFocus={() => bringToFront("ugh-fine")}
           />
         )}
 
         {/* Secret Pet Monitor - final destination */}
         {isPetMonitorOpen && (
-          <SecretPetMonitor onClose={() => {
-            // Close pet monitor and all nested folders, but keep .secrets open
-            setIsPetMonitorOpen(false);
-            setIsUghFineOpen(false);
-            setIsAreYouSeriousOpen(false);
-            setIsGoNoFurtherOpen(false);
-            setIsPleaseStopOpen(false);
-            setIsSeriouslyNothingOpen(false);
-            setIsNothingOpen(false);
-          }} />
+          <SecretPetMonitor
+            onClose={() => {
+              // Close pet monitor and all nested folders, but keep .secrets open
+              setIsPetMonitorOpen(false);
+              setIsUghFineOpen(false);
+              setIsAreYouSeriousOpen(false);
+              setIsGoNoFurtherOpen(false);
+              setIsPleaseStopOpen(false);
+              setIsSeriouslyNothingOpen(false);
+              setIsNothingOpen(false);
+              // Unregister all closed windows
+              unregisterWindow("pet-monitor");
+              unregisterWindow("ugh-fine");
+              unregisterWindow("are-you-serious");
+              unregisterWindow("go-no-further");
+              unregisterWindow("please-stop");
+              unregisterWindow("seriously-nothing");
+              unregisterWindow("nothing");
+            }}
+            zIndex={getZIndex("pet-monitor")}
+            onFocus={() => bringToFront("pet-monitor")}
+          />
         )}
 
         {/* Germsweeper Game */}
@@ -628,8 +710,11 @@ export default function Home() {
             onClose={() => {
               setIsMinesweeperOpen(false);
               setIsMinesweeperMinimized(false);
+              unregisterWindow("minesweeper");
             }}
             onMinimize={() => setIsMinesweeperMinimized(true)}
+            zIndex={getZIndex("minesweeper")}
+            onFocus={() => bringToFront("minesweeper")}
           />
         )}
 
@@ -639,8 +724,11 @@ export default function Home() {
             onClose={() => {
               setIsContactHROpen(false);
               setIsContactHRMinimized(false);
+              unregisterWindow("contact-hr");
             }}
             onMinimize={() => setIsContactHRMinimized(true)}
+            zIndex={getZIndex("contact-hr")}
+            onFocus={() => bringToFront("contact-hr")}
           />
         )}
 
@@ -663,35 +751,60 @@ export default function Home() {
           <TaskbarButton
             title="COLONY REPORTS"
             isActive={!isColonyReportsMinimized && !isSecretsFolderOpen && !isPetMonitorOpen && (!isMinesweeperOpen || isMinesweeperMinimized)}
-            onClick={() => setIsColonyReportsMinimized(!isColonyReportsMinimized)}
+            onClick={() => {
+              if (isColonyReportsMinimized) {
+                setIsColonyReportsMinimized(false);
+                registerWindow("colony-reports");
+              } else {
+                setIsColonyReportsMinimized(true);
+              }
+            }}
           />
         )}
         {isSecretsFolderOpen && (
           <TaskbarButton
             title=".secrets"
             isActive={!isPetMonitorOpen && (!isMinesweeperOpen || isMinesweeperMinimized)}
-            onClick={() => setIsSecretsFolderOpen(true)}
+            onClick={() => {
+              bringToFront("secrets-folder");
+            }}
           />
         )}
         {isPetMonitorOpen && (
           <TaskbarButton
             title="secret_pet_monitor"
             isActive={!isMinesweeperOpen || isMinesweeperMinimized}
-            onClick={() => setIsPetMonitorOpen(true)}
+            onClick={() => {
+              bringToFront("pet-monitor");
+            }}
           />
         )}
         {isMinesweeperOpen && (
           <TaskbarButton
             title="Germsweeper"
             isActive={!isMinesweeperMinimized}
-            onClick={() => setIsMinesweeperMinimized(!isMinesweeperMinimized)}
+            onClick={() => {
+              if (isMinesweeperMinimized) {
+                setIsMinesweeperMinimized(false);
+                registerWindow("minesweeper");
+              } else {
+                setIsMinesweeperMinimized(true);
+              }
+            }}
           />
         )}
         {isContactHROpen && (
           <TaskbarButton
             title="Contact HR"
             isActive={!isContactHRMinimized}
-            onClick={() => setIsContactHRMinimized(!isContactHRMinimized)}
+            onClick={() => {
+              if (isContactHRMinimized) {
+                setIsContactHRMinimized(false);
+                registerWindow("contact-hr");
+              } else {
+                setIsContactHRMinimized(true);
+              }
+            }}
           />
         )}
       </Taskbar>

@@ -9,11 +9,13 @@ import {
 
 interface SecretPetMonitorProps {
   onClose?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
-export function SecretPetMonitor({ onClose }: SecretPetMonitorProps) {
+export function SecretPetMonitor({ onClose, zIndex, onFocus }: SecretPetMonitorProps) {
   return (
-    <Window className="w-[480px] h-[400px] absolute top-[12vh] left-[25vw] flex flex-col">
+    <Window className="w-[480px] h-[400px] absolute top-[12vh] left-[25vw] flex flex-col" zIndex={zIndex} onFocus={onFocus}>
       <WindowTitleBar>
         <WindowTitle>secret_pet_monitor</WindowTitle>
         <WindowControls

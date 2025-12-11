@@ -22,12 +22,17 @@ export const useWindowContext = () => useContext(WindowContext);
 const MENUBAR_HEIGHT = 36;
 const TASKBAR_HEIGHT = 40;
 
-export function Window({ className, active = true, children, ...props }: WindowProps) {
+export function Window({ className, active = true, children, zIndex, onFocus, ...props }: WindowProps) {
   const nodeRef = useRef<HTMLDivElement>(null);
   const [isMaximized, setIsMaximized] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [savedPosition, setSavedPosition] = useState({ x: 0, y: 0 });
   const [bounds, setBounds] = useState<{ left: number; top: number; right: number; bottom: number } | undefined>(undefined);
+
+  // Handle window focus when clicking anywhere on the window
+  const handleMouseDown = useCallback(() => {
+    onFocus?.();
+  }, [onFocus]);
 
   const calculateBounds = useCallback(() => {
     if (!nodeRef.current) return;
@@ -104,6 +109,8 @@ export function Window({ className, active = true, children, ...props }: WindowP
               : "resize overflow-auto",
             className
           )}
+          style={{ zIndex, ...props.style }}
+          onMouseDown={handleMouseDown}
           {...props}
         >
           {children}

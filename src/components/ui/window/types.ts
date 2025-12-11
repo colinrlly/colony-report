@@ -3,6 +3,10 @@ import { HTMLAttributes, ReactNode, ButtonHTMLAttributes } from "react";
 export interface WindowProps extends HTMLAttributes<HTMLDivElement> {
   active?: boolean;
   children: ReactNode;
+  /** Z-index for window stacking order */
+  zIndex?: number;
+  /** Called when window is focused (clicked) */
+  onFocus?: () => void;
 }
 
 export interface WindowTitleBarProps extends HTMLAttributes<HTMLDivElement> {
