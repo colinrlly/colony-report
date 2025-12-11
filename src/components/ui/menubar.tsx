@@ -94,7 +94,7 @@ export function MenubarLogo() {
       >
         {/* Earth logo */}
         <img
-          src="/earth logo.png"
+          src="/earth logo2.png"
           alt="Earth logo"
           width="20"
           height="20"

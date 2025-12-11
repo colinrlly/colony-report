@@ -462,7 +462,7 @@ export default function Home() {
                 {/* Large Earth Logo */}
                 <img
                   className="mx-auto mb-6"
-                  src="/earth logo.png"
+                  src="/earth logo2.png"
                   alt="Earth logo"
                   width="180"
                   height="180"
