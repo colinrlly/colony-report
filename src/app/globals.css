@@ -396,3 +396,122 @@ body {
 .screensaver-hint {
   animation: fadeInHint 2s ease-in 1s forwards;
 }
+
+/* ============================================
+   NOTIFICATION SYSTEM STYLES
+   Calendar-style pop-up alerts
+   ============================================ */
+
+/* Notification container - fixed to top right */
+.notification-container {
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+/* Individual notification toast */
+.notification-toast {
+  width: 320px;
+  background: #f5f0e6;
+  box-shadow:
+    2px 2px 8px rgba(0, 0, 0, 0.3),
+    inset -1px -1px var(--win98-frame),
+    inset 1px 1px var(--win98-highlight),
+    inset -2px -2px var(--win98-shadow),
+    inset 2px 2px var(--win98-face);
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Slide in animation */
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Slide out animation */
+@keyframes slideOutToRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+}
+
+.notification-enter {
+  animation: slideInFromRight 0.4s ease-out forwards;
+}
+
+.notification-exit {
+  animation: slideOutToRight 0.4s ease-in forwards;
+}
+
+/* Alarm overlay - centered modal */
+.alarm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Alarm modal */
+.alarm-modal {
+  width: 400px;
+  background: #c8b9a9;
+  animation: alarmPop 0.3s ease-out;
+}
+
+@keyframes alarmPop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Alarm shake animation for plant icon */
+@keyframes alarmShake {
+  0%, 100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px) rotate(-2deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px) rotate(2deg);
+  }
+}
+
+.alarm-shake {
+  animation: alarmShake 0.5s ease-in-out infinite;
+}

@@ -12,6 +12,7 @@ import { Germsweeper } from "@/components/minesweeper";
 import { ContactHRForm } from "@/components/contact-hr-form";
 import { TutorialHelper } from "@/components/tutorial-helper";
 import { Screensaver } from "@/components/screensaver";
+import { NotificationSystem } from "@/components/notification-system";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -767,6 +768,9 @@ export default function Home() {
             onAnimationComplete={() => setIsTutorialHelperVisible(false)}
           />
         )}
+
+        {/* Notification System - calendar-style pop-ups */}
+        <NotificationSystem />
       </main>
 
       {/* Screensaver */}
