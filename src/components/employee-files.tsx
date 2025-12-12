@@ -261,6 +261,34 @@ function getEmployeeIcon(employeeId: string) {
   }
 }
 
+// Get tab color for an employee
+function getEmployeeTabColor(employeeId: string, isSelected: boolean) {
+  const colors: Record<string, { bg: string; bgSelected: string; border: string }> = {
+    "emp-001": { bg: "#5a9c5a", bgSelected: "#4a8c4a", border: "#3a6c3a" }, // Green for Jasmine
+    "emp-002": { bg: "#c75a5a", bgSelected: "#b74a4a", border: "#8a3a3a" }, // Red for Hank
+    "emp-003": { bg: "#5a7a9c", bgSelected: "#4a6a8c", border: "#3a5a7c" }, // Blue for Professor
+  };
+  const color = colors[employeeId] || colors["emp-001"];
+  return isSelected ? color.bgSelected : color.bg;
+}
+
+function getEmployeeTabBorderColor(employeeId: string) {
+  const colors: Record<string, string> = {
+    "emp-001": "#3a6c3a", // Green for Jasmine
+    "emp-002": "#8a3a3a", // Red for Hank
+    "emp-003": "#3a5a7c", // Blue for Professor
+  };
+  return colors[employeeId] || colors["emp-001"];
+}
+
+// Get display name for tab (Professor's name is unredacted on tab)
+function getEmployeeTabName(employee: EmployeeProfile) {
+  if (employee.id === "emp-003") {
+    return "The Professor";
+  }
+  return employee.name;
+}
+
 // Employee illustration component
 function EmployeeIllustration({ photoUrl }: { photoUrl?: string }) {
   if (photoUrl) {
@@ -308,11 +336,78 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
   ];
 
   return (
-    <Window
-      resizable={false}
-      leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[1100px] h-[730px] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
-    >
+    <div className="z-20 absolute top-[44px] left-1/2 -translate-x-1/2 flex">
+      {/* Manila Folder Tabs - Outside window, on the left */}
+      <div className="flex flex-col justify-start pt-[100px] relative z-10 mr-[-4px]">
+        {employeeProfiles.map((employee) => {
+          const isSelected = selectedEmployeeId === employee.id;
+          const tabColor = getEmployeeTabColor(employee.id, isSelected);
+          const borderColor = getEmployeeTabBorderColor(employee.id);
+
+          return (
+            <button
+              key={employee.id}
+              onClick={() => {
+                setSelectedEmployeeId(employee.id);
+                setActiveTab("profile");
+              }}
+              className={`relative text-left transition-all ${
+                isSelected ? "z-20" : "z-10 hover:brightness-110"
+              }`}
+            >
+              {/* Tab shape - manila folder style */}
+              <div className="relative flex items-stretch">
+                {/* Main tab body */}
+                <div
+                  className="px-2 py-3 text-white relative"
+                  style={{
+                    backgroundColor: tabColor,
+                    borderTop: `2px solid ${borderColor}`,
+                    borderLeft: `2px solid ${borderColor}`,
+                    borderBottom: `2px solid ${borderColor}`,
+                    borderRight: "none",
+                    borderTopLeftRadius: "4px",
+                    borderBottomLeftRadius: "4px",
+                    writingMode: "vertical-rl",
+                    textOrientation: "mixed",
+                    transform: "rotate(180deg)",
+                    minHeight: "120px",
+                    width: isSelected ? "50px" : "44px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "4px",
+                    boxShadow: isSelected
+                      ? "inset 0 0 0 1px rgba(255,255,255,0.2)"
+                      : "inset 0 0 0 1px rgba(255,255,255,0.1)",
+                  }}
+                >
+                  <span className="text-[11px] font-bold whitespace-nowrap tracking-wide drop-shadow-sm">
+                    {getEmployeeTabName(employee)}
+                  </span>
+                </div>
+                {/* Connector to window edge */}
+                <div
+                  style={{
+                    backgroundColor: tabColor,
+                    width: "6px",
+                    borderTop: `2px solid ${borderColor}`,
+                    borderBottom: `2px solid ${borderColor}`,
+                  }}
+                />
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Main Window */}
+      <Window
+        resizable={false}
+        leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
+        className="w-[1050px] h-[730px] flex flex-col"
+      >
       <WindowTitleBar className="h-[36px]">
         <div className="flex items-center gap-2">
           <BadgeIcon />
@@ -339,34 +434,6 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
       </div>
 
       <div className="flex-1 flex overflow-hidden bg-[#F5F0E1]">
-        {/* Employee Selection Sidebar */}
-        <div className="w-[120px] bg-[#d4c8b8] border-r-2 border-[#8B7355] flex flex-col">
-          <div className="p-2 bg-[#8B7355] text-white text-[11px] font-bold text-center tracking-wider">
-            PERSONNEL
-          </div>
-          <div className="flex-1 overflow-y-auto">
-            {employeeProfiles.map((employee) => (
-              <button
-                key={employee.id}
-                onClick={() => {
-                  setSelectedEmployeeId(employee.id);
-                  setActiveTab("profile");
-                }}
-                className={`w-full p-2 text-left border-b border-[#a89888] transition-colors ${
-                  selectedEmployeeId === employee.id
-                    ? "bg-[#8B7355] text-white"
-                    : "bg-[#d4c8b8] text-[#1a1a1a] hover:bg-[#c4b8a8]"
-                }`}
-              >
-                <div className="text-[11px] font-bold truncate">{employee.name}</div>
-                <div className={`text-[10px] truncate ${selectedEmployeeId === employee.id ? "text-[#d4c8b8]" : "text-[#666]"}`}>
-                  {employee.role}
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Main Content - Illustration + Info Side by Side */}
         <div className="flex-1 flex p-3 gap-3">
           {/* Left: Square Portrait Illustration */}
@@ -517,5 +584,6 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         </WindowStatusField>
       </WindowStatusBar>
     </Window>
+    </div>
   );
 }
