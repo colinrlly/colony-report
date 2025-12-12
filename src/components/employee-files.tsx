@@ -96,6 +96,34 @@ const employeeProfiles: EmployeeProfile[] = [
     },
     photoUrl: "/hank mercer.jpg",
   },
+  {
+    id: "emp-003",
+    name: "Ental \"The Professor\"",
+    division: "Field Security & Enforcement",
+    role: "Director of Xenobiology",
+    specialty: "Advanced Xenobiological Systems",
+    idNumber: "8252-F-XL-C3",
+    clearanceLevel: "5",
+    assignedSector: "Burrow A - Laboratory 1",
+    baseLocation: "The Ant Hill (Facility 4-A)",
+    incidentReports: 7,
+    supervisorNotes: [
+      "The Professor does not technically report to me. He submits his findings when it suits him. Rarely leaves the laboratory, preferring to direct operations from within his research bay.",
+      "His adherence to his own procedures is absolute. Though rigid and precise in approach, his intellect and methods consistently yield results beyond expectation.",
+      "Three months ago, a highly classified xenobiological trial accident resulted in the transmutation of his left arm. Cleared by psych and medical, he continues working, claiming the limb has improved his efficiency.",
+    ],
+    colleagueComments: [
+      "I keep making accidental eye contact... with his arm.",
+      "The Professor logs every variable, every outcome, every anomaly. He's probably cataloged what I had for lunch yesterday.",
+      "It's unsettling how calm he was after the arm incident. Like he'd been waiting for it.",
+    ],
+    equipment: {
+      name: "XENO-7 RESEARCH CHAMBER",
+      model: "XR-07 Containment & Analysis Unit",
+      description: "Sealed cylindrical tank for containing live specimens in suspended liquid. Allows reagent introduction and real-time observation of physiological and chemical responses.",
+      nickname: "The Jar",
+    },
+  },
 ];
 
 type TabType = "profile" | "review" | "comments" | "equipment";
@@ -133,6 +161,35 @@ function NECLogo() {
 }
 
 // Pixel art icons for each employee
+function PixelFlaskIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
+      {/* Flask neck */}
+      <rect x="6" y="1" width="4" height="1" fill="#88aacc" />
+      <rect x="6" y="2" width="4" height="1" fill="#99bbdd" />
+      <rect x="7" y="3" width="2" height="1" fill="#99bbdd" />
+      <rect x="7" y="4" width="2" height="1" fill="#88aacc" />
+      {/* Flask body */}
+      <rect x="5" y="5" width="6" height="1" fill="#88aacc" />
+      <rect x="4" y="6" width="8" height="1" fill="#99bbdd" />
+      <rect x="3" y="7" width="10" height="1" fill="#99bbdd" />
+      <rect x="2" y="8" width="12" height="1" fill="#88aacc" />
+      <rect x="2" y="9" width="12" height="1" fill="#88aacc" />
+      {/* Liquid inside */}
+      <rect x="3" y="10" width="10" height="1" fill="#66cc99" />
+      <rect x="3" y="11" width="10" height="1" fill="#55bb88" />
+      <rect x="4" y="12" width="8" height="1" fill="#44aa77" />
+      <rect x="5" y="13" width="6" height="1" fill="#44aa77" />
+      {/* Base */}
+      <rect x="4" y="14" width="8" height="1" fill="#666688" />
+      {/* Bubbles */}
+      <rect x="5" y="10" width="1" height="1" fill="#88ddbb" />
+      <rect x="9" y="11" width="1" height="1" fill="#88ddbb" />
+      <rect x="7" y="12" width="1" height="1" fill="#88ddbb" />
+    </svg>
+  );
+}
+
 function PixelShieldIcon() {
   return (
     <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
@@ -196,6 +253,8 @@ function getEmployeeIcon(employeeId: string) {
       return <PixelLeafIcon />;
     case "emp-002":
       return <PixelShieldIcon />;
+    case "emp-003":
+      return <PixelFlaskIcon />;
     default:
       return null;
   }
