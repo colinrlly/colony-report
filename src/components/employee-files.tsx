@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import {
   Window,
   WindowTitleBar,
@@ -12,6 +13,10 @@ import {
 
 // Desktop icons boundary for window snap
 const ICON_COLUMN_RIGHT_EDGE = 132;
+
+// Constants for menu bar and taskbar heights
+const MENUBAR_HEIGHT = 36;
+const TASKBAR_HEIGHT = 40;
 
 // Employee profile data structure
 interface EmployeeProfile {
@@ -322,6 +327,9 @@ interface EmployeeFilesProps {
 export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>(employeeProfiles[0].id);
   const [activeTab, setActiveTab] = useState<TabType>("profile");
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [bounds, setBounds] = useState<{ left: number; top: number; right: number; bottom: number } | undefined>(undefined);
 
   const selectedEmployee = employeeProfiles.find(emp => emp.id === selectedEmployeeId) || employeeProfiles[0];
 
@@ -332,8 +340,66 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
     { id: "equipment", label: "EQUIPMENT" },
   ];
 
+  const calculateBounds = useCallback(() => {
+    if (!nodeRef.current) return;
+
+    const windowRect = nodeRef.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate the initial position of the window (before any dragging)
+    const initialLeft = windowRect.left - position.x;
+    const initialTop = windowRect.top - position.y;
+
+    // Bounds are relative to the initial position
+    const leftBound = -initialLeft;
+    const rightBound = viewportWidth - initialLeft - windowRect.width;
+    const topBound = MENUBAR_HEIGHT - initialTop;
+    const bottomBound = viewportHeight - TASKBAR_HEIGHT - initialTop - windowRect.height;
+
+    setBounds({
+      left: leftBound,
+      top: topBound,
+      right: rightBound,
+      bottom: bottomBound,
+    });
+  }, [position]);
+
+  useEffect(() => {
+    calculateBounds();
+
+    const handleResize = () => calculateBounds();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [calculateBounds]);
+
+  const handleDrag = (_e: DraggableEvent, data: DraggableData) => {
+    setPosition({ x: data.x, y: data.y });
+  };
+
+  const handleDragStop = (_e: DraggableEvent, data: DraggableData) => {
+    if (!nodeRef.current) return;
+
+    const windowRect = nodeRef.current.getBoundingClientRect();
+
+    // If the window's left edge is within the snap zone, push it to the right
+    if (windowRect.left < ICON_COLUMN_RIGHT_EDGE) {
+      const adjustment = ICON_COLUMN_RIGHT_EDGE - windowRect.left;
+      setPosition({ x: data.x + adjustment, y: data.y });
+    }
+  };
+
   return (
-    <div className="z-20 absolute top-[44px] left-1/2 -translate-x-1/2 flex">
+    <Draggable
+      nodeRef={nodeRef}
+      handle=".window-drag-handle"
+      position={position}
+      onDrag={handleDrag}
+      onStop={handleDragStop}
+      bounds={bounds}
+    >
+      <div ref={nodeRef} className="z-20 absolute top-[44px] left-1/2 -translate-x-1/2 flex">
       {/* Manila Folder Tabs - Outside window, on the left */}
       <div className="flex flex-col justify-start pt-[100px] relative z-10 mr-[-4px]">
         {employeeProfiles.map((employee) => {
@@ -405,7 +471,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
       {/* Main Window */}
       <Window
         resizable={false}
-        leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
+        draggable={false}
         className="w-[1050px] h-[730px] flex flex-col"
       >
         <WindowTitleBar className="h-[36px]">
@@ -584,6 +650,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
           </WindowStatusField>
         </WindowStatusBar>
       </Window>
-    </div>
+      </div>
+    </Draggable>
   );
 }
