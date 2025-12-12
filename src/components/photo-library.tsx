@@ -180,7 +180,7 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
       </WindowTitleBar>
 
       {/* Main content area - darker brown background like mockup */}
-      <div className="flex-1 bg-[#5a524a] p-3 flex flex-col gap-2">
+      <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-2">
         {/* Main image display area */}
         <div className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden" style={{ backgroundColor: selectedPhoto.color }}>
           <div className="relative w-full h-full flex items-center justify-center">
