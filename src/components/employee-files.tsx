@@ -362,7 +362,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                   className="px-2 py-3 text-white relative"
                   style={{
                     backgroundColor: tabColor,
-                    borderTop: `2px solid ${borderColor}`,
+                    borderTop: isSelected ? "none" : `2px solid ${borderColor}`,
                     borderLeft: `2px solid ${borderColor}`,
                     borderBottom: `2px solid ${borderColor}`,
                     borderRight: "none",
@@ -392,7 +392,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                   style={{
                     backgroundColor: tabColor,
                     width: isSelected ? "26px" : "6px",
-                    borderTop: `2px solid ${borderColor}`,
+                    borderTop: isSelected ? "none" : `2px solid ${borderColor}`,
                     borderBottom: `2px solid ${borderColor}`,
                   }}
                 />
