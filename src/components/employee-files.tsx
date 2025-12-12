@@ -281,6 +281,14 @@ function getEmployeeTabBorderColor(employeeId: string) {
   return colors[employeeId] || colors["emp-001"];
 }
 
+// Get display name for tab (Professor's name is unredacted on tab)
+function getEmployeeTabName(employee: EmployeeProfile) {
+  if (employee.id === "emp-003") {
+    return "The Professor";
+  }
+  return employee.name;
+}
+
 // Employee illustration component
 function EmployeeIllustration({ photoUrl }: { photoUrl?: string }) {
   if (photoUrl) {
@@ -346,9 +354,6 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               className={`relative text-left transition-all ${
                 isSelected ? "z-20" : "z-10 hover:brightness-110"
               }`}
-              style={{
-                marginBottom: "4px",
-              }}
             >
               {/* Tab shape - manila folder style */}
               <div
@@ -357,18 +362,6 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                   marginRight: isSelected ? "0" : "6px",
                 }}
               >
-                {/* Notch/fold at top */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "-10px",
-                    right: "0",
-                    width: "100%",
-                    height: "12px",
-                    backgroundColor: tabColor,
-                    clipPath: "polygon(0 100%, 12px 0, 100% 0, 100% 100%)",
-                  }}
-                />
                 {/* Main tab body */}
                 <div
                   className="px-2 py-3 text-white relative"
@@ -383,7 +376,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     writingMode: "vertical-rl",
                     textOrientation: "mixed",
                     transform: "rotate(180deg)",
-                    minHeight: "140px",
+                    minHeight: "120px",
                     width: isSelected ? "50px" : "42px",
                     display: "flex",
                     flexDirection: "column",
@@ -396,10 +389,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                   }}
                 >
                   <span className="text-[11px] font-bold whitespace-nowrap tracking-wide drop-shadow-sm">
-                    {employee.name}
-                  </span>
-                  <span className="text-[9px] opacity-90 whitespace-nowrap">
-                    {employee.role}
+                    {getEmployeeTabName(employee)}
                   </span>
                 </div>
               </div>
