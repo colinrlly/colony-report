@@ -67,6 +67,63 @@ const employeeProfiles: EmployeeProfile[] = [
     },
     photoUrl: "/dr. jasmine thorne.jpg",
   },
+  {
+    id: "emp-002",
+    name: "Hank Mercer",
+    division: "Field Security & Enforcement",
+    role: "On-Site Tactical Officer",
+    specialty: "Hostile Encounter Response",
+    idNumber: "1179-T-SC-Z9",
+    clearanceLevel: "2",
+    assignedSector: "Burrow C - Security Zone 1",
+    baseLocation: "The Ant Hill (Facility 4-A)",
+    incidentReports: 3,
+    supervisorNotes: [
+      "Mercer maintains a combative demeanor and communicates in short, often hostile bursts. He shows no interest in team-building or cross-departmental efforts.",
+      "He has a sharp instinct for threat assessment but tends to default to \"shoot first, ask later\". He's been reminded that not all movement in the underbrush is hostile.",
+      "Still, despite his surliness, Mercer has singlehandedly prevented multiple fatal incidents. He won't say it, but it's clear the team's safety matters to him.",
+    ],
+    colleagueComments: [
+      "If something tries to eat you, Hank's the reason you're still here to complain about it.",
+      "He says he doesn't care about us. Then he carried Jas three miles through mud with a twisted ankle and says it was 'for operational efficiency'.",
+      "He's like if a gun grew legs and got tired of your shit.",
+    ],
+    equipment: {
+      name: "THREAT ASSESSMENT DRONES",
+      model: "K-92 T/A Recon",
+      description: "Compact aerial drones equipped with multispectral scanners, motion tracking, and short-range deterrent systems. Primarily used for early threat detection and perimeter sweeps.",
+      nickname: "Owl and Wasp",
+    },
+    photoUrl: "/hank mercer.jpg",
+  },
+  {
+    id: "emp-003",
+    name: "████████ \"The Professor\"",
+    division: "Field Security & Enforcement",
+    role: "Director of Xenobiology",
+    specialty: "Advanced Xenobiological Systems",
+    idNumber: "8252-F-XL-C3",
+    clearanceLevel: "5",
+    assignedSector: "Burrow A - Laboratory 1",
+    baseLocation: "The Ant Hill (Facility 4-A)",
+    incidentReports: 7,
+    supervisorNotes: [
+      "The Professor does not technically report to me. He submits his findings when it suits him. Rarely leaves the laboratory, preferring to direct operations from within his research bay.",
+      "His adherence to his own procedures is absolute. Though rigid and precise in approach, his intellect and methods consistently yield results beyond expectation.",
+      "Three months ago, a highly classified xenobiological trial accident resulted in the transmutation of his left arm. Cleared by psych and medical, he continues working, claiming the limb has improved his efficiency.",
+    ],
+    colleagueComments: [
+      "I keep making accidental eye contact... with his arm.",
+      "The Professor logs every variable, every outcome, every anomaly. He's probably cataloged what I had for lunch yesterday.",
+      "It's unsettling how calm he was after the arm incident. Like he'd been waiting for it.",
+    ],
+    equipment: {
+      name: "XENO-7 RESEARCH CHAMBER",
+      model: "XR-07 Containment & Analysis Unit",
+      description: "Sealed cylindrical tank for containing live specimens in suspended liquid. Allows reagent introduction and real-time observation of physiological and chemical responses.",
+      nickname: "The Jar",
+    },
+  },
 ];
 
 type TabType = "profile" | "review" | "comments" | "equipment";
@@ -104,6 +161,63 @@ function NECLogo() {
 }
 
 // Pixel art icons for each employee
+function PixelFlaskIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
+      {/* Flask neck */}
+      <rect x="6" y="1" width="4" height="1" fill="#88aacc" />
+      <rect x="6" y="2" width="4" height="1" fill="#99bbdd" />
+      <rect x="7" y="3" width="2" height="1" fill="#99bbdd" />
+      <rect x="7" y="4" width="2" height="1" fill="#88aacc" />
+      {/* Flask body */}
+      <rect x="5" y="5" width="6" height="1" fill="#88aacc" />
+      <rect x="4" y="6" width="8" height="1" fill="#99bbdd" />
+      <rect x="3" y="7" width="10" height="1" fill="#99bbdd" />
+      <rect x="2" y="8" width="12" height="1" fill="#88aacc" />
+      <rect x="2" y="9" width="12" height="1" fill="#88aacc" />
+      {/* Liquid inside */}
+      <rect x="3" y="10" width="10" height="1" fill="#66cc99" />
+      <rect x="3" y="11" width="10" height="1" fill="#55bb88" />
+      <rect x="4" y="12" width="8" height="1" fill="#44aa77" />
+      <rect x="5" y="13" width="6" height="1" fill="#44aa77" />
+      {/* Base */}
+      <rect x="4" y="14" width="8" height="1" fill="#666688" />
+      {/* Bubbles */}
+      <rect x="5" y="10" width="1" height="1" fill="#88ddbb" />
+      <rect x="9" y="11" width="1" height="1" fill="#88ddbb" />
+      <rect x="7" y="12" width="1" height="1" fill="#88ddbb" />
+    </svg>
+  );
+}
+
+function PixelShieldIcon() {
+  return (
+    <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
+      {/* Shield shape */}
+      <rect x="4" y="1" width="8" height="1" fill="#5a6a8a" />
+      <rect x="3" y="2" width="10" height="1" fill="#5a6a8a" />
+      <rect x="2" y="3" width="12" height="1" fill="#5a6a8a" />
+      <rect x="2" y="4" width="12" height="1" fill="#6a7a9a" />
+      <rect x="2" y="5" width="12" height="1" fill="#6a7a9a" />
+      <rect x="2" y="6" width="12" height="1" fill="#6a7a9a" />
+      <rect x="3" y="7" width="10" height="1" fill="#5a6a8a" />
+      <rect x="3" y="8" width="10" height="1" fill="#5a6a8a" />
+      <rect x="4" y="9" width="8" height="1" fill="#5a6a8a" />
+      <rect x="4" y="10" width="8" height="1" fill="#4a5a7a" />
+      <rect x="5" y="11" width="6" height="1" fill="#4a5a7a" />
+      <rect x="6" y="12" width="4" height="1" fill="#4a5a7a" />
+      <rect x="7" y="13" width="2" height="1" fill="#3a4a6a" />
+      {/* Crosshair/target in center */}
+      <rect x="7" y="4" width="2" height="1" fill="#cc4444" />
+      <rect x="7" y="5" width="2" height="1" fill="#cc4444" />
+      <rect x="5" y="6" width="2" height="1" fill="#cc4444" />
+      <rect x="9" y="6" width="2" height="1" fill="#cc4444" />
+      <rect x="7" y="7" width="2" height="1" fill="#cc4444" />
+      <rect x="7" y="8" width="2" height="1" fill="#cc4444" />
+    </svg>
+  );
+}
+
 function PixelLeafIcon() {
   return (
     <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
@@ -137,6 +251,10 @@ function getEmployeeIcon(employeeId: string) {
   switch (employeeId) {
     case "emp-001":
       return <PixelLeafIcon />;
+    case "emp-002":
+      return <PixelShieldIcon />;
+    case "emp-003":
+      return <PixelFlaskIcon />;
     default:
       return null;
   }
