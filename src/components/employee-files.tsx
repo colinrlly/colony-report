@@ -106,7 +106,7 @@ function NECLogo() {
 // Pixel art icons for each employee
 function PixelLeafIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges">
+    <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
       {/* Leaf shape */}
       <rect x="7" y="1" width="2" height="1" fill="#5a9c5a" />
       <rect x="6" y="2" width="4" height="1" fill="#5a9c5a" />
