@@ -12,92 +12,24 @@ export type SidebarIconType =
 
 export function BeeIcon() {
   return (
-    <svg
+    <img
+      src="/bee icon.png"
+      alt="Bee"
       width="42"
       height="42"
-      viewBox="0 0 32 32"
-      shapeRendering="crispEdges"
-    >
-      {/* Antennae - dark brown */}
-      <rect x="11" y="2" width="1" height="1" fill="#3e2723" />
-      <rect x="10" y="3" width="1" height="1" fill="#3e2723" />
-      <rect x="11" y="4" width="1" height="2" fill="#4e342e" />
-      <rect x="12" y="6" width="1" height="1" fill="#4e342e" />
-      <rect x="20" y="2" width="1" height="1" fill="#3e2723" />
-      <rect x="21" y="3" width="1" height="1" fill="#3e2723" />
-      <rect x="20" y="4" width="1" height="2" fill="#4e342e" />
-      <rect x="19" y="6" width="1" height="1" fill="#4e342e" />
-
-      {/* Wings - translucent blue-white, larger */}
-      <rect x="3" y="11" width="6" height="1" fill="#b3e5fc" />
-      <rect x="2" y="12" width="8" height="2" fill="#e1f5fe" />
-      <rect x="3" y="14" width="7" height="2" fill="#b3e5fc" />
-      <rect x="4" y="16" width="5" height="1" fill="#81d4fa" />
-
-      <rect x="23" y="11" width="6" height="1" fill="#b3e5fc" />
-      <rect x="22" y="12" width="8" height="2" fill="#e1f5fe" />
-      <rect x="22" y="14" width="7" height="2" fill="#b3e5fc" />
-      <rect x="23" y="16" width="5" height="1" fill="#81d4fa" />
-
-      {/* Head - dark brown */}
-      <rect x="12" y="6" width="8" height="1" fill="#3e2723" />
-      <rect x="10" y="7" width="12" height="1" fill="#3e2723" />
-      <rect x="9" y="8" width="14" height="3" fill="#4e342e" />
-      <rect x="10" y="11" width="12" height="1" fill="#3e2723" />
-
-      {/* Head highlight */}
-      <rect x="11" y="8" width="3" height="1" fill="#5d4037" />
-      <rect x="18" y="8" width="3" height="1" fill="#5d4037" />
-
-      {/* Eyes - small dark */}
-      <rect x="11" y="9" width="2" height="2" fill="#1a1a2e" />
-      <rect x="19" y="9" width="2" height="2" fill="#1a1a2e" />
-
-      {/* Body - dark brown top segment */}
-      <rect x="10" y="12" width="12" height="2" fill="#3e2723" />
-      <rect x="9" y="13" width="1" height="1" fill="#3e2723" />
-      <rect x="22" y="13" width="1" height="1" fill="#3e2723" />
-
-      {/* Yellow stripe 1 - golden */}
-      <rect x="9" y="14" width="14" height="2" fill="#ffc107" />
-      <rect x="10" y="14" width="12" height="1" fill="#ffca28" />
-
-      {/* Dark stripe 1 */}
-      <rect x="9" y="16" width="14" height="2" fill="#3e2723" />
-
-      {/* Yellow stripe 2 - golden */}
-      <rect x="10" y="18" width="12" height="2" fill="#ffc107" />
-      <rect x="11" y="18" width="10" height="1" fill="#ffca28" />
-
-      {/* Dark stripe 2 */}
-      <rect x="11" y="20" width="10" height="2" fill="#3e2723" />
-
-      {/* Yellow stripe 3 - tail */}
-      <rect x="12" y="22" width="8" height="2" fill="#ffc107" />
-      <rect x="13" y="22" width="6" height="1" fill="#ffca28" />
-
-      {/* Stinger - dark */}
-      <rect x="14" y="24" width="4" height="1" fill="#3e2723" />
-      <rect x="15" y="25" width="2" height="1" fill="#3e2723" />
-      <rect x="15" y="26" width="2" height="1" fill="#2d1f1a" />
-
-      {/* Legs - small dark */}
-      <rect x="10" y="17" width="1" height="2" fill="#1a1a2e" />
-      <rect x="21" y="17" width="1" height="2" fill="#1a1a2e" />
-      <rect x="11" y="20" width="1" height="2" fill="#1a1a2e" />
-      <rect x="20" y="20" width="1" height="2" fill="#1a1a2e" />
-    </svg>
+      style={{ objectFit: "contain" }}
+    />
   );
 }
 
 export function SnailIcon() {
   return (
     <img
-      src="/snail-icon.png"
+      src="/snail icon.png"
       alt="Snail"
       width="42"
       height="42"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
+      style={{ objectFit: "contain" }}
     />
   );
 }
@@ -177,101 +109,13 @@ export function LadybugIcon() {
 
 export function HandIcon() {
   return (
-    <svg
+    <img
+      src="/hand icon.png"
+      alt="Hand"
       width="42"
       height="42"
-      viewBox="0 0 32 32"
-      shapeRendering="crispEdges"
-    >
-      {/* Outline - brown */}
-      {/* Finger 1 (extra pinky) outline */}
-      <rect x="4" y="5" width="1" height="1" fill="#5d4037" />
-      <rect x="5" y="4" width="2" height="1" fill="#5d4037" />
-      <rect x="7" y="5" width="1" height="9" fill="#5d4037" />
-
-      {/* Finger 2 outline */}
-      <rect x="8" y="3" width="1" height="1" fill="#5d4037" />
-      <rect x="9" y="2" width="2" height="1" fill="#5d4037" />
-      <rect x="11" y="3" width="1" height="11" fill="#5d4037" />
-
-      {/* Finger 3 outline */}
-      <rect x="12" y="1" width="1" height="1" fill="#5d4037" />
-      <rect x="13" y="0" width="2" height="1" fill="#5d4037" />
-      <rect x="15" y="1" width="1" height="13" fill="#5d4037" />
-
-      {/* Finger 4 outline */}
-      <rect x="16" y="1" width="1" height="1" fill="#5d4037" />
-      <rect x="17" y="0" width="2" height="1" fill="#5d4037" />
-      <rect x="19" y="1" width="1" height="13" fill="#5d4037" />
-
-      {/* Finger 5 outline */}
-      <rect x="20" y="2" width="1" height="1" fill="#5d4037" />
-      <rect x="21" y="1" width="2" height="1" fill="#5d4037" />
-      <rect x="23" y="2" width="1" height="12" fill="#5d4037" />
-
-      {/* Finger 6 outline */}
-      <rect x="24" y="4" width="1" height="1" fill="#5d4037" />
-      <rect x="25" y="3" width="2" height="1" fill="#5d4037" />
-      <rect x="27" y="4" width="1" height="10" fill="#5d4037" />
-
-      {/* Palm outline */}
-      <rect x="4" y="6" width="1" height="8" fill="#5d4037" />
-      <rect x="5" y="14" width="1" height="5" fill="#5d4037" />
-      <rect x="6" y="19" width="1" height="4" fill="#5d4037" />
-      <rect x="7" y="23" width="19" height="1" fill="#5d4037" />
-      <rect x="26" y="14" width="1" height="9" fill="#5d4037" />
-
-      {/* Thumb outline */}
-      <rect x="3" y="14" width="1" height="1" fill="#5d4037" />
-      <rect x="2" y="15" width="1" height="4" fill="#5d4037" />
-      <rect x="3" y="19" width="3" height="1" fill="#5d4037" />
-
-      {/* Finger fills - skin tone */}
-      {/* Finger 1 */}
-      <rect x="5" y="5" width="2" height="9" fill="#e8c8a0" />
-      <rect x="5" y="4" width="2" height="1" fill="#f0d8b8" />
-
-      {/* Finger 2 */}
-      <rect x="8" y="3" width="3" height="11" fill="#e8c8a0" />
-      <rect x="9" y="2" width="2" height="1" fill="#f0d8b8" />
-
-      {/* Finger 3 */}
-      <rect x="12" y="1" width="3" height="13" fill="#e8c8a0" />
-      <rect x="13" y="0" width="2" height="1" fill="#f0d8b8" />
-
-      {/* Finger 4 */}
-      <rect x="16" y="1" width="3" height="13" fill="#e8c8a0" />
-      <rect x="17" y="0" width="2" height="1" fill="#f0d8b8" />
-
-      {/* Finger 5 */}
-      <rect x="20" y="2" width="3" height="12" fill="#e8c8a0" />
-      <rect x="21" y="1" width="2" height="1" fill="#f0d8b8" />
-
-      {/* Finger 6 */}
-      <rect x="24" y="4" width="3" height="10" fill="#e8c8a0" />
-      <rect x="25" y="3" width="2" height="1" fill="#f0d8b8" />
-
-      {/* Palm fill */}
-      <rect x="5" y="14" width="21" height="9" fill="#e8c8a0" />
-
-      {/* Thumb fill */}
-      <rect x="3" y="15" width="2" height="4" fill="#e8c8a0" />
-      <rect x="3" y="14" width="1" height="1" fill="#f0d8b8" />
-
-      {/* Palm highlight */}
-      <rect x="8" y="15" width="10" height="3" fill="#f0d8b8" />
-
-      {/* Finger separation lines */}
-      <rect x="7" y="9" width="1" height="5" fill="#d4a574" />
-      <rect x="11" y="8" width="1" height="6" fill="#d4a574" />
-      <rect x="15" y="8" width="1" height="6" fill="#d4a574" />
-      <rect x="19" y="8" width="1" height="6" fill="#d4a574" />
-      <rect x="23" y="9" width="1" height="5" fill="#d4a574" />
-
-      {/* Palm lines */}
-      <rect x="9" y="18" width="8" height="1" fill="#d4a574" />
-      <rect x="11" y="20" width="6" height="1" fill="#d4a574" />
-    </svg>
+      style={{ objectFit: "contain" }}
+    />
   );
 }
 
