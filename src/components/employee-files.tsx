@@ -89,6 +89,59 @@ function BadgeIcon() {
   );
 }
 
+// NEC Logo component
+function NECLogo() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" shapeRendering="crispEdges">
+      {/* Hexagon shape */}
+      <polygon points="16,2 28,9 28,23 16,30 4,23 4,9" fill="#D4C088" stroke="#8B7355" strokeWidth="2" />
+      {/* Inner hexagon */}
+      <polygon points="16,6 24,11 24,21 16,26 8,21 8,11" fill="#1a1a1a" />
+      {/* N E C letters stylized */}
+      <text x="16" y="20" textAnchor="middle" fill="#D4C088" fontSize="8" fontWeight="bold" fontFamily="monospace">NEC</text>
+    </svg>
+  );
+}
+
+// Pixel art icons for each employee
+function PixelLeafIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges">
+      {/* Leaf shape */}
+      <rect x="7" y="1" width="2" height="1" fill="#5a9c5a" />
+      <rect x="6" y="2" width="4" height="1" fill="#5a9c5a" />
+      <rect x="5" y="3" width="6" height="1" fill="#5a9c5a" />
+      <rect x="4" y="4" width="7" height="1" fill="#5a9c5a" />
+      <rect x="3" y="5" width="8" height="1" fill="#5a9c5a" />
+      <rect x="3" y="6" width="8" height="1" fill="#6ab06a" />
+      <rect x="4" y="7" width="7" height="1" fill="#6ab06a" />
+      <rect x="5" y="8" width="6" height="1" fill="#6ab06a" />
+      <rect x="6" y="9" width="4" height="1" fill="#5a9c5a" />
+      <rect x="7" y="10" width="2" height="1" fill="#5a9c5a" />
+      {/* Stem */}
+      <rect x="7" y="11" width="2" height="1" fill="#8B7355" />
+      <rect x="7" y="12" width="2" height="1" fill="#8B7355" />
+      <rect x="8" y="13" width="2" height="1" fill="#8B7355" />
+      <rect x="8" y="14" width="2" height="1" fill="#6b5344" />
+      {/* Leaf vein */}
+      <rect x="7" y="4" width="1" height="1" fill="#4a8a4a" />
+      <rect x="7" y="5" width="1" height="1" fill="#4a8a4a" />
+      <rect x="7" y="6" width="1" height="1" fill="#4a8a4a" />
+      <rect x="7" y="7" width="1" height="1" fill="#4a8a4a" />
+    </svg>
+  );
+}
+
+// Get the pixel icon for an employee
+function getEmployeeIcon(employeeId: string) {
+  switch (employeeId) {
+    case "emp-001":
+      return <PixelLeafIcon />;
+    default:
+      return null;
+  }
+}
+
 // Employee illustration component
 function EmployeeIllustration({ photoUrl }: { photoUrl?: string }) {
   if (photoUrl) {
@@ -139,7 +192,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[950px] h-[calc(100vh-92px)] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[1000px] h-[calc(100vh-92px)] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar className="h-[36px]">
         <div className="flex items-center gap-2">
@@ -151,10 +204,19 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
-      {/* Main Header */}
-      <div className="bg-[#1a1a1a] text-[#D4C088] px-6 py-3 border-b-4 border-[#D4C088]">
-        <div className="text-[20px] font-black tracking-widest">NEW EDEN COMMITTEE — FORMICA DIVISION</div>
-        <div className="text-[14px] tracking-wider font-bold mt-1">EMPLOYEE PROFILE // INTERNAL RECORD</div>
+      {/* Main Header - Compact with logo */}
+      <div className="bg-[#1a1a1a] text-[#D4C088] px-4 py-1.5 border-b-2 border-[#D4C088] flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <NECLogo />
+          <div>
+            <div className="text-[14px] font-black tracking-widest">NEW EDEN COMMITTEE — FORMICA DIVISION</div>
+            <div className="text-[10px] tracking-wider opacity-80">EMPLOYEE PROFILE // INTERNAL RECORD</div>
+          </div>
+        </div>
+        <div className="text-[8px] tracking-wider opacity-60 text-right">
+          <div>CLASSIFIED DOCUMENT</div>
+          <div>AUTHORIZED ACCESS ONLY</div>
+        </div>
       </div>
 
       <div className="flex-1 flex overflow-hidden bg-[#F5F0E1]">
@@ -187,16 +249,24 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         </div>
 
         {/* Main Content - Illustration + Info Side by Side */}
-        <div className="flex-1 flex p-4 gap-4">
+        <div className="flex-1 flex p-3 gap-3">
           {/* Left: Large Portrait Illustration */}
-          <div className="w-[420px] flex flex-col">
+          <div className="w-[480px] flex flex-col">
             <div className="flex-1 min-h-0">
               <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} />
             </div>
             {/* Name plate under illustration */}
-            <div className="bg-[#1a1a1a] text-[#D4C088] px-4 py-2 mt-2 border-2 border-[#8B7355]">
-              <div className="text-[16px] font-black">{selectedEmployee.name}</div>
-              <div className="text-[12px] text-[#a89888]">{selectedEmployee.role}</div>
+            <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-1.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {getEmployeeIcon(selectedEmployee.id)}
+                <div>
+                  <div className="text-[14px] font-black">{selectedEmployee.name}</div>
+                  <div className="text-[10px] text-[#a89888]">{selectedEmployee.role}</div>
+                </div>
+              </div>
+              <div className="text-[9px] text-[#a89888] font-mono">
+                {selectedEmployee.idNumber}
+              </div>
             </div>
           </div>
 
