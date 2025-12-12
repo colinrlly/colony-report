@@ -5,6 +5,7 @@ import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { PhotoLibrary } from "@/components/photo-library";
+import { FieldNotes } from "@/components/field-notes";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { SecurityCameraFeed } from "@/components/security-camera-feed";
@@ -172,6 +173,10 @@ export default function Home() {
   const [isPhotoLibraryOpen, setIsPhotoLibraryOpen] = useState(false);
   const [isPhotoLibraryMinimized, setIsPhotoLibraryMinimized] = useState(false);
 
+  // Field Notes state
+  const [isFieldNotesOpen, setIsFieldNotesOpen] = useState(false);
+  const [isFieldNotesMinimized, setIsFieldNotesMinimized] = useState(false);
+
   // Tutorial helper state
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
   const [tutorialClickCount, setTutorialClickCount] = useState(0);
@@ -278,6 +283,10 @@ export default function Home() {
         setIsPhotoLibraryOpen(true);
         setIsPhotoLibraryMinimized(false);
         break;
+      case "field-notes":
+        setIsFieldNotesOpen(true);
+        setIsFieldNotesMinimized(false);
+        break;
       // Add handlers for other icons here when needed
     }
   };
@@ -318,6 +327,8 @@ export default function Home() {
       setIsStressReliefMinimized(false);
       setIsPhotoLibraryOpen(false);
       setIsPhotoLibraryMinimized(false);
+      setIsFieldNotesOpen(false);
+      setIsFieldNotesMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -369,6 +380,8 @@ export default function Home() {
       setIsStressReliefMinimized(false);
       setIsPhotoLibraryOpen(false);
       setIsPhotoLibraryMinimized(false);
+      setIsFieldNotesOpen(false);
+      setIsFieldNotesMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -890,6 +903,17 @@ export default function Home() {
           />
         )}
 
+        {/* Field Notes */}
+        {isFieldNotesOpen && !isFieldNotesMinimized && (
+          <FieldNotes
+            onClose={() => {
+              setIsFieldNotesOpen(false);
+              setIsFieldNotesMinimized(false);
+            }}
+            onMinimize={() => setIsFieldNotesMinimized(true)}
+          />
+        )}
+
         {/* Tutorial Helper (Clippy knockoff) */}
         {isTutorialHelperVisible && (
           <TutorialHelper
@@ -1025,6 +1049,13 @@ export default function Home() {
             title="Photo Library"
             isActive={!isPhotoLibraryMinimized}
             onClick={() => setIsPhotoLibraryMinimized(!isPhotoLibraryMinimized)}
+          />
+        )}
+        {isFieldNotesOpen && (
+          <TaskbarButton
+            title="Field Notes"
+            isActive={!isFieldNotesMinimized}
+            onClick={() => setIsFieldNotesMinimized(!isFieldNotesMinimized)}
           />
         )}
       </Taskbar>
