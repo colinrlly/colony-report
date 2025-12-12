@@ -62,7 +62,7 @@ export function ReminderNotification({
 
   return (
     <div
-      className={`fixed top-[200px] right-4 z-[9000] ${animationClass}`}
+      className={`fixed top-[60px] right-4 z-[9000] ${animationClass}`}
       style={{ pointerEvents: "none" }}
     >
       {/* Notification container with Win98 styling */}
