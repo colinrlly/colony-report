@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { StressReliefGallery } from "@/components/stress-relief-gallery";
+import { PhotoLibrary } from "@/components/photo-library";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { SecurityCameraFeed } from "@/components/security-camera-feed";
@@ -167,6 +168,10 @@ export default function Home() {
   const [isStressReliefOpen, setIsStressReliefOpen] = useState(false);
   const [isStressReliefMinimized, setIsStressReliefMinimized] = useState(false);
 
+  // Photo Library state
+  const [isPhotoLibraryOpen, setIsPhotoLibraryOpen] = useState(false);
+  const [isPhotoLibraryMinimized, setIsPhotoLibraryMinimized] = useState(false);
+
   // Tutorial helper state
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
   const [tutorialClickCount, setTutorialClickCount] = useState(0);
@@ -269,6 +274,10 @@ export default function Home() {
       case "colony-reports":
         setIsColonyReportsOpen(true);
         break;
+      case "photo-library":
+        setIsPhotoLibraryOpen(true);
+        setIsPhotoLibraryMinimized(false);
+        break;
       // Add handlers for other icons here when needed
     }
   };
@@ -307,6 +316,8 @@ export default function Home() {
       setIsContactHRMinimized(false);
       setIsStressReliefOpen(false);
       setIsStressReliefMinimized(false);
+      setIsPhotoLibraryOpen(false);
+      setIsPhotoLibraryMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -356,6 +367,8 @@ export default function Home() {
       setIsContactHRMinimized(false);
       setIsStressReliefOpen(false);
       setIsStressReliefMinimized(false);
+      setIsPhotoLibraryOpen(false);
+      setIsPhotoLibraryMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -866,6 +879,17 @@ export default function Home() {
           />
         )}
 
+        {/* Photo Library */}
+        {isPhotoLibraryOpen && !isPhotoLibraryMinimized && (
+          <PhotoLibrary
+            onClose={() => {
+              setIsPhotoLibraryOpen(false);
+              setIsPhotoLibraryMinimized(false);
+            }}
+            onMinimize={() => setIsPhotoLibraryMinimized(true)}
+          />
+        )}
+
         {/* Tutorial Helper (Clippy knockoff) */}
         {isTutorialHelperVisible && (
           <TutorialHelper
@@ -994,6 +1018,13 @@ export default function Home() {
             title="Stress Relief"
             isActive={!isStressReliefMinimized}
             onClick={() => setIsStressReliefMinimized(!isStressReliefMinimized)}
+          />
+        )}
+        {isPhotoLibraryOpen && (
+          <TaskbarButton
+            title="Photo Library"
+            isActive={!isPhotoLibraryMinimized}
+            onClick={() => setIsPhotoLibraryMinimized(!isPhotoLibraryMinimized)}
           />
         )}
       </Taskbar>
