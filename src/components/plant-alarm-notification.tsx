@@ -16,6 +16,7 @@ const ALARM_FREQUENCY_HIGH = 880; // Hz - A5 note
 const ALARM_FREQUENCY_LOW = 440; // Hz - A4 note
 const ALARM_BEEP_DURATION = 150; // ms
 const ALARM_VOLUME = 0.15;
+const ALARM_AUTO_STOP_MS = 2500; // Auto-stop beeping after 2.5 seconds
 
 const CONFETTI_COLORS = [
   "#60a5fa", // light blue
@@ -510,6 +511,13 @@ export function PlantAlarmNotification({
       setShouldRender(true);
       setAnimationClass("alarm-slide-in");
       startAlarm();
+
+      // Auto-stop the alarm beeping after 2.5 seconds
+      const autoStopTimeout = setTimeout(() => {
+        stopAlarm();
+      }, ALARM_AUTO_STOP_MS);
+
+      return () => clearTimeout(autoStopTimeout);
     } else {
       stopAlarm();
       resetState();
