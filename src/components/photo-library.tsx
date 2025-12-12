@@ -87,12 +87,28 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
   const scrollbarThumbWidthPercent = (visibleThumbnails / photoItems.length) * 100;
   const scrollbarThumbPositionPercent = maxScroll > 0 ? (scrollPosition / maxScroll) * (100 - scrollbarThumbWidthPercent) : 0;
 
-  const handleScrollLeft = () => {
-    setScrollPosition((prev) => Math.max(0, prev - 1));
+  // Navigate to previous image
+  const handlePreviousImage = () => {
+    const newIndex = selectedIndex === 0 ? photoItems.length - 1 : selectedIndex - 1;
+    setSelectedIndex(newIndex);
+    // Auto-scroll thumbnails to keep selected image visible
+    if (newIndex < scrollPosition) {
+      setScrollPosition(newIndex);
+    } else if (newIndex >= scrollPosition + visibleThumbnails) {
+      setScrollPosition(newIndex - visibleThumbnails + 1);
+    }
   };
 
-  const handleScrollRight = () => {
-    setScrollPosition((prev) => Math.min(maxScroll, prev + 1));
+  // Navigate to next image
+  const handleNextImage = () => {
+    const newIndex = selectedIndex === photoItems.length - 1 ? 0 : selectedIndex + 1;
+    setSelectedIndex(newIndex);
+    // Auto-scroll thumbnails to keep selected image visible
+    if (newIndex < scrollPosition) {
+      setScrollPosition(newIndex);
+    } else if (newIndex >= scrollPosition + visibleThumbnails) {
+      setScrollPosition(newIndex - visibleThumbnails + 1);
+    }
   };
 
   const handleThumbnailClick = (index: number) => {
@@ -191,14 +207,13 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
           <div>{selectedPhoto.location} {selectedPhoto.date} {selectedPhoto.time}</div>
         </div>
 
-        {/* Scrollbar */}
+        {/* Navigation bar with scrollbar */}
         <div className="flex items-center gap-1 px-1">
-          {/* Left scroll button */}
+          {/* Previous image button */}
           <button
-            onClick={handleScrollLeft}
-            disabled={scrollPosition === 0}
-            className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken disabled:opacity-50 w-6 h-5 flex items-center justify-center text-[#5a4d42]"
-            aria-label="Scroll left"
+            onClick={handlePreviousImage}
+            className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42]"
+            aria-label="Previous image"
           >
             <LeftArrowIcon />
           </button>
@@ -220,12 +235,11 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
             />
           </div>
 
-          {/* Right scroll button */}
+          {/* Next image button */}
           <button
-            onClick={handleScrollRight}
-            disabled={scrollPosition >= maxScroll}
-            className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken disabled:opacity-50 w-6 h-5 flex items-center justify-center text-[#5a4d42]"
-            aria-label="Scroll right"
+            onClick={handleNextImage}
+            className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42]"
+            aria-label="Next image"
           >
             <RightArrowIcon />
           </button>
