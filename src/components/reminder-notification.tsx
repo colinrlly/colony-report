@@ -51,7 +51,7 @@ export function ReminderNotification({
   title,
   message,
 }: ReminderNotificationProps) {
-  const { shouldRender, animationClass } = useNotificationAnimation({
+  const { shouldRender, animationClass, swipeX, isDragging, swipeHandlers } = useNotificationAnimation({
     isVisible,
     onComplete,
   });
@@ -60,10 +60,17 @@ export function ReminderNotification({
     return null;
   }
 
+  // Calculate opacity based on swipe distance (fade out as it's swiped)
+  const swipeOpacity = Math.max(0, 1 - swipeX / 200);
+
   return (
     <div
-      className={`fixed top-[60px] right-4 z-[9000] ${animationClass}`}
-      style={{ pointerEvents: "none" }}
+      className={`fixed top-[60px] right-4 z-[9000] ${animationClass} notification-swipeable ${isDragging ? 'notification-dragging' : 'notification-spring-back'}`}
+      style={{
+        transform: swipeX > 0 ? `translateX(${swipeX}px)` : undefined,
+        opacity: swipeX > 0 ? swipeOpacity : undefined,
+      }}
+      {...swipeHandlers}
     >
       {/* Notification container with Win98 styling */}
       <div
