@@ -228,27 +228,24 @@ function PixelShieldIcon() {
 function PixelLeafIcon() {
   return (
     <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
-      {/* Leaf shape */}
-      <rect x="7" y="1" width="2" height="1" fill="#5a9c5a" />
-      <rect x="6" y="2" width="4" height="1" fill="#5a9c5a" />
-      <rect x="5" y="3" width="6" height="1" fill="#5a9c5a" />
-      <rect x="4" y="4" width="7" height="1" fill="#5a9c5a" />
-      <rect x="3" y="5" width="8" height="1" fill="#5a9c5a" />
-      <rect x="3" y="6" width="8" height="1" fill="#6ab06a" />
-      <rect x="4" y="7" width="7" height="1" fill="#6ab06a" />
-      <rect x="5" y="8" width="6" height="1" fill="#6ab06a" />
-      <rect x="6" y="9" width="4" height="1" fill="#5a9c5a" />
-      <rect x="7" y="10" width="2" height="1" fill="#5a9c5a" />
-      {/* Stem */}
-      <rect x="7" y="11" width="2" height="1" fill="#8B7355" />
-      <rect x="7" y="12" width="2" height="1" fill="#8B7355" />
-      <rect x="8" y="13" width="2" height="1" fill="#8B7355" />
-      <rect x="8" y="14" width="2" height="1" fill="#6b5344" />
+      {/* Leaf shape - no stem */}
+      <rect x="7" y="2" width="2" height="1" fill="#4a9a4a" />
+      <rect x="6" y="3" width="4" height="1" fill="#4a9a4a" />
+      <rect x="5" y="4" width="6" height="1" fill="#4a9a4a" />
+      <rect x="4" y="5" width="8" height="1" fill="#4a9a4a" />
+      <rect x="3" y="6" width="10" height="1" fill="#4a9a4a" />
+      <rect x="3" y="7" width="10" height="1" fill="#6b8a6b" />
+      <rect x="3" y="8" width="10" height="1" fill="#6b8a6b" />
+      <rect x="4" y="9" width="8" height="1" fill="#4a9a4a" />
+      <rect x="5" y="10" width="6" height="1" fill="#4a9a4a" />
+      <rect x="6" y="11" width="4" height="1" fill="#4a9a4a" />
+      <rect x="7" y="12" width="2" height="1" fill="#4a9a4a" />
       {/* Leaf vein */}
-      <rect x="7" y="4" width="1" height="1" fill="#4a8a4a" />
-      <rect x="7" y="5" width="1" height="1" fill="#4a8a4a" />
-      <rect x="7" y="6" width="1" height="1" fill="#4a8a4a" />
-      <rect x="7" y="7" width="1" height="1" fill="#4a8a4a" />
+      <rect x="7" y="5" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="6" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="7" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="8" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="9" width="2" height="1" fill="#3a7a3a" />
     </svg>
   );
 }
