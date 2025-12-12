@@ -90,12 +90,9 @@ function useRestartSound() {
 
   // Classic refresh sound - quick two-note chirp like Windows navigation click
   const playRefreshSound = useCallback(() => {
-    const ctx = getAudioContext();
-    const now = ctx.currentTime;
-
-    // Quick ascending two-note chirp (F5 to A5) - sounds like a classic Windows click
-    playTone(698.46, now, 0.08, 0.1);        // F5 - first click
-    playTone(880.00, now + 0.05, 0.1, 0.08); // A5 - second click (slightly softer)
+    const now = getAudioContext().currentTime;
+    playTone(698.46, now, 0.08, 0.1);        // F5
+    playTone(880.00, now + 0.05, 0.1, 0.08); // A5
   }, [getAudioContext, playTone]);
 
   return { playShutdownSound, playStartupSound, playRefreshSound };
