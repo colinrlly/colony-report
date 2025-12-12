@@ -270,8 +270,8 @@ function getEmployeeIcon(employeeId: string) {
 // Employee tab color configuration
 const EMPLOYEE_TAB_COLORS: Record<string, { bg: string; bgSelected: string; border: string }> = {
   "emp-001": { bg: "#5a9c5a", bgSelected: "#4a8c4a", border: "#3a6c3a" }, // Green for Jasmine
-  "emp-002": { bg: "#FFB366", bgSelected: "#FFA04D", border: "#E68A2E" }, // Orange for Hank
-  "emp-003": { bg: "#E07070", bgSelected: "#D06060", border: "#B04040" }, // Red for Professor
+  "emp-002": { bg: "#A67B5B", bgSelected: "#966B4B", border: "#7A5035" }, // Terracotta for Hank
+  "emp-003": { bg: "#8B5A5A", bgSelected: "#7B4A4A", border: "#5B3A3A" }, // Burgundy for Professor
 };
 
 function getEmployeeTabColor(employeeId: string, isSelected: boolean) {
@@ -449,7 +449,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               <div className="relative flex items-stretch">
                 {/* Main tab body */}
                 <div
-                  className="px-2 py-3 text-black relative"
+                  className="px-2 py-3 text-white relative"
                   style={{
                     backgroundColor: tabColor,
                     borderTop: `2px solid ${borderColor}`,
