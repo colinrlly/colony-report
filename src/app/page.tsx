@@ -280,19 +280,40 @@ export default function Home() {
       return;
     }
 
+    // Helper to minimize other main desktop folders (exclusive folder behavior)
+    const minimizeOtherFolders = (exceptId: string) => {
+      if (exceptId !== "colony-reports" && isColonyReportsOpen) {
+        setIsColonyReportsMinimized(true);
+      }
+      if (exceptId !== "photo-library" && isPhotoLibraryOpen) {
+        setIsPhotoLibraryMinimized(true);
+      }
+      if (exceptId !== "field-notes" && isFieldNotesOpen) {
+        setIsFieldNotesMinimized(true);
+      }
+      if (exceptId !== "video-logs" && isVideoLogsOpen) {
+        setIsVideoLogsMinimized(true);
+      }
+    };
+
     switch (iconId) {
       case "colony-reports":
+        minimizeOtherFolders("colony-reports");
         setIsColonyReportsOpen(true);
+        setIsColonyReportsMinimized(false);
         break;
       case "photo-library":
+        minimizeOtherFolders("photo-library");
         setIsPhotoLibraryOpen(true);
         setIsPhotoLibraryMinimized(false);
         break;
       case "field-notes":
+        minimizeOtherFolders("field-notes");
         setIsFieldNotesOpen(true);
         setIsFieldNotesMinimized(false);
         break;
       case "video-logs":
+        minimizeOtherFolders("video-logs");
         setIsVideoLogsOpen(true);
         setIsVideoLogsMinimized(false);
         break;
