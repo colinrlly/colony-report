@@ -294,7 +294,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[880px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[920px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar>
         <div className="flex items-center gap-2">
@@ -320,16 +320,16 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
           </div>
 
           {/* Right side - Videos sidebar (thumbnails only) */}
-          <div className="w-[220px] flex flex-col gap-2">
-            {/* Videos header */}
-            <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold win98-border-raised">
-              Videos
-            </div>
+          <div className="w-[260px] flex gap-1">
+            {/* Videos panel with header and thumbnails grouped */}
+            <div className="flex-1 flex flex-col win98-border-sunken bg-[#a09080]">
+              {/* Videos header */}
+              <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold">
+                Videos
+              </div>
 
-            {/* Thumbnail list with scrollbar */}
-            <div className="flex-1 flex min-h-0">
-              {/* Thumbnails area */}
-              <div className="flex-1 bg-[#a09080] p-1 overflow-hidden win98-border-sunken">
+              {/* Thumbnail list */}
+              <div className="flex-1 p-2 overflow-hidden">
                 <div className="flex flex-col gap-2 h-full">
                   {videoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((video, displayIndex) => {
                     const actualIndex = scrollPosition + displayIndex;
@@ -362,42 +362,42 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
                   })}
                 </div>
               </div>
+            </div>
 
-              {/* Vertical scrollbar */}
-              <div className="w-4 bg-[#c8b9a9] flex flex-col">
-                {/* Up arrow button */}
-                <button
-                  onClick={handleScrollUp}
-                  className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
-                >
-                  <UpArrowIcon />
-                </button>
+            {/* Vertical scrollbar - outside the brown panel */}
+            <div className="w-4 flex flex-col">
+              {/* Up arrow button */}
+              <button
+                onClick={handleScrollUp}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
+              >
+                <UpArrowIcon />
+              </button>
 
-                {/* Scrollbar track */}
+              {/* Scrollbar track */}
+              <div
+                ref={scrollbarTrackRef}
+                onClick={handleTrackClick}
+                className="flex-1 win98-border-sunken bg-[#a09080] relative cursor-pointer"
+              >
+                {/* Scrollbar thumb */}
                 <div
-                  ref={scrollbarTrackRef}
-                  onClick={handleTrackClick}
-                  className="flex-1 win98-border-sunken bg-[#a09080] relative cursor-pointer"
-                >
-                  {/* Scrollbar thumb */}
-                  <div
-                    onMouseDown={handleScrollbarMouseDown}
-                    className={`absolute left-0 w-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
-                    style={{
-                      top: `${scrollbarThumbPositionPercent}%`,
-                      height: `${scrollbarThumbHeightPercent}%`,
-                    }}
-                  />
-                </div>
-
-                {/* Down arrow button */}
-                <button
-                  onClick={handleScrollDown}
-                  className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
-                >
-                  <DownArrowIcon />
-                </button>
+                  onMouseDown={handleScrollbarMouseDown}
+                  className={`absolute left-0 w-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
+                  style={{
+                    top: `${scrollbarThumbPositionPercent}%`,
+                    height: `${scrollbarThumbHeightPercent}%`,
+                  }}
+                />
               </div>
+
+              {/* Down arrow button */}
+              <button
+                onClick={handleScrollDown}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
+              >
+                <DownArrowIcon />
+              </button>
             </div>
           </div>
         </div>
@@ -470,7 +470,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
           </div>
 
           {/* Right: Video Notes - same width as sidebar */}
-          <div className="w-[220px] win98-border-sunken bg-[#5a4d42] p-2">
+          <div className="w-[260px] win98-border-sunken bg-[#5a4d42] p-2">
             <div className="text-[#c8b9a9] text-[10px]">
               <span className="font-bold">Video Notes: </span>
               <span className="text-[#e8a874]">{selectedVideo.notes}</span>
