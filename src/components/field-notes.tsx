@@ -48,7 +48,7 @@ function NotebookIcon() {
 function LeftArrowIcon() {
   return (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none" shapeRendering="crispEdges">
-      {/* Black outline */}
+      {/* Black outline - left/point side */}
       <rect x="28" y="4" width="4" height="4" fill="#1a1a1a" />
       <rect x="24" y="8" width="4" height="4" fill="#1a1a1a" />
       <rect x="20" y="12" width="4" height="4" fill="#1a1a1a" />
@@ -58,6 +58,14 @@ function LeftArrowIcon() {
       <rect x="20" y="32" width="4" height="4" fill="#1a1a1a" />
       <rect x="24" y="36" width="4" height="4" fill="#1a1a1a" />
       <rect x="28" y="40" width="4" height="4" fill="#1a1a1a" />
+      {/* Black outline - right/back side */}
+      <rect x="32" y="4" width="4" height="8" fill="#1a1a1a" />
+      <rect x="32" y="36" width="4" height="8" fill="#1a1a1a" />
+      <rect x="32" y="12" width="4" height="4" fill="#1a1a1a" />
+      <rect x="32" y="32" width="4" height="4" fill="#1a1a1a" />
+      <rect x="32" y="16" width="4" height="4" fill="#1a1a1a" />
+      <rect x="32" y="28" width="4" height="4" fill="#1a1a1a" />
+      <rect x="32" y="20" width="4" height="8" fill="#1a1a1a" />
       {/* Green fill */}
       <rect x="28" y="8" width="4" height="4" fill="#5a9c5a" />
       <rect x="24" y="12" width="8" height="4" fill="#5a9c5a" />
@@ -73,7 +81,7 @@ function LeftArrowIcon() {
 function RightArrowIcon() {
   return (
     <svg width="48" height="48" viewBox="0 0 48 48" fill="none" shapeRendering="crispEdges">
-      {/* Black outline */}
+      {/* Black outline - right/point side */}
       <rect x="16" y="4" width="4" height="4" fill="#1a1a1a" />
       <rect x="20" y="8" width="4" height="4" fill="#1a1a1a" />
       <rect x="24" y="12" width="4" height="4" fill="#1a1a1a" />
@@ -83,6 +91,14 @@ function RightArrowIcon() {
       <rect x="24" y="32" width="4" height="4" fill="#1a1a1a" />
       <rect x="20" y="36" width="4" height="4" fill="#1a1a1a" />
       <rect x="16" y="40" width="4" height="4" fill="#1a1a1a" />
+      {/* Black outline - left/back side */}
+      <rect x="12" y="4" width="4" height="8" fill="#1a1a1a" />
+      <rect x="12" y="36" width="4" height="8" fill="#1a1a1a" />
+      <rect x="12" y="12" width="4" height="4" fill="#1a1a1a" />
+      <rect x="12" y="32" width="4" height="4" fill="#1a1a1a" />
+      <rect x="12" y="16" width="4" height="4" fill="#1a1a1a" />
+      <rect x="12" y="28" width="4" height="4" fill="#1a1a1a" />
+      <rect x="12" y="20" width="4" height="8" fill="#1a1a1a" />
       {/* Green fill */}
       <rect x="16" y="8" width="4" height="4" fill="#5a9c5a" />
       <rect x="16" y="12" width="8" height="4" fill="#5a9c5a" />
