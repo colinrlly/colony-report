@@ -80,7 +80,7 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
   const scrollbarTrackRef = useRef<HTMLDivElement>(null);
 
   const selectedPhoto = photoItems[selectedIndex];
-  const visibleThumbnails = 5; // Show 5 larger thumbnails at a time
+  const visibleThumbnails = 6; // Show 6 thumbnails at a time
   const maxScroll = Math.max(0, photoItems.length - visibleThumbnails);
 
   // Calculate scrollbar thumb position and width based on track element
