@@ -348,7 +348,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                 setSelectedEmployeeId(employee.id);
                 setActiveTab("profile");
               }}
-              className={`relative text-left transition-all ${
+              className={`relative text-left ${
                 isSelected ? "z-20" : "z-10 hover:brightness-110"
               }`}
               style={{
