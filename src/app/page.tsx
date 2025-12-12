@@ -7,6 +7,7 @@ import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { PhotoLibrary } from "@/components/photo-library";
 import { FieldNotes } from "@/components/field-notes";
 import { VideoLogs } from "@/components/video-logs";
+import { EmployeeFiles } from "@/components/employee-files";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { SecurityCameraFeed } from "@/components/security-camera-feed";
@@ -182,6 +183,10 @@ export default function Home() {
   const [isVideoLogsOpen, setIsVideoLogsOpen] = useState(false);
   const [isVideoLogsMinimized, setIsVideoLogsMinimized] = useState(false);
 
+  // Employee Files state
+  const [isEmployeeFilesOpen, setIsEmployeeFilesOpen] = useState(false);
+  const [isEmployeeFilesMinimized, setIsEmployeeFilesMinimized] = useState(false);
+
   // Tutorial helper state
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
   const [tutorialClickCount, setTutorialClickCount] = useState(0);
@@ -294,6 +299,9 @@ export default function Home() {
       if (exceptId !== "video-logs" && isVideoLogsOpen) {
         setIsVideoLogsMinimized(true);
       }
+      if (exceptId !== "employee-files" && isEmployeeFilesOpen) {
+        setIsEmployeeFilesMinimized(true);
+      }
     };
 
     switch (iconId) {
@@ -316,6 +324,11 @@ export default function Home() {
         minimizeOtherFolders("video-logs");
         setIsVideoLogsOpen(true);
         setIsVideoLogsMinimized(false);
+        break;
+      case "employee-files":
+        minimizeOtherFolders("employee-files");
+        setIsEmployeeFilesOpen(true);
+        setIsEmployeeFilesMinimized(false);
         break;
     }
   };
@@ -360,6 +373,8 @@ export default function Home() {
       setIsFieldNotesMinimized(false);
       setIsVideoLogsOpen(false);
       setIsVideoLogsMinimized(false);
+      setIsEmployeeFilesOpen(false);
+      setIsEmployeeFilesMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -415,6 +430,8 @@ export default function Home() {
       setIsFieldNotesMinimized(false);
       setIsVideoLogsOpen(false);
       setIsVideoLogsMinimized(false);
+      setIsEmployeeFilesOpen(false);
+      setIsEmployeeFilesMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -958,6 +975,17 @@ export default function Home() {
           />
         )}
 
+        {/* Employee Files */}
+        {isEmployeeFilesOpen && !isEmployeeFilesMinimized && (
+          <EmployeeFiles
+            onClose={() => {
+              setIsEmployeeFilesOpen(false);
+              setIsEmployeeFilesMinimized(false);
+            }}
+            onMinimize={() => setIsEmployeeFilesMinimized(true)}
+          />
+        )}
+
         {/* Tutorial Helper (Clippy knockoff) */}
         {isTutorialHelperVisible && (
           <TutorialHelper
@@ -1107,6 +1135,13 @@ export default function Home() {
             title="Video Logs"
             isActive={!isVideoLogsMinimized}
             onClick={() => setIsVideoLogsMinimized(!isVideoLogsMinimized)}
+          />
+        )}
+        {isEmployeeFilesOpen && (
+          <TaskbarButton
+            title="Employee Files"
+            isActive={!isEmployeeFilesMinimized}
+            onClick={() => setIsEmployeeFilesMinimized(!isEmployeeFilesMinimized)}
           />
         )}
       </Taskbar>
