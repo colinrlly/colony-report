@@ -228,27 +228,24 @@ function PixelShieldIcon() {
 function PixelLeafIcon() {
   return (
     <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
-      {/* Leaf shape */}
-      <rect x="7" y="1" width="2" height="1" fill="#5a9c5a" />
-      <rect x="6" y="2" width="4" height="1" fill="#5a9c5a" />
-      <rect x="5" y="3" width="6" height="1" fill="#5a9c5a" />
-      <rect x="4" y="4" width="7" height="1" fill="#5a9c5a" />
-      <rect x="3" y="5" width="8" height="1" fill="#5a9c5a" />
-      <rect x="3" y="6" width="8" height="1" fill="#6ab06a" />
-      <rect x="4" y="7" width="7" height="1" fill="#6ab06a" />
-      <rect x="5" y="8" width="6" height="1" fill="#6ab06a" />
-      <rect x="6" y="9" width="4" height="1" fill="#5a9c5a" />
-      <rect x="7" y="10" width="2" height="1" fill="#5a9c5a" />
-      {/* Stem */}
-      <rect x="7" y="11" width="2" height="1" fill="#8B7355" />
-      <rect x="7" y="12" width="2" height="1" fill="#8B7355" />
-      <rect x="8" y="13" width="2" height="1" fill="#8B7355" />
-      <rect x="8" y="14" width="2" height="1" fill="#6b5344" />
+      {/* Leaf shape - no stem */}
+      <rect x="7" y="2" width="2" height="1" fill="#4a9a4a" />
+      <rect x="6" y="3" width="4" height="1" fill="#4a9a4a" />
+      <rect x="5" y="4" width="6" height="1" fill="#4a9a4a" />
+      <rect x="4" y="5" width="8" height="1" fill="#4a9a4a" />
+      <rect x="3" y="6" width="10" height="1" fill="#4a9a4a" />
+      <rect x="3" y="7" width="10" height="1" fill="#6b8a6b" />
+      <rect x="3" y="8" width="10" height="1" fill="#6b8a6b" />
+      <rect x="4" y="9" width="8" height="1" fill="#4a9a4a" />
+      <rect x="5" y="10" width="6" height="1" fill="#4a9a4a" />
+      <rect x="6" y="11" width="4" height="1" fill="#4a9a4a" />
+      <rect x="7" y="12" width="2" height="1" fill="#4a9a4a" />
       {/* Leaf vein */}
-      <rect x="7" y="4" width="1" height="1" fill="#4a8a4a" />
-      <rect x="7" y="5" width="1" height="1" fill="#4a8a4a" />
-      <rect x="7" y="6" width="1" height="1" fill="#4a8a4a" />
-      <rect x="7" y="7" width="1" height="1" fill="#4a8a4a" />
+      <rect x="7" y="5" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="6" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="7" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="8" width="2" height="1" fill="#3a7a3a" />
+      <rect x="7" y="9" width="2" height="1" fill="#3a7a3a" />
     </svg>
   );
 }
@@ -269,9 +266,9 @@ function getEmployeeIcon(employeeId: string) {
 
 // Employee tab color configuration
 const EMPLOYEE_TAB_COLORS: Record<string, { bg: string; bgSelected: string; border: string }> = {
-  "emp-001": { bg: "#5a9c5a", bgSelected: "#4a8c4a", border: "#3a6c3a" }, // Green for Jasmine
-  "emp-002": { bg: "#c75a5a", bgSelected: "#b74a4a", border: "#8a3a3a" }, // Red for Hank
-  "emp-003": { bg: "#5a7a9c", bgSelected: "#4a6a8c", border: "#3a5a7c" }, // Blue for Professor
+  "emp-001": { bg: "#833d15", bgSelected: "#934519", border: "#6a3110" }, // Orange for Jasmine
+  "emp-002": { bg: "#343721", bgSelected: "#3e4128", border: "#262a18" }, // Green for Hank
+  "emp-003": { bg: "#4f241e", bgSelected: "#5f2c24", border: "#3f1c16" }, // Red for Professor
 };
 
 function getEmployeeTabColor(employeeId: string, isSelected: boolean) {
@@ -558,9 +555,10 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     onClick={() => setActiveTab(tab.id)}
                     className={`px-4 py-2 text-[12px] font-bold tracking-wide transition-colors ${
                       activeTab === tab.id
-                        ? "bg-[#5a9c5a] text-white"
+                        ? "text-white"
                         : "bg-[#d4c8b8] text-[#5a5a5a] hover:bg-[#c4b8a8]"
                     }`}
+                    style={activeTab === tab.id ? { backgroundColor: getEmployeeTabColor(selectedEmployeeId, true) } : undefined}
                   >
                     {tab.label}
                   </button>
@@ -631,7 +629,11 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                       COLLEAGUE COMMENTS
                     </div>
                     {selectedEmployee.colleagueComments.map((comment, index) => (
-                      <div key={index} className="bg-[#F5F0E1] p-3 border-l-4 border-[#5a9c5a] text-[#1a1a1a] italic leading-relaxed">
+                      <div
+                        key={index}
+                        className="bg-[#F5F0E1] p-3 border-l-4 text-[#1a1a1a] italic leading-relaxed"
+                        style={{ borderLeftColor: getEmployeeTabColor(selectedEmployeeId, true) }}
+                      >
                         &ldquo;{comment}&rdquo;
                       </div>
                     ))}
