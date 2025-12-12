@@ -338,7 +338,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
   return (
     <div className="z-20 absolute top-[44px] left-1/2 -translate-x-1/2 flex">
       {/* Manila Folder Tabs - Outside window, on the left */}
-      <div className="flex flex-col justify-start pt-[100px] relative z-10 mr-[-2px]">
+      <div className="flex flex-col justify-start pt-[100px] relative z-10 mr-[-4px]">
         {employeeProfiles.map((employee) => {
           const isSelected = selectedEmployeeId === employee.id;
           const tabColor = getEmployeeTabColor(employee.id, isSelected);
@@ -356,12 +356,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               }`}
             >
               {/* Tab shape - manila folder style */}
-              <div
-                className="relative flex items-stretch"
-                style={{
-                  marginRight: isSelected ? "0" : "6px",
-                }}
-              >
+              <div className="relative flex items-stretch">
                 {/* Main tab body */}
                 <div
                   className="px-2 py-3 text-white relative"
@@ -370,14 +365,14 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     borderTop: `2px solid ${borderColor}`,
                     borderLeft: `2px solid ${borderColor}`,
                     borderBottom: `2px solid ${borderColor}`,
-                    borderRight: isSelected ? "none" : `2px solid ${borderColor}`,
+                    borderRight: "none",
                     borderTopLeftRadius: "4px",
                     borderBottomLeftRadius: "4px",
                     writingMode: "vertical-rl",
                     textOrientation: "mixed",
                     transform: "rotate(180deg)",
                     minHeight: "120px",
-                    width: isSelected ? "50px" : "42px",
+                    width: isSelected ? "50px" : "44px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -392,6 +387,15 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     {getEmployeeTabName(employee)}
                   </span>
                 </div>
+                {/* Connector to window edge */}
+                <div
+                  style={{
+                    backgroundColor: tabColor,
+                    width: "6px",
+                    borderTop: `2px solid ${borderColor}`,
+                    borderBottom: `2px solid ${borderColor}`,
+                  }}
+                />
               </div>
             </button>
           );
