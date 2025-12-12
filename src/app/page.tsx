@@ -27,6 +27,70 @@ import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from 
 
 // viewMenuItems, toolsMenuItems, and helpMenuItems are defined inside the component to access state handlers
 
+// Classic computer restart sound using Web Audio API
+function useRestartSound() {
+  const audioContextRef = useRef<AudioContext | null>(null);
+
+  const getAudioContext = useCallback(() => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContext();
+    }
+    if (audioContextRef.current.state === "suspended") {
+      audioContextRef.current.resume();
+    }
+    return audioContextRef.current;
+  }, []);
+
+  // Play a single tone with fade out
+  const playTone = useCallback((frequency: number, startTime: number, duration: number, volume: number = 0.15) => {
+    const ctx = getAudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+
+    gainNode.gain.setValueAtTime(volume, startTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration);
+  }, [getAudioContext]);
+
+  // Classic shutdown sound - descending chime
+  const playShutdownSound = useCallback(() => {
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+
+    // Windows 95-style descending four-note chime
+    const notes = [523.25, 392.00, 329.63, 261.63]; // C5, G4, E4, C4
+    const noteDuration = 0.2;
+
+    notes.forEach((freq, i) => {
+      playTone(freq, now + i * 0.15, noteDuration, 0.12);
+    });
+  }, [getAudioContext, playTone]);
+
+  // Classic startup sound - ascending chime
+  const playStartupSound = useCallback(() => {
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+
+    // Windows 95-style ascending four-note chime
+    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+    const noteDuration = 0.25;
+
+    notes.forEach((freq, i) => {
+      playTone(freq, now + i * 0.12, noteDuration, 0.12);
+    });
+  }, [getAudioContext, playTone]);
+
+  return { playShutdownSound, playStartupSound };
+}
+
 const historyMenuItems: MenuItemData[] = [
   { label: "Internet Browsing History", isHistoryTitle: true },
   { label: "WebMED  How to treat mild acid burn?", isHistoryItem: true },
@@ -200,6 +264,9 @@ export default function Home() {
     isNotificationVisible,
     handleNotificationComplete,
   } = useNotificationQueue();
+
+  // Restart sound effects
+  const { playShutdownSound, playStartupSound } = useRestartSound();
 
   // Camera 3 warning mode (separate from notification visibility)
   const [isCam3WarningMode, setIsCam3WarningMode] = useState(false);
@@ -391,6 +458,9 @@ export default function Home() {
 
   // Handle restart - black screen with neon green text, then flicker back to life
   const handleRestart = useCallback(() => {
+    // Play classic shutdown sound
+    playShutdownSound();
+
     setIsRestarting(true);
     setRestartPhase('black');
 
@@ -440,8 +510,9 @@ export default function Home() {
       setIsCam3WarningMode(false);
     }, 1800); // Just after progress bar completes
 
-    // Start the flicker-out phase
+    // Start the flicker-out phase and play startup sound
     setTimeout(() => {
+      playStartupSound();
       setRestartPhase('flicker');
     }, 2000);
 
@@ -450,7 +521,7 @@ export default function Home() {
       setIsRestarting(false);
       setRestartPhase('black');
     }, 2400);
-  }, []);
+  }, [playShutdownSound, playStartupSound]);
 
   // Handle show hidden files toggle
   const handleShowHiddenFiles = useCallback(() => {
