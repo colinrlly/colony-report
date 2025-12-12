@@ -6,6 +6,8 @@ export interface WindowProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
   /** If set, window will snap to the right of this x-coordinate when dropped overlapping it */
   leftSnapBoundary?: number;
+  /** If false, disables the window's internal drag behavior (default: true) */
+  draggable?: boolean;
 }
 
 export interface WindowTitleBarProps extends HTMLAttributes<HTMLDivElement> {
