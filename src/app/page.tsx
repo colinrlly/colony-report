@@ -5,6 +5,7 @@ import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { PhotoLibrary } from "@/components/photo-library";
+import { FieldNotes } from "@/components/field-notes";
 import { VideoLogs } from "@/components/video-logs";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
@@ -173,6 +174,10 @@ export default function Home() {
   const [isPhotoLibraryOpen, setIsPhotoLibraryOpen] = useState(false);
   const [isPhotoLibraryMinimized, setIsPhotoLibraryMinimized] = useState(false);
 
+  // Field Notes state
+  const [isFieldNotesOpen, setIsFieldNotesOpen] = useState(false);
+  const [isFieldNotesMinimized, setIsFieldNotesMinimized] = useState(false);
+
   // Video Logs state
   const [isVideoLogsOpen, setIsVideoLogsOpen] = useState(false);
   const [isVideoLogsMinimized, setIsVideoLogsMinimized] = useState(false);
@@ -283,6 +288,10 @@ export default function Home() {
         setIsPhotoLibraryOpen(true);
         setIsPhotoLibraryMinimized(false);
         break;
+      case "field-notes":
+        setIsFieldNotesOpen(true);
+        setIsFieldNotesMinimized(false);
+        break;
       case "video-logs":
         setIsVideoLogsOpen(true);
         setIsVideoLogsMinimized(false);
@@ -326,6 +335,8 @@ export default function Home() {
       setIsStressReliefMinimized(false);
       setIsPhotoLibraryOpen(false);
       setIsPhotoLibraryMinimized(false);
+      setIsFieldNotesOpen(false);
+      setIsFieldNotesMinimized(false);
       setIsVideoLogsOpen(false);
       setIsVideoLogsMinimized(false);
       setIsTutorialHelperVisible(false);
@@ -379,6 +390,8 @@ export default function Home() {
       setIsStressReliefMinimized(false);
       setIsPhotoLibraryOpen(false);
       setIsPhotoLibraryMinimized(false);
+      setIsFieldNotesOpen(false);
+      setIsFieldNotesMinimized(false);
       setIsVideoLogsOpen(false);
       setIsVideoLogsMinimized(false);
       setIsTutorialHelperVisible(false);
@@ -902,6 +915,17 @@ export default function Home() {
           />
         )}
 
+        {/* Field Notes */}
+        {isFieldNotesOpen && !isFieldNotesMinimized && (
+          <FieldNotes
+            onClose={() => {
+              setIsFieldNotesOpen(false);
+              setIsFieldNotesMinimized(false);
+            }}
+            onMinimize={() => setIsFieldNotesMinimized(true)}
+          />
+        )}
+
         {/* Video Logs */}
         {isVideoLogsOpen && !isVideoLogsMinimized && (
           <VideoLogs
@@ -1048,6 +1072,13 @@ export default function Home() {
             title="Photo Library"
             isActive={!isPhotoLibraryMinimized}
             onClick={() => setIsPhotoLibraryMinimized(!isPhotoLibraryMinimized)}
+          />
+        )}
+        {isFieldNotesOpen && (
+          <TaskbarButton
+            title="Field Notes"
+            isActive={!isFieldNotesMinimized}
+            onClick={() => setIsFieldNotesMinimized(!isFieldNotesMinimized)}
           />
         )}
         {isVideoLogsOpen && (
