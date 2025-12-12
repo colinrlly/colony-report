@@ -140,10 +140,10 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
       className="z-20 w-[1150px] h-[750px] absolute top-[6vh] left-[calc(50%+48px)] -translate-x-1/2 flex flex-col"
     >
-      <WindowTitleBar>
+      <WindowTitleBar className="h-[36px]">
         <div className="flex items-center gap-2">
           <NotebookIcon />
-          <WindowTitle>Scanned in field notes - Formica Division</WindowTitle>
+          <WindowTitle className="font-bold text-[13px] tracking-wide">SCANNED IN FIELD NOTES - FORMICA DIVISION</WindowTitle>
         </div>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
