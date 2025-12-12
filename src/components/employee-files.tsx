@@ -98,7 +98,7 @@ const employeeProfiles: EmployeeProfile[] = [
   },
   {
     id: "emp-003",
-    name: "Ental \"The Professor\"",
+    name: "████████ \"The Professor\"",
     division: "Field Security & Enforcement",
     role: "Director of Xenobiology",
     specialty: "Advanced Xenobiological Systems",
