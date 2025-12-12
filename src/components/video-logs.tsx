@@ -470,8 +470,8 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
           </div>
 
           {/* Right: Video Notes - same width as sidebar */}
-          <div className="w-[260px] win98-border-sunken bg-[#5a4d42] p-2">
-            <div className="text-[#d8c9b9] text-[12px]">
+          <div className="w-[260px] win98-border-sunken bg-[#5a4d42] px-3 py-2">
+            <div className="text-[#d8c9b9] text-[12px] leading-relaxed">
               <span className="font-bold">Video Notes: </span>
               <span>{selectedVideo.notes}</span>
             </div>
