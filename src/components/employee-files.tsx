@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import {
   Window,
@@ -292,14 +293,17 @@ function getEmployeeTabName(employee: EmployeeProfile) {
 }
 
 // Employee illustration component
-function EmployeeIllustration({ photoUrl }: { photoUrl?: string }) {
+function EmployeeIllustration({ photoUrl, priority = false }: { photoUrl?: string; priority?: boolean }) {
   if (photoUrl) {
     return (
-      <div className="w-full h-full border-2 border-[#8B7355] overflow-hidden">
-        <img
+      <div className="w-full h-full border-2 border-[#8B7355] overflow-hidden relative">
+        <Image
           src={photoUrl}
           alt="Employee illustration"
-          className="w-full h-full object-cover object-top"
+          fill
+          sizes="520px"
+          className="object-cover object-top"
+          priority={priority}
         />
       </div>
     );
@@ -315,6 +319,26 @@ function EmployeeIllustration({ photoUrl }: { photoUrl?: string }) {
         </svg>
         <span className="text-[12px] mt-3 font-bold tracking-wider">[EMPLOYEE ILLUSTRATION]</span>
       </div>
+    </div>
+  );
+}
+
+// Hidden preloader component to load all employee images in background
+function EmployeeImagePreloader({ employees, currentId }: { employees: EmployeeProfile[]; currentId: string }) {
+  return (
+    <div className="hidden">
+      {employees
+        .filter(emp => emp.photoUrl && emp.id !== currentId)
+        .map(emp => (
+          <Image
+            key={emp.id}
+            src={emp.photoUrl!}
+            alt=""
+            width={520}
+            height={520}
+            priority
+          />
+        ))}
     </div>
   );
 }
@@ -505,8 +529,10 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             {/* Left: Square Portrait Illustration */}
             <div className="flex flex-col">
               <div className="w-[520px] aspect-square">
-                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} />
+                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority />
               </div>
+              {/* Preload other employee images for smooth tab switching */}
+              <EmployeeImagePreloader employees={employeeProfiles} currentId={selectedEmployeeId} />
               {/* Name plate under illustration */}
               <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-2.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
                 <div className="flex items-center gap-2">
