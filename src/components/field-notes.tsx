@@ -10,31 +10,36 @@ import {
   WindowStatusField,
 } from "@/components/ui/window";
 
-// Sample field notes data with placeholder colors
+// Sample field notes data with placeholder earth tone colors
 const fieldNoteItems = [
-  { id: "note-1", label: "note.1", color: "#6B5B4F" },
-  { id: "note-2", label: "note.2", color: "#7A6A5E" },
-  { id: "note-3", label: "note.3", color: "#5D4D41" },
-  { id: "note-4", label: "note.4", color: "#8B7B6F" },
-  { id: "note-5", label: "note.5", color: "#6B5B4F" },
+  { id: "note-1", label: "note.1", color: "#8B7355" },   // Coffee brown
+  { id: "note-2", label: "note.2", color: "#A67B5B" },   // Camel
+  { id: "note-3", label: "note.3", color: "#6B8E6B" },   // Sage green
+  { id: "note-4", label: "note.4", color: "#C4A77D" },   // Tan
+  { id: "note-5", label: "note.5", color: "#8B4513" },   // Saddle brown
+  { id: "note-6", label: "note.6", color: "#9C8B7D" },   // Warm grey
+  { id: "note-7", label: "note.7", color: "#704214" },   // Sepia
+  { id: "note-8", label: "note.8", color: "#B8A088" },   // Khaki
+  { id: "note-9", label: "note.9", color: "#5C4033" },   // Dark brown
+  { id: "note-10", label: "note.10", color: "#7B9971" }, // Moss green
 ];
 
-// Notebook icon for title bar
+// Notebook icon for title bar - lighter yellow tones
 function NotebookIcon() {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" shapeRendering="crispEdges">
-      {/* Notebook cover */}
-      <rect x="4" y="2" width="16" height="20" fill="#8B7355" stroke="#5a4a3a" strokeWidth="1" />
+      {/* Notebook cover - lighter yellow/tan */}
+      <rect x="4" y="2" width="16" height="20" fill="#D4C088" stroke="#a08850" strokeWidth="1" />
       {/* Spiral binding */}
       <rect x="6" y="4" width="2" height="2" fill="#1a1a1a" />
       <rect x="6" y="8" width="2" height="2" fill="#1a1a1a" />
       <rect x="6" y="12" width="2" height="2" fill="#1a1a1a" />
       <rect x="6" y="16" width="2" height="2" fill="#1a1a1a" />
       {/* Page lines */}
-      <rect x="10" y="6" width="8" height="1" fill="#d4c8a0" />
-      <rect x="10" y="10" width="8" height="1" fill="#d4c8a0" />
-      <rect x="10" y="14" width="8" height="1" fill="#d4c8a0" />
-      <rect x="10" y="18" width="6" height="1" fill="#d4c8a0" />
+      <rect x="10" y="6" width="8" height="1" fill="#8B7355" />
+      <rect x="10" y="10" width="8" height="1" fill="#8B7355" />
+      <rect x="10" y="14" width="8" height="1" fill="#8B7355" />
+      <rect x="10" y="18" width="6" height="1" fill="#8B7355" />
     </svg>
   );
 }
@@ -165,9 +170,8 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
 
       {/* Status bar at bottom */}
       <WindowStatusBar>
-        <WindowStatusField className="flex-1 text-center">
-          <span className="font-bold text-[#8b7355]">notes</span>
-          <span className="ml-2">to be processed for Colony Reports at a later time</span>
+        <WindowStatusField className="flex-1 text-right pr-2">
+          Field notes to be processed into colony reports at a later time
         </WindowStatusField>
       </WindowStatusBar>
     </Window>
