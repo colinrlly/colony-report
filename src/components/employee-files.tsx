@@ -65,7 +65,7 @@ const employeeProfiles: EmployeeProfile[] = [
       description: "Standard-issue modular containment unit developed by Formica Division for live botanical sample transport in the field. Despite field stress and mild damage, unit remains operational.",
       nickname: "Bug",
     },
-    photoUrl: "/dr. jasmine thorne.jpg",
+    photoUrl: "/images/jasmine final.jpg",
   },
   {
     id: "emp-002",
@@ -94,7 +94,7 @@ const employeeProfiles: EmployeeProfile[] = [
       description: "Compact aerial drones equipped with multispectral scanners, motion tracking, and short-range deterrent systems. Primarily used for early threat detection and perimeter sweeps.",
       nickname: "Owl and Wasp",
     },
-    photoUrl: "/hank mercer.jpg",
+    photoUrl: "/images/Hank final.jpg",
   },
   {
     id: "emp-003",
@@ -123,6 +123,7 @@ const employeeProfiles: EmployeeProfile[] = [
       description: "Sealed cylindrical tank for containing live specimens in suspended liquid. Allows reagent introduction and real-time observation of physiological and chemical responses.",
       nickname: "The Jar",
     },
+    photoUrl: "/images/professor final.jpg",
   },
 ];
 
@@ -310,7 +311,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[1000px] h-[calc(100vh-92px)] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[1100px] h-[730px] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar className="h-[36px]">
         <div className="flex items-center gap-2">
@@ -368,13 +369,13 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
 
         {/* Main Content - Illustration + Info Side by Side */}
         <div className="flex-1 flex p-3 gap-3">
-          {/* Left: Large Portrait Illustration */}
-          <div className="w-[480px] flex flex-col">
-            <div className="flex-1 min-h-0">
+          {/* Left: Square Portrait Illustration */}
+          <div className="flex flex-col">
+            <div className="w-[520px] aspect-square">
               <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} />
             </div>
             {/* Name plate under illustration */}
-            <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-1.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
+            <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-2.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {getEmployeeIcon(selectedEmployee.id)}
                 <div>
