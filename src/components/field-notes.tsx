@@ -122,7 +122,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[800px] h-[650px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[1000px] h-[650px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar>
         <div className="flex items-center gap-2">
@@ -133,7 +133,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
       </WindowTitleBar>
 
       {/* Green progress bar under title bar */}
-      <div className="h-[6px] bg-[#2a2a2a] mx-[2px]">
+      <div className="h-[6px] bg-[#2a2a2a]">
         <div className="h-full w-full bg-[#5a9c5a]" />
       </div>
 
