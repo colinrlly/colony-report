@@ -92,90 +92,13 @@ export function BeeIcon() {
 
 export function SnailIcon() {
   return (
-    <svg
+    <img
+      src="/snail-icon.png"
+      alt="Snail"
       width="42"
       height="42"
-      viewBox="0 0 32 32"
-      shapeRendering="crispEdges"
-    >
-      {/* Shell outline - brown */}
-      <rect x="14" y="3" width="6" height="1" fill="#5d4037" />
-      <rect x="12" y="4" width="2" height="1" fill="#5d4037" />
-      <rect x="20" y="4" width="2" height="1" fill="#5d4037" />
-      <rect x="10" y="5" width="2" height="1" fill="#5d4037" />
-      <rect x="22" y="5" width="2" height="1" fill="#5d4037" />
-      <rect x="9" y="6" width="1" height="2" fill="#5d4037" />
-      <rect x="24" y="6" width="1" height="2" fill="#5d4037" />
-      <rect x="8" y="8" width="1" height="4" fill="#5d4037" />
-      <rect x="25" y="8" width="1" height="4" fill="#5d4037" />
-      <rect x="9" y="12" width="1" height="2" fill="#5d4037" />
-      <rect x="24" y="12" width="1" height="2" fill="#5d4037" />
-      <rect x="10" y="14" width="2" height="1" fill="#5d4037" />
-      <rect x="22" y="14" width="2" height="1" fill="#5d4037" />
-      <rect x="12" y="15" width="10" height="1" fill="#5d4037" />
-
-      {/* Shell - pink base */}
-      <rect x="14" y="4" width="6" height="1" fill="#ffb6c1" />
-      <rect x="12" y="5" width="10" height="1" fill="#ffb6c1" />
-      <rect x="10" y="6" width="14" height="2" fill="#ffb6c1" />
-      <rect x="9" y="8" width="16" height="4" fill="#ffb6c1" />
-      <rect x="10" y="12" width="14" height="2" fill="#ffb6c1" />
-      <rect x="12" y="14" width="10" height="1" fill="#ffb6c1" />
-
-      {/* Spiral - darker pink rings */}
-      <rect x="14" y="6" width="6" height="1" fill="#f06292" />
-      <rect x="13" y="7" width="1" height="1" fill="#f06292" />
-      <rect x="20" y="7" width="1" height="1" fill="#f06292" />
-      <rect x="12" y="8" width="1" height="3" fill="#f06292" />
-      <rect x="21" y="8" width="1" height="3" fill="#f06292" />
-      <rect x="13" y="11" width="1" height="1" fill="#f06292" />
-      <rect x="20" y="11" width="1" height="1" fill="#f06292" />
-      <rect x="14" y="12" width="6" height="1" fill="#f06292" />
-
-      {/* Inner spiral ring */}
-      <rect x="15" y="8" width="4" height="1" fill="#ec407a" />
-      <rect x="14" y="9" width="1" height="1" fill="#ec407a" />
-      <rect x="19" y="9" width="1" height="1" fill="#ec407a" />
-      <rect x="15" y="10" width="4" height="1" fill="#ec407a" />
-
-      {/* Spiral center */}
-      <rect x="16" y="9" width="2" height="1" fill="#d81b60" />
-
-      {/* Shell highlight */}
-      <rect x="11" y="7" width="2" height="2" fill="#ffc1e3" />
-      <rect x="10" y="9" width="1" height="2" fill="#ffc1e3" />
-
-      {/* Body - cream/beige */}
-      <rect x="2" y="18" width="1" height="1" fill="#8d6e63" />
-      <rect x="3" y="17" width="2" height="1" fill="#8d6e63" />
-      <rect x="5" y="16" width="7" height="1" fill="#8d6e63" />
-      <rect x="1" y="19" width="1" height="4" fill="#8d6e63" />
-      <rect x="2" y="23" width="20" height="1" fill="#8d6e63" />
-      <rect x="22" y="16" width="1" height="7" fill="#8d6e63" />
-
-      {/* Body fill - cream */}
-      <rect x="2" y="19" width="20" height="4" fill="#ffe4c4" />
-      <rect x="3" y="18" width="19" height="1" fill="#ffe4c4" />
-      <rect x="5" y="17" width="17" height="1" fill="#ffe4c4" />
-
-      {/* Body highlight */}
-      <rect x="4" y="19" width="16" height="1" fill="#fff3e0" />
-      <rect x="3" y="20" width="2" height="1" fill="#fff3e0" />
-
-      {/* Body shadow */}
-      <rect x="4" y="22" width="17" height="1" fill="#dcc8b4" />
-
-      {/* Eye stalks */}
-      <rect x="3" y="14" width="1" height="3" fill="#ffe4c4" />
-      <rect x="3" y="13" width="1" height="1" fill="#8d6e63" />
-      <rect x="5" y="14" width="1" height="3" fill="#ffe4c4" />
-      <rect x="5" y="13" width="1" height="1" fill="#8d6e63" />
-
-      {/* Eye stalk outline */}
-      <rect x="2" y="14" width="1" height="2" fill="#8d6e63" />
-      <rect x="4" y="14" width="1" height="2" fill="#8d6e63" />
-      <rect x="6" y="14" width="1" height="2" fill="#8d6e63" />
-    </svg>
+      style={{ imageRendering: "pixelated", objectFit: "contain" }}
+    />
   );
 }
 
