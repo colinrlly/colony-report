@@ -261,6 +261,26 @@ function getEmployeeIcon(employeeId: string) {
   }
 }
 
+// Get tab color for an employee
+function getEmployeeTabColor(employeeId: string, isSelected: boolean) {
+  const colors: Record<string, { bg: string; bgSelected: string; border: string }> = {
+    "emp-001": { bg: "#5a9c5a", bgSelected: "#4a8c4a", border: "#3a6c3a" }, // Green for Jasmine
+    "emp-002": { bg: "#c75a5a", bgSelected: "#b74a4a", border: "#8a3a3a" }, // Red for Hank
+    "emp-003": { bg: "#5a7a9c", bgSelected: "#4a6a8c", border: "#3a5a7c" }, // Blue for Professor
+  };
+  const color = colors[employeeId] || colors["emp-001"];
+  return isSelected ? color.bgSelected : color.bg;
+}
+
+function getEmployeeTabBorderColor(employeeId: string) {
+  const colors: Record<string, string> = {
+    "emp-001": "#3a6c3a", // Green for Jasmine
+    "emp-002": "#8a3a3a", // Red for Hank
+    "emp-003": "#3a5a7c", // Blue for Professor
+  };
+  return colors[employeeId] || colors["emp-001"];
+}
+
 // Employee illustration component
 function EmployeeIllustration({ photoUrl }: { photoUrl?: string }) {
   if (photoUrl) {
@@ -338,37 +358,90 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden bg-[#F5F0E1]">
-        {/* Employee Selection Sidebar */}
-        <div className="w-[120px] bg-[#d4c8b8] border-r-2 border-[#8B7355] flex flex-col">
-          <div className="p-2 bg-[#8B7355] text-white text-[11px] font-bold text-center tracking-wider">
-            PERSONNEL
-          </div>
-          <div className="flex-1 overflow-y-auto">
-            {employeeProfiles.map((employee) => (
+      <div className="flex-1 flex overflow-hidden bg-[#a89888]">
+        {/* Manila Folder Tabs - Left Side */}
+        <div className="flex flex-col justify-start pt-6 relative z-10">
+          {employeeProfiles.map((employee) => {
+            const isSelected = selectedEmployeeId === employee.id;
+            const tabColor = getEmployeeTabColor(employee.id, isSelected);
+            const borderColor = getEmployeeTabBorderColor(employee.id);
+
+            return (
               <button
                 key={employee.id}
                 onClick={() => {
                   setSelectedEmployeeId(employee.id);
                   setActiveTab("profile");
                 }}
-                className={`w-full p-2 text-left border-b border-[#a89888] transition-colors ${
-                  selectedEmployeeId === employee.id
-                    ? "bg-[#8B7355] text-white"
-                    : "bg-[#d4c8b8] text-[#1a1a1a] hover:bg-[#c4b8a8]"
+                className={`relative text-left transition-all ${
+                  isSelected ? "z-20" : "z-10 hover:brightness-110"
                 }`}
+                style={{
+                  marginBottom: "8px",
+                }}
               >
-                <div className="text-[11px] font-bold truncate">{employee.name}</div>
-                <div className={`text-[10px] truncate ${selectedEmployeeId === employee.id ? "text-[#d4c8b8]" : "text-[#666]"}`}>
-                  {employee.role}
+                {/* Tab shape - manila folder style */}
+                <div
+                  className="relative flex items-stretch"
+                  style={{
+                    marginLeft: isSelected ? "0" : "8px",
+                  }}
+                >
+                  {/* Notch/fold at top */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "0",
+                      right: "-12px",
+                      width: "12px",
+                      height: "16px",
+                      backgroundColor: tabColor,
+                      clipPath: "polygon(0 0, 100% 100%, 0 100%)",
+                      borderRight: `1px solid ${borderColor}`,
+                    }}
+                  />
+                  {/* Main tab body */}
+                  <div
+                    className="px-2 py-4 text-white relative"
+                    style={{
+                      backgroundColor: tabColor,
+                      borderTop: `2px solid ${borderColor}`,
+                      borderLeft: `2px solid ${borderColor}`,
+                      borderBottom: `2px solid ${borderColor}`,
+                      borderTopLeftRadius: "3px",
+                      borderBottomLeftRadius: "3px",
+                      writingMode: "vertical-rl",
+                      textOrientation: "mixed",
+                      transform: "rotate(180deg)",
+                      minHeight: "160px",
+                      width: isSelected ? "48px" : "40px",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "6px",
+                      boxShadow: isSelected
+                        ? "inset 0 0 0 1px rgba(255,255,255,0.25), 2px 0 4px rgba(0,0,0,0.15)"
+                        : "inset 0 0 0 1px rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    <span className="text-[12px] font-bold whitespace-nowrap tracking-wide drop-shadow-sm">
+                      {employee.name}
+                    </span>
+                    <span className="text-[9px] opacity-90 whitespace-nowrap">
+                      {employee.role}
+                    </span>
+                  </div>
                 </div>
               </button>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        {/* Main Content - Illustration + Info Side by Side */}
-        <div className="flex-1 flex p-3 gap-3">
+        {/* Main Content Area */}
+        <div className="flex-1 flex flex-col bg-[#F5F0E1] border-l-0 relative ml-[-2px]">
+          {/* Main Content - Illustration + Info Side by Side */}
+          <div className="flex-1 flex p-3 gap-3">
           {/* Left: Square Portrait Illustration */}
           <div className="flex flex-col">
             <div className="w-[520px] aspect-square">
@@ -501,6 +574,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                 </div>
               )}
             </div>
+          </div>
           </div>
         </div>
       </div>
