@@ -65,6 +65,7 @@ const employeeProfiles: EmployeeProfile[] = [
       description: "Standard-issue modular containment unit developed by Formica Division for live botanical sample transport in the field. Despite field stress and mild damage, unit remains operational.",
       nickname: "Bug",
     },
+    photoUrl: "/dr. jasmine thorne.jpg",
   },
 ];
 
@@ -88,8 +89,20 @@ function BadgeIcon() {
   );
 }
 
-// Vertical portrait illustration placeholder
-function IllustrationPlaceholder() {
+// Employee illustration component
+function EmployeeIllustration({ photoUrl }: { photoUrl?: string }) {
+  if (photoUrl) {
+    return (
+      <div className="w-full h-full border-2 border-[#8B7355] overflow-hidden">
+        <img
+          src={photoUrl}
+          alt="Employee illustration"
+          className="w-full h-full object-cover object-top"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full bg-[#c8b9a9] flex items-center justify-center relative border-2 border-[#8B7355]">
       <div className="absolute inset-0 bg-gradient-to-b from-[#d4c8b8] to-[#a89888] opacity-30" />
@@ -178,7 +191,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
           {/* Left: Large Portrait Illustration */}
           <div className="w-[420px] flex flex-col">
             <div className="flex-1 min-h-0">
-              <IllustrationPlaceholder />
+              <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} />
             </div>
             {/* Name plate under illustration */}
             <div className="bg-[#1a1a1a] text-[#D4C088] px-4 py-2 mt-2 border-2 border-[#8B7355]">
