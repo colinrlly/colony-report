@@ -375,7 +375,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} />
             </div>
             {/* Name plate under illustration */}
-            <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-1.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
+            <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-2.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {getEmployeeIcon(selectedEmployee.id)}
                 <div>
