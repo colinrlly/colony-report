@@ -311,7 +311,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[1100px] h-[700px] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[1100px] h-[730px] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar className="h-[36px]">
         <div className="flex items-center gap-2">
