@@ -261,24 +261,21 @@ function getEmployeeIcon(employeeId: string) {
   }
 }
 
-// Get tab color for an employee
+// Employee tab color configuration
+const EMPLOYEE_TAB_COLORS: Record<string, { bg: string; bgSelected: string; border: string }> = {
+  "emp-001": { bg: "#5a9c5a", bgSelected: "#4a8c4a", border: "#3a6c3a" }, // Green for Jasmine
+  "emp-002": { bg: "#c75a5a", bgSelected: "#b74a4a", border: "#8a3a3a" }, // Red for Hank
+  "emp-003": { bg: "#5a7a9c", bgSelected: "#4a6a8c", border: "#3a5a7c" }, // Blue for Professor
+};
+
 function getEmployeeTabColor(employeeId: string, isSelected: boolean) {
-  const colors: Record<string, { bg: string; bgSelected: string; border: string }> = {
-    "emp-001": { bg: "#5a9c5a", bgSelected: "#4a8c4a", border: "#3a6c3a" }, // Green for Jasmine
-    "emp-002": { bg: "#c75a5a", bgSelected: "#b74a4a", border: "#8a3a3a" }, // Red for Hank
-    "emp-003": { bg: "#5a7a9c", bgSelected: "#4a6a8c", border: "#3a5a7c" }, // Blue for Professor
-  };
-  const color = colors[employeeId] || colors["emp-001"];
+  const color = EMPLOYEE_TAB_COLORS[employeeId] || EMPLOYEE_TAB_COLORS["emp-001"];
   return isSelected ? color.bgSelected : color.bg;
 }
 
 function getEmployeeTabBorderColor(employeeId: string) {
-  const colors: Record<string, string> = {
-    "emp-001": "#3a6c3a", // Green for Jasmine
-    "emp-002": "#8a3a3a", // Red for Hank
-    "emp-003": "#3a5a7c", // Blue for Professor
-  };
-  return colors[employeeId] || colors["emp-001"];
+  const color = EMPLOYEE_TAB_COLORS[employeeId] || EMPLOYEE_TAB_COLORS["emp-001"];
+  return color.border;
 }
 
 // Get display name for tab (Professor's name is unredacted on tab)
@@ -411,182 +408,182 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
         className="w-[1050px] h-[730px] flex flex-col"
       >
-      <WindowTitleBar className="h-[36px]">
-        <div className="flex items-center gap-2">
-          <BadgeIcon />
-          <WindowTitle className="font-bold text-[13px] tracking-wide">
-            EMPLOYEE FILES - PERSONNEL RECORDS
-          </WindowTitle>
-        </div>
-        <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
-      </WindowTitleBar>
+        <WindowTitleBar className="h-[36px]">
+          <div className="flex items-center gap-2">
+            <BadgeIcon />
+            <WindowTitle className="font-bold text-[13px] tracking-wide">
+              EMPLOYEE FILES - PERSONNEL RECORDS
+            </WindowTitle>
+          </div>
+          <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
+        </WindowTitleBar>
 
-      {/* Main Header - Compact with logo */}
-      <div className="bg-[#1a1a1a] text-[#D4C088] px-4 py-1.5 border-b-2 border-[#D4C088] flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <NECLogo />
-          <div>
-            <div className="text-[14px] font-black tracking-widest">NEW EDEN COMMITTEE — FORMICA DIVISION</div>
-            <div className="text-[10px] tracking-wider opacity-80">EMPLOYEE PROFILE // INTERNAL RECORD</div>
+        {/* Main Header - Compact with logo */}
+        <div className="bg-[#1a1a1a] text-[#D4C088] px-4 py-1.5 border-b-2 border-[#D4C088] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <NECLogo />
+            <div>
+              <div className="text-[14px] font-black tracking-widest">NEW EDEN COMMITTEE — FORMICA DIVISION</div>
+              <div className="text-[10px] tracking-wider opacity-80">EMPLOYEE PROFILE // INTERNAL RECORD</div>
+            </div>
+          </div>
+          <div className="text-[8px] tracking-wider opacity-60 text-right">
+            <div>CLASSIFIED DOCUMENT</div>
+            <div>AUTHORIZED ACCESS ONLY</div>
           </div>
         </div>
-        <div className="text-[8px] tracking-wider opacity-60 text-right">
-          <div>CLASSIFIED DOCUMENT</div>
-          <div>AUTHORIZED ACCESS ONLY</div>
-        </div>
-      </div>
 
-      <div className="flex-1 flex overflow-hidden bg-[#F5F0E1]">
-        {/* Main Content - Illustration + Info Side by Side */}
-        <div className="flex-1 flex p-3 gap-3">
-          {/* Left: Square Portrait Illustration */}
-          <div className="flex flex-col">
-            <div className="w-[520px] aspect-square">
-              <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} />
-            </div>
-            {/* Name plate under illustration */}
-            <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-2.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                {getEmployeeIcon(selectedEmployee.id)}
-                <div>
-                  <div className="text-[14px] font-black">{selectedEmployee.name}</div>
-                  <div className="text-[10px] text-[#a89888]">{selectedEmployee.role}</div>
+        <div className="flex-1 flex overflow-hidden bg-[#F5F0E1]">
+          {/* Main Content - Illustration + Info Side by Side */}
+          <div className="flex-1 flex p-3 gap-3">
+            {/* Left: Square Portrait Illustration */}
+            <div className="flex flex-col">
+              <div className="w-[520px] aspect-square">
+                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} />
+              </div>
+              {/* Name plate under illustration */}
+              <div className="bg-[#1a1a1a] text-[#D4C088] px-3 py-2.5 mt-2 border-2 border-[#8B7355] flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {getEmployeeIcon(selectedEmployee.id)}
+                  <div>
+                    <div className="text-[14px] font-black">{selectedEmployee.name}</div>
+                    <div className="text-[10px] text-[#a89888]">{selectedEmployee.role}</div>
+                  </div>
+                </div>
+                <div className="text-[9px] text-[#a89888] font-mono">
+                  {selectedEmployee.idNumber}
                 </div>
               </div>
-              <div className="text-[9px] text-[#a89888] font-mono">
-                {selectedEmployee.idNumber}
+            </div>
+
+            {/* Right: Info Panel */}
+            <div className="flex-1 flex flex-col min-w-0">
+              {/* Tab Buttons */}
+              <div className="flex border-b-2 border-[#8B7355] mb-3">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`px-4 py-2 text-[12px] font-bold tracking-wide transition-colors ${
+                      activeTab === tab.id
+                        ? "bg-[#5a9c5a] text-white"
+                        : "bg-[#d4c8b8] text-[#5a5a5a] hover:bg-[#c4b8a8]"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Tab Content */}
+              <div className="flex-1 overflow-y-auto bg-[#e8e0d0] border-2 border-[#8B7355] p-4">
+                {activeTab === "profile" && (
+                  <div className="space-y-3 text-[13px]">
+                    <div className="grid grid-cols-1 gap-2">
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Name:</span>
+                        <span className="text-[#1a1a1a] font-medium">{selectedEmployee.name}</span>
+                      </div>
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Division:</span>
+                        <span className="text-[#1a1a1a]">{selectedEmployee.division}</span>
+                      </div>
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Role:</span>
+                        <span className="text-[#1a1a1a]">{selectedEmployee.role}</span>
+                      </div>
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Specialty:</span>
+                        <span className="text-[#1a1a1a]">{selectedEmployee.specialty}</span>
+                      </div>
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">ID Number:</span>
+                        <span className="text-[#1a1a1a] font-mono">{selectedEmployee.idNumber}</span>
+                      </div>
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Clearance:</span>
+                        <span className="text-[#8B4513] font-bold">Level {selectedEmployee.clearanceLevel}</span>
+                      </div>
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Sector:</span>
+                        <span className="text-[#1a1a1a]">{selectedEmployee.assignedSector}</span>
+                      </div>
+                      <div className="flex border-b border-[#c4b8a8] pb-1">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Base:</span>
+                        <span className="text-[#1a1a1a]">{selectedEmployee.baseLocation}</span>
+                      </div>
+                      <div className="flex">
+                        <span className="font-bold text-[#5a5a5a] w-[100px]">Incidents:</span>
+                        <span className="text-[#8B4513] font-bold">{selectedEmployee.incidentReports}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === "review" && (
+                  <div className="space-y-3 text-[13px]">
+                    <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
+                      SUPERVISOR NOTES
+                    </div>
+                    {selectedEmployee.supervisorNotes.map((note, index) => (
+                      <div key={index} className="bg-[#F5F0E1] p-3 border-l-4 border-[#8B7355] text-[#1a1a1a] italic leading-relaxed">
+                        &ldquo;{note}&rdquo;
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {activeTab === "comments" && (
+                  <div className="space-y-3 text-[13px]">
+                    <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
+                      COLLEAGUE COMMENTS
+                    </div>
+                    {selectedEmployee.colleagueComments.map((comment, index) => (
+                      <div key={index} className="bg-[#F5F0E1] p-3 border-l-4 border-[#5a9c5a] text-[#1a1a1a] italic leading-relaxed">
+                        &ldquo;{comment}&rdquo;
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {activeTab === "equipment" && (
+                  <div className="space-y-3 text-[13px]">
+                    <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
+                      EQUIPMENT ISSUED
+                    </div>
+                    <div className="font-black text-[#1a1a1a] text-[17px]">{selectedEmployee.equipment.name}</div>
+                    <div className="flex mt-2">
+                      <span className="font-bold text-[#5a5a5a] w-[60px]">Model:</span>
+                      <span className="text-[#1a1a1a]">{selectedEmployee.equipment.model}</span>
+                    </div>
+                    <div className="bg-[#F5F0E1] p-3 border border-[#a89888] text-[#1a1a1a] mt-3 leading-relaxed">
+                      <span className="font-bold">Description: </span>
+                      {selectedEmployee.equipment.description}
+                    </div>
+                    {selectedEmployee.equipment.nickname && (
+                      <div className="text-[12px] text-[#666] italic mt-2">
+                        Has affectionately been nicknamed &ldquo;{selectedEmployee.equipment.nickname}&rdquo;.
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-
-          {/* Right: Info Panel */}
-          <div className="flex-1 flex flex-col min-w-0">
-            {/* Tab Buttons */}
-            <div className="flex border-b-2 border-[#8B7355] mb-3">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 text-[12px] font-bold tracking-wide transition-colors ${
-                    activeTab === tab.id
-                      ? "bg-[#5a9c5a] text-white"
-                      : "bg-[#d4c8b8] text-[#5a5a5a] hover:bg-[#c4b8a8]"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Tab Content */}
-            <div className="flex-1 overflow-y-auto bg-[#e8e0d0] border-2 border-[#8B7355] p-4">
-              {activeTab === "profile" && (
-                <div className="space-y-3 text-[13px]">
-                  <div className="grid grid-cols-1 gap-2">
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Name:</span>
-                      <span className="text-[#1a1a1a] font-medium">{selectedEmployee.name}</span>
-                    </div>
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Division:</span>
-                      <span className="text-[#1a1a1a]">{selectedEmployee.division}</span>
-                    </div>
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Role:</span>
-                      <span className="text-[#1a1a1a]">{selectedEmployee.role}</span>
-                    </div>
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Specialty:</span>
-                      <span className="text-[#1a1a1a]">{selectedEmployee.specialty}</span>
-                    </div>
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">ID Number:</span>
-                      <span className="text-[#1a1a1a] font-mono">{selectedEmployee.idNumber}</span>
-                    </div>
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Clearance:</span>
-                      <span className="text-[#8B4513] font-bold">Level {selectedEmployee.clearanceLevel}</span>
-                    </div>
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Sector:</span>
-                      <span className="text-[#1a1a1a]">{selectedEmployee.assignedSector}</span>
-                    </div>
-                    <div className="flex border-b border-[#c4b8a8] pb-1">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Base:</span>
-                      <span className="text-[#1a1a1a]">{selectedEmployee.baseLocation}</span>
-                    </div>
-                    <div className="flex">
-                      <span className="font-bold text-[#5a5a5a] w-[100px]">Incidents:</span>
-                      <span className="text-[#8B4513] font-bold">{selectedEmployee.incidentReports}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "review" && (
-                <div className="space-y-3 text-[13px]">
-                  <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
-                    SUPERVISOR NOTES
-                  </div>
-                  {selectedEmployee.supervisorNotes.map((note, index) => (
-                    <div key={index} className="bg-[#F5F0E1] p-3 border-l-4 border-[#8B7355] text-[#1a1a1a] italic leading-relaxed">
-                      &ldquo;{note}&rdquo;
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {activeTab === "comments" && (
-                <div className="space-y-3 text-[13px]">
-                  <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
-                    COLLEAGUE COMMENTS
-                  </div>
-                  {selectedEmployee.colleagueComments.map((comment, index) => (
-                    <div key={index} className="bg-[#F5F0E1] p-3 border-l-4 border-[#5a9c5a] text-[#1a1a1a] italic leading-relaxed">
-                      &ldquo;{comment}&rdquo;
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {activeTab === "equipment" && (
-                <div className="space-y-3 text-[13px]">
-                  <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
-                    EQUIPMENT ISSUED
-                  </div>
-                  <div className="font-black text-[#1a1a1a] text-[17px]">{selectedEmployee.equipment.name}</div>
-                  <div className="flex mt-2">
-                    <span className="font-bold text-[#5a5a5a] w-[60px]">Model:</span>
-                    <span className="text-[#1a1a1a]">{selectedEmployee.equipment.model}</span>
-                  </div>
-                  <div className="bg-[#F5F0E1] p-3 border border-[#a89888] text-[#1a1a1a] mt-3 leading-relaxed">
-                    <span className="font-bold">Description: </span>
-                    {selectedEmployee.equipment.description}
-                  </div>
-                  {selectedEmployee.equipment.nickname && (
-                    <div className="text-[12px] text-[#666] italic mt-2">
-                      Has affectionately been nicknamed &ldquo;{selectedEmployee.equipment.nickname}&rdquo;.
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
         </div>
-      </div>
 
-      <WindowStatusBar>
-        <WindowStatusField className="flex-none w-[120px] text-[11px]">
-          {employeeProfiles.length} personnel
-        </WindowStatusField>
-        <WindowStatusField className="flex-none px-3 text-[11px]">
-          N.E.C — New Eden IV
-        </WindowStatusField>
-        <WindowStatusField className="flex-1 text-right pr-3 text-[11px]">
-          Employee File
-        </WindowStatusField>
-      </WindowStatusBar>
-    </Window>
+        <WindowStatusBar>
+          <WindowStatusField className="flex-none w-[120px] text-[11px]">
+            {employeeProfiles.length} personnel
+          </WindowStatusField>
+          <WindowStatusField className="flex-none px-3 text-[11px]">
+            N.E.C — New Eden IV
+          </WindowStatusField>
+          <WindowStatusField className="flex-1 text-right pr-3 text-[11px]">
+            Employee File
+          </WindowStatusField>
+        </WindowStatusBar>
+      </Window>
     </div>
   );
 }
