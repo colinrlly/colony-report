@@ -40,105 +40,28 @@ function MediaPlayerIcon() {
   );
 }
 
-// Media control button icons
-function PlayIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="3" y="1" width="2" height="10" fill="currentColor" />
-      <rect x="5" y="2" width="2" height="8" fill="currentColor" />
-      <rect x="7" y="3" width="2" height="6" fill="currentColor" />
-      <rect x="9" y="4" width="1" height="4" fill="currentColor" />
-    </svg>
-  );
-}
-
-function PauseIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="2" y="1" width="3" height="10" fill="currentColor" />
-      <rect x="7" y="1" width="3" height="10" fill="currentColor" />
-    </svg>
-  );
-}
-
-function StopIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="2" y="2" width="8" height="8" fill="currentColor" />
-    </svg>
-  );
-}
-
+// Previous button icon (media style)
 function PrevIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="1" y="1" width="2" height="10" fill="currentColor" />
-      <rect x="9" y="4" width="2" height="4" fill="currentColor" />
-      <rect x="7" y="3" width="2" height="6" fill="currentColor" />
-      <rect x="5" y="2" width="2" height="8" fill="currentColor" />
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges">
+      <rect x="2" y="2" width="2" height="12" fill="currentColor" />
+      <rect x="12" y="6" width="2" height="4" fill="currentColor" />
+      <rect x="10" y="5" width="2" height="6" fill="currentColor" />
+      <rect x="8" y="4" width="2" height="8" fill="currentColor" />
+      <rect x="6" y="3" width="2" height="10" fill="currentColor" />
     </svg>
   );
 }
 
+// Next button icon (media style)
 function NextIcon() {
   return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="9" y="1" width="2" height="10" fill="currentColor" />
-      <rect x="1" y="4" width="2" height="4" fill="currentColor" />
-      <rect x="3" y="3" width="2" height="6" fill="currentColor" />
-      <rect x="5" y="2" width="2" height="8" fill="currentColor" />
-    </svg>
-  );
-}
-
-function RewindIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="9" y="3" width="2" height="6" fill="currentColor" />
-      <rect x="7" y="4" width="2" height="4" fill="currentColor" />
-      <rect x="5" y="5" width="2" height="2" fill="currentColor" />
-      <rect x="4" y="3" width="2" height="6" fill="currentColor" />
-      <rect x="2" y="4" width="2" height="4" fill="currentColor" />
-      <rect x="0" y="5" width="2" height="2" fill="currentColor" />
-    </svg>
-  );
-}
-
-function FastForwardIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="1" y="3" width="2" height="6" fill="currentColor" />
-      <rect x="3" y="4" width="2" height="4" fill="currentColor" />
-      <rect x="5" y="5" width="2" height="2" fill="currentColor" />
-      <rect x="6" y="3" width="2" height="6" fill="currentColor" />
-      <rect x="8" y="4" width="2" height="4" fill="currentColor" />
-      <rect x="10" y="5" width="2" height="2" fill="currentColor" />
-    </svg>
-  );
-}
-
-function MenuIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" shapeRendering="crispEdges">
-      <rect x="1" y="2" width="10" height="2" fill="currentColor" />
-      <rect x="1" y="5" width="10" height="2" fill="currentColor" />
-      <rect x="1" y="8" width="10" height="2" fill="currentColor" />
-    </svg>
-  );
-}
-
-function SpeakerIcon() {
-  return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges">
-      {/* Speaker body */}
-      <rect x="1" y="5" width="4" height="6" fill="#ffdd44" />
-      {/* Speaker cone */}
-      <rect x="5" y="4" width="2" height="8" fill="#ffdd44" />
-      <rect x="7" y="3" width="2" height="10" fill="#ffdd44" />
-      {/* Sound waves */}
-      <rect x="10" y="6" width="1" height="4" fill="#888888" />
-      <rect x="12" y="5" width="1" height="6" fill="#888888" />
-      <rect x="14" y="4" width="1" height="8" fill="#888888" />
+      <rect x="12" y="2" width="2" height="12" fill="currentColor" />
+      <rect x="2" y="6" width="2" height="4" fill="currentColor" />
+      <rect x="4" y="5" width="2" height="6" fill="currentColor" />
+      <rect x="6" y="4" width="2" height="8" fill="currentColor" />
+      <rect x="8" y="3" width="2" height="10" fill="currentColor" />
     </svg>
   );
 }
@@ -271,23 +194,23 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
   const ICON_COLUMN_RIGHT_EDGE = 132;
 
   return (
-    <div className="absolute top-[6vh] left-1/2 -translate-x-1/2 z-20 flex gap-0">
-      {/* Main Media Player Window */}
-      <Window
-        resizable={false}
-        leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-        className="w-[650px] h-[680px] flex flex-col"
-      >
-        <WindowTitleBar>
-          <div className="flex items-center gap-2">
-            <MediaPlayerIcon />
-            <WindowTitle>Media Player</WindowTitle>
-          </div>
-          <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
-        </WindowTitleBar>
+    <Window
+      resizable={false}
+      leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
+      className="z-20 w-[880px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+    >
+      <WindowTitleBar>
+        <div className="flex items-center gap-2">
+          <MediaPlayerIcon />
+          <WindowTitle>Media Player</WindowTitle>
+        </div>
+        <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
+      </WindowTitleBar>
 
-        {/* Main content area */}
-        <div className="flex-1 bg-[#c8b9a9] p-2 flex flex-col gap-2">
+      {/* Main content area - horizontal layout */}
+      <div className="flex-1 bg-[#c8b9a9] p-2 flex gap-2">
+        {/* Left side - Main player area */}
+        <div className="flex-1 flex flex-col gap-2">
           {/* Video display area */}
           <div
             className="flex-1 win98-border-sunken flex items-center justify-center"
@@ -304,166 +227,116 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
             video data info date recording etc
           </div>
 
-          {/* Media controls bar */}
-          <div className="win98-border-raised bg-[#c8b9a9] p-1 flex items-center gap-1">
-            {/* Progress bar indicator */}
-            <div className="win98-border-sunken bg-[#a09080] w-8 h-5 flex items-center justify-center">
-              <div className="w-4 h-2 bg-[#4a4a4a]" />
-            </div>
-
-            {/* Play button */}
-            <button className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]">
-              <PlayIcon />
-            </button>
-
-            {/* Pause button */}
-            <button className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]">
-              <PauseIcon />
-            </button>
-
-            {/* Stop button */}
-            <button className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]">
-              <StopIcon />
-            </button>
-
-            {/* Separator */}
-            <div className="w-px h-5 bg-[#808080] mx-1" />
-
+          {/* Media controls bar - just prev/next buttons */}
+          <div className="win98-border-raised bg-[#c8b9a9] p-1 flex items-center justify-center gap-2">
             {/* Previous button */}
             <button
               onClick={handlePreviousVideo}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]"
+              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-10 h-8 flex items-center justify-center text-[#222222]"
             >
               <PrevIcon />
-            </button>
-
-            {/* Rewind button */}
-            <button className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]">
-              <RewindIcon />
-            </button>
-
-            {/* Fast Forward button */}
-            <button className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]">
-              <FastForwardIcon />
             </button>
 
             {/* Next button */}
             <button
               onClick={handleNextVideo}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]"
+              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-10 h-8 flex items-center justify-center text-[#222222]"
             >
               <NextIcon />
             </button>
-
-            {/* Separator */}
-            <div className="w-px h-5 bg-[#808080] mx-1" />
-
-            {/* Menu button */}
-            <button className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-7 h-6 flex items-center justify-center text-[#222222]">
-              <MenuIcon />
-            </button>
-
-            {/* Spacer */}
-            <div className="flex-1" />
-
-            {/* Speaker icon and volume slider */}
-            <SpeakerIcon />
-            <div className="win98-border-sunken bg-[#a09080] w-20 h-3 relative mx-1">
-              <div className="absolute left-0 top-0 h-full w-3/4 bg-[#c8b9a9]" />
-            </div>
           </div>
         </div>
-      </Window>
 
-      {/* Sidebar - Subscribers panel */}
-      <div className="win98-border-raised bg-[#c8b9a9] w-[200px] h-[680px] flex flex-col">
-        {/* Subscribers header */}
-        <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold">
-          Subscribers
-        </div>
+        {/* Right side - Videos sidebar */}
+        <div className="w-[220px] flex flex-col gap-2">
+          {/* Videos header */}
+          <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold win98-border-raised">
+            Videos
+          </div>
 
-        {/* Thumbnail list with scrollbar */}
-        <div className="flex-1 flex min-h-0">
-          {/* Thumbnails area */}
-          <div className="flex-1 bg-[#a09080] p-1 overflow-hidden">
-            <div className="flex flex-col gap-2">
-              {videoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((video, displayIndex) => {
-                const actualIndex = scrollPosition + displayIndex;
-                const isSelected = actualIndex === selectedIndex;
+          {/* Thumbnail list with scrollbar - fills remaining space to align with video area */}
+          <div className="flex-1 flex min-h-0">
+            {/* Thumbnails area */}
+            <div className="flex-1 bg-[#a09080] p-1 overflow-hidden win98-border-sunken">
+              <div className="flex flex-col gap-2">
+                {videoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((video, displayIndex) => {
+                  const actualIndex = scrollPosition + displayIndex;
+                  const isSelected = actualIndex === selectedIndex;
 
-                return (
-                  <div
-                    key={video.id}
-                    className="cursor-pointer"
-                    onClick={() => handleThumbnailClick(actualIndex)}
-                  >
-                    {/* Thumbnail */}
+                  return (
                     <div
-                      className={`w-full h-[120px] win98-border-sunken flex items-center justify-center ${
-                        isSelected ? 'ring-2 ring-[#ffdd44]' : ''
-                      }`}
-                      style={{ backgroundColor: video.color }}
+                      key={video.id}
+                      className="cursor-pointer"
+                      onClick={() => handleThumbnailClick(actualIndex)}
                     >
-                      <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
-                        <div>placeholder</div>
-                        <div>animated GIF goes here</div>
+                      {/* Thumbnail */}
+                      <div
+                        className={`w-full h-[120px] win98-border-sunken flex items-center justify-center ${
+                          isSelected ? 'ring-2 ring-[#ffdd44]' : ''
+                        }`}
+                        style={{ backgroundColor: video.color }}
+                      >
+                        <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
+                          <div>placeholder</div>
+                          <div>animated GIF goes here</div>
+                        </div>
+                      </div>
+                      {/* Label */}
+                      <div className={`text-[11px] text-right mt-1 ${isSelected ? 'text-[#222222] font-bold' : 'text-[#4a4a4a]'}`}>
+                        {video.label}
                       </div>
                     </div>
-                    {/* Label */}
-                    <div className={`text-[11px] text-right mt-1 ${isSelected ? 'text-[#222222] font-bold' : 'text-[#4a4a4a]'}`}>
-                      {video.label}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
 
-          {/* Vertical scrollbar */}
-          <div className="w-4 bg-[#c8b9a9] flex flex-col">
-            {/* Up arrow button */}
-            <button
-              onClick={handleScrollUp}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
-            >
-              <UpArrowIcon />
-            </button>
+            {/* Vertical scrollbar */}
+            <div className="w-4 bg-[#c8b9a9] flex flex-col">
+              {/* Up arrow button */}
+              <button
+                onClick={handleScrollUp}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
+              >
+                <UpArrowIcon />
+              </button>
 
-            {/* Scrollbar track */}
-            <div
-              ref={scrollbarTrackRef}
-              onClick={handleTrackClick}
-              className="flex-1 win98-border-sunken bg-[#a09080] relative cursor-pointer"
-            >
-              {/* Scrollbar thumb */}
+              {/* Scrollbar track */}
               <div
-                onMouseDown={handleScrollbarMouseDown}
-                className={`absolute left-0 w-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
-                style={{
-                  top: `${scrollbarThumbPositionPercent}%`,
-                  height: `${scrollbarThumbHeightPercent}%`,
-                }}
-              />
+                ref={scrollbarTrackRef}
+                onClick={handleTrackClick}
+                className="flex-1 win98-border-sunken bg-[#a09080] relative cursor-pointer"
+              >
+                {/* Scrollbar thumb */}
+                <div
+                  onMouseDown={handleScrollbarMouseDown}
+                  className={`absolute left-0 w-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
+                  style={{
+                    top: `${scrollbarThumbPositionPercent}%`,
+                    height: `${scrollbarThumbHeightPercent}%`,
+                  }}
+                />
+              </div>
+
+              {/* Down arrow button */}
+              <button
+                onClick={handleScrollDown}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
+              >
+                <DownArrowIcon />
+              </button>
             </div>
-
-            {/* Down arrow button */}
-            <button
-              onClick={handleScrollDown}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
-            >
-              <DownArrowIcon />
-            </button>
           </div>
-        </div>
 
-        {/* Video Notes section */}
-        <div className="win98-border-sunken bg-[#5a4d42] p-2 m-1">
-          <div className="text-[#c8b9a9] text-[10px]">
-            <span className="font-bold">Video Notes: </span>
-            <span className="text-[#e8a874]">{selectedVideo.notes}</span>
+          {/* Video Notes section - aligns with info bar + controls */}
+          <div className="win98-border-sunken bg-[#5a4d42] p-2 h-[76px]">
+            <div className="text-[#c8b9a9] text-[10px]">
+              <span className="font-bold">Video Notes: </span>
+              <span className="text-[#e8a874]">{selectedVideo.notes}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Window>
   );
 }
