@@ -304,12 +304,13 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
-      {/* Main content area - horizontal layout */}
-      <div className="flex-1 bg-[#c8b9a9] p-2 flex gap-2">
-        {/* Left side - Main player area */}
-        <div className="flex-1 flex flex-col gap-2">
-          {/* Video display area - aspect ratio container */}
-          <div className="flex-1 win98-border-sunken flex items-center justify-center"
+      {/* Main content area - vertical layout with two rows */}
+      <div className="flex-1 bg-[#c8b9a9] p-2 flex flex-col gap-2">
+        {/* Top row: Main video + Thumbnails sidebar */}
+        <div className="flex-1 flex gap-2 min-h-0">
+          {/* Main video display area */}
+          <div
+            className="flex-1 win98-border-sunken flex items-center justify-center"
             style={{ backgroundColor: selectedVideo.color }}
           >
             <div className="text-white/80 text-xl font-bold text-center drop-shadow-[2px_2px_3px_rgba(0,0,0,0.5)]">
@@ -318,152 +319,158 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
             </div>
           </div>
 
-          {/* Video info bar */}
-          <div className="win98-border-sunken bg-[#d8c9b9] px-3 py-2 text-[#222222] text-sm">
-            video data info date recording etc
-          </div>
+          {/* Right side - Videos sidebar (thumbnails only) */}
+          <div className="w-[220px] flex flex-col gap-2">
+            {/* Videos header */}
+            <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold win98-border-raised">
+              Videos
+            </div>
 
-          {/* Media controls bar - prev/next buttons + volume */}
-          <div className="win98-border-raised bg-[#c8b9a9] p-2 flex items-center gap-4">
-            {/* Previous button */}
-            <button
-              onClick={handlePreviousVideo}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken px-3 py-1 flex items-center justify-center text-[#222222]"
-            >
-              <PrevIcon />
-            </button>
+            {/* Thumbnail list with scrollbar */}
+            <div className="flex-1 flex min-h-0">
+              {/* Thumbnails area */}
+              <div className="flex-1 bg-[#a09080] p-1 overflow-hidden win98-border-sunken">
+                <div className="flex flex-col gap-2 h-full">
+                  {videoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((video, displayIndex) => {
+                    const actualIndex = scrollPosition + displayIndex;
+                    const isSelected = actualIndex === selectedIndex;
 
-            {/* Next button */}
-            <button
-              onClick={handleNextVideo}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken px-3 py-1 flex items-center justify-center text-[#222222]"
-            >
-              <NextIcon />
-            </button>
-
-            {/* Spacer */}
-            <div className="flex-1" />
-
-            {/* Volume control */}
-            <div className="flex items-center gap-2">
-              {/* Speaker icon / mute button */}
-              <button
-                onClick={handleToggleMute}
-                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-6 flex items-center justify-center"
-              >
-                <SpeakerIcon muted={isMuted || volume === 0} />
-              </button>
-
-              {/* Volume slider track */}
-              <div
-                ref={volumeTrackRef}
-                onClick={handleVolumeTrackClick}
-                className="win98-border-sunken bg-[#a09080] w-24 h-4 relative cursor-pointer"
-              >
-                {/* Volume fill */}
-                <div
-                  className="absolute left-0 top-0 h-full bg-[#6b8a6b]"
-                  style={{ width: `${effectiveVolume}%` }}
-                />
-                {/* Volume thumb */}
-                <div
-                  onMouseDown={handleVolumeMouseDown}
-                  className={`absolute top-0 w-2 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingVolume ? 'cursor-grabbing' : ''}`}
-                  style={{ left: `calc(${effectiveVolume}% - 4px)` }}
-                />
+                    return (
+                      <div
+                        key={video.id}
+                        className="cursor-pointer flex-1 flex flex-col"
+                        onClick={() => handleThumbnailClick(actualIndex)}
+                      >
+                        {/* Thumbnail */}
+                        <div
+                          className={`w-full flex-1 win98-border-sunken flex items-center justify-center ${
+                            isSelected ? 'ring-2 ring-[#ffdd44]' : ''
+                          }`}
+                          style={{ backgroundColor: video.color }}
+                        >
+                          <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
+                            <div>placeholder</div>
+                            <div>animated GIF goes here</div>
+                          </div>
+                        </div>
+                        {/* Label */}
+                        <div className={`text-[11px] text-right mt-1 flex-shrink-0 ${isSelected ? 'text-[#222222] font-bold' : 'text-[#4a4a4a]'}`}>
+                          {video.label}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
-              {/* Volume percentage */}
-              <span className="text-[#222222] text-xs w-8 text-right">
-                {effectiveVolume}%
-              </span>
+              {/* Vertical scrollbar */}
+              <div className="w-4 bg-[#c8b9a9] flex flex-col">
+                {/* Up arrow button */}
+                <button
+                  onClick={handleScrollUp}
+                  className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
+                >
+                  <UpArrowIcon />
+                </button>
+
+                {/* Scrollbar track */}
+                <div
+                  ref={scrollbarTrackRef}
+                  onClick={handleTrackClick}
+                  className="flex-1 win98-border-sunken bg-[#a09080] relative cursor-pointer"
+                >
+                  {/* Scrollbar thumb */}
+                  <div
+                    onMouseDown={handleScrollbarMouseDown}
+                    className={`absolute left-0 w-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
+                    style={{
+                      top: `${scrollbarThumbPositionPercent}%`,
+                      height: `${scrollbarThumbHeightPercent}%`,
+                    }}
+                  />
+                </div>
+
+                {/* Down arrow button */}
+                <button
+                  onClick={handleScrollDown}
+                  className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
+                >
+                  <DownArrowIcon />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Right side - Videos sidebar */}
-        <div className="w-[220px] flex flex-col gap-2">
-          {/* Videos header */}
-          <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold win98-border-raised">
-            Videos
-          </div>
-
-          {/* Thumbnail list with scrollbar - fills remaining space to align with video area */}
-          <div className="flex-1 flex min-h-0">
-            {/* Thumbnails area */}
-            <div className="flex-1 bg-[#a09080] p-1 overflow-hidden win98-border-sunken">
-              <div className="flex flex-col gap-2 h-full">
-                {videoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((video, displayIndex) => {
-                  const actualIndex = scrollPosition + displayIndex;
-                  const isSelected = actualIndex === selectedIndex;
-
-                  return (
-                    <div
-                      key={video.id}
-                      className="cursor-pointer flex-1 flex flex-col"
-                      onClick={() => handleThumbnailClick(actualIndex)}
-                    >
-                      {/* Thumbnail - using aspect-video to match main video ratio */}
-                      <div
-                        className={`w-full flex-1 win98-border-sunken flex items-center justify-center ${
-                          isSelected ? 'ring-2 ring-[#ffdd44]' : ''
-                        }`}
-                        style={{ backgroundColor: video.color }}
-                      >
-                        <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
-                          <div>placeholder</div>
-                          <div>animated GIF goes here</div>
-                        </div>
-                      </div>
-                      {/* Label */}
-                      <div className={`text-[11px] text-right mt-1 flex-shrink-0 ${isSelected ? 'text-[#222222] font-bold' : 'text-[#4a4a4a]'}`}>
-                        {video.label}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+        {/* Bottom row: Info bar + Controls + Video Notes - one continuous line */}
+        <div className="flex gap-2">
+          {/* Left: Info bar and controls */}
+          <div className="flex-1 flex flex-col gap-2">
+            {/* Video info bar */}
+            <div className="win98-border-sunken bg-[#d8c9b9] px-3 py-2 text-[#222222] text-sm">
+              video data info date recording etc
             </div>
 
-            {/* Vertical scrollbar */}
-            <div className="w-4 bg-[#c8b9a9] flex flex-col">
-              {/* Up arrow button */}
+            {/* Media controls bar - prev/next buttons + volume */}
+            <div className="win98-border-raised bg-[#c8b9a9] p-2 flex items-center gap-4">
+              {/* Previous button */}
               <button
-                onClick={handleScrollUp}
-                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
+                onClick={handlePreviousVideo}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken px-3 py-1 flex items-center justify-center text-[#222222]"
               >
-                <UpArrowIcon />
+                <PrevIcon />
               </button>
 
-              {/* Scrollbar track */}
-              <div
-                ref={scrollbarTrackRef}
-                onClick={handleTrackClick}
-                className="flex-1 win98-border-sunken bg-[#a09080] relative cursor-pointer"
+              {/* Next button */}
+              <button
+                onClick={handleNextVideo}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken px-3 py-1 flex items-center justify-center text-[#222222]"
               >
-                {/* Scrollbar thumb */}
+                <NextIcon />
+              </button>
+
+              {/* Spacer */}
+              <div className="flex-1" />
+
+              {/* Volume control */}
+              <div className="flex items-center gap-2">
+                {/* Speaker icon / mute button */}
+                <button
+                  onClick={handleToggleMute}
+                  className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-6 flex items-center justify-center"
+                >
+                  <SpeakerIcon muted={isMuted || volume === 0} />
+                </button>
+
+                {/* Volume slider track */}
                 <div
-                  onMouseDown={handleScrollbarMouseDown}
-                  className={`absolute left-0 w-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
-                  style={{
-                    top: `${scrollbarThumbPositionPercent}%`,
-                    height: `${scrollbarThumbHeightPercent}%`,
-                  }}
-                />
-              </div>
+                  ref={volumeTrackRef}
+                  onClick={handleVolumeTrackClick}
+                  className="win98-border-sunken bg-[#a09080] w-24 h-4 relative cursor-pointer"
+                >
+                  {/* Volume fill */}
+                  <div
+                    className="absolute left-0 top-0 h-full bg-[#6b8a6b]"
+                    style={{ width: `${effectiveVolume}%` }}
+                  />
+                  {/* Volume thumb */}
+                  <div
+                    onMouseDown={handleVolumeMouseDown}
+                    className={`absolute top-0 w-2 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingVolume ? 'cursor-grabbing' : ''}`}
+                    style={{ left: `calc(${effectiveVolume}% - 4px)` }}
+                  />
+                </div>
 
-              {/* Down arrow button */}
-              <button
-                onClick={handleScrollDown}
-                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken h-4 flex items-center justify-center text-[#222222]"
-              >
-                <DownArrowIcon />
-              </button>
+                {/* Volume percentage */}
+                <span className="text-[#222222] text-xs w-8 text-right">
+                  {effectiveVolume}%
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* Video Notes section - aligns with info bar + controls */}
-          <div className="win98-border-sunken bg-[#5a4d42] p-2 h-[76px]">
+          {/* Right: Video Notes - same width as sidebar */}
+          <div className="w-[220px] win98-border-sunken bg-[#5a4d42] p-2">
             <div className="text-[#c8b9a9] text-[10px]">
               <span className="font-bold">Video Notes: </span>
               <span className="text-[#e8a874]">{selectedVideo.notes}</span>
