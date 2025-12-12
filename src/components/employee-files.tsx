@@ -269,8 +269,8 @@ function getEmployeeIcon(employeeId: string) {
 
 // Employee tab color configuration
 const EMPLOYEE_TAB_COLORS: Record<string, { bg: string; bgSelected: string; border: string }> = {
-  "emp-001": { bg: "#343721", bgSelected: "#3e4128", border: "#262a18" }, // Green for Jasmine
-  "emp-002": { bg: "#833d15", bgSelected: "#934519", border: "#6a3110" }, // Orange for Hank
+  "emp-001": { bg: "#833d15", bgSelected: "#934519", border: "#6a3110" }, // Orange for Jasmine
+  "emp-002": { bg: "#343721", bgSelected: "#3e4128", border: "#262a18" }, // Green for Hank
   "emp-003": { bg: "#4f241e", bgSelected: "#5f2c24", border: "#3f1c16" }, // Red for Professor
 };
 
