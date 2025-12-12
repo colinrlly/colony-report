@@ -134,6 +134,16 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
     setScrollPosition(Math.max(0, Math.min(maxScroll, newPosition)));
   };
 
+  // Handle mouse wheel scrolling on thumbnail area
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    // Use deltaY for vertical scroll wheel, convert to horizontal scroll
+    // Positive deltaY = scroll down = scroll right, negative = scroll left
+    const scrollDirection = e.deltaY > 0 ? 1 : -1;
+    const newPosition = scrollPosition + scrollDirection;
+    setScrollPosition(Math.max(0, Math.min(maxScroll, newPosition)));
+  };
+
   // Global mouse move/up handlers for scrollbar dragging
   useEffect(() => {
     if (!isDraggingScrollbar) return;
@@ -222,6 +232,7 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
           <div
             ref={scrollbarTrackRef}
             onClick={handleTrackClick}
+            onWheel={handleWheel}
             className="flex-1 h-5 win98-border-sunken bg-[#a09080] relative cursor-pointer"
           >
             {/* Scrollbar thumb */}
@@ -246,7 +257,7 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
         </div>
 
         {/* Thumbnail strip - bigger thumbnails */}
-        <div className="bg-[#8b7d72] win98-border-sunken p-2">
+        <div className="bg-[#8b7d72] win98-border-sunken p-2" onWheel={handleWheel}>
           <div className="flex gap-3 overflow-hidden justify-center" ref={thumbnailContainerRef}>
             {photoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((photo, displayIndex) => {
               const actualIndex = scrollPosition + displayIndex;
