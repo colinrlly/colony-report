@@ -397,9 +397,9 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2 text-[11px] font-bold tracking-wide transition-colors ${
+                  className={`px-4 py-2 text-[12px] font-bold tracking-wide transition-colors ${
                     activeTab === tab.id
-                      ? "bg-[#8B7355] text-white"
+                      ? "bg-[#5a9c5a] text-white"
                       : "bg-[#d4c8b8] text-[#5a5a5a] hover:bg-[#c4b8a8]"
                   }`}
                 >
@@ -411,7 +411,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             {/* Tab Content */}
             <div className="flex-1 overflow-y-auto bg-[#e8e0d0] border-2 border-[#8B7355] p-4">
               {activeTab === "profile" && (
-                <div className="space-y-3 text-[12px]">
+                <div className="space-y-3 text-[13px]">
                   <div className="grid grid-cols-1 gap-2">
                     <div className="flex border-b border-[#c4b8a8] pb-1">
                       <span className="font-bold text-[#5a5a5a] w-[100px]">Name:</span>
@@ -454,8 +454,8 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               )}
 
               {activeTab === "review" && (
-                <div className="space-y-3 text-[12px]">
-                  <div className="font-bold text-[#8B7355] text-[14px] border-b-2 border-[#8B7355] pb-1 mb-3">
+                <div className="space-y-3 text-[13px]">
+                  <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
                     SUPERVISOR NOTES
                   </div>
                   {selectedEmployee.supervisorNotes.map((note, index) => (
@@ -467,8 +467,8 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               )}
 
               {activeTab === "comments" && (
-                <div className="space-y-3 text-[12px]">
-                  <div className="font-bold text-[#8B7355] text-[14px] border-b-2 border-[#8B7355] pb-1 mb-3">
+                <div className="space-y-3 text-[13px]">
+                  <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
                     COLLEAGUE COMMENTS
                   </div>
                   {selectedEmployee.colleagueComments.map((comment, index) => (
@@ -480,11 +480,11 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               )}
 
               {activeTab === "equipment" && (
-                <div className="space-y-3 text-[12px]">
-                  <div className="font-bold text-[#8B7355] text-[14px] border-b-2 border-[#8B7355] pb-1 mb-3">
+                <div className="space-y-3 text-[13px]">
+                  <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
                     EQUIPMENT ISSUED
                   </div>
-                  <div className="font-black text-[#1a1a1a] text-[16px]">{selectedEmployee.equipment.name}</div>
+                  <div className="font-black text-[#1a1a1a] text-[17px]">{selectedEmployee.equipment.name}</div>
                   <div className="flex mt-2">
                     <span className="font-bold text-[#5a5a5a] w-[60px]">Model:</span>
                     <span className="text-[#1a1a1a]">{selectedEmployee.equipment.model}</span>
@@ -494,7 +494,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     {selectedEmployee.equipment.description}
                   </div>
                   {selectedEmployee.equipment.nickname && (
-                    <div className="text-[11px] text-[#666] italic mt-2">
+                    <div className="text-[12px] text-[#666] italic mt-2">
                       Has affectionately been nicknamed &ldquo;{selectedEmployee.equipment.nickname}&rdquo;.
                     </div>
                   )}
