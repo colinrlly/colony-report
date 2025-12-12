@@ -9,18 +9,18 @@ import {
   WindowControls,
 } from "@/components/ui/window";
 
-// Sample photo library data - 10 photos labeled 1-10
+// Sample photo library data - 10 photos labeled 1-10 with earth tone placeholder colors
 const photoItems = [
-  { id: "img-1", label: "img.1", image: "/images/photo-library/img-1.jpg", coordinates: "47.6062° N, 122.3321° W", location: "Sector 7-Alpha", date: "2157.03.14", time: "14:23:07" },
-  { id: "img-2", label: "img.2", image: "/images/photo-library/img-2.jpg", coordinates: "47.6088° N, 122.3359° W", location: "Sector 7-Alpha", date: "2157.03.14", time: "14:25:31" },
-  { id: "img-3", label: "img.3", image: "/images/photo-library/img-3.jpg", coordinates: "47.6101° N, 122.3412° W", location: "Sector 7-Beta", date: "2157.03.14", time: "14:28:45" },
-  { id: "img-4", label: "img.4", image: "/images/photo-library/img-4.jpg", coordinates: "47.6134° N, 122.3478° W", location: "Sector 7-Beta", date: "2157.03.14", time: "14:32:19" },
-  { id: "img-5", label: "img.5", image: "/images/photo-library/img-5.jpg", coordinates: "47.6156° N, 122.3521° W", location: "Sector 7-Gamma", date: "2157.03.14", time: "14:35:52" },
-  { id: "img-6", label: "img.6", image: "/images/photo-library/img-6.jpg", coordinates: "47.6178° N, 122.3567° W", location: "Sector 7-Gamma", date: "2157.03.14", time: "14:39:08" },
-  { id: "img-7", label: "img.7", image: "/images/photo-library/img-7.jpg", coordinates: "47.6192° N, 122.3601° W", location: "Sector 7-Delta", date: "2157.03.15", time: "08:12:33" },
-  { id: "img-8", label: "img.8", image: "/images/photo-library/img-8.jpg", coordinates: "47.6215° N, 122.3645° W", location: "Sector 7-Delta", date: "2157.03.15", time: "08:15:47" },
-  { id: "img-9", label: "img.9", image: "/images/photo-library/img-9.jpg", coordinates: "47.6238° N, 122.3689° W", location: "Sector 7-Epsilon", date: "2157.03.15", time: "08:19:22" },
-  { id: "img-10", label: "img.10", image: "/images/photo-library/img-10.jpg", coordinates: "47.6261° N, 122.3732° W", location: "Sector 7-Epsilon", date: "2157.03.15", time: "08:22:56" },
+  { id: "img-1", label: "img.1", image: "/images/photo-library/img-1.jpg", coordinates: "47.6062° N, 122.3321° W", location: "Sector 7-Alpha", date: "2157.03.14", time: "14:23:07", color: "#8B7355" },  // Coffee brown
+  { id: "img-2", label: "img.2", image: "/images/photo-library/img-2.jpg", coordinates: "47.6088° N, 122.3359° W", location: "Sector 7-Alpha", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },  // Camel
+  { id: "img-3", label: "img.3", image: "/images/photo-library/img-3.jpg", coordinates: "47.6101° N, 122.3412° W", location: "Sector 7-Beta", date: "2157.03.14", time: "14:28:45", color: "#6B8E6B" },   // Sage green
+  { id: "img-4", label: "img.4", image: "/images/photo-library/img-4.jpg", coordinates: "47.6134° N, 122.3478° W", location: "Sector 7-Beta", date: "2157.03.14", time: "14:32:19", color: "#C4A77D" },   // Tan
+  { id: "img-5", label: "img.5", image: "/images/photo-library/img-5.jpg", coordinates: "47.6156° N, 122.3521° W", location: "Sector 7-Gamma", date: "2157.03.14", time: "14:35:52", color: "#8B4513" },  // Saddle brown
+  { id: "img-6", label: "img.6", image: "/images/photo-library/img-6.jpg", coordinates: "47.6178° N, 122.3567° W", location: "Sector 7-Gamma", date: "2157.03.14", time: "14:39:08", color: "#9C8B7D" },  // Warm grey
+  { id: "img-7", label: "img.7", image: "/images/photo-library/img-7.jpg", coordinates: "47.6192° N, 122.3601° W", location: "Sector 7-Delta", date: "2157.03.15", time: "08:12:33", color: "#704214" },  // Sepia
+  { id: "img-8", label: "img.8", image: "/images/photo-library/img-8.jpg", coordinates: "47.6215° N, 122.3645° W", location: "Sector 7-Delta", date: "2157.03.15", time: "08:15:47", color: "#B8A088" },  // Khaki
+  { id: "img-9", label: "img.9", image: "/images/photo-library/img-9.jpg", coordinates: "47.6238° N, 122.3689° W", location: "Sector 7-Epsilon", date: "2157.03.15", time: "08:19:22", color: "#5C4033" }, // Dark brown
+  { id: "img-10", label: "img.10", image: "/images/photo-library/img-10.jpg", coordinates: "47.6261° N, 122.3732° W", location: "Sector 7-Epsilon", date: "2157.03.15", time: "08:22:56", color: "#7B9971" }, // Moss green
 ];
 
 // Camera icon for title bar - green color scheme
@@ -166,10 +166,10 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
       {/* Main content area - darker brown background like mockup */}
       <div className="flex-1 bg-[#6b5d52] p-3 flex flex-col gap-2">
         {/* Main image display area */}
-        <div className="flex-1 win98-border-sunken bg-[#c8b9a9] flex items-center justify-center overflow-hidden">
+        <div className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden" style={{ backgroundColor: selectedPhoto.color }}>
           <div className="relative w-full h-full flex items-center justify-center">
             {/* Placeholder text - will be replaced with actual image */}
-            <div className="text-[#5a4d42] text-xl font-bold text-center">
+            <div className="text-white/80 text-xl font-bold text-center drop-shadow-[1px_1px_2px_rgba(0,0,0,0.5)]">
               <div>image to go here</div>
               <div>placeholder</div>
             </div>
@@ -254,10 +254,10 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
                     className={`w-[115px] h-[90px] win98-border-sunken flex items-center justify-center ${
                       isSelected ? 'ring-2 ring-[#ffdd44]' : ''
                     }`}
-                    style={{ backgroundColor: '#c8b9a9' }}
+                    style={{ backgroundColor: photo.color }}
                   >
                     {/* Placeholder */}
-                    <div className="text-[#5a4d42] text-[10px] text-center">
+                    <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
                       <div>img.</div>
                       <div>placeholder</div>
                     </div>
