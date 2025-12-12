@@ -169,7 +169,7 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[800px] h-[745px] absolute top-[5vh] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[750px] h-[700px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar>
         <div className="flex items-center gap-2">
