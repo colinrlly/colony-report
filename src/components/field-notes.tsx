@@ -58,8 +58,8 @@ function LeftArrowIcon() {
       <rect x="20" y="32" width="4" height="4" fill="#1a1a1a" />
       <rect x="24" y="36" width="4" height="4" fill="#1a1a1a" />
       <rect x="28" y="40" width="4" height="4" fill="#1a1a1a" />
-      {/* Black outline - right/back side (thin) */}
-      <rect x="32" y="8" width="2" height="32" fill="#1a1a1a" />
+      {/* Black outline - right/back side */}
+      <rect x="32" y="8" width="3" height="32" fill="#1a1a1a" />
       {/* Black outline - top and bottom edges */}
       <rect x="28" y="6" width="4" height="2" fill="#1a1a1a" />
       <rect x="28" y="40" width="4" height="2" fill="#1a1a1a" />
@@ -88,8 +88,8 @@ function RightArrowIcon() {
       <rect x="24" y="32" width="4" height="4" fill="#1a1a1a" />
       <rect x="20" y="36" width="4" height="4" fill="#1a1a1a" />
       <rect x="16" y="40" width="4" height="4" fill="#1a1a1a" />
-      {/* Black outline - left/back side (thin) */}
-      <rect x="14" y="8" width="2" height="32" fill="#1a1a1a" />
+      {/* Black outline - left/back side */}
+      <rect x="13" y="8" width="3" height="32" fill="#1a1a1a" />
       {/* Black outline - top and bottom edges */}
       <rect x="16" y="6" width="4" height="2" fill="#1a1a1a" />
       <rect x="16" y="40" width="4" height="2" fill="#1a1a1a" />
