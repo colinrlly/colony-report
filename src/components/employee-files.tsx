@@ -354,6 +354,9 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               className={`relative text-left transition-all ${
                 isSelected ? "z-20" : "z-10 hover:brightness-110"
               }`}
+              style={{
+                marginLeft: isSelected ? "0px" : "20px",
+              }}
             >
               {/* Tab shape - manila folder style */}
               <div className="relative flex items-stretch">
