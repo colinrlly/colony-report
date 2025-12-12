@@ -328,11 +328,92 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
   ];
 
   return (
-    <Window
-      resizable={false}
-      leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[1100px] h-[730px] absolute top-[44px] left-1/2 -translate-x-1/2 flex flex-col"
-    >
+    <div className="z-20 absolute top-[44px] left-1/2 -translate-x-1/2 flex">
+      {/* Manila Folder Tabs - Outside window, on the left */}
+      <div className="flex flex-col justify-start pt-[100px] relative z-10 mr-[-2px]">
+        {employeeProfiles.map((employee) => {
+          const isSelected = selectedEmployeeId === employee.id;
+          const tabColor = getEmployeeTabColor(employee.id, isSelected);
+          const borderColor = getEmployeeTabBorderColor(employee.id);
+
+          return (
+            <button
+              key={employee.id}
+              onClick={() => {
+                setSelectedEmployeeId(employee.id);
+                setActiveTab("profile");
+              }}
+              className={`relative text-left transition-all ${
+                isSelected ? "z-20" : "z-10 hover:brightness-110"
+              }`}
+              style={{
+                marginBottom: "4px",
+              }}
+            >
+              {/* Tab shape - manila folder style */}
+              <div
+                className="relative flex items-stretch"
+                style={{
+                  marginRight: isSelected ? "0" : "6px",
+                }}
+              >
+                {/* Notch/fold at top */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "-10px",
+                    right: "0",
+                    width: "100%",
+                    height: "12px",
+                    backgroundColor: tabColor,
+                    clipPath: "polygon(0 100%, 12px 0, 100% 0, 100% 100%)",
+                  }}
+                />
+                {/* Main tab body */}
+                <div
+                  className="px-2 py-3 text-white relative"
+                  style={{
+                    backgroundColor: tabColor,
+                    borderTop: `2px solid ${borderColor}`,
+                    borderLeft: `2px solid ${borderColor}`,
+                    borderBottom: `2px solid ${borderColor}`,
+                    borderRight: isSelected ? "none" : `2px solid ${borderColor}`,
+                    borderTopLeftRadius: "4px",
+                    borderBottomLeftRadius: "4px",
+                    writingMode: "vertical-rl",
+                    textOrientation: "mixed",
+                    transform: "rotate(180deg)",
+                    minHeight: "140px",
+                    width: isSelected ? "50px" : "42px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "4px",
+                    boxShadow: isSelected
+                      ? "inset 0 0 0 1px rgba(255,255,255,0.2)"
+                      : "inset 0 0 0 1px rgba(255,255,255,0.1)",
+                  }}
+                >
+                  <span className="text-[11px] font-bold whitespace-nowrap tracking-wide drop-shadow-sm">
+                    {employee.name}
+                  </span>
+                  <span className="text-[9px] opacity-90 whitespace-nowrap">
+                    {employee.role}
+                  </span>
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Main Window */}
+      <Window
+        resizable={false}
+        leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
+        className="w-[1050px] h-[730px] flex flex-col"
+      >
       <WindowTitleBar className="h-[36px]">
         <div className="flex items-center gap-2">
           <BadgeIcon />
@@ -358,90 +439,9 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         </div>
       </div>
 
-      <div className="flex-1 flex overflow-hidden bg-[#a89888]">
-        {/* Manila Folder Tabs - Left Side */}
-        <div className="flex flex-col justify-start pt-6 relative z-10">
-          {employeeProfiles.map((employee) => {
-            const isSelected = selectedEmployeeId === employee.id;
-            const tabColor = getEmployeeTabColor(employee.id, isSelected);
-            const borderColor = getEmployeeTabBorderColor(employee.id);
-
-            return (
-              <button
-                key={employee.id}
-                onClick={() => {
-                  setSelectedEmployeeId(employee.id);
-                  setActiveTab("profile");
-                }}
-                className={`relative text-left transition-all ${
-                  isSelected ? "z-20" : "z-10 hover:brightness-110"
-                }`}
-                style={{
-                  marginBottom: "8px",
-                }}
-              >
-                {/* Tab shape - manila folder style */}
-                <div
-                  className="relative flex items-stretch"
-                  style={{
-                    marginLeft: isSelected ? "0" : "8px",
-                  }}
-                >
-                  {/* Notch/fold at top */}
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "0",
-                      right: "-12px",
-                      width: "12px",
-                      height: "16px",
-                      backgroundColor: tabColor,
-                      clipPath: "polygon(0 0, 100% 100%, 0 100%)",
-                      borderRight: `1px solid ${borderColor}`,
-                    }}
-                  />
-                  {/* Main tab body */}
-                  <div
-                    className="px-2 py-4 text-white relative"
-                    style={{
-                      backgroundColor: tabColor,
-                      borderTop: `2px solid ${borderColor}`,
-                      borderLeft: `2px solid ${borderColor}`,
-                      borderBottom: `2px solid ${borderColor}`,
-                      borderTopLeftRadius: "3px",
-                      borderBottomLeftRadius: "3px",
-                      writingMode: "vertical-rl",
-                      textOrientation: "mixed",
-                      transform: "rotate(180deg)",
-                      minHeight: "160px",
-                      width: isSelected ? "48px" : "40px",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "6px",
-                      boxShadow: isSelected
-                        ? "inset 0 0 0 1px rgba(255,255,255,0.25), 2px 0 4px rgba(0,0,0,0.15)"
-                        : "inset 0 0 0 1px rgba(255,255,255,0.1)",
-                    }}
-                  >
-                    <span className="text-[12px] font-bold whitespace-nowrap tracking-wide drop-shadow-sm">
-                      {employee.name}
-                    </span>
-                    <span className="text-[9px] opacity-90 whitespace-nowrap">
-                      {employee.role}
-                    </span>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col bg-[#F5F0E1] border-l-0 relative ml-[-2px]">
-          {/* Main Content - Illustration + Info Side by Side */}
-          <div className="flex-1 flex p-3 gap-3">
+      <div className="flex-1 flex overflow-hidden bg-[#F5F0E1]">
+        {/* Main Content - Illustration + Info Side by Side */}
+        <div className="flex-1 flex p-3 gap-3">
           {/* Left: Square Portrait Illustration */}
           <div className="flex flex-col">
             <div className="w-[520px] aspect-square">
@@ -575,7 +575,6 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               )}
             </div>
           </div>
-          </div>
         </div>
       </div>
 
@@ -591,5 +590,6 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         </WindowStatusField>
       </WindowStatusBar>
     </Window>
+    </div>
   );
 }
