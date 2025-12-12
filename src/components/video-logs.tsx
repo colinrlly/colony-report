@@ -40,28 +40,67 @@ function MediaPlayerIcon() {
   );
 }
 
-// Previous button icon (media style)
+// Previous button icon - cleaner media style with double arrows
 function PrevIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges">
-      <rect x="2" y="2" width="2" height="12" fill="currentColor" />
-      <rect x="12" y="6" width="2" height="4" fill="currentColor" />
-      <rect x="10" y="5" width="2" height="6" fill="currentColor" />
-      <rect x="8" y="4" width="2" height="8" fill="currentColor" />
-      <rect x="6" y="3" width="2" height="10" fill="currentColor" />
+    <svg width="20" height="16" viewBox="0 0 20 16" fill="none" shapeRendering="crispEdges">
+      {/* Stop bar */}
+      <rect x="1" y="2" width="2" height="12" fill="currentColor" />
+      {/* First arrow */}
+      <rect x="6" y="7" width="2" height="2" fill="currentColor" />
+      <rect x="8" y="5" width="2" height="6" fill="currentColor" />
+      <rect x="10" y="3" width="2" height="10" fill="currentColor" />
+      {/* Second arrow */}
+      <rect x="12" y="7" width="2" height="2" fill="currentColor" />
+      <rect x="14" y="5" width="2" height="6" fill="currentColor" />
+      <rect x="16" y="3" width="2" height="10" fill="currentColor" />
     </svg>
   );
 }
 
-// Next button icon (media style)
+// Next button icon - cleaner media style with double arrows
 function NextIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges">
-      <rect x="12" y="2" width="2" height="12" fill="currentColor" />
-      <rect x="2" y="6" width="2" height="4" fill="currentColor" />
+    <svg width="20" height="16" viewBox="0 0 20 16" fill="none" shapeRendering="crispEdges">
+      {/* First arrow */}
+      <rect x="2" y="3" width="2" height="10" fill="currentColor" />
       <rect x="4" y="5" width="2" height="6" fill="currentColor" />
-      <rect x="6" y="4" width="2" height="8" fill="currentColor" />
+      <rect x="6" y="7" width="2" height="2" fill="currentColor" />
+      {/* Second arrow */}
       <rect x="8" y="3" width="2" height="10" fill="currentColor" />
+      <rect x="10" y="5" width="2" height="6" fill="currentColor" />
+      <rect x="12" y="7" width="2" height="2" fill="currentColor" />
+      {/* Stop bar */}
+      <rect x="17" y="2" width="2" height="12" fill="currentColor" />
+    </svg>
+  );
+}
+
+// Speaker icon for volume control
+function SpeakerIcon({ muted }: { muted: boolean }) {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges">
+      {/* Speaker body */}
+      <rect x="1" y="5" width="3" height="6" fill="#ffdd44" />
+      {/* Speaker cone */}
+      <rect x="4" y="4" width="2" height="8" fill="#ffdd44" />
+      <rect x="6" y="3" width="2" height="10" fill="#ffdd44" />
+      {/* Sound waves or X for muted */}
+      {muted ? (
+        <>
+          <rect x="10" y="5" width="2" height="2" fill="#aa0000" />
+          <rect x="12" y="7" width="2" height="2" fill="#aa0000" />
+          <rect x="10" y="9" width="2" height="2" fill="#aa0000" />
+          <rect x="14" y="5" width="2" height="2" fill="#aa0000" />
+          <rect x="14" y="9" width="2" height="2" fill="#aa0000" />
+        </>
+      ) : (
+        <>
+          <rect x="10" y="6" width="1" height="4" fill="#666666" />
+          <rect x="12" y="5" width="1" height="6" fill="#666666" />
+          <rect x="14" y="4" width="1" height="8" fill="#666666" />
+        </>
+      )}
     </svg>
   );
 }
@@ -96,7 +135,11 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isDraggingScrollbar, setIsDraggingScrollbar] = useState(false);
+  const [volume, setVolume] = useState(75); // Volume 0-100
+  const [isMuted, setIsMuted] = useState(false);
+  const [isDraggingVolume, setIsDraggingVolume] = useState(false);
   const scrollbarTrackRef = useRef<HTMLDivElement>(null);
+  const volumeTrackRef = useRef<HTMLDivElement>(null);
 
   const selectedVideo = videoItems[selectedIndex];
   const visibleThumbnails = 3; // Show 3 thumbnails at a time in the sidebar
@@ -163,6 +206,30 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
     setScrollPosition(Math.max(0, Math.min(maxScroll, newPosition)));
   };
 
+  // Toggle mute
+  const handleToggleMute = () => {
+    setIsMuted(prev => !prev);
+  };
+
+  // Handle volume track click
+  const handleVolumeTrackClick = (e: React.MouseEvent) => {
+    if (!volumeTrackRef.current) return;
+    const track = volumeTrackRef.current;
+    const rect = track.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const trackWidth = rect.width;
+    const newVolume = Math.round((clickX / trackWidth) * 100);
+    setVolume(Math.max(0, Math.min(100, newVolume)));
+    if (newVolume > 0) setIsMuted(false);
+  };
+
+  // Handle volume thumb drag start
+  const handleVolumeMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingVolume(true);
+  };
+
   // Global mouse handlers for scrollbar dragging
   useEffect(() => {
     if (!isDraggingScrollbar) return;
@@ -191,7 +258,37 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
     };
   }, [isDraggingScrollbar, maxScroll, scrollbarThumbHeightPercent]);
 
+  // Global mouse handlers for volume dragging
+  useEffect(() => {
+    if (!isDraggingVolume) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!volumeTrackRef.current) return;
+      const track = volumeTrackRef.current;
+      const rect = track.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const trackWidth = rect.width;
+      const newVolume = Math.round((mouseX / trackWidth) * 100);
+      setVolume(Math.max(0, Math.min(100, newVolume)));
+      if (newVolume > 0) setIsMuted(false);
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingVolume(false);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isDraggingVolume]);
+
   const ICON_COLUMN_RIGHT_EDGE = 132;
+
+  // Get effective volume (0 if muted)
+  const effectiveVolume = isMuted ? 0 : volume;
 
   return (
     <Window
@@ -202,7 +299,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
       <WindowTitleBar>
         <div className="flex items-center gap-2">
           <MediaPlayerIcon />
-          <WindowTitle>Media Player</WindowTitle>
+          <WindowTitle>MEDIA PLAYER</WindowTitle>
         </div>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
@@ -211,9 +308,8 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
       <div className="flex-1 bg-[#c8b9a9] p-2 flex gap-2">
         {/* Left side - Main player area */}
         <div className="flex-1 flex flex-col gap-2">
-          {/* Video display area */}
-          <div
-            className="flex-1 win98-border-sunken flex items-center justify-center"
+          {/* Video display area - aspect ratio container */}
+          <div className="flex-1 win98-border-sunken flex items-center justify-center"
             style={{ backgroundColor: selectedVideo.color }}
           >
             <div className="text-white/80 text-xl font-bold text-center drop-shadow-[2px_2px_3px_rgba(0,0,0,0.5)]">
@@ -227,12 +323,12 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
             video data info date recording etc
           </div>
 
-          {/* Media controls bar - just prev/next buttons */}
-          <div className="win98-border-raised bg-[#c8b9a9] p-1 flex items-center justify-center gap-2">
+          {/* Media controls bar - prev/next buttons + volume */}
+          <div className="win98-border-raised bg-[#c8b9a9] p-2 flex items-center gap-4">
             {/* Previous button */}
             <button
               onClick={handlePreviousVideo}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-10 h-8 flex items-center justify-center text-[#222222]"
+              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken px-3 py-1 flex items-center justify-center text-[#222222]"
             >
               <PrevIcon />
             </button>
@@ -240,10 +336,48 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
             {/* Next button */}
             <button
               onClick={handleNextVideo}
-              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-10 h-8 flex items-center justify-center text-[#222222]"
+              className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken px-3 py-1 flex items-center justify-center text-[#222222]"
             >
               <NextIcon />
             </button>
+
+            {/* Spacer */}
+            <div className="flex-1" />
+
+            {/* Volume control */}
+            <div className="flex items-center gap-2">
+              {/* Speaker icon / mute button */}
+              <button
+                onClick={handleToggleMute}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-6 flex items-center justify-center"
+              >
+                <SpeakerIcon muted={isMuted || volume === 0} />
+              </button>
+
+              {/* Volume slider track */}
+              <div
+                ref={volumeTrackRef}
+                onClick={handleVolumeTrackClick}
+                className="win98-border-sunken bg-[#a09080] w-24 h-4 relative cursor-pointer"
+              >
+                {/* Volume fill */}
+                <div
+                  className="absolute left-0 top-0 h-full bg-[#6b8a6b]"
+                  style={{ width: `${effectiveVolume}%` }}
+                />
+                {/* Volume thumb */}
+                <div
+                  onMouseDown={handleVolumeMouseDown}
+                  className={`absolute top-0 w-2 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingVolume ? 'cursor-grabbing' : ''}`}
+                  style={{ left: `calc(${effectiveVolume}% - 4px)` }}
+                />
+              </div>
+
+              {/* Volume percentage */}
+              <span className="text-[#222222] text-xs w-8 text-right">
+                {effectiveVolume}%
+              </span>
+            </div>
           </div>
         </div>
 
@@ -258,7 +392,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
           <div className="flex-1 flex min-h-0">
             {/* Thumbnails area */}
             <div className="flex-1 bg-[#a09080] p-1 overflow-hidden win98-border-sunken">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 h-full">
                 {videoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((video, displayIndex) => {
                   const actualIndex = scrollPosition + displayIndex;
                   const isSelected = actualIndex === selectedIndex;
@@ -266,12 +400,12 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
                   return (
                     <div
                       key={video.id}
-                      className="cursor-pointer"
+                      className="cursor-pointer flex-1 flex flex-col"
                       onClick={() => handleThumbnailClick(actualIndex)}
                     >
-                      {/* Thumbnail */}
+                      {/* Thumbnail - using aspect-video to match main video ratio */}
                       <div
-                        className={`w-full h-[120px] win98-border-sunken flex items-center justify-center ${
+                        className={`w-full flex-1 win98-border-sunken flex items-center justify-center ${
                           isSelected ? 'ring-2 ring-[#ffdd44]' : ''
                         }`}
                         style={{ backgroundColor: video.color }}
@@ -282,7 +416,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
                         </div>
                       </div>
                       {/* Label */}
-                      <div className={`text-[11px] text-right mt-1 ${isSelected ? 'text-[#222222] font-bold' : 'text-[#4a4a4a]'}`}>
+                      <div className={`text-[11px] text-right mt-1 flex-shrink-0 ${isSelected ? 'text-[#222222] font-bold' : 'text-[#4a4a4a]'}`}>
                         {video.label}
                       </div>
                     </div>
