@@ -5,6 +5,7 @@ import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { PhotoLibrary } from "@/components/photo-library";
+import { VideoLogs } from "@/components/video-logs";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
 import { SecurityCameraFeed } from "@/components/security-camera-feed";
@@ -172,6 +173,10 @@ export default function Home() {
   const [isPhotoLibraryOpen, setIsPhotoLibraryOpen] = useState(false);
   const [isPhotoLibraryMinimized, setIsPhotoLibraryMinimized] = useState(false);
 
+  // Video Logs state
+  const [isVideoLogsOpen, setIsVideoLogsOpen] = useState(false);
+  const [isVideoLogsMinimized, setIsVideoLogsMinimized] = useState(false);
+
   // Tutorial helper state
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
   const [tutorialClickCount, setTutorialClickCount] = useState(0);
@@ -278,7 +283,10 @@ export default function Home() {
         setIsPhotoLibraryOpen(true);
         setIsPhotoLibraryMinimized(false);
         break;
-      // Add handlers for other icons here when needed
+      case "video-logs":
+        setIsVideoLogsOpen(true);
+        setIsVideoLogsMinimized(false);
+        break;
     }
   };
 
@@ -318,6 +326,8 @@ export default function Home() {
       setIsStressReliefMinimized(false);
       setIsPhotoLibraryOpen(false);
       setIsPhotoLibraryMinimized(false);
+      setIsVideoLogsOpen(false);
+      setIsVideoLogsMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -369,6 +379,8 @@ export default function Home() {
       setIsStressReliefMinimized(false);
       setIsPhotoLibraryOpen(false);
       setIsPhotoLibraryMinimized(false);
+      setIsVideoLogsOpen(false);
+      setIsVideoLogsMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -890,6 +902,17 @@ export default function Home() {
           />
         )}
 
+        {/* Video Logs */}
+        {isVideoLogsOpen && !isVideoLogsMinimized && (
+          <VideoLogs
+            onClose={() => {
+              setIsVideoLogsOpen(false);
+              setIsVideoLogsMinimized(false);
+            }}
+            onMinimize={() => setIsVideoLogsMinimized(true)}
+          />
+        )}
+
         {/* Tutorial Helper (Clippy knockoff) */}
         {isTutorialHelperVisible && (
           <TutorialHelper
@@ -1025,6 +1048,13 @@ export default function Home() {
             title="Photo Library"
             isActive={!isPhotoLibraryMinimized}
             onClick={() => setIsPhotoLibraryMinimized(!isPhotoLibraryMinimized)}
+          />
+        )}
+        {isVideoLogsOpen && (
+          <TaskbarButton
+            title="Video Logs"
+            isActive={!isVideoLogsMinimized}
+            onClick={() => setIsVideoLogsMinimized(!isVideoLogsMinimized)}
           />
         )}
       </Taskbar>
