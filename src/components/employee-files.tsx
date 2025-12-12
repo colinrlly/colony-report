@@ -394,24 +394,11 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                 <div
                   style={{
                     backgroundColor: tabColor,
-                    width: "6px",
+                    width: isSelected ? "26px" : "6px",
                     borderTop: `2px solid ${borderColor}`,
                     borderBottom: `2px solid ${borderColor}`,
                   }}
                 />
-                {/* Bottom fill to connect selected tab to window edge */}
-                {isSelected && (
-                  <div
-                    className="absolute"
-                    style={{
-                      backgroundColor: "#F5F0E1",
-                      width: "26px",
-                      height: "1000px",
-                      right: "0px",
-                      top: "100%",
-                    }}
-                  />
-                )}
               </div>
             </button>
           );
