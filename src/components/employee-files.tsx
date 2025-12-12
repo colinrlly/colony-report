@@ -270,8 +270,8 @@ function getEmployeeIcon(employeeId: string) {
 // Employee tab color configuration
 const EMPLOYEE_TAB_COLORS: Record<string, { bg: string; bgSelected: string; border: string }> = {
   "emp-001": { bg: "#5a9c5a", bgSelected: "#4a8c4a", border: "#3a6c3a" }, // Green for Jasmine
-  "emp-002": { bg: "#c75a5a", bgSelected: "#b74a4a", border: "#8a3a3a" }, // Red for Hank
-  "emp-003": { bg: "#5a7a9c", bgSelected: "#4a6a8c", border: "#3a5a7c" }, // Blue for Professor
+  "emp-002": { bg: "#FFB366", bgSelected: "#FFA04D", border: "#E68A2E" }, // Orange for Hank
+  "emp-003": { bg: "#E07070", bgSelected: "#D06060", border: "#B04040" }, // Red for Professor
 };
 
 function getEmployeeTabColor(employeeId: string, isSelected: boolean) {
@@ -449,7 +449,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
               <div className="relative flex items-stretch">
                 {/* Main tab body */}
                 <div
-                  className="px-2 py-3 text-white relative"
+                  className="px-2 py-3 text-black relative"
                   style={{
                     backgroundColor: tabColor,
                     borderTop: `2px solid ${borderColor}`,
@@ -558,9 +558,10 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     onClick={() => setActiveTab(tab.id)}
                     className={`px-4 py-2 text-[12px] font-bold tracking-wide transition-colors ${
                       activeTab === tab.id
-                        ? "bg-[#5a9c5a] text-white"
+                        ? "text-white"
                         : "bg-[#d4c8b8] text-[#5a5a5a] hover:bg-[#c4b8a8]"
                     }`}
+                    style={activeTab === tab.id ? { backgroundColor: getEmployeeTabColor(selectedEmployeeId, true) } : undefined}
                   >
                     {tab.label}
                   </button>
@@ -631,7 +632,11 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                       COLLEAGUE COMMENTS
                     </div>
                     {selectedEmployee.colleagueComments.map((comment, index) => (
-                      <div key={index} className="bg-[#F5F0E1] p-3 border-l-4 border-[#5a9c5a] text-[#1a1a1a] italic leading-relaxed">
+                      <div
+                        key={index}
+                        className="bg-[#F5F0E1] p-3 border-l-4 text-[#1a1a1a] italic leading-relaxed"
+                        style={{ borderLeftColor: getEmployeeTabColor(selectedEmployeeId, true) }}
+                      >
                         &ldquo;{comment}&rdquo;
                       </div>
                     ))}
