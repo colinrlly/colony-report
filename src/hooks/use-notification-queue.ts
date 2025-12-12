@@ -7,7 +7,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 // ============================================
 
 const STORAGE_KEY = "notification-queue-state";
-const GAP_BETWEEN_NOTIFICATIONS = 5000; // 5 seconds for testing (change to 25000 for production)
+const GAP_BETWEEN_NOTIFICATIONS = 30000; // 30 seconds between notifications
 const INITIAL_DELAY = 3000; // 3 seconds before first notification
 
 // ============================================
