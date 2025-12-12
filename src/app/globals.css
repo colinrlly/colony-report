@@ -497,15 +497,19 @@ body {
 
 .confetti-particle {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
+  width: 8px;
+  height: 12px;
+  /* Water droplet shape: rounded bottom, pointed top */
+  border-radius: 50% 50% 50% 50% / 30% 30% 70% 70%;
   animation: confettiBurst 1.5s ease-out forwards;
   animation-delay: var(--delay);
   --x: 0px;
   --y: 0px;
   --start-x: 0px;
   --start-y: 0px;
+  /* Add a subtle shine effect for water appearance */
+  box-shadow: inset -2px -2px 4px rgba(255, 255, 255, 0.4),
+              inset 1px 1px 2px rgba(255, 255, 255, 0.6);
 }
 
 @keyframes confettiBurst {

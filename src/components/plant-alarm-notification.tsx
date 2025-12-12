@@ -18,14 +18,14 @@ const ALARM_BEEP_DURATION = 150; // ms
 const ALARM_VOLUME = 0.15;
 
 const CONFETTI_COLORS = [
-  "#ef4444", // red
-  "#14b8a6", // teal
-  "#facc15", // yellow
-  "#34d399", // mint
-  "#f97316", // coral
-  "#a855f7", // purple
-  "#ec4899", // pink
-  "#38bdf8", // light blue
+  "#60a5fa", // light blue
+  "#3b82f6", // blue
+  "#2563eb", // medium blue
+  "#1d4ed8", // darker blue
+  "#93c5fd", // sky blue
+  "#38bdf8", // cyan blue
+  "#0ea5e9", // bright blue
+  "#7dd3fc", // pale blue
 ] as const;
 
 const COLORS = {
