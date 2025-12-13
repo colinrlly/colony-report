@@ -16,8 +16,8 @@ export function BeeIcon() {
     <img
       src="/images/bee icon.png"
       alt="Bee"
-      width="64"
-      height="64"
+      width="60"
+      height="60"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
