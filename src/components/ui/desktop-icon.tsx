@@ -259,9 +259,9 @@ function CameraIcon() {
       <rect x="6" y="9" width="4" height="2" fill="#404040" />
       <rect x="6" y="9" width="2" height="1" fill="#606060" />
 
-      {/* Flash unit - top right */}
-      <rect x="14" y="7" width="4" height="3" fill="#E8E8E8" />
-      <rect x="15" y="8" width="2" height="1" fill="#F8F8F8" />
+      {/* Flash unit - under grip protrusion */}
+      <rect x="24" y="8" width="4" height="3" fill="#E8E8E8" />
+      <rect x="25" y="9" width="2" height="1" fill="#F8F8F8" />
 
       {/* Lens outer ring - black outline */}
       <rect x="11" y="12" width="10" height="1" fill="#000" />
