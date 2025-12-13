@@ -7,7 +7,6 @@ type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "l
 interface DesktopIconProps {
   label: string;
   icon?: IconType;
-  color?: string;
   onClick?: () => void;
 }
 
@@ -304,8 +303,8 @@ function CameraIcon() {
 function VideoCameraIcon() {
   return (
     <svg
-      width="84"
-      height="84"
+      width="80"
+      height="80"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
