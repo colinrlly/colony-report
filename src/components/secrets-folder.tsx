@@ -117,7 +117,6 @@ export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStress
       <div className="flex-1 bg-white win98-border-sunken m-[2px] p-4 overflow-auto">
         <div className="flex flex-wrap gap-4 justify-start">
           <FolderItem label="Stress Relief" onClick={() => handleFolderClick(onOpenStressRelief)} />
-          <FolderItem label="Music" onClick={() => onFolderOpen?.()} />
           <FolderItem label="Nothing..." onClick={() => handleFolderClick(onOpenNothing)} />
         </div>
       </div>
