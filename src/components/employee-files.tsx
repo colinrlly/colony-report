@@ -645,6 +645,11 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
                       EQUIPMENT ISSUED
                     </div>
+                    {selectedEmployee.equipment.nickname && (
+                      <div className="text-[28px] font-black text-[#4a3728] tracking-wide text-center py-2 mb-2">
+                        &ldquo;{selectedEmployee.equipment.nickname}&rdquo;
+                      </div>
+                    )}
                     <div className="font-black text-[#1a1a1a] text-[17px]">{selectedEmployee.equipment.name}</div>
                     <div className="flex mt-2">
                       <span className="font-bold text-[#5a5a5a] w-[60px]">Model:</span>
@@ -654,11 +659,6 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                       <span className="font-bold">Description: </span>
                       {selectedEmployee.equipment.description}
                     </div>
-                    {selectedEmployee.equipment.nickname && (
-                      <div className="text-[12px] text-[#666] italic mt-2">
-                        Has affectionately been nicknamed &ldquo;{selectedEmployee.equipment.nickname}&rdquo;.
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
