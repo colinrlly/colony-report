@@ -323,23 +323,23 @@ function VideoCameraIcon() {
       <rect x="6" y="27" width="20" height="1" fill="#000" />
 
       {/* Rounded square fill - orange base */}
-      <rect x="6" y="5" width="20" height="1" fill="#E8A040" />
-      <rect x="4" y="6" width="24" height="2" fill="#E8A040" />
-      <rect x="3" y="8" width="26" height="16" fill="#E8A040" />
-      <rect x="4" y="24" width="24" height="2" fill="#E8A040" />
-      <rect x="6" y="26" width="20" height="1" fill="#E8A040" />
+      <rect x="6" y="5" width="20" height="1" fill="#FF7020" />
+      <rect x="4" y="6" width="24" height="2" fill="#FF7020" />
+      <rect x="3" y="8" width="26" height="16" fill="#FF7020" />
+      <rect x="4" y="24" width="24" height="2" fill="#FF7020" />
+      <rect x="6" y="26" width="20" height="1" fill="#FF7020" />
 
       {/* Highlight - lighter orange on top/left */}
-      <rect x="6" y="5" width="18" height="1" fill="#F0B860" />
-      <rect x="4" y="6" width="20" height="1" fill="#F0B860" />
-      <rect x="3" y="7" width="18" height="1" fill="#F0B860" />
-      <rect x="3" y="8" width="2" height="10" fill="#F0B860" />
+      <rect x="6" y="5" width="18" height="1" fill="#FF9040" />
+      <rect x="4" y="6" width="20" height="1" fill="#FF9040" />
+      <rect x="3" y="7" width="18" height="1" fill="#FF9040" />
+      <rect x="3" y="8" width="2" height="10" fill="#FF9040" />
 
       {/* Shadow - darker orange on bottom/right */}
-      <rect x="27" y="16" width="1" height="8" fill="#C08030" />
-      <rect x="24" y="24" width="4" height="1" fill="#C08030" />
-      <rect x="20" y="25" width="8" height="1" fill="#C08030" />
-      <rect x="10" y="26" width="16" height="1" fill="#C08030" />
+      <rect x="27" y="16" width="1" height="8" fill="#D05010" />
+      <rect x="24" y="24" width="4" height="1" fill="#D05010" />
+      <rect x="20" y="25" width="8" height="1" fill="#D05010" />
+      <rect x="10" y="26" width="16" height="1" fill="#D05010" />
 
       {/* Play triangle outline - black */}
       <rect x="11" y="10" width="1" height="12" fill="#000" />
