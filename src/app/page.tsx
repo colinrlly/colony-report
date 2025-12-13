@@ -45,49 +45,43 @@ function useFolderOpenSound() {
     const ctx = getAudioContext();
     const now = ctx.currentTime;
 
-    // Create a "paper crumple" sound like emptying trash
-    // Multiple short noise bursts with varying filters for organic texture
-    const duration = 0.12;
-    const numBursts = 4;
+    // Create a gentle "page turn" sound - soft swoosh
+    const duration = 0.15;
 
-    for (let i = 0; i < numBursts; i++) {
-      const burstStart = now + (i * duration) / numBursts;
-      const burstDuration = 0.03 + Math.random() * 0.02;
-
-      // Create noise buffer for this burst
-      const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * burstDuration, ctx.sampleRate);
-      const noiseData = noiseBuffer.getChannelData(0);
-      for (let j = 0; j < noiseData.length; j++) {
-        noiseData[j] = (Math.random() * 2 - 1);
-      }
-      const noiseSource = ctx.createBufferSource();
-      noiseSource.buffer = noiseBuffer;
-
-      // Highpass filter for crinkly paper texture
-      const highpass = ctx.createBiquadFilter();
-      highpass.type = "highpass";
-      highpass.frequency.setValueAtTime(800 + Math.random() * 400, burstStart);
-
-      // Lowpass to soften harsh edges
-      const lowpass = ctx.createBiquadFilter();
-      lowpass.type = "lowpass";
-      lowpass.frequency.setValueAtTime(4000 + Math.random() * 2000, burstStart);
-
-      // Gain envelope for each burst
-      const gainNode = ctx.createGain();
-      const burstVolume = 0.08 + Math.random() * 0.04;
-      gainNode.gain.setValueAtTime(0, burstStart);
-      gainNode.gain.linearRampToValueAtTime(burstVolume, burstStart + 0.005);
-      gainNode.gain.exponentialRampToValueAtTime(0.01, burstStart + burstDuration);
-
-      noiseSource.connect(highpass);
-      highpass.connect(lowpass);
-      lowpass.connect(gainNode);
-      gainNode.connect(ctx.destination);
-
-      noiseSource.start(burstStart);
-      noiseSource.stop(burstStart + burstDuration);
+    // Create noise buffer for the swoosh
+    const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseData.length; i++) {
+      noiseData[i] = (Math.random() * 2 - 1);
     }
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+
+    // Bandpass filter that sweeps for the "fwip" motion
+    const bandpass = ctx.createBiquadFilter();
+    bandpass.type = "bandpass";
+    bandpass.Q.setValueAtTime(2, now);
+    bandpass.frequency.setValueAtTime(3000, now);
+    bandpass.frequency.exponentialRampToValueAtTime(800, now + duration);
+
+    // Gentle lowpass to keep it soft
+    const lowpass = ctx.createBiquadFilter();
+    lowpass.type = "lowpass";
+    lowpass.frequency.setValueAtTime(5000, now);
+
+    // Smooth envelope - quick rise, gentle fall
+    const gainNode = ctx.createGain();
+    gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.linearRampToValueAtTime(0.12, now + 0.02);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    noiseSource.connect(bandpass);
+    bandpass.connect(lowpass);
+    lowpass.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    noiseSource.start(now);
+    noiseSource.stop(now + duration);
   }, [getAudioContext]);
 
   return { playFolderOpenSound };
