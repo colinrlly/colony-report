@@ -298,7 +298,7 @@ const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, { top: string; left: string; w
     { top: "6%", left: "58%", width: "35%", height: "18%" },  // Owl (upper drone)
     { top: "45%", left: "58%", width: "35%", height: "28%" }, // Wasp (lower drone)
   ],
-  "emp-003": [{ top: "45%", left: "55%", width: "36%", height: "48%" }], // The Jar (research chamber)
+  "emp-003": [{ top: "48%", left: "58%", width: "36%", height: "48%" }], // The Jar (research chamber)
 };
 
 // Employee illustration component
