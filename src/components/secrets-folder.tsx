@@ -93,9 +93,15 @@ interface SecretsFolderProps {
   onMinimize?: () => void;
   onOpenNothing?: () => void;
   onOpenStressRelief?: () => void;
+  onFolderOpen?: () => void;
 }
 
-export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStressRelief }: SecretsFolderProps) {
+export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStressRelief, onFolderOpen }: SecretsFolderProps) {
+  const handleFolderClick = (openHandler?: () => void) => {
+    onFolderOpen?.();
+    openHandler?.();
+  };
+
   return (
     <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col">
       <WindowTitleBar>
@@ -110,9 +116,9 @@ export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStress
       {/* Window content area with white background like a file explorer */}
       <div className="flex-1 bg-white win98-border-sunken m-[2px] p-4 overflow-auto">
         <div className="flex flex-wrap gap-4 justify-start">
-          <FolderItem label="Stress Relief" onClick={onOpenStressRelief} />
-          <FolderItem label="Music" />
-          <FolderItem label="Nothing..." onClick={onOpenNothing} />
+          <FolderItem label="Stress Relief" onClick={() => handleFolderClick(onOpenStressRelief)} />
+          <FolderItem label="Music" onClick={() => onFolderOpen?.()} />
+          <FolderItem label="Nothing..." onClick={() => handleFolderClick(onOpenNothing)} />
         </div>
       </div>
     </Window>

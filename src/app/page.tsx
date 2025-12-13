@@ -27,11 +27,11 @@ import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from 
 
 // viewMenuItems, toolsMenuItems, and helpMenuItems are defined inside the component to access state handlers
 
-// Classic computer restart sound using Web Audio API
-function useRestartSound() {
+// Shared audio context hook for all sound effects
+function useAudioContext() {
   const audioContextRef = useRef<AudioContext | null>(null);
 
-  const getAudioContext = useCallback(() => {
+  return useCallback(() => {
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
     }
@@ -40,51 +40,92 @@ function useRestartSound() {
     }
     return audioContextRef.current;
   }, []);
+}
 
-  // Play a single tone with fade out
-  const playTone = useCallback((frequency: number, startTime: number, duration: number, volume: number = 0.15) => {
+// Folder open sound - gentle page turn effect
+function useFolderOpenSound() {
+  const getAudioContext = useAudioContext();
+
+  const playFolderOpenSound = useCallback(() => {
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+    const duration = 0.15;
+
+    // Generate white noise buffer
+    const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseData.length; i++) {
+      noiseData[i] = Math.random() * 2 - 1;
+    }
+
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+
+    // Sweeping bandpass filter creates the "fwip" motion
+    const bandpass = ctx.createBiquadFilter();
+    bandpass.type = "bandpass";
+    bandpass.Q.value = 2;
+    bandpass.frequency.setValueAtTime(3000, now);
+    bandpass.frequency.exponentialRampToValueAtTime(800, now + duration);
+
+    // Lowpass to soften harsh frequencies
+    const lowpass = ctx.createBiquadFilter();
+    lowpass.type = "lowpass";
+    lowpass.frequency.value = 5000;
+
+    // Volume envelope: quick attack, gentle decay
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.12, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    // Connect audio graph
+    noiseSource.connect(bandpass);
+    bandpass.connect(lowpass);
+    lowpass.connect(gain);
+    gain.connect(ctx.destination);
+
+    noiseSource.start(now);
+    noiseSource.stop(now + duration);
+  }, [getAudioContext]);
+
+  return { playFolderOpenSound };
+}
+
+// Windows 95-style startup/shutdown chimes
+function useRestartSound() {
+  const getAudioContext = useAudioContext();
+
+  const playTone = useCallback((frequency: number, startTime: number, duration: number, volume = 0.12) => {
     const ctx = getAudioContext();
     const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
+    const gain = ctx.createGain();
 
     oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(frequency, startTime);
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(volume, startTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
 
-    gainNode.gain.setValueAtTime(volume, startTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
 
     oscillator.start(startTime);
     oscillator.stop(startTime + duration);
   }, [getAudioContext]);
 
-  // Classic shutdown sound - descending chime
   const playShutdownSound = useCallback(() => {
-    const ctx = getAudioContext();
-    const now = ctx.currentTime;
-
-    // Windows 95-style descending four-note chime
-    const notes = [523.25, 392.00, 329.63, 261.63]; // C5, G4, E4, C4
-    const noteDuration = 0.2;
-
-    notes.forEach((freq, i) => {
-      playTone(freq, now + i * 0.15, noteDuration, 0.12);
+    const now = getAudioContext().currentTime;
+    // Descending C5 → G4 → E4 → C4
+    [523.25, 392.00, 329.63, 261.63].forEach((freq, i) => {
+      playTone(freq, now + i * 0.15, 0.2);
     });
   }, [getAudioContext, playTone]);
 
-  // Classic startup sound - ascending chime
   const playStartupSound = useCallback(() => {
-    const ctx = getAudioContext();
-    const now = ctx.currentTime;
-
-    // Windows 95-style ascending four-note chime
-    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
-    const noteDuration = 0.25;
-
-    notes.forEach((freq, i) => {
-      playTone(freq, now + i * 0.12, noteDuration, 0.12);
+    const now = getAudioContext().currentTime;
+    // Ascending C4 → E4 → G4 → C5
+    [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
+      playTone(freq, now + i * 0.12, 0.25);
     });
   }, [getAudioContext, playTone]);
 
@@ -275,6 +316,9 @@ export default function Home() {
   // Restart sound effects
   const { playShutdownSound, playStartupSound, playRefreshSound } = useRestartSound();
 
+  // Folder open sound effect
+  const { playFolderOpenSound } = useFolderOpenSound();
+
   // Camera 3 warning mode (separate from notification visibility)
   const [isCam3WarningMode, setIsCam3WarningMode] = useState(false);
 
@@ -377,6 +421,9 @@ export default function Home() {
         setIsEmployeeFilesMinimized(true);
       }
     };
+
+    // Play folder open sound for all folder icons
+    playFolderOpenSound();
 
     switch (iconId) {
       case "colony-reports":
@@ -843,7 +890,10 @@ export default function Home() {
             <DesktopIcon
               label={HIDDEN_FILE.label}
               icon={HIDDEN_FILE.icon}
-              onClick={() => setIsSecretsFolderOpen(true)}
+              onClick={() => {
+                playFolderOpenSound();
+                setIsSecretsFolderOpen(true);
+              }}
             />
           </div>
         )}
@@ -866,6 +916,7 @@ export default function Home() {
               setIsStressReliefOpen(true);
               setIsStressReliefMinimized(false);
             }}
+            onFolderOpen={playFolderOpenSound}
           />
         )}
 
@@ -876,6 +927,7 @@ export default function Home() {
             childFolderLabel="Seriously Nothing…"
             onClose={() => setIsNothingOpen(false)}
             onOpenChild={() => setIsSeriouslyNothingOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "20vh", left: "32vw" }}
           />
         )}
@@ -885,6 +937,7 @@ export default function Home() {
             childFolderLabel="Please Stop"
             onClose={() => setIsSeriouslyNothingOpen(false)}
             onOpenChild={() => setIsPleaseStopOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "22vh", left: "36vw" }}
           />
         )}
@@ -894,6 +947,7 @@ export default function Home() {
             childFolderLabel="Go No Further"
             onClose={() => setIsPleaseStopOpen(false)}
             onOpenChild={() => setIsGoNoFurtherOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "24vh", left: "40vw" }}
           />
         )}
@@ -903,6 +957,7 @@ export default function Home() {
             childFolderLabel="Are You Serious"
             onClose={() => setIsGoNoFurtherOpen(false)}
             onOpenChild={() => setIsAreYouSeriousOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "26vh", left: "44vw" }}
           />
         )}
@@ -913,6 +968,7 @@ export default function Home() {
             showSkullOnChild={true}
             onClose={() => setIsAreYouSeriousOpen(false)}
             onOpenChild={() => setIsUghFineOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "28vh", left: "48vw" }}
           />
         )}
@@ -932,6 +988,7 @@ export default function Home() {
               setIsNothingOpen(false);
             }}
             onOpenChild={() => setIsPetMonitorOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "30vh", left: "52vw" }}
           />
         )}
