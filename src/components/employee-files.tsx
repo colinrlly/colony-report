@@ -291,15 +291,19 @@ function getEmployeeTabName(employee: EmployeeProfile) {
 
 // Equipment highlight regions for each employee (percentages of image dimensions)
 // Each region defines: top, left, width, height as percentages
-const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, { top: string; left: string; width: string; height: string }> = {
-  "emp-001": { top: "53%", left: "53%", width: "37%", height: "38%" }, // Bug (mobile containment unit)
-  "emp-002": { top: "5%", left: "45%", width: "50%", height: "35%" }, // Owl and Wasp (drones)
-  "emp-003": { top: "45%", left: "55%", width: "36%", height: "48%" }, // The Jar (research chamber)
+// Supports multiple regions per employee (e.g., Hank has two drones)
+const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, { top: string; left: string; width: string; height: string }[]> = {
+  "emp-001": [{ top: "53%", left: "53%", width: "37%", height: "38%" }], // Bug (mobile containment unit)
+  "emp-002": [
+    { top: "6%", left: "58%", width: "35%", height: "18%" },  // Owl (upper drone)
+    { top: "45%", left: "58%", width: "35%", height: "28%" }, // Wasp (lower drone)
+  ],
+  "emp-003": [{ top: "45%", left: "55%", width: "36%", height: "48%" }], // The Jar (research chamber)
 };
 
 // Employee illustration component
 function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment = false, employeeId }: { photoUrl?: string; priority?: boolean; highlightEquipment?: boolean; employeeId?: string }) {
-  const highlightRegion = employeeId ? EQUIPMENT_HIGHLIGHT_REGIONS[employeeId] : null;
+  const highlightRegions = employeeId ? EQUIPMENT_HIGHLIGHT_REGIONS[employeeId] : null;
 
   if (photoUrl) {
     return (
@@ -313,19 +317,20 @@ function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment =
           priority={priority}
         />
         {/* Equipment-specific highlight overlay */}
-        {highlightEquipment && highlightRegion && (
+        {highlightEquipment && highlightRegions && highlightRegions.map((region, index) => (
           <div
+            key={index}
             className="absolute pointer-events-none transition-all duration-300"
             style={{
-              top: highlightRegion.top,
-              left: highlightRegion.left,
-              width: highlightRegion.width,
-              height: highlightRegion.height,
+              top: region.top,
+              left: region.left,
+              width: region.width,
+              height: region.height,
             }}
           >
             <div className="absolute inset-0 border-2 border-[#FFD700] rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.6),inset_0_0_20px_rgba(255,215,0,0.2)]" />
           </div>
-        )}
+        ))}
       </div>
     );
   }
