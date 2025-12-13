@@ -144,9 +144,11 @@ function BadgeIcon() {
       shapeRendering="crispEdges"
     >
       {/* Black outline - outer edge */}
-      <rect x="3" y="3" width="1" height="1" fill="#000" />
+      <rect x="2" y="3" width="1" height="1" fill="#000" />
+      <rect x="3" y="2" width="1" height="1" fill="#000" />
       <rect x="4" y="2" width="22" height="1" fill="#000" />
-      <rect x="26" y="3" width="1" height="1" fill="#000" />
+      <rect x="26" y="2" width="1" height="1" fill="#000" />
+      <rect x="27" y="3" width="1" height="1" fill="#000" />
       <rect x="27" y="4" width="1" height="26" fill="#000" />
       <rect x="26" y="30" width="1" height="1" fill="#000" />
       <rect x="4" y="31" width="22" height="1" fill="#000" />
