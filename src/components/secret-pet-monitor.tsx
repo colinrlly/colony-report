@@ -18,7 +18,7 @@ const BASE_WIDTH = 480;
 const BASE_HEIGHT = 400;
 const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 320;
-const MAX_WIDTH = 800;
+const MAX_WIDTH = 600;
 
 // Resize grip icon component
 function ResizeGrip() {
