@@ -283,7 +283,6 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
       <Window
         resizable={false}
         leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-        draggable={false}
         className="flex flex-col absolute top-0 left-0 origin-top-left"
         style={{
           width: `${BASE_WIDTH}px`,
