@@ -296,7 +296,7 @@ const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, { top: string; left: string; w
   "emp-001": [{ top: "53%", left: "53%", width: "37%", height: "38%" }], // Bug (mobile containment unit)
   "emp-002": [
     { top: "6%", left: "58%", width: "35%", height: "18%" },  // Owl (upper drone)
-    { top: "45%", left: "58%", width: "35%", height: "28%" }, // Wasp (lower drone)
+    { top: "45%", left: "54%", width: "35%", height: "28%" }, // Wasp (lower drone)
   ],
   "emp-003": [{ top: "50%", left: "58%", width: "36%", height: "48%" }], // The Jar (research chamber)
 };
