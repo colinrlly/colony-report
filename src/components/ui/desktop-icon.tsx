@@ -7,7 +7,6 @@ type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "l
 interface DesktopIconProps {
   label: string;
   icon?: IconType;
-  color?: string;
   onClick?: () => void;
 }
 
@@ -144,6 +143,16 @@ function BadgeIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
+      {/* Black outline - outer edge */}
+      <rect x="4" y="3" width="1" height="1" fill="#000" />
+      <rect x="5" y="2" width="22" height="1" fill="#000" />
+      <rect x="27" y="3" width="1" height="1" fill="#000" />
+      <rect x="28" y="4" width="1" height="26" fill="#000" />
+      <rect x="27" y="30" width="1" height="1" fill="#000" />
+      <rect x="5" y="31" width="22" height="1" fill="#000" />
+      <rect x="4" y="30" width="1" height="1" fill="#000" />
+      <rect x="3" y="4" width="1" height="26" fill="#000" />
+
       {/* Clipboard outline - orange */}
       <rect x="5" y="4" width="1" height="1" fill="#8B4513" />
       <rect x="6" y="3" width="20" height="1" fill="#8B4513" />
@@ -206,102 +215,87 @@ function BadgeIcon() {
 function CameraIcon() {
   return (
     <svg
-      width="96"
-      height="96"
+      width="80"
+      height="80"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Camera body outline - black */}
-      <rect x="3" y="11" width="1" height="1" fill="#000" />
-      <rect x="4" y="10" width="5" height="1" fill="#000" />
-      <rect x="9" y="9" width="1" height="1" fill="#000" />
-      <rect x="10" y="8" width="4" height="1" fill="#000" />
-      <rect x="14" y="9" width="1" height="1" fill="#000" />
-      <rect x="15" y="10" width="13" height="1" fill="#000" />
-      <rect x="28" y="11" width="1" height="1" fill="#000" />
-      <rect x="29" y="12" width="1" height="12" fill="#000" />
-      <rect x="28" y="24" width="1" height="1" fill="#000" />
-      <rect x="4" y="25" width="24" height="1" fill="#000" />
-      <rect x="3" y="24" width="1" height="1" fill="#000" />
-      <rect x="2" y="12" width="1" height="12" fill="#000" />
+      {/* Black outline - outer edge with grip protrusion on right */}
+      <rect x="3" y="5" width="20" height="1" fill="#000" />
+      <rect x="23" y="3" width="6" height="1" fill="#000" />
+      <rect x="22" y="4" width="1" height="1" fill="#000" />
+      <rect x="29" y="4" width="1" height="1" fill="#000" />
+      <rect x="30" y="5" width="1" height="22" fill="#000" />
+      <rect x="2" y="6" width="1" height="1" fill="#000" />
+      <rect x="1" y="7" width="1" height="20" fill="#000" />
+      <rect x="2" y="27" width="1" height="1" fill="#000" />
+      <rect x="29" y="27" width="1" height="1" fill="#000" />
+      <rect x="3" y="28" width="26" height="1" fill="#000" />
 
-      {/* Viewfinder top - black outline */}
-      <rect x="11" y="6" width="1" height="1" fill="#000" />
-      <rect x="12" y="5" width="3" height="1" fill="#000" />
-      <rect x="15" y="6" width="1" height="1" fill="#000" />
-      <rect x="16" y="7" width="1" height="1" fill="#000" />
-      <rect x="10" y="7" width="1" height="1" fill="#000" />
+      {/* Camera body - tan/beige retro color */}
+      <rect x="3" y="6" width="26" height="1" fill="#D4B896" />
+      <rect x="2" y="7" width="28" height="20" fill="#C4A876" />
+      <rect x="3" y="27" width="26" height="1" fill="#A48856" />
 
-      {/* Viewfinder top - fill */}
-      <rect x="11" y="7" width="5" height="1" fill="#909090" />
-      <rect x="12" y="6" width="3" height="1" fill="#A0A0A0" />
+      {/* Grip protrusion fill */}
+      <rect x="23" y="4" width="6" height="1" fill="#D4B896" />
+      <rect x="23" y="5" width="6" height="1" fill="#C4A876" />
 
-      {/* Shutter button on top */}
-      <rect x="20" y="8" width="4" height="2" fill="#404040" />
-      <rect x="21" y="7" width="2" height="1" fill="#505050" />
+      {/* Top highlight */}
+      <rect x="3" y="6" width="19" height="1" fill="#E4C8A6" />
+      <rect x="23" y="4" width="5" height="1" fill="#E4C8A6" />
+      <rect x="2" y="7" width="1" height="19" fill="#D4B896" />
 
-      {/* Camera body - silver/gray with 3D effect */}
-      <rect x="4" y="11" width="24" height="1" fill="#D0D0D0" />
-      <rect x="3" y="12" width="26" height="12" fill="#B0B0B0" />
-      <rect x="4" y="24" width="24" height="1" fill="#808080" />
+      {/* Right/bottom shadow */}
+      <rect x="29" y="6" width="1" height="21" fill="#A48856" />
 
-      {/* Top highlight - white */}
-      <rect x="4" y="11" width="23" height="1" fill="#E8E8E8" />
-      <rect x="3" y="12" width="1" height="11" fill="#D0D0D0" />
+      {/* Shutter button on grip */}
+      <rect x="24" y="5" width="4" height="2" fill="#404040" />
+      <rect x="25" y="5" width="2" height="1" fill="#606060" />
 
-      {/* Right and bottom shadow */}
-      <rect x="28" y="13" width="1" height="11" fill="#808080" />
+      {/* Viewfinder - small rectangle on top left */}
+      <rect x="5" y="7" width="6" height="4" fill="#000" />
+      <rect x="6" y="8" width="4" height="2" fill="#404040" />
+      <rect x="6" y="8" width="2" height="1" fill="#606060" />
 
-      {/* Top panel with detail */}
-      <rect x="9" y="9" width="6" height="1" fill="#C0C0C0" />
-      <rect x="9" y="10" width="6" height="1" fill="#A0A0A0" />
-
-      {/* Grip texture on left side */}
-      <rect x="4" y="13" width="3" height="10" fill="#606060" />
-      <rect x="5" y="14" width="1" height="1" fill="#404040" />
-      <rect x="5" y="16" width="1" height="1" fill="#404040" />
-      <rect x="5" y="18" width="1" height="1" fill="#404040" />
-      <rect x="5" y="20" width="1" height="1" fill="#404040" />
+      {/* Flash unit - under grip protrusion */}
+      <rect x="24" y="8" width="4" height="3" fill="#E8E8E8" />
+      <rect x="25" y="9" width="2" height="1" fill="#F8F8F8" />
 
       {/* Lens outer ring - black outline */}
-      <rect x="12" y="12" width="8" height="1" fill="#000" />
-      <rect x="11" y="13" width="1" height="1" fill="#000" />
-      <rect x="20" y="13" width="1" height="1" fill="#000" />
-      <rect x="10" y="14" width="1" height="6" fill="#000" />
-      <rect x="21" y="14" width="1" height="6" fill="#000" />
-      <rect x="11" y="20" width="1" height="1" fill="#000" />
-      <rect x="20" y="20" width="1" height="1" fill="#000" />
-      <rect x="12" y="21" width="8" height="1" fill="#000" />
+      <rect x="11" y="12" width="10" height="1" fill="#000" />
+      <rect x="10" y="13" width="1" height="1" fill="#000" />
+      <rect x="21" y="13" width="1" height="1" fill="#000" />
+      <rect x="9" y="14" width="1" height="8" fill="#000" />
+      <rect x="22" y="14" width="1" height="8" fill="#000" />
+      <rect x="10" y="22" width="1" height="1" fill="#000" />
+      <rect x="21" y="22" width="1" height="1" fill="#000" />
+      <rect x="11" y="23" width="10" height="1" fill="#000" />
 
-      {/* Lens - chrome ring outer */}
-      <rect x="12" y="13" width="8" height="1" fill="#E0E0E0" />
-      <rect x="11" y="14" width="1" height="6" fill="#D0D0D0" />
-      <rect x="20" y="14" width="1" height="6" fill="#909090" />
-      <rect x="12" y="20" width="8" height="1" fill="#909090" />
-
-      {/* Lens - chrome ring inner */}
-      <rect x="12" y="14" width="8" height="1" fill="#C0C0C0" />
-      <rect x="12" y="19" width="8" height="1" fill="#808080" />
+      {/* Lens - silver ring */}
+      <rect x="11" y="13" width="10" height="1" fill="#D0D0D0" />
+      <rect x="10" y="14" width="1" height="8" fill="#C0C0C0" />
+      <rect x="21" y="14" width="1" height="8" fill="#909090" />
+      <rect x="11" y="22" width="10" height="1" fill="#909090" />
 
       {/* Lens - glass area */}
-      <rect x="13" y="14" width="6" height="1" fill="#1a3a6e" />
-      <rect x="12" y="15" width="8" height="4" fill="#0d2654" />
-      <rect x="13" y="19" width="6" height="1" fill="#061530" />
+      <rect x="11" y="14" width="10" height="8" fill="#1a3a6e" />
+      <rect x="12" y="15" width="8" height="6" fill="#0d2654" />
 
-      {/* Lens reflections - bright spots */}
-      <rect x="13" y="15" width="3" height="2" fill="#2060B0" />
-      <rect x="14" y="15" width="2" height="1" fill="#4090E0" />
-      <rect x="17" y="17" width="2" height="1" fill="#3070C0" />
+      {/* Lens inner darker ring */}
+      <rect x="13" y="16" width="6" height="1" fill="#061530" />
+      <rect x="12" y="17" width="1" height="3" fill="#061530" />
+      <rect x="19" y="17" width="1" height="3" fill="#061530" />
+      <rect x="13" y="20" width="6" height="1" fill="#061530" />
 
-      {/* Small white highlight dots */}
-      <rect x="14" y="15" width="1" height="1" fill="#80B0F0" />
+      {/* Lens reflections */}
+      <rect x="13" y="17" width="3" height="2" fill="#2060B0" />
+      <rect x="14" y="17" width="2" height="1" fill="#4090E0" />
+      <rect x="17" y="19" width="2" height="1" fill="#3070C0" />
+      <rect x="14" y="17" width="1" height="1" fill="#80B0F0" />
 
-      {/* Mode dial on top right */}
-      <rect x="24" y="11" width="3" height="2" fill="#505050" />
-      <rect x="25" y="11" width="1" height="1" fill="#707070" />
-
-      {/* White flash/AF assist */}
-      <rect x="9" y="13" width="1" height="2" fill="#F0F0F0" />
+      {/* Brand stripe - bottom decorative element */}
+      <rect x="4" y="25" width="24" height="1" fill="#8B4513" />
     </svg>
   );
 }
@@ -309,8 +303,8 @@ function CameraIcon() {
 function VideoCameraIcon() {
   return (
     <svg
-      width="84"
-      height="84"
+      width="80"
+      height="80"
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
