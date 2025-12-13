@@ -615,18 +615,26 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         })}
       </div>
 
-      {/* Main Window */}
-      <Window
-        resizable={false}
-        draggable={false}
-        className="flex flex-col relative"
+      {/* Main Window - Outer container sets the scaled size */}
+      <div
+        className="relative"
         style={{
           width: `${dimensions.width}px`,
           height: `${dimensions.height}px`,
-          willChange: isResizing ? 'width, height' : 'auto',
-          transform: 'translateZ(0)', // Force GPU acceleration
         }}
       >
+        {/* Inner scaled content - renders at base size, then scaled */}
+        <Window
+          resizable={false}
+          draggable={false}
+          className="flex flex-col absolute top-0 left-0 origin-top-left"
+          style={{
+            width: `${BASE_WIDTH}px`,
+            height: `${BASE_HEIGHT}px`,
+            transform: `scale(${scaleFactor})`,
+            willChange: isResizing ? 'transform' : 'auto',
+          }}
+        >
         <WindowTitleBar className="h-[36px]">
           <div className="flex items-center gap-2">
             <BadgeIcon />
@@ -657,13 +665,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
           <div className="flex-1 flex p-3 gap-3">
             {/* Left: Square Portrait Illustration */}
             <div className="flex flex-col" style={{ flexShrink: 0 }}>
-              <div
-                className="aspect-square"
-                style={{
-                  width: `${520 * scaleFactor}px`,
-                  willChange: isResizing ? 'width' : 'auto',
-                }}
-              >
+              <div className="w-[520px] aspect-square">
                 <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority highlightEquipment={activeTab === "equipment"} employeeId={selectedEmployee.id} />
               </div>
               {/* Preload other employee images for smooth tab switching */}
@@ -817,8 +819,9 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             Employee File
           </WindowStatusField>
         </WindowStatusBar>
+        </Window>
 
-        {/* Resize Handle */}
+        {/* Resize Handle - Outside scaled content so it stays at correct position */}
         <div
           onMouseDown={handleResizeStart}
           className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
@@ -828,7 +831,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         >
           <ResizeGrip />
         </div>
-      </Window>
+      </div>
       </div>
     </Draggable>
   );
