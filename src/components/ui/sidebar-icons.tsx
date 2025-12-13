@@ -40,8 +40,8 @@ export function LadybugIcon() {
     <img
       src="/images/ladybug icon.png"
       alt="Ladybug"
-      width="72"
-      height="72"
+      width="68"
+      height="68"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
