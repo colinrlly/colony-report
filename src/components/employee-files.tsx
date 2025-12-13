@@ -645,12 +645,14 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                     <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
                       EQUIPMENT ISSUED
                     </div>
-                    {selectedEmployee.equipment.nickname && (
-                      <div className="text-[28px] font-black text-[#4a3728] tracking-wide text-center py-2 mb-2">
-                        &ldquo;{selectedEmployee.equipment.nickname}&rdquo;
-                      </div>
-                    )}
-                    <div className="font-black text-[#1a1a1a] text-[17px]">{selectedEmployee.equipment.name}</div>
+                    <div className="font-black text-[#1a1a1a] text-[17px]">
+                      {selectedEmployee.equipment.name}
+                      {selectedEmployee.equipment.nickname && (
+                        <span className="text-[20px] text-[#4a3728] ml-2">
+                          &ldquo;{selectedEmployee.equipment.nickname}&rdquo;
+                        </span>
+                      )}
+                    </div>
                     <div className="flex mt-2">
                       <span className="font-bold text-[#5a5a5a] w-[60px]">Model:</span>
                       <span className="text-[#1a1a1a]">{selectedEmployee.equipment.model}</span>
