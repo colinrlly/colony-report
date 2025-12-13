@@ -1,5 +1,7 @@
 "use client";
 
+import { CSSProperties } from "react";
+
 export type SidebarIconType =
   | "bee"
   | "snail"
@@ -11,135 +13,78 @@ export type SidebarIconType =
   | "frog"
   | "sandwich";
 
-export function BeeIcon() {
+const ICON_STYLE: CSSProperties = {
+  imageRendering: "pixelated",
+  objectFit: "contain",
+};
+
+interface IconConfig {
+  src: string;
+  alt: string;
+  size: number;
+}
+
+const ICON_CONFIG: Record<SidebarIconType, IconConfig> = {
+  bee: { src: "/images/bee icon.png", alt: "Bee", size: 62 },
+  snail: { src: "/images/snail icon.png", alt: "Snail", size: 58 },
+  ladybug: { src: "/images/ladybug icon.png", alt: "Ladybug", size: 68 },
+  hand: { src: "/images/hand icon.png", alt: "Hand", size: 54 },
+  apricot: { src: "/images/fruit icon.png", alt: "Apricot", size: 76 },
+  cactus: { src: "/images/cactus icon.png", alt: "Cactus", size: 64 },
+  dandelion: { src: "/images/dandelion icon.png", alt: "Dandelion", size: 62 },
+  frog: { src: "/images/frog icon.png", alt: "Frog", size: 70 },
+  sandwich: { src: "/images/sandwich icon.png", alt: "Sandwich", size: 62 },
+};
+
+function PixelIcon({ type }: { type: SidebarIconType }) {
+  const config = ICON_CONFIG[type];
   return (
     <img
-      src="/images/bee icon.png"
-      alt="Bee"
-      width="62"
-      height="62"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
+      src={config.src}
+      alt={config.alt}
+      width={config.size}
+      height={config.size}
+      style={ICON_STYLE}
     />
   );
+}
+
+export function BeeIcon() {
+  return <PixelIcon type="bee" />;
 }
 
 export function SnailIcon() {
-  return (
-    <img
-      src="/images/snail icon.png"
-      alt="Snail"
-      width="58"
-      height="58"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="snail" />;
 }
 
 export function LadybugIcon() {
-  return (
-    <img
-      src="/images/ladybug icon.png"
-      alt="Ladybug"
-      width="68"
-      height="68"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="ladybug" />;
 }
 
 export function HandIcon() {
-  return (
-    <img
-      src="/images/hand icon.png"
-      alt="Hand"
-      width="54"
-      height="54"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="hand" />;
 }
 
 export function ApricotIcon() {
-  return (
-    <img
-      src="/images/fruit icon.png"
-      alt="Apricot"
-      width="76"
-      height="76"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="apricot" />;
 }
 
 export function CactusIcon() {
-  return (
-    <img
-      src="/images/cactus icon.png"
-      alt="Cactus"
-      width="64"
-      height="64"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="cactus" />;
 }
 
 export function DandelionIcon() {
-  return (
-    <img
-      src="/images/dandelion icon.png"
-      alt="Dandelion"
-      width="62"
-      height="62"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="dandelion" />;
 }
 
 export function FrogIcon() {
-  return (
-    <img
-      src="/images/frog icon.png"
-      alt="Frog"
-      width="70"
-      height="70"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="frog" />;
 }
 
 export function SandwichIcon() {
-  return (
-    <img
-      src="/images/sandwich icon.png"
-      alt="Sandwich"
-      width="62"
-      height="62"
-      style={{ imageRendering: "pixelated", objectFit: "contain" }}
-    />
-  );
+  return <PixelIcon type="sandwich" />;
 }
 
 export function SidebarIcon({ icon }: { icon: SidebarIconType }) {
-  switch (icon) {
-    case "bee":
-      return <BeeIcon />;
-    case "snail":
-      return <SnailIcon />;
-    case "ladybug":
-      return <LadybugIcon />;
-    case "hand":
-      return <HandIcon />;
-    case "apricot":
-      return <ApricotIcon />;
-    case "cactus":
-      return <CactusIcon />;
-    case "dandelion":
-      return <DandelionIcon />;
-    case "frog":
-      return <FrogIcon />;
-    case "sandwich":
-      return <SandwichIcon />;
-    default:
-      return <BeeIcon />;
-  }
+  return <PixelIcon type={icon} />;
 }
