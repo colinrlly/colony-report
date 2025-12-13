@@ -21,7 +21,7 @@ const navItems = [
   { id: "cactus", icon: "cactus" as const, label: "Cactus Observations", statusText: "Botanical Observation // Specimen Discovery // additional notes: Toby reported numbness at injection site for 7 days after" },
   { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records", statusText: "Botanical Observation // Specimen Response // additional notes: please watch your step, they are getting angry" },
   { id: "frog", icon: "frog" as const, label: "Frog Documentation", statusText: "Level 4 containment initiated // Intern recovered alive // notes: cancel human autopsy request" },
-  { id: "sandwich", icon: "sandwich" as const, label: "Sandwich Files", statusText: "Lunch Protocol // Specimen Consumption Study // notes: do not eat the research samples" },
+  { id: "sandwich", icon: "sandwich" as const, label: "Sandwich Files", statusText: "Local Food Documentation / Edible Secretion Study / Success- Classified as Condiment notes: tastes almost like mayonnaise but with a little flare" },
 ];
 
 interface ColonyReportsProps {
