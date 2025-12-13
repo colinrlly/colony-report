@@ -16,8 +16,8 @@ export function BeeIcon() {
     <img
       src="/images/bee icon.png"
       alt="Bee"
-      width="68"
-      height="68"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -64,8 +64,8 @@ export function ApricotIcon() {
     <img
       src="/images/fruit icon.png"
       alt="Apricot"
-      width="72"
-      height="72"
+      width="76"
+      height="76"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -76,8 +76,8 @@ export function CactusIcon() {
     <img
       src="/images/cactus icon.png"
       alt="Cactus"
-      width="60"
-      height="60"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -88,8 +88,8 @@ export function DandelionIcon() {
     <img
       src="/images/dandelion icon.png"
       alt="Dandelion"
-      width="58"
-      height="58"
+      width="62"
+      height="62"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -112,8 +112,8 @@ export function SandwichIcon() {
     <img
       src="/images/sandwich icon.png"
       alt="Sandwich"
-      width="58"
-      height="58"
+      width="62"
+      height="62"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
