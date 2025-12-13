@@ -221,12 +221,14 @@ function CameraIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
-      {/* Black outline - outer edge */}
-      <rect x="3" y="5" width="26" height="1" fill="#000" />
+      {/* Black outline - outer edge with grip protrusion on right */}
+      <rect x="3" y="5" width="20" height="1" fill="#000" />
+      <rect x="23" y="3" width="6" height="1" fill="#000" />
+      <rect x="22" y="4" width="1" height="1" fill="#000" />
+      <rect x="29" y="4" width="1" height="1" fill="#000" />
+      <rect x="30" y="5" width="1" height="22" fill="#000" />
       <rect x="2" y="6" width="1" height="1" fill="#000" />
-      <rect x="29" y="6" width="1" height="1" fill="#000" />
       <rect x="1" y="7" width="1" height="20" fill="#000" />
-      <rect x="30" y="7" width="1" height="20" fill="#000" />
       <rect x="2" y="27" width="1" height="1" fill="#000" />
       <rect x="29" y="27" width="1" height="1" fill="#000" />
       <rect x="3" y="28" width="26" height="1" fill="#000" />
@@ -236,12 +238,21 @@ function CameraIcon() {
       <rect x="2" y="7" width="28" height="20" fill="#C4A876" />
       <rect x="3" y="27" width="26" height="1" fill="#A48856" />
 
+      {/* Grip protrusion fill */}
+      <rect x="23" y="4" width="6" height="1" fill="#D4B896" />
+      <rect x="23" y="5" width="6" height="1" fill="#C4A876" />
+
       {/* Top highlight */}
-      <rect x="3" y="6" width="25" height="1" fill="#E4C8A6" />
+      <rect x="3" y="6" width="19" height="1" fill="#E4C8A6" />
+      <rect x="23" y="4" width="5" height="1" fill="#E4C8A6" />
       <rect x="2" y="7" width="1" height="19" fill="#D4B896" />
 
       {/* Right/bottom shadow */}
-      <rect x="29" y="8" width="1" height="19" fill="#A48856" />
+      <rect x="29" y="6" width="1" height="21" fill="#A48856" />
+
+      {/* Shutter button on grip */}
+      <rect x="24" y="5" width="4" height="2" fill="#404040" />
+      <rect x="25" y="5" width="2" height="1" fill="#606060" />
 
       {/* Viewfinder - small rectangle on top left */}
       <rect x="5" y="8" width="6" height="4" fill="#000" />
@@ -249,9 +260,9 @@ function CameraIcon() {
       <rect x="6" y="9" width="2" height="1" fill="#606060" />
 
       {/* Flash unit - top right */}
-      <rect x="22" y="8" width="6" height="4" fill="#E8E8E8" />
-      <rect x="23" y="9" width="4" height="2" fill="#F8F8F8" />
-      <rect x="22" y="8" width="6" height="1" fill="#F0F0F0" />
+      <rect x="18" y="8" width="6" height="4" fill="#E8E8E8" />
+      <rect x="19" y="9" width="4" height="2" fill="#F8F8F8" />
+      <rect x="18" y="8" width="6" height="1" fill="#F0F0F0" />
 
       {/* Lens outer ring - black outline */}
       <rect x="11" y="12" width="10" height="1" fill="#000" />
@@ -284,10 +295,6 @@ function CameraIcon() {
       <rect x="14" y="17" width="2" height="1" fill="#4090E0" />
       <rect x="17" y="19" width="2" height="1" fill="#3070C0" />
       <rect x="14" y="17" width="1" height="1" fill="#80B0F0" />
-
-      {/* Shutter button - top center */}
-      <rect x="14" y="7" width="4" height="2" fill="#404040" />
-      <rect x="15" y="7" width="2" height="1" fill="#606060" />
 
       {/* Brand stripe - bottom decorative element */}
       <rect x="4" y="25" width="24" height="1" fill="#8B4513" />
