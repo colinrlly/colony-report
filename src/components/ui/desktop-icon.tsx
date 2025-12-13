@@ -144,11 +144,9 @@ function BadgeIcon() {
       shapeRendering="crispEdges"
     >
       {/* Black outline - outer edge */}
-      <rect x="2" y="3" width="1" height="1" fill="#000" />
-      <rect x="3" y="2" width="1" height="1" fill="#000" />
+      <rect x="3" y="3" width="1" height="1" fill="#000" />
       <rect x="4" y="2" width="22" height="1" fill="#000" />
-      <rect x="26" y="2" width="1" height="1" fill="#000" />
-      <rect x="27" y="3" width="1" height="1" fill="#000" />
+      <rect x="26" y="3" width="1" height="1" fill="#000" />
       <rect x="27" y="4" width="1" height="26" fill="#000" />
       <rect x="26" y="30" width="1" height="1" fill="#000" />
       <rect x="4" y="31" width="22" height="1" fill="#000" />
@@ -176,7 +174,13 @@ function BadgeIcon() {
       {/* Right/bottom shadow */}
       <rect x="25" y="6" width="1" height="23" fill="#E8D8C0" />
 
-      {/* Clip at top */}
+      {/* Clip at top - black outline */}
+      <rect x="11" y="0" width="8" height="1" fill="#000" />
+      <rect x="10" y="1" width="1" height="1" fill="#000" />
+      <rect x="19" y="1" width="1" height="1" fill="#000" />
+      <rect x="9" y="2" width="1" height="3" fill="#000" />
+      <rect x="20" y="2" width="1" height="3" fill="#000" />
+      {/* Clip at top - fill */}
       <rect x="11" y="1" width="8" height="1" fill="#D2691E" />
       <rect x="10" y="2" width="10" height="3" fill="#D2691E" />
       <rect x="11" y="2" width="8" height="1" fill="#E07830" />
