@@ -137,6 +137,7 @@ interface NestedFolderWindowProps {
   showSkullOnChild?: boolean;
   onClose?: () => void;
   onOpenChild?: () => void;
+  onFolderOpen?: () => void;
   position?: { top: string; left: string };
 }
 
@@ -146,8 +147,14 @@ export function NestedFolderWindow({
   showSkullOnChild,
   onClose,
   onOpenChild,
+  onFolderOpen,
   position = { top: "18vh", left: "35vw" },
 }: NestedFolderWindowProps) {
+  const handleFolderClick = () => {
+    onFolderOpen?.();
+    onOpenChild?.();
+  };
+
   return (
     <Window
       className="w-[350px] h-[220px] absolute flex flex-col"
@@ -164,7 +171,7 @@ export function NestedFolderWindow({
       {/* Window content area with white background like a file explorer */}
       <div className="flex-1 bg-white win98-border-sunken m-[2px] p-4 overflow-auto">
         <div className="flex justify-center items-center h-full">
-          <FolderItem label={childFolderLabel} showSkull={showSkullOnChild} onClick={onOpenChild} />
+          <FolderItem label={childFolderLabel} showSkull={showSkullOnChild} onClick={handleFolderClick} />
         </div>
       </div>
     </Window>

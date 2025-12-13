@@ -27,6 +27,71 @@ import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from 
 
 // viewMenuItems, toolsMenuItems, and helpMenuItems are defined inside the component to access state handlers
 
+// Folder open sound - soft "whoosh" effect using Web Audio API
+function useFolderOpenSound() {
+  const audioContextRef = useRef<AudioContext | null>(null);
+
+  const getAudioContext = useCallback(() => {
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContext();
+    }
+    if (audioContextRef.current.state === "suspended") {
+      audioContextRef.current.resume();
+    }
+    return audioContextRef.current;
+  }, []);
+
+  const playFolderOpenSound = useCallback(() => {
+    const ctx = getAudioContext();
+    const now = ctx.currentTime;
+
+    // Create a soft "whoosh" using filtered noise + quick tone sweep
+    // 1. Noise component for paper/air texture
+    const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 0.08, ctx.sampleRate);
+    const noiseData = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseData.length; i++) {
+      noiseData[i] = (Math.random() * 2 - 1) * 0.3;
+    }
+    const noiseSource = ctx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+
+    // Bandpass filter for softer "paper" sound
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = "bandpass";
+    noiseFilter.frequency.setValueAtTime(2000, now);
+    noiseFilter.Q.setValueAtTime(1, now);
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.setValueAtTime(0.15, now);
+    noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(ctx.destination);
+
+    // 2. Quick descending tone for "open" motion
+    const oscillator = ctx.createOscillator();
+    const oscGain = ctx.createGain();
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(600, now);
+    oscillator.frequency.exponentialRampToValueAtTime(200, now + 0.06);
+
+    oscGain.gain.setValueAtTime(0.08, now);
+    oscGain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+
+    oscillator.connect(oscGain);
+    oscGain.connect(ctx.destination);
+
+    // Start and stop
+    noiseSource.start(now);
+    noiseSource.stop(now + 0.08);
+    oscillator.start(now);
+    oscillator.stop(now + 0.06);
+  }, [getAudioContext]);
+
+  return { playFolderOpenSound };
+}
+
 // Classic computer restart sound using Web Audio API
 function useRestartSound() {
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -268,6 +333,9 @@ export default function Home() {
   // Restart sound effects
   const { playShutdownSound, playStartupSound } = useRestartSound();
 
+  // Folder open sound effect
+  const { playFolderOpenSound } = useFolderOpenSound();
+
   // Camera 3 warning mode (separate from notification visibility)
   const [isCam3WarningMode, setIsCam3WarningMode] = useState(false);
 
@@ -370,6 +438,9 @@ export default function Home() {
         setIsEmployeeFilesMinimized(true);
       }
     };
+
+    // Play folder open sound for all folder icons
+    playFolderOpenSound();
 
     switch (iconId) {
       case "colony-reports":
@@ -833,7 +904,10 @@ export default function Home() {
             <DesktopIcon
               label={HIDDEN_FILE.label}
               icon={HIDDEN_FILE.icon}
-              onClick={() => setIsSecretsFolderOpen(true)}
+              onClick={() => {
+                playFolderOpenSound();
+                setIsSecretsFolderOpen(true);
+              }}
             />
           </div>
         )}
@@ -856,6 +930,7 @@ export default function Home() {
               setIsStressReliefOpen(true);
               setIsStressReliefMinimized(false);
             }}
+            onFolderOpen={playFolderOpenSound}
           />
         )}
 
@@ -866,6 +941,7 @@ export default function Home() {
             childFolderLabel="Seriously Nothing…"
             onClose={() => setIsNothingOpen(false)}
             onOpenChild={() => setIsSeriouslyNothingOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "20vh", left: "32vw" }}
           />
         )}
@@ -875,6 +951,7 @@ export default function Home() {
             childFolderLabel="Please Stop"
             onClose={() => setIsSeriouslyNothingOpen(false)}
             onOpenChild={() => setIsPleaseStopOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "22vh", left: "36vw" }}
           />
         )}
@@ -884,6 +961,7 @@ export default function Home() {
             childFolderLabel="Go No Further"
             onClose={() => setIsPleaseStopOpen(false)}
             onOpenChild={() => setIsGoNoFurtherOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "24vh", left: "40vw" }}
           />
         )}
@@ -893,6 +971,7 @@ export default function Home() {
             childFolderLabel="Are You Serious"
             onClose={() => setIsGoNoFurtherOpen(false)}
             onOpenChild={() => setIsAreYouSeriousOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "26vh", left: "44vw" }}
           />
         )}
@@ -903,6 +982,7 @@ export default function Home() {
             showSkullOnChild={true}
             onClose={() => setIsAreYouSeriousOpen(false)}
             onOpenChild={() => setIsUghFineOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "28vh", left: "48vw" }}
           />
         )}
@@ -922,6 +1002,7 @@ export default function Home() {
               setIsNothingOpen(false);
             }}
             onOpenChild={() => setIsPetMonitorOpen(true)}
+            onFolderOpen={playFolderOpenSound}
             position={{ top: "30vh", left: "52vw" }}
           />
         )}
