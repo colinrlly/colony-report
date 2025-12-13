@@ -509,7 +509,23 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
       let newWidth = resizeStartRef.current.width + deltaForRatio;
       newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, newWidth));
 
-      const newHeight = newWidth / ASPECT_RATIO;
+      let newHeight = newWidth / ASPECT_RATIO;
+
+      // Prevent window from overlapping the taskbar
+      if (nodeRef.current) {
+        const windowTop = nodeRef.current.getBoundingClientRect().top;
+        const availableHeight = window.innerHeight - TASKBAR_HEIGHT - windowTop;
+
+        if (newHeight > availableHeight) {
+          newHeight = availableHeight;
+          newWidth = newHeight * ASPECT_RATIO;
+          // Ensure we don't go below minimum
+          if (newWidth < MIN_WIDTH) {
+            newWidth = MIN_WIDTH;
+            newHeight = newWidth / ASPECT_RATIO;
+          }
+        }
+      }
 
       setDimensions({ width: newWidth, height: newHeight });
     };
