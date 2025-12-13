@@ -294,7 +294,7 @@ function getEmployeeTabName(employee: EmployeeProfile) {
 const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, { top: string; left: string; width: string; height: string }> = {
   "emp-001": { top: "53%", left: "53%", width: "37%", height: "38%" }, // Bug (mobile containment unit)
   "emp-002": { top: "5%", left: "45%", width: "50%", height: "35%" }, // Owl and Wasp (drones)
-  "emp-003": { top: "25%", left: "55%", width: "40%", height: "50%" }, // The Jar (research chamber)
+  "emp-003": { top: "45%", left: "55%", width: "36%", height: "48%" }, // The Jar (research chamber)
 };
 
 // Employee illustration component
