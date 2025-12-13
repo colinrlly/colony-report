@@ -22,6 +22,7 @@ interface IconConfig {
   src: string;
   alt: string;
   size: number;
+  width?: number;
 }
 
 const ICON_CONFIG: Record<SidebarIconType, IconConfig> = {
@@ -30,7 +31,7 @@ const ICON_CONFIG: Record<SidebarIconType, IconConfig> = {
   ladybug: { src: "/images/ladybug icon.png", alt: "Ladybug", size: 68 },
   hand: { src: "/images/hand icon.png", alt: "Hand", size: 54 },
   apricot: { src: "/images/fruit icon.png", alt: "Apricot", size: 76 },
-  cactus: { src: "/images/cactus icon.png", alt: "Cactus", size: 64 },
+  cactus: { src: "/images/cactus icon.png", alt: "Cactus", size: 64, width: 70 },
   dandelion: { src: "/images/dandelion icon.png", alt: "Dandelion", size: 62 },
   frog: { src: "/images/frog icon.png", alt: "Frog", size: 70 },
   sandwich: { src: "/images/sandwich icon.png", alt: "Sandwich", size: 62 },
@@ -42,7 +43,7 @@ function PixelIcon({ type }: { type: SidebarIconType }) {
     <img
       src={config.src}
       alt={config.alt}
-      width={config.size}
+      width={config.width ?? config.size}
       height={config.size}
       style={ICON_STYLE}
     />
