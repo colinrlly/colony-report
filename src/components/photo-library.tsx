@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
   Window,
@@ -8,6 +8,9 @@ import {
   WindowTitle,
   WindowControls,
 } from "@/components/ui/window";
+
+// Constants for taskbar height
+const TASKBAR_HEIGHT = 40;
 
 // Sample photo library data - 10 photos labeled 1-10 with earth tone placeholder colors
 const photoItems = [
@@ -67,6 +70,34 @@ function RightArrowIcon() {
   );
 }
 
+// Resize grip icon component
+function ResizeGrip() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ display: 'block' }}>
+      {/* Diagonal grip pattern */}
+      <rect x="9" y="2" width="1" height="1" fill="#808080" />
+      <rect x="10" y="1" width="1" height="1" fill="#DFDFDF" />
+      <rect x="6" y="5" width="1" height="1" fill="#808080" />
+      <rect x="7" y="4" width="1" height="1" fill="#DFDFDF" />
+      <rect x="9" y="5" width="1" height="1" fill="#808080" />
+      <rect x="10" y="4" width="1" height="1" fill="#DFDFDF" />
+      <rect x="3" y="8" width="1" height="1" fill="#808080" />
+      <rect x="4" y="7" width="1" height="1" fill="#DFDFDF" />
+      <rect x="6" y="8" width="1" height="1" fill="#808080" />
+      <rect x="7" y="7" width="1" height="1" fill="#DFDFDF" />
+      <rect x="9" y="8" width="1" height="1" fill="#808080" />
+      <rect x="10" y="7" width="1" height="1" fill="#DFDFDF" />
+    </svg>
+  );
+}
+
+// Base dimensions and aspect ratio
+const BASE_WIDTH = 750;
+const BASE_HEIGHT = 700;
+const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
+const MIN_WIDTH = 500;
+const MAX_WIDTH = 1000;
+
 interface PhotoLibraryProps {
   onClose?: () => void;
   onMinimize?: () => void;
@@ -78,6 +109,12 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
   const [isDraggingScrollbar, setIsDraggingScrollbar] = useState(false);
   const thumbnailContainerRef = useRef<HTMLDivElement>(null);
   const scrollbarTrackRef = useRef<HTMLDivElement>(null);
+  const nodeRef = useRef<HTMLDivElement>(null);
+
+  // Resize state
+  const [dimensions, setDimensions] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStartRef = useRef({ mouseX: 0, mouseY: 0, width: BASE_WIDTH, height: BASE_HEIGHT });
 
   const selectedPhoto = photoItems[selectedIndex];
   const visibleThumbnails = 6; // Show 6 thumbnails at a time
@@ -162,16 +199,100 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
     };
   }, [isDraggingScrollbar, maxScroll, scrollbarThumbWidthPercent]);
 
+  // Resize handlers
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    resizeStartRef.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      width: dimensions.width,
+      height: dimensions.height,
+    };
+
+    setIsResizing(true);
+  }, [dimensions]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaX = e.clientX - resizeStartRef.current.mouseX;
+      const deltaY = e.clientY - resizeStartRef.current.mouseY;
+
+      // Use the larger delta to determine the new size (maintaining aspect ratio)
+      const deltaForRatio = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY * ASPECT_RATIO;
+
+      let newWidth = resizeStartRef.current.width + deltaForRatio;
+      newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, newWidth));
+
+      let newHeight = newWidth / ASPECT_RATIO;
+
+      // Prevent window from overlapping the taskbar
+      if (nodeRef.current) {
+        const windowTop = nodeRef.current.getBoundingClientRect().top;
+        const availableHeight = window.innerHeight - TASKBAR_HEIGHT - windowTop;
+
+        if (newHeight > availableHeight) {
+          newHeight = availableHeight;
+          newWidth = newHeight * ASPECT_RATIO;
+          if (newWidth < MIN_WIDTH) {
+            newWidth = MIN_WIDTH;
+            newHeight = newWidth / ASPECT_RATIO;
+          }
+        }
+      }
+
+      setDimensions({ width: newWidth, height: newHeight });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    document.body.style.cursor = 'nwse-resize';
+    document.body.style.userSelect = 'none';
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing]);
+
+  // Calculate scale factor
+  const scaleFactor = dimensions.width / BASE_WIDTH;
+
   // Desktop icons are at x=24 with ~100px width, so snap boundary is at 132px
   const ICON_COLUMN_RIGHT_EDGE = 132;
 
   return (
-    <Window
-      resizable={false}
-      leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[750px] h-[700px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+    <div
+      ref={nodeRef}
+      className="z-20 absolute top-[6vh] left-1/2 -translate-x-1/2"
+      style={{
+        width: `${dimensions.width}px`,
+        height: `${dimensions.height}px`,
+      }}
     >
-      <WindowTitleBar>
+      <Window
+        resizable={false}
+        leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
+        draggable={false}
+        className="flex flex-col absolute top-0 left-0 origin-top-left"
+        style={{
+          width: `${BASE_WIDTH}px`,
+          height: `${BASE_HEIGHT}px`,
+          transform: `scale(${scaleFactor})`,
+          willChange: isResizing ? 'transform' : 'auto',
+        }}
+      >
+        <WindowTitleBar>
         <div className="flex items-center gap-2">
           <CameraIcon />
           <WindowTitle>PHOTO LIBRARY</WindowTitle>
@@ -291,6 +412,18 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
           </div>
         </div>
       </div>
-    </Window>
+      </Window>
+
+      {/* Resize Handle - Outside scaled content so it stays at correct position */}
+      <div
+        onMouseDown={handleResizeStart}
+        className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
+        style={{
+          touchAction: 'none',
+        }}
+      >
+        <ResizeGrip />
+      </div>
+    </div>
   );
 }
