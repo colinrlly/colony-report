@@ -14,14 +14,14 @@ import { ReportContent } from "@/components/ui/report-content";
 
 const navItems = [
   { id: "bee", icon: "bee" as const, label: "Bee Studies", statusText: "Tracker Placed on Hive Mother // Coordinates relayed to base every 03:00 hours" },
-  { id: "snail", icon: "snail" as const, label: "Snail Research", statusText: "OW-FDA Control Unit // Hallucinations Reported // notes: will need to test again.. for science" },
+  { id: "snail", icon: "snail" as const, label: "Snail Research", statusText: "OW-FDA Control Unit // Hallucinations Reported • Notes: will need to test again.. for science" },
   { id: "ladybug", icon: "ladybug" as const, label: "Ladybug Analysis", statusText: "Still Awaiting Ethics Review // Not Approved for Public Release" },
   { id: "hand", icon: "hand" as const, label: "Hand Studies", statusText: "Awaiting HR Assessment // Unstable Limb Proliferation" },
   { id: "apricot", icon: "apricot" as const, label: "Apricot Data", statusText: "How-To Guide // Local Food Documentation // FDAA approval pending" },
-  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations", statusText: "Botanical Observation // Specimen Discovery // additional notes: Toby reported numbness at injection site for 7 days after" },
-  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records", statusText: "Botanical Observation // Specimen Response // additional notes: please watch your step, they are getting angry" },
-  { id: "frog", icon: "frog" as const, label: "Frog Documentation", statusText: "Level 4 containment initiated // Intern recovered alive // notes: cancel human autopsy request" },
-  { id: "sandwich", icon: "sandwich" as const, label: "Sandwich Files", statusText: "Lunch Protocol // Specimen Consumption Study // notes: do not eat the research samples" },
+  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations", statusText: "Botanical Observation // Specimen Discovery • Notes: Toby reported numbness at injection site for 7 days after" },
+  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records", statusText: "Botanical Observation // Specimen Response • Notes: please watch your step, they are getting angry" },
+  { id: "frog", icon: "frog" as const, label: "Frog Documentation", statusText: "Level 4 containment initiated // Intern recovered alive • Notes: cancel human autopsy request" },
+  { id: "sandwich", icon: "sandwich" as const, label: "Sandwich Files", statusText: "Local Food Documentation // Edible Secretion Study // Success- Classified as Condiment • Notes: tastes almost like mayonnaise but with a little flare" },
 ];
 
 interface ColonyReportsProps {
