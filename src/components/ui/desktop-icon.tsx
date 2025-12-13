@@ -255,9 +255,9 @@ function CameraIcon() {
       <rect x="25" y="5" width="2" height="1" fill="#606060" />
 
       {/* Viewfinder - small rectangle on top left */}
-      <rect x="5" y="8" width="6" height="4" fill="#000" />
-      <rect x="6" y="9" width="4" height="2" fill="#404040" />
-      <rect x="6" y="9" width="2" height="1" fill="#606060" />
+      <rect x="5" y="7" width="6" height="4" fill="#000" />
+      <rect x="6" y="8" width="4" height="2" fill="#404040" />
+      <rect x="6" y="8" width="2" height="1" fill="#606060" />
 
       {/* Flash unit - under grip protrusion */}
       <rect x="24" y="8" width="4" height="3" fill="#E8E8E8" />
