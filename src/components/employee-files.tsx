@@ -323,7 +323,7 @@ function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment =
               height: highlightRegion.height,
             }}
           >
-            <div className="absolute inset-0 border-4 border-[#FFD700] rounded-lg animate-pulse shadow-[0_0_20px_rgba(255,215,0,0.6),inset_0_0_20px_rgba(255,215,0,0.2)]" />
+            <div className="absolute inset-0 border-2 border-[#FFD700] rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.6),inset_0_0_20px_rgba(255,215,0,0.2)]" />
           </div>
         )}
       </div>
