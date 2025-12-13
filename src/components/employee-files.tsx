@@ -183,16 +183,16 @@ function PixelFlaskIcon() {
       <rect x="2" y="8" width="12" height="1" fill="#88aacc" />
       <rect x="2" y="9" width="12" height="1" fill="#88aacc" />
       {/* Liquid inside */}
-      <rect x="3" y="10" width="10" height="1" fill="#66cc99" />
-      <rect x="3" y="11" width="10" height="1" fill="#55bb88" />
-      <rect x="4" y="12" width="8" height="1" fill="#44aa77" />
-      <rect x="5" y="13" width="6" height="1" fill="#44aa77" />
+      <rect x="3" y="10" width="10" height="1" fill="#cc6666" />
+      <rect x="3" y="11" width="10" height="1" fill="#bb5555" />
+      <rect x="4" y="12" width="8" height="1" fill="#aa4444" />
+      <rect x="5" y="13" width="6" height="1" fill="#aa4444" />
       {/* Base */}
       <rect x="4" y="14" width="8" height="1" fill="#666688" />
       {/* Bubbles */}
-      <rect x="5" y="10" width="1" height="1" fill="#88ddbb" />
-      <rect x="9" y="11" width="1" height="1" fill="#88ddbb" />
-      <rect x="7" y="12" width="1" height="1" fill="#88ddbb" />
+      <rect x="5" y="10" width="1" height="1" fill="#dd8888" />
+      <rect x="9" y="11" width="1" height="1" fill="#dd8888" />
+      <rect x="7" y="12" width="1" height="1" fill="#dd8888" />
     </svg>
   );
 }
