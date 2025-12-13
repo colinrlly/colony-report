@@ -27,11 +27,11 @@ import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from 
 
 // viewMenuItems, toolsMenuItems, and helpMenuItems are defined inside the component to access state handlers
 
-// Folder open sound - soft "whoosh" effect using Web Audio API
-function useFolderOpenSound() {
+// Shared audio context hook for all sound effects
+function useAudioContext() {
   const audioContextRef = useRef<AudioContext | null>(null);
 
-  const getAudioContext = useCallback(() => {
+  return useCallback(() => {
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
     }
@@ -40,45 +40,50 @@ function useFolderOpenSound() {
     }
     return audioContextRef.current;
   }, []);
+}
+
+// Folder open sound - gentle page turn effect
+function useFolderOpenSound() {
+  const getAudioContext = useAudioContext();
 
   const playFolderOpenSound = useCallback(() => {
     const ctx = getAudioContext();
     const now = ctx.currentTime;
-
-    // Create a gentle "page turn" sound - soft swoosh
     const duration = 0.15;
 
-    // Create noise buffer for the swoosh
+    // Generate white noise buffer
     const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * duration, ctx.sampleRate);
     const noiseData = noiseBuffer.getChannelData(0);
     for (let i = 0; i < noiseData.length; i++) {
-      noiseData[i] = (Math.random() * 2 - 1);
+      noiseData[i] = Math.random() * 2 - 1;
     }
+
     const noiseSource = ctx.createBufferSource();
     noiseSource.buffer = noiseBuffer;
 
-    // Bandpass filter that sweeps for the "fwip" motion
+    // Sweeping bandpass filter creates the "fwip" motion
     const bandpass = ctx.createBiquadFilter();
     bandpass.type = "bandpass";
-    bandpass.Q.setValueAtTime(2, now);
+    bandpass.Q.value = 2;
     bandpass.frequency.setValueAtTime(3000, now);
     bandpass.frequency.exponentialRampToValueAtTime(800, now + duration);
 
-    // Gentle lowpass to keep it soft
+    // Lowpass to soften harsh frequencies
     const lowpass = ctx.createBiquadFilter();
     lowpass.type = "lowpass";
-    lowpass.frequency.setValueAtTime(5000, now);
+    lowpass.frequency.value = 5000;
 
-    // Smooth envelope - quick rise, gentle fall
-    const gainNode = ctx.createGain();
-    gainNode.gain.setValueAtTime(0, now);
-    gainNode.gain.linearRampToValueAtTime(0.12, now + 0.02);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    // Volume envelope: quick attack, gentle decay
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.12, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
+    // Connect audio graph
     noiseSource.connect(bandpass);
     bandpass.connect(lowpass);
-    lowpass.connect(gainNode);
-    gainNode.connect(ctx.destination);
+    lowpass.connect(gain);
+    gain.connect(ctx.destination);
 
     noiseSource.start(now);
     noiseSource.stop(now + duration);
@@ -87,64 +92,40 @@ function useFolderOpenSound() {
   return { playFolderOpenSound };
 }
 
-// Classic computer restart sound using Web Audio API
+// Windows 95-style startup/shutdown chimes
 function useRestartSound() {
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const getAudioContext = useAudioContext();
 
-  const getAudioContext = useCallback(() => {
-    if (!audioContextRef.current) {
-      audioContextRef.current = new AudioContext();
-    }
-    if (audioContextRef.current.state === "suspended") {
-      audioContextRef.current.resume();
-    }
-    return audioContextRef.current;
-  }, []);
-
-  // Play a single tone with fade out
-  const playTone = useCallback((frequency: number, startTime: number, duration: number, volume: number = 0.15) => {
+  const playTone = useCallback((frequency: number, startTime: number, duration: number, volume = 0.12) => {
     const ctx = getAudioContext();
     const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
+    const gain = ctx.createGain();
 
     oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(frequency, startTime);
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(volume, startTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
 
-    gainNode.gain.setValueAtTime(volume, startTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
 
     oscillator.start(startTime);
     oscillator.stop(startTime + duration);
   }, [getAudioContext]);
 
-  // Classic shutdown sound - descending chime
   const playShutdownSound = useCallback(() => {
-    const ctx = getAudioContext();
-    const now = ctx.currentTime;
-
-    // Windows 95-style descending four-note chime
-    const notes = [523.25, 392.00, 329.63, 261.63]; // C5, G4, E4, C4
-    const noteDuration = 0.2;
-
-    notes.forEach((freq, i) => {
-      playTone(freq, now + i * 0.15, noteDuration, 0.12);
+    const now = getAudioContext().currentTime;
+    // Descending C5 → G4 → E4 → C4
+    [523.25, 392.00, 329.63, 261.63].forEach((freq, i) => {
+      playTone(freq, now + i * 0.15, 0.2);
     });
   }, [getAudioContext, playTone]);
 
-  // Classic startup sound - ascending chime
   const playStartupSound = useCallback(() => {
-    const ctx = getAudioContext();
-    const now = ctx.currentTime;
-
-    // Windows 95-style ascending four-note chime
-    const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
-    const noteDuration = 0.25;
-
-    notes.forEach((freq, i) => {
-      playTone(freq, now + i * 0.12, noteDuration, 0.12);
+    const now = getAudioContext().currentTime;
+    // Ascending C4 → E4 → G4 → C5
+    [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
+      playTone(freq, now + i * 0.12, 0.25);
     });
   }, [getAudioContext, playTone]);
 
