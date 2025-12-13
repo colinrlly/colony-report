@@ -292,7 +292,7 @@ function getEmployeeTabName(employee: EmployeeProfile) {
 // Equipment highlight regions for each employee (percentages of image dimensions)
 // Each region defines: top, left, width, height as percentages
 const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, { top: string; left: string; width: string; height: string }> = {
-  "emp-001": { top: "38%", left: "0%", width: "88%", height: "62%" }, // Bug (mobile containment unit)
+  "emp-001": { top: "53%", left: "53%", width: "37%", height: "38%" }, // Bug (mobile containment unit)
   "emp-002": { top: "5%", left: "45%", width: "50%", height: "35%" }, // Owl and Wasp (drones)
   "emp-003": { top: "25%", left: "55%", width: "40%", height: "50%" }, // The Jar (research chamber)
 };
