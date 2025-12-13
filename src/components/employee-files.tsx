@@ -289,8 +289,29 @@ function getEmployeeTabName(employee: EmployeeProfile) {
   return employee.name;
 }
 
+// Equipment highlight region type (percentages of image dimensions)
+interface HighlightRegion {
+  top: string;
+  left: string;
+  width: string;
+  height: string;
+}
+
+// Equipment highlight regions for each employee
+// Supports multiple regions per employee (e.g., Hank has two drones)
+const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, HighlightRegion[]> = {
+  "emp-001": [{ top: "53%", left: "53%", width: "37%", height: "38%" }], // Bug
+  "emp-002": [
+    { top: "6%", left: "58%", width: "35%", height: "18%" },  // Owl
+    { top: "45%", left: "50%", width: "35%", height: "23%" }, // Wasp
+  ],
+  "emp-003": [{ top: "50%", left: "58%", width: "36%", height: "48%" }], // The Jar
+};
+
 // Employee illustration component
-function EmployeeIllustration({ photoUrl, priority = false }: { photoUrl?: string; priority?: boolean }) {
+function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment = false, employeeId }: { photoUrl?: string; priority?: boolean; highlightEquipment?: boolean; employeeId?: string }) {
+  const highlightRegions = employeeId ? EQUIPMENT_HIGHLIGHT_REGIONS[employeeId] : null;
+
   if (photoUrl) {
     return (
       <div className="w-full h-full border-2 border-[#8B7355] overflow-hidden relative">
@@ -302,6 +323,21 @@ function EmployeeIllustration({ photoUrl, priority = false }: { photoUrl?: strin
           className="object-cover object-top"
           priority={priority}
         />
+        {/* Equipment highlight overlay */}
+        {highlightEquipment && highlightRegions?.map((region, index) => (
+          <div
+            key={index}
+            className="absolute pointer-events-none"
+            style={{
+              top: region.top,
+              left: region.left,
+              width: region.width,
+              height: region.height,
+            }}
+          >
+            <div className="absolute inset-0 border-2 border-[#FFD700] rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.6),inset_0_0_20px_rgba(255,215,0,0.2)]" />
+          </div>
+        ))}
       </div>
     );
   }
@@ -526,7 +562,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             {/* Left: Square Portrait Illustration */}
             <div className="flex flex-col">
               <div className="w-[520px] aspect-square">
-                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority />
+                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority highlightEquipment={activeTab === "equipment"} employeeId={selectedEmployee.id} />
               </div>
               {/* Preload other employee images for smooth tab switching */}
               <EmployeeImagePreloader employees={employeeProfiles} currentId={selectedEmployeeId} />
