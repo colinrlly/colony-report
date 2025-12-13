@@ -16,8 +16,8 @@ export function BeeIcon() {
     <img
       src="/images/bee icon.png"
       alt="Bee"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -28,8 +28,8 @@ export function SnailIcon() {
     <img
       src="/images/snail icon.png"
       alt="Snail"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -40,8 +40,8 @@ export function LadybugIcon() {
     <img
       src="/images/ladybug icon.png"
       alt="Ladybug"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -52,8 +52,8 @@ export function HandIcon() {
     <img
       src="/images/hand icon.png"
       alt="Hand"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -64,8 +64,8 @@ export function ApricotIcon() {
     <img
       src="/images/fruit icon.png"
       alt="Apricot"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -76,8 +76,8 @@ export function CactusIcon() {
     <img
       src="/images/cactus icon.png"
       alt="Cactus"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -88,8 +88,8 @@ export function DandelionIcon() {
     <img
       src="/images/dandelion icon.png"
       alt="Dandelion"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -100,8 +100,8 @@ export function FrogIcon() {
     <img
       src="/images/frog icon.png"
       alt="Frog"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
@@ -112,8 +112,8 @@ export function SandwichIcon() {
     <img
       src="/images/sandwich icon.png"
       alt="Sandwich"
-      width="42"
-      height="42"
+      width="64"
+      height="64"
       style={{ imageRendering: "pixelated", objectFit: "contain" }}
     />
   );
