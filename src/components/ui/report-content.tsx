@@ -12,6 +12,7 @@ const reportImages = [
   { id: "cactus", src: "/images/Cactus.jpg", alt: "Cactus Report" },
   { id: "hand", src: "/images/hand.jpg", alt: "Hand Studies Report" },
   { id: "apricot", src: "/images/Fruit.jpg", alt: "Apricot Data Report" },
+  { id: "sandwich", src: "/images/sandwich.jpg", alt: "Sandwich Files Report" },
 ];
 
 const validIds = new Set(reportImages.map(img => img.id));
