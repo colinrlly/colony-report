@@ -289,15 +289,21 @@ function getEmployeeTabName(employee: EmployeeProfile) {
   return employee.name;
 }
 
+// Equipment highlight regions for each employee (percentages of image dimensions)
+// Each region defines: top, left, width, height as percentages
+const EQUIPMENT_HIGHLIGHT_REGIONS: Record<string, { top: string; left: string; width: string; height: string }> = {
+  "emp-001": { top: "38%", left: "0%", width: "88%", height: "62%" }, // Bug (mobile containment unit)
+  "emp-002": { top: "5%", left: "45%", width: "50%", height: "35%" }, // Owl and Wasp (drones)
+  "emp-003": { top: "25%", left: "55%", width: "40%", height: "50%" }, // The Jar (research chamber)
+};
+
 // Employee illustration component
-function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment = false }: { photoUrl?: string; priority?: boolean; highlightEquipment?: boolean }) {
+function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment = false, employeeId }: { photoUrl?: string; priority?: boolean; highlightEquipment?: boolean; employeeId?: string }) {
+  const highlightRegion = employeeId ? EQUIPMENT_HIGHLIGHT_REGIONS[employeeId] : null;
+
   if (photoUrl) {
     return (
-      <div className={`w-full h-full border-2 overflow-hidden relative transition-all duration-300 ${
-        highlightEquipment
-          ? "border-[#FFD700] ring-4 ring-[#FFD700]/50 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
-          : "border-[#8B7355]"
-      }`}>
+      <div className="w-full h-full border-2 border-[#8B7355] overflow-hidden relative">
         <Image
           src={photoUrl}
           alt="Employee illustration"
@@ -306,11 +312,18 @@ function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment =
           className="object-cover object-top"
           priority={priority}
         />
-        {/* Equipment highlight overlay */}
-        {highlightEquipment && (
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 border-4 border-[#FFD700]/60 animate-pulse" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#FFD700]/10 to-transparent" />
+        {/* Equipment-specific highlight overlay */}
+        {highlightEquipment && highlightRegion && (
+          <div
+            className="absolute pointer-events-none transition-all duration-300"
+            style={{
+              top: highlightRegion.top,
+              left: highlightRegion.left,
+              width: highlightRegion.width,
+              height: highlightRegion.height,
+            }}
+          >
+            <div className="absolute inset-0 border-4 border-[#FFD700] rounded-lg animate-pulse shadow-[0_0_20px_rgba(255,215,0,0.6),inset_0_0_20px_rgba(255,215,0,0.2)]" />
           </div>
         )}
       </div>
@@ -318,11 +331,7 @@ function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment =
   }
 
   return (
-    <div className={`w-full h-full bg-[#c8b9a9] flex items-center justify-center relative border-2 transition-all duration-300 ${
-      highlightEquipment
-        ? "border-[#FFD700] ring-4 ring-[#FFD700]/50 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
-        : "border-[#8B7355]"
-    }`}>
+    <div className="w-full h-full bg-[#c8b9a9] flex items-center justify-center relative border-2 border-[#8B7355]">
       <div className="absolute inset-0 bg-gradient-to-b from-[#d4c8b8] to-[#a89888] opacity-30" />
       <div className="relative flex flex-col items-center text-[#5a5a5a]">
         <svg width="140" height="200" viewBox="0 0 140 200" fill="none">
@@ -331,10 +340,6 @@ function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment =
         </svg>
         <span className="text-[12px] mt-3 font-bold tracking-wider">[EMPLOYEE ILLUSTRATION]</span>
       </div>
-      {/* Equipment highlight overlay for fallback */}
-      {highlightEquipment && (
-        <div className="absolute inset-0 pointer-events-none border-4 border-[#FFD700]/60 animate-pulse" />
-      )}
     </div>
   );
 }
@@ -545,7 +550,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             {/* Left: Square Portrait Illustration */}
             <div className="flex flex-col">
               <div className="w-[520px] aspect-square">
-                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority highlightEquipment={activeTab === "equipment"} />
+                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority highlightEquipment={activeTab === "equipment"} employeeId={selectedEmployee.id} />
               </div>
               {/* Preload other employee images for smooth tab switching */}
               <EmployeeImagePreloader employees={employeeProfiles} currentId={selectedEmployeeId} />
