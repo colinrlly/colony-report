@@ -767,15 +767,22 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
                 )}
 
                 {activeTab === "review" && (
-                  <div className="space-y-3 text-[13px]">
+                  <div className="text-[13px]">
                     <div className="font-bold text-[#8B7355] text-[15px] border-b-2 border-[#8B7355] pb-1 mb-3">
                       SUPERVISOR NOTES
                     </div>
-                    {selectedEmployee.supervisorNotes.map((note, index) => (
-                      <div key={index} className="bg-[#F5F0E1] p-3 border-l-4 border-[#8B7355] text-[#1a1a1a] italic leading-relaxed">
-                        &ldquo;{note}&rdquo;
-                      </div>
-                    ))}
+                    <div className="bg-[#F5F0E1] p-3 border-l-4 border-[#8B7355] text-[#1a1a1a] italic leading-relaxed">
+                      &ldquo;{selectedEmployee.supervisorNotes.map((note, index) => (
+                        <span key={index}>
+                          {note}
+                          {index < selectedEmployee.supervisorNotes.length - 1 && (
+                            <>
+                              <br /><br />
+                            </>
+                          )}
+                        </span>
+                      ))}&rdquo;
+                    </div>
                   </div>
                 )}
 
