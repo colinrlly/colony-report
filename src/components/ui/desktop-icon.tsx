@@ -144,70 +144,70 @@ function BadgeIcon() {
       shapeRendering="crispEdges"
     >
       {/* Black outline - outer edge */}
-      <rect x="4" y="3" width="1" height="1" fill="#000" />
-      <rect x="5" y="2" width="22" height="1" fill="#000" />
-      <rect x="27" y="3" width="1" height="1" fill="#000" />
-      <rect x="28" y="4" width="1" height="26" fill="#000" />
-      <rect x="27" y="30" width="1" height="1" fill="#000" />
-      <rect x="5" y="31" width="22" height="1" fill="#000" />
-      <rect x="4" y="30" width="1" height="1" fill="#000" />
-      <rect x="3" y="4" width="1" height="26" fill="#000" />
+      <rect x="3" y="3" width="1" height="1" fill="#000" />
+      <rect x="4" y="2" width="22" height="1" fill="#000" />
+      <rect x="26" y="3" width="1" height="1" fill="#000" />
+      <rect x="27" y="4" width="1" height="26" fill="#000" />
+      <rect x="26" y="30" width="1" height="1" fill="#000" />
+      <rect x="4" y="31" width="22" height="1" fill="#000" />
+      <rect x="3" y="30" width="1" height="1" fill="#000" />
+      <rect x="2" y="4" width="1" height="26" fill="#000" />
 
       {/* Clipboard outline - orange */}
-      <rect x="5" y="4" width="1" height="1" fill="#8B4513" />
-      <rect x="6" y="3" width="20" height="1" fill="#8B4513" />
-      <rect x="26" y="4" width="1" height="1" fill="#8B4513" />
-      <rect x="27" y="5" width="1" height="24" fill="#8B4513" />
-      <rect x="26" y="29" width="1" height="1" fill="#8B4513" />
-      <rect x="6" y="30" width="20" height="1" fill="#8B4513" />
-      <rect x="5" y="29" width="1" height="1" fill="#8B4513" />
-      <rect x="4" y="5" width="1" height="24" fill="#8B4513" />
+      <rect x="4" y="4" width="1" height="1" fill="#8B4513" />
+      <rect x="5" y="3" width="20" height="1" fill="#8B4513" />
+      <rect x="25" y="4" width="1" height="1" fill="#8B4513" />
+      <rect x="26" y="5" width="1" height="24" fill="#8B4513" />
+      <rect x="25" y="29" width="1" height="1" fill="#8B4513" />
+      <rect x="5" y="30" width="20" height="1" fill="#8B4513" />
+      <rect x="4" y="29" width="1" height="1" fill="#8B4513" />
+      <rect x="3" y="5" width="1" height="24" fill="#8B4513" />
 
       {/* Clipboard body - cream/light orange */}
-      <rect x="6" y="4" width="20" height="1" fill="#FFF8E8" />
-      <rect x="5" y="5" width="22" height="24" fill="#FFF5E0" />
-      <rect x="6" y="29" width="20" height="1" fill="#F0E0C0" />
+      <rect x="5" y="4" width="20" height="1" fill="#FFF8E8" />
+      <rect x="4" y="5" width="22" height="24" fill="#FFF5E0" />
+      <rect x="5" y="29" width="20" height="1" fill="#F0E0C0" />
 
       {/* Left highlight */}
-      <rect x="5" y="5" width="1" height="23" fill="#FFFAF0" />
+      <rect x="4" y="5" width="1" height="23" fill="#FFFAF0" />
 
       {/* Right/bottom shadow */}
-      <rect x="26" y="6" width="1" height="23" fill="#E8D8C0" />
+      <rect x="25" y="6" width="1" height="23" fill="#E8D8C0" />
 
       {/* Clip at top */}
-      <rect x="12" y="1" width="8" height="1" fill="#D2691E" />
-      <rect x="11" y="2" width="10" height="3" fill="#D2691E" />
-      <rect x="12" y="2" width="8" height="1" fill="#E07830" />
-      <rect x="11" y="2" width="1" height="2" fill="#E07830" />
+      <rect x="11" y="1" width="8" height="1" fill="#D2691E" />
+      <rect x="10" y="2" width="10" height="3" fill="#D2691E" />
+      <rect x="11" y="2" width="8" height="1" fill="#E07830" />
+      <rect x="10" y="2" width="1" height="2" fill="#E07830" />
 
       {/* Person profile area - light background */}
-      <rect x="10" y="7" width="12" height="10" fill="#FFF8F0" />
-      <rect x="10" y="7" width="12" height="1" fill="#FFFCF8" />
+      <rect x="9" y="7" width="12" height="10" fill="#FFF8F0" />
+      <rect x="9" y="7" width="12" height="1" fill="#FFFCF8" />
 
       {/* Person head */}
-      <rect x="14" y="8" width="4" height="1" fill="#6b5040" />
-      <rect x="13" y="9" width="6" height="1" fill="#6b5040" />
-      <rect x="14" y="9" width="4" height="1" fill="#e8c8a0" />
-      <rect x="13" y="10" width="6" height="2" fill="#e8c8a0" />
-      <rect x="14" y="12" width="4" height="1" fill="#e8c8a0" />
+      <rect x="13" y="8" width="4" height="1" fill="#6b5040" />
+      <rect x="12" y="9" width="6" height="1" fill="#6b5040" />
+      <rect x="13" y="9" width="4" height="1" fill="#e8c8a0" />
+      <rect x="12" y="10" width="6" height="2" fill="#e8c8a0" />
+      <rect x="13" y="12" width="4" height="1" fill="#e8c8a0" />
 
       {/* Person body - orange shirt */}
-      <rect x="12" y="13" width="8" height="1" fill="#E07020" />
-      <rect x="11" y="14" width="10" height="3" fill="#E07020" />
-      <rect x="15" y="13" width="2" height="1" fill="#F08030" />
-      <rect x="14" y="14" width="4" height="1" fill="#F08030" />
+      <rect x="11" y="13" width="8" height="1" fill="#E07020" />
+      <rect x="10" y="14" width="10" height="3" fill="#E07020" />
+      <rect x="14" y="13" width="2" height="1" fill="#F08030" />
+      <rect x="13" y="14" width="4" height="1" fill="#F08030" />
 
       {/* Checkboxes on left */}
-      <rect x="7" y="19" width="3" height="3" fill="#F0A050" />
-      <rect x="8" y="20" width="1" height="1" fill="#FFF8F0" />
-      <rect x="7" y="24" width="3" height="3" fill="#F0A050" />
-      <rect x="8" y="25" width="1" height="1" fill="#FFF8F0" />
+      <rect x="6" y="19" width="3" height="3" fill="#F0A050" />
+      <rect x="7" y="20" width="1" height="1" fill="#FFF8F0" />
+      <rect x="6" y="24" width="3" height="3" fill="#F0A050" />
+      <rect x="7" y="25" width="1" height="1" fill="#FFF8F0" />
 
       {/* Text lines on right */}
-      <rect x="12" y="19" width="12" height="1" fill="#8B4513" />
-      <rect x="12" y="21" width="10" height="1" fill="#8B4513" />
-      <rect x="12" y="24" width="12" height="1" fill="#8B4513" />
-      <rect x="12" y="26" width="8" height="1" fill="#8B4513" />
+      <rect x="11" y="19" width="12" height="1" fill="#8B4513" />
+      <rect x="11" y="21" width="10" height="1" fill="#8B4513" />
+      <rect x="11" y="24" width="12" height="1" fill="#8B4513" />
+      <rect x="11" y="26" width="8" height="1" fill="#8B4513" />
     </svg>
   );
 }
