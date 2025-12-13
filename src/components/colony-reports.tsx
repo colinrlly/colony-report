@@ -18,8 +18,8 @@ const navItems = [
   { id: "ladybug", icon: "ladybug" as const, label: "Ladybug Analysis", statusText: "Still Awaiting Ethics Review // Not Approved for Public Release" },
   { id: "hand", icon: "hand" as const, label: "Hand Studies", statusText: "Awaiting HR Assessment // Unstable Limb Proliferation" },
   { id: "apricot", icon: "apricot" as const, label: "Apricot Data", statusText: "How-To Guide // Local Food Documentation // FDAA approval pending" },
-  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations", statusText: "Botanical Observation // Specimen Discovery • Additional Notes: Toby reported numbness at injection site for 7 days after" },
-  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records", statusText: "Botanical Observation // Specimen Response • Additional Notes: please watch your step, they are getting angry" },
+  { id: "cactus", icon: "cactus" as const, label: "Cactus Observations", statusText: "Botanical Observation // Specimen Discovery • Notes: Toby reported numbness at injection site for 7 days after" },
+  { id: "dandelion", icon: "dandelion" as const, label: "Dandelion Records", statusText: "Botanical Observation // Specimen Response • Notes: please watch your step, they are getting angry" },
   { id: "frog", icon: "frog" as const, label: "Frog Documentation", statusText: "Level 4 containment initiated // Intern recovered alive • Notes: cancel human autopsy request" },
   { id: "sandwich", icon: "sandwich" as const, label: "Sandwich Files", statusText: "Local Food Documentation // Edible Secretion Study // Success- Classified as Condiment • Notes: tastes almost like mayonnaise but with a little flare" },
 ];
