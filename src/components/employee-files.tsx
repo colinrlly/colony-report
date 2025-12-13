@@ -290,10 +290,14 @@ function getEmployeeTabName(employee: EmployeeProfile) {
 }
 
 // Employee illustration component
-function EmployeeIllustration({ photoUrl, priority = false }: { photoUrl?: string; priority?: boolean }) {
+function EmployeeIllustration({ photoUrl, priority = false, highlightEquipment = false }: { photoUrl?: string; priority?: boolean; highlightEquipment?: boolean }) {
   if (photoUrl) {
     return (
-      <div className="w-full h-full border-2 border-[#8B7355] overflow-hidden relative">
+      <div className={`w-full h-full border-2 overflow-hidden relative transition-all duration-300 ${
+        highlightEquipment
+          ? "border-[#FFD700] ring-4 ring-[#FFD700]/50 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
+          : "border-[#8B7355]"
+      }`}>
         <Image
           src={photoUrl}
           alt="Employee illustration"
@@ -302,12 +306,23 @@ function EmployeeIllustration({ photoUrl, priority = false }: { photoUrl?: strin
           className="object-cover object-top"
           priority={priority}
         />
+        {/* Equipment highlight overlay */}
+        {highlightEquipment && (
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 border-4 border-[#FFD700]/60 animate-pulse" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#FFD700]/10 to-transparent" />
+          </div>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="w-full h-full bg-[#c8b9a9] flex items-center justify-center relative border-2 border-[#8B7355]">
+    <div className={`w-full h-full bg-[#c8b9a9] flex items-center justify-center relative border-2 transition-all duration-300 ${
+      highlightEquipment
+        ? "border-[#FFD700] ring-4 ring-[#FFD700]/50 shadow-[0_0_20px_rgba(255,215,0,0.4)]"
+        : "border-[#8B7355]"
+    }`}>
       <div className="absolute inset-0 bg-gradient-to-b from-[#d4c8b8] to-[#a89888] opacity-30" />
       <div className="relative flex flex-col items-center text-[#5a5a5a]">
         <svg width="140" height="200" viewBox="0 0 140 200" fill="none">
@@ -316,6 +331,10 @@ function EmployeeIllustration({ photoUrl, priority = false }: { photoUrl?: strin
         </svg>
         <span className="text-[12px] mt-3 font-bold tracking-wider">[EMPLOYEE ILLUSTRATION]</span>
       </div>
+      {/* Equipment highlight overlay for fallback */}
+      {highlightEquipment && (
+        <div className="absolute inset-0 pointer-events-none border-4 border-[#FFD700]/60 animate-pulse" />
+      )}
     </div>
   );
 }
@@ -526,7 +545,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             {/* Left: Square Portrait Illustration */}
             <div className="flex flex-col">
               <div className="w-[520px] aspect-square">
-                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority />
+                <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority highlightEquipment={activeTab === "equipment"} />
               </div>
               {/* Preload other employee images for smooth tab switching */}
               <EmployeeImagePreloader employees={employeeProfiles} currentId={selectedEmployeeId} />
