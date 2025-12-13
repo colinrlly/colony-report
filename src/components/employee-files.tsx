@@ -171,28 +171,28 @@ function NECLogo() {
 function PixelFlaskIcon() {
   return (
     <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
-      {/* Flask neck */}
-      <rect x="6" y="1" width="4" height="1" fill="#88aacc" />
-      <rect x="6" y="2" width="4" height="1" fill="#99bbdd" />
-      <rect x="7" y="3" width="2" height="1" fill="#99bbdd" />
-      <rect x="7" y="4" width="2" height="1" fill="#88aacc" />
-      {/* Flask body */}
-      <rect x="5" y="5" width="6" height="1" fill="#88aacc" />
-      <rect x="4" y="6" width="8" height="1" fill="#99bbdd" />
-      <rect x="3" y="7" width="10" height="1" fill="#99bbdd" />
-      <rect x="2" y="8" width="12" height="1" fill="#88aacc" />
-      <rect x="2" y="9" width="12" height="1" fill="#88aacc" />
+      {/* Flask neck - clear glass */}
+      <rect x="6" y="1" width="4" height="1" fill="#9999aa" />
+      <rect x="6" y="2" width="4" height="1" fill="#bbbbcc" />
+      <rect x="7" y="3" width="2" height="1" fill="#bbbbcc" />
+      <rect x="7" y="4" width="2" height="1" fill="#9999aa" />
+      {/* Flask body - clear glass */}
+      <rect x="5" y="5" width="6" height="1" fill="#9999aa" />
+      <rect x="4" y="6" width="8" height="1" fill="#bbbbcc" />
+      <rect x="3" y="7" width="10" height="1" fill="#bbbbcc" />
+      <rect x="2" y="8" width="12" height="1" fill="#9999aa" />
+      <rect x="2" y="9" width="12" height="1" fill="#9999aa" />
       {/* Liquid inside */}
-      <rect x="3" y="10" width="10" height="1" fill="#66cc99" />
-      <rect x="3" y="11" width="10" height="1" fill="#55bb88" />
-      <rect x="4" y="12" width="8" height="1" fill="#44aa77" />
-      <rect x="5" y="13" width="6" height="1" fill="#44aa77" />
+      <rect x="3" y="10" width="10" height="1" fill="#cc6666" />
+      <rect x="3" y="11" width="10" height="1" fill="#bb5555" />
+      <rect x="4" y="12" width="8" height="1" fill="#aa4444" />
+      <rect x="5" y="13" width="6" height="1" fill="#aa4444" />
       {/* Base */}
-      <rect x="4" y="14" width="8" height="1" fill="#666688" />
+      <rect x="4" y="14" width="8" height="1" fill="#666677" />
       {/* Bubbles */}
-      <rect x="5" y="10" width="1" height="1" fill="#88ddbb" />
-      <rect x="9" y="11" width="1" height="1" fill="#88ddbb" />
-      <rect x="7" y="12" width="1" height="1" fill="#88ddbb" />
+      <rect x="5" y="10" width="1" height="1" fill="#dd8888" />
+      <rect x="9" y="11" width="1" height="1" fill="#dd8888" />
+      <rect x="7" y="12" width="1" height="1" fill="#dd8888" />
     </svg>
   );
 }
@@ -200,20 +200,20 @@ function PixelFlaskIcon() {
 function PixelShieldIcon() {
   return (
     <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
-      {/* Shield shape */}
-      <rect x="4" y="1" width="8" height="1" fill="#5a6a8a" />
-      <rect x="3" y="2" width="10" height="1" fill="#5a6a8a" />
-      <rect x="2" y="3" width="12" height="1" fill="#5a6a8a" />
-      <rect x="2" y="4" width="12" height="1" fill="#6a7a9a" />
-      <rect x="2" y="5" width="12" height="1" fill="#6a7a9a" />
-      <rect x="2" y="6" width="12" height="1" fill="#6a7a9a" />
-      <rect x="3" y="7" width="10" height="1" fill="#5a6a8a" />
-      <rect x="3" y="8" width="10" height="1" fill="#5a6a8a" />
-      <rect x="4" y="9" width="8" height="1" fill="#5a6a8a" />
-      <rect x="4" y="10" width="8" height="1" fill="#4a5a7a" />
-      <rect x="5" y="11" width="6" height="1" fill="#4a5a7a" />
-      <rect x="6" y="12" width="4" height="1" fill="#4a5a7a" />
-      <rect x="7" y="13" width="2" height="1" fill="#3a4a6a" />
+      {/* Shield shape - light camel/tan color */}
+      <rect x="4" y="1" width="8" height="1" fill="#c4a574" />
+      <rect x="3" y="2" width="10" height="1" fill="#c4a574" />
+      <rect x="2" y="3" width="12" height="1" fill="#c4a574" />
+      <rect x="2" y="4" width="12" height="1" fill="#d4b584" />
+      <rect x="2" y="5" width="12" height="1" fill="#d4b584" />
+      <rect x="2" y="6" width="12" height="1" fill="#d4b584" />
+      <rect x="3" y="7" width="10" height="1" fill="#c4a574" />
+      <rect x="3" y="8" width="10" height="1" fill="#c4a574" />
+      <rect x="4" y="9" width="8" height="1" fill="#c4a574" />
+      <rect x="4" y="10" width="8" height="1" fill="#b49564" />
+      <rect x="5" y="11" width="6" height="1" fill="#b49564" />
+      <rect x="6" y="12" width="4" height="1" fill="#b49564" />
+      <rect x="7" y="13" width="2" height="1" fill="#a48554" />
       {/* Crosshair/target in center */}
       <rect x="7" y="4" width="2" height="1" fill="#cc4444" />
       <rect x="7" y="5" width="2" height="1" fill="#cc4444" />
@@ -228,24 +228,32 @@ function PixelShieldIcon() {
 function PixelLeafIcon() {
   return (
     <svg width="36" height="36" viewBox="0 0 16 16" fill="none" shapeRendering="crispEdges" style={{ imageRendering: "pixelated" }}>
-      {/* Leaf shape - no stem */}
-      <rect x="7" y="2" width="2" height="1" fill="#4a9a4a" />
-      <rect x="6" y="3" width="4" height="1" fill="#4a9a4a" />
-      <rect x="5" y="4" width="6" height="1" fill="#4a9a4a" />
-      <rect x="4" y="5" width="8" height="1" fill="#4a9a4a" />
-      <rect x="3" y="6" width="10" height="1" fill="#4a9a4a" />
-      <rect x="3" y="7" width="10" height="1" fill="#6b8a6b" />
-      <rect x="3" y="8" width="10" height="1" fill="#6b8a6b" />
-      <rect x="4" y="9" width="8" height="1" fill="#4a9a4a" />
-      <rect x="5" y="10" width="6" height="1" fill="#4a9a4a" />
-      <rect x="6" y="11" width="4" height="1" fill="#4a9a4a" />
-      <rect x="7" y="12" width="2" height="1" fill="#4a9a4a" />
-      {/* Leaf vein */}
-      <rect x="7" y="5" width="2" height="1" fill="#3a7a3a" />
-      <rect x="7" y="6" width="2" height="1" fill="#3a7a3a" />
-      <rect x="7" y="7" width="2" height="1" fill="#3a7a3a" />
-      <rect x="7" y="8" width="2" height="1" fill="#3a7a3a" />
-      <rect x="7" y="9" width="2" height="1" fill="#3a7a3a" />
+      {/* Leaf blade - pointed oval shape */}
+      <rect x="7" y="1" width="2" height="1" fill="#3a8a3a" />
+      <rect x="6" y="2" width="4" height="1" fill="#4a9a4a" />
+      <rect x="5" y="3" width="6" height="1" fill="#5aaa5a" />
+      <rect x="4" y="4" width="8" height="1" fill="#5aaa5a" />
+      <rect x="4" y="5" width="8" height="1" fill="#6bba6b" />
+      <rect x="4" y="6" width="8" height="1" fill="#6bba6b" />
+      <rect x="4" y="7" width="8" height="1" fill="#5aaa5a" />
+      <rect x="5" y="8" width="6" height="1" fill="#5aaa5a" />
+      <rect x="5" y="9" width="6" height="1" fill="#4a9a4a" />
+      <rect x="6" y="10" width="4" height="1" fill="#4a9a4a" />
+      <rect x="7" y="11" width="2" height="1" fill="#3a8a3a" />
+      {/* Central vein */}
+      <rect x="7" y="2" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="3" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="4" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="5" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="6" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="7" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="8" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="9" width="2" height="1" fill="#2a7a2a" />
+      <rect x="7" y="10" width="2" height="1" fill="#2a7a2a" />
+      {/* Stem */}
+      <rect x="7" y="12" width="2" height="1" fill="#8B7355" />
+      <rect x="7" y="13" width="2" height="1" fill="#7a6345" />
+      <rect x="7" y="14" width="2" height="1" fill="#6a5335" />
     </svg>
   );
 }
