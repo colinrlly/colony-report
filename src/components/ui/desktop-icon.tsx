@@ -144,6 +144,16 @@ function BadgeIcon() {
       viewBox="0 0 32 32"
       shapeRendering="crispEdges"
     >
+      {/* Black outline - outer edge */}
+      <rect x="4" y="3" width="1" height="1" fill="#000" />
+      <rect x="5" y="2" width="22" height="1" fill="#000" />
+      <rect x="27" y="3" width="1" height="1" fill="#000" />
+      <rect x="28" y="4" width="1" height="26" fill="#000" />
+      <rect x="27" y="30" width="1" height="1" fill="#000" />
+      <rect x="5" y="31" width="22" height="1" fill="#000" />
+      <rect x="4" y="30" width="1" height="1" fill="#000" />
+      <rect x="3" y="4" width="1" height="26" fill="#000" />
+
       {/* Clipboard outline - orange */}
       <rect x="5" y="4" width="1" height="1" fill="#8B4513" />
       <rect x="6" y="3" width="20" height="1" fill="#8B4513" />
