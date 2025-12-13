@@ -381,12 +381,45 @@ interface EmployeeFilesProps {
   onMinimize?: () => void;
 }
 
+// Resize grip icon component
+function ResizeGrip() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ display: 'block' }}>
+      {/* Diagonal grip pattern */}
+      <rect x="9" y="2" width="1" height="1" fill="#808080" />
+      <rect x="10" y="1" width="1" height="1" fill="#DFDFDF" />
+      <rect x="6" y="5" width="1" height="1" fill="#808080" />
+      <rect x="7" y="4" width="1" height="1" fill="#DFDFDF" />
+      <rect x="9" y="5" width="1" height="1" fill="#808080" />
+      <rect x="10" y="4" width="1" height="1" fill="#DFDFDF" />
+      <rect x="3" y="8" width="1" height="1" fill="#808080" />
+      <rect x="4" y="7" width="1" height="1" fill="#DFDFDF" />
+      <rect x="6" y="8" width="1" height="1" fill="#808080" />
+      <rect x="7" y="7" width="1" height="1" fill="#DFDFDF" />
+      <rect x="9" y="8" width="1" height="1" fill="#808080" />
+      <rect x="10" y="7" width="1" height="1" fill="#DFDFDF" />
+    </svg>
+  );
+}
+
+// Base dimensions and aspect ratio
+const BASE_WIDTH = 1050;
+const BASE_HEIGHT = 730;
+const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
+const MIN_WIDTH = 700;
+const MAX_WIDTH = 1400;
+
 export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>(employeeProfiles[0].id);
   const [activeTab, setActiveTab] = useState<TabType>("profile");
   const nodeRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [bounds, setBounds] = useState<{ left: number; top: number; right: number; bottom: number } | undefined>(undefined);
+
+  // Resize state
+  const [dimensions, setDimensions] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStartRef = useRef({ mouseX: 0, mouseY: 0, width: BASE_WIDTH, height: BASE_HEIGHT });
 
   const selectedEmployee = employeeProfiles.find(emp => emp.id === selectedEmployeeId) || employeeProfiles[0];
 
@@ -446,6 +479,79 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
       setPosition({ x: data.x + adjustment, y: data.y });
     }
   };
+
+  // Resize handlers
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    resizeStartRef.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      width: dimensions.width,
+      height: dimensions.height,
+    };
+
+    setIsResizing(true);
+  }, [dimensions]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaX = e.clientX - resizeStartRef.current.mouseX;
+      const deltaY = e.clientY - resizeStartRef.current.mouseY;
+
+      // Use the larger delta to determine the new size (maintaining aspect ratio)
+      // This makes the resize feel more natural
+      const deltaForRatio = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY * ASPECT_RATIO;
+
+      let newWidth = resizeStartRef.current.width + deltaForRatio;
+      newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, newWidth));
+
+      let newHeight = newWidth / ASPECT_RATIO;
+
+      // Prevent window from overlapping the taskbar
+      if (nodeRef.current) {
+        const windowTop = nodeRef.current.getBoundingClientRect().top;
+        const availableHeight = window.innerHeight - TASKBAR_HEIGHT - windowTop;
+
+        if (newHeight > availableHeight) {
+          newHeight = availableHeight;
+          newWidth = newHeight * ASPECT_RATIO;
+          // Ensure we don't go below minimum
+          if (newWidth < MIN_WIDTH) {
+            newWidth = MIN_WIDTH;
+            newHeight = newWidth / ASPECT_RATIO;
+          }
+        }
+      }
+
+      setDimensions({ width: newWidth, height: newHeight });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    // Use passive: false for better performance during resize
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    // Change cursor globally while resizing
+    document.body.style.cursor = 'nwse-resize';
+    document.body.style.userSelect = 'none';
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing]);
+
+  // Calculate scale factor for illustration
+  const scaleFactor = dimensions.width / BASE_WIDTH;
 
   return (
     <Draggable
@@ -525,12 +631,26 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
         })}
       </div>
 
-      {/* Main Window */}
-      <Window
-        resizable={false}
-        draggable={false}
-        className="w-[1050px] h-[730px] flex flex-col"
+      {/* Main Window - Outer container sets the scaled size */}
+      <div
+        className="relative"
+        style={{
+          width: `${dimensions.width}px`,
+          height: `${dimensions.height}px`,
+        }}
       >
+        {/* Inner scaled content - renders at base size, then scaled */}
+        <Window
+          resizable={false}
+          draggable={false}
+          className="flex flex-col absolute top-0 left-0 origin-top-left"
+          style={{
+            width: `${BASE_WIDTH}px`,
+            height: `${BASE_HEIGHT}px`,
+            transform: `scale(${scaleFactor})`,
+            willChange: isResizing ? 'transform' : 'auto',
+          }}
+        >
         <WindowTitleBar className="h-[36px]">
           <div className="flex items-center gap-2">
             <BadgeIcon />
@@ -560,7 +680,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
           {/* Main Content - Illustration + Info Side by Side */}
           <div className="flex-1 flex p-3 gap-3">
             {/* Left: Square Portrait Illustration */}
-            <div className="flex flex-col">
+            <div className="flex flex-col" style={{ flexShrink: 0 }}>
               <div className="w-[520px] aspect-square">
                 <EmployeeIllustration photoUrl={selectedEmployee.photoUrl} priority highlightEquipment={activeTab === "equipment"} employeeId={selectedEmployee.id} />
               </div>
@@ -715,7 +835,19 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             Employee File
           </WindowStatusField>
         </WindowStatusBar>
-      </Window>
+        </Window>
+
+        {/* Resize Handle - Outside scaled content so it stays at correct position */}
+        <div
+          onMouseDown={handleResizeStart}
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
+          style={{
+            touchAction: 'none',
+          }}
+        >
+          <ResizeGrip />
+        </div>
+      </div>
       </div>
     </Draggable>
   );
