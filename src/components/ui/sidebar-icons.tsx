@@ -8,7 +8,8 @@ export type SidebarIconType =
   | "apricot"
   | "cactus"
   | "dandelion"
-  | "frog";
+  | "frog"
+  | "sandwich";
 
 export function BeeIcon() {
   return (
@@ -616,6 +617,112 @@ export function FrogIcon() {
   );
 }
 
+export function SandwichIcon() {
+  return (
+    <svg
+      width="42"
+      height="42"
+      viewBox="0 0 32 32"
+      shapeRendering="crispEdges"
+    >
+      {/* Top bread slice - outline */}
+      <rect x="6" y="4" width="20" height="1" fill="#8d6e63" />
+      <rect x="5" y="5" width="1" height="1" fill="#8d6e63" />
+      <rect x="26" y="5" width="1" height="1" fill="#8d6e63" />
+      <rect x="4" y="6" width="1" height="4" fill="#8d6e63" />
+      <rect x="27" y="6" width="1" height="4" fill="#8d6e63" />
+
+      {/* Top bread slice - fill */}
+      <rect x="6" y="5" width="20" height="1" fill="#d7ccc8" />
+      <rect x="5" y="6" width="22" height="3" fill="#efebe9" />
+      <rect x="5" y="9" width="22" height="1" fill="#d7ccc8" />
+
+      {/* Top bread crust */}
+      <rect x="6" y="4" width="20" height="1" fill="#a1887f" />
+      <rect x="5" y="5" width="1" height="4" fill="#bcaaa4" />
+      <rect x="26" y="5" width="1" height="4" fill="#8d6e63" />
+
+      {/* Bread highlight */}
+      <rect x="8" y="6" width="8" height="1" fill="#fff8e1" />
+      <rect x="7" y="7" width="6" height="1" fill="#fff8e1" />
+
+      {/* Lettuce layer */}
+      <rect x="3" y="10" width="26" height="1" fill="#4caf50" />
+      <rect x="4" y="11" width="24" height="2" fill="#66bb6a" />
+      <rect x="3" y="11" width="1" height="1" fill="#388e3c" />
+      <rect x="28" y="11" width="1" height="1" fill="#388e3c" />
+      <rect x="5" y="13" width="22" height="1" fill="#4caf50" />
+
+      {/* Lettuce ruffles */}
+      <rect x="6" y="10" width="2" height="1" fill="#81c784" />
+      <rect x="12" y="10" width="3" height="1" fill="#81c784" />
+      <rect x="20" y="10" width="2" height="1" fill="#81c784" />
+      <rect x="8" y="13" width="2" height="1" fill="#388e3c" />
+      <rect x="15" y="13" width="3" height="1" fill="#388e3c" />
+      <rect x="22" y="13" width="2" height="1" fill="#388e3c" />
+
+      {/* Tomato slices */}
+      <rect x="5" y="14" width="22" height="3" fill="#e53935" />
+      <rect x="4" y="15" width="1" height="1" fill="#c62828" />
+      <rect x="27" y="15" width="1" height="1" fill="#c62828" />
+
+      {/* Tomato highlights and seeds */}
+      <rect x="7" y="14" width="4" height="1" fill="#ef5350" />
+      <rect x="15" y="14" width="5" height="1" fill="#ef5350" />
+      <rect x="8" y="15" width="2" height="1" fill="#ffcdd2" />
+      <rect x="14" y="15" width="2" height="1" fill="#ffcdd2" />
+      <rect x="20" y="15" width="2" height="1" fill="#ffcdd2" />
+
+      {/* Cheese layer */}
+      <rect x="4" y="17" width="24" height="2" fill="#ffc107" />
+      <rect x="3" y="18" width="1" height="1" fill="#ffb300" />
+      <rect x="28" y="18" width="1" height="1" fill="#ffb300" />
+
+      {/* Cheese drip on left */}
+      <rect x="3" y="19" width="2" height="2" fill="#ffc107" />
+      <rect x="4" y="21" width="1" height="1" fill="#ffb300" />
+
+      {/* Cheese drip on right */}
+      <rect x="27" y="19" width="2" height="2" fill="#ffc107" />
+      <rect x="27" y="21" width="1" height="1" fill="#ffb300" />
+
+      {/* Cheese highlights */}
+      <rect x="6" y="17" width="6" height="1" fill="#ffca28" />
+      <rect x="16" y="17" width="5" height="1" fill="#ffca28" />
+
+      {/* Ham/meat layer */}
+      <rect x="5" y="19" width="22" height="2" fill="#f48fb1" />
+      <rect x="4" y="20" width="1" height="1" fill="#ec407a" />
+      <rect x="27" y="20" width="1" height="1" fill="#ec407a" />
+
+      {/* Meat highlights */}
+      <rect x="7" y="19" width="4" height="1" fill="#f8bbd9" />
+      <rect x="15" y="19" width="5" height="1" fill="#f8bbd9" />
+
+      {/* Bottom bread slice - outline */}
+      <rect x="4" y="21" width="1" height="4" fill="#8d6e63" />
+      <rect x="27" y="21" width="1" height="4" fill="#8d6e63" />
+      <rect x="5" y="25" width="1" height="1" fill="#8d6e63" />
+      <rect x="26" y="25" width="1" height="1" fill="#8d6e63" />
+      <rect x="6" y="26" width="20" height="1" fill="#8d6e63" />
+
+      {/* Bottom bread slice - fill */}
+      <rect x="5" y="21" width="22" height="1" fill="#d7ccc8" />
+      <rect x="5" y="22" width="22" height="3" fill="#efebe9" />
+      <rect x="6" y="25" width="20" height="1" fill="#d7ccc8" />
+
+      {/* Bottom bread crust */}
+      <rect x="6" y="26" width="20" height="1" fill="#a1887f" />
+      <rect x="5" y="22" width="1" height="3" fill="#bcaaa4" />
+      <rect x="26" y="22" width="1" height="3" fill="#8d6e63" />
+
+      {/* Bottom bread highlight */}
+      <rect x="8" y="22" width="6" height="1" fill="#fff8e1" />
+      <rect x="7" y="23" width="4" height="1" fill="#fff8e1" />
+    </svg>
+  );
+}
+
 export function SidebarIcon({ icon }: { icon: SidebarIconType }) {
   switch (icon) {
     case "bee":
@@ -634,6 +741,8 @@ export function SidebarIcon({ icon }: { icon: SidebarIconType }) {
       return <DandelionIcon />;
     case "frog":
       return <FrogIcon />;
+    case "sandwich":
+      return <SandwichIcon />;
     default:
       return <BeeIcon />;
   }
