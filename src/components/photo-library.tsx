@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import {
   Window,
   WindowTitleBar,
@@ -9,8 +10,12 @@ import {
   WindowControls,
 } from "@/components/ui/window";
 
-// Constants for taskbar height
+// Constants for menu bar and taskbar heights
+const MENUBAR_HEIGHT = 36;
 const TASKBAR_HEIGHT = 40;
+
+// Desktop icons boundary for window snap
+const ICON_COLUMN_RIGHT_EDGE = 132;
 
 // Sample photo library data - 10 photos labeled 1-10 with earth tone placeholder colors
 const photoItems = [
@@ -115,6 +120,10 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
   const [dimensions, setDimensions] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
   const [isResizing, setIsResizing] = useState(false);
   const resizeStartRef = useRef({ mouseX: 0, mouseY: 0, width: BASE_WIDTH, height: BASE_HEIGHT });
+
+  // Drag state
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [bounds, setBounds] = useState<{ left: number; top: number; right: number; bottom: number } | undefined>(undefined);
 
   const selectedPhoto = photoItems[selectedIndex];
   const visibleThumbnails = 6; // Show 6 thumbnails at a time
@@ -268,29 +277,94 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
   // Calculate scale factor
   const scaleFactor = dimensions.width / BASE_WIDTH;
 
-  // Desktop icons are at x=24 with ~100px width, so snap boundary is at 132px
-  const ICON_COLUMN_RIGHT_EDGE = 132;
+  // Calculate bounds for dragging
+  const calculateBounds = useCallback(() => {
+    if (!nodeRef.current) return;
+
+    const windowRect = nodeRef.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate the initial position of the window (before any dragging)
+    const initialLeft = windowRect.left - position.x;
+    const initialTop = windowRect.top - position.y;
+
+    // Bounds are relative to the initial position
+    const leftBound = -initialLeft;
+    const rightBound = viewportWidth - initialLeft - windowRect.width;
+    const topBound = MENUBAR_HEIGHT - initialTop;
+    const bottomBound = viewportHeight - TASKBAR_HEIGHT - initialTop - windowRect.height;
+
+    setBounds({
+      left: leftBound,
+      top: topBound,
+      right: rightBound,
+      bottom: bottomBound,
+    });
+  }, [position]);
+
+  useEffect(() => {
+    calculateBounds();
+
+    const handleResize = () => calculateBounds();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, [calculateBounds]);
+
+  const handleDrag = (_e: DraggableEvent, data: DraggableData) => {
+    setPosition({ x: data.x, y: data.y });
+  };
+
+  const handleDragStop = (_e: DraggableEvent, data: DraggableData) => {
+    if (!nodeRef.current) return;
+
+    const windowRect = nodeRef.current.getBoundingClientRect();
+
+    // If the window's left edge is within the snap zone, push it to the right
+    if (windowRect.left < ICON_COLUMN_RIGHT_EDGE) {
+      const adjustment = ICON_COLUMN_RIGHT_EDGE - windowRect.left;
+      setPosition({ x: data.x + adjustment, y: data.y });
+    }
+  };
 
   return (
-    <div
-      ref={nodeRef}
-      className="z-20 absolute top-[6vh] left-1/2 -translate-x-1/2"
-      style={{
-        width: `${dimensions.width}px`,
-        height: `${dimensions.height}px`,
-      }}
+    <Draggable
+      nodeRef={nodeRef}
+      handle=".window-drag-handle"
+      position={position}
+      onDrag={handleDrag}
+      onStop={handleDragStop}
+      bounds={bounds}
     >
-      <Window
-        resizable={false}
-        leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-        className="flex flex-col absolute top-0 left-0 origin-top-left"
+      <div
+        ref={nodeRef}
+        className="z-20 absolute top-[6vh] left-1/2 -translate-x-1/2"
         style={{
-          width: `${BASE_WIDTH}px`,
-          height: `${BASE_HEIGHT}px`,
-          transform: `scale(${scaleFactor})`,
-          willChange: isResizing ? 'transform' : 'auto',
+          width: `${dimensions.width}px`,
+          height: `${dimensions.height}px`,
         }}
       >
+        {/* Main Window - Outer container sets the scaled size */}
+        <div
+          className="relative"
+          style={{
+            width: `${dimensions.width}px`,
+            height: `${dimensions.height}px`,
+          }}
+        >
+          {/* Inner scaled content - renders at base size, then scaled */}
+          <Window
+            resizable={false}
+            draggable={false}
+            className="flex flex-col absolute top-0 left-0 origin-top-left"
+            style={{
+              width: `${BASE_WIDTH}px`,
+              height: `${BASE_HEIGHT}px`,
+              transform: `scale(${scaleFactor})`,
+              willChange: isResizing ? 'transform' : 'auto',
+            }}
+          >
         <WindowTitleBar>
         <div className="flex items-center gap-2">
           <CameraIcon />
@@ -411,18 +485,20 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
           </div>
         </div>
       </div>
-      </Window>
+          </Window>
 
-      {/* Resize Handle - Outside scaled content so it stays at correct position */}
-      <div
-        onMouseDown={handleResizeStart}
-        className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
-        style={{
-          touchAction: 'none',
-        }}
-      >
-        <ResizeGrip />
+          {/* Resize Handle - Outside scaled content so it stays at correct position */}
+          <div
+            onMouseDown={handleResizeStart}
+            className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
+            style={{
+              touchAction: 'none',
+            }}
+          >
+            <ResizeGrip />
+          </div>
+        </div>
       </div>
-    </div>
+    </Draggable>
   );
 }
