@@ -363,7 +363,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
         <div className="flex-1 flex gap-2 min-h-0">
           {/* Main video display area */}
           <div
-            className="flex-1 win98-border-sunken flex items-center justify-center"
+            className="flex-1 aspect-video win98-border-sunken flex items-center justify-center"
             style={{ backgroundColor: selectedVideo.placeholderColor }}
           >
             {/* TODO: Replace with actual video/gif when available */}
@@ -397,7 +397,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
                         onClick={() => navigateToVideo(actualIndex)}
                       >
                         <div
-                          className={`w-full flex-1 win98-border-sunken flex items-center justify-center ${
+                          className={`w-full aspect-video win98-border-sunken flex items-center justify-center ${
                             isSelected ? 'ring-2 ring-[#ffdd44]' : ''
                           }`}
                           style={{ backgroundColor: video.placeholderColor }}
