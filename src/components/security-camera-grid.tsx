@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import {
   Window,
   WindowTitleBar,
@@ -13,14 +14,43 @@ interface SecurityCameraGridProps {
   onMinimize?: () => void;
 }
 
-// Initial dimensions and aspect ratio
-const INITIAL_WIDTH = 560;
-const INITIAL_HEIGHT = 480;
-const ASPECT_RATIO = INITIAL_WIDTH / INITIAL_HEIGHT;
+const MENUBAR_HEIGHT = 36;
+const TASKBAR_HEIGHT = 40;
 
-// Minimum dimensions (prevents window from shrinking too small)
-const MIN_WIDTH = 560;
-const MIN_HEIGHT = 480;
+// Base dimensions for the window content
+const BASE_WIDTH = 560;
+const BASE_HEIGHT = 480;
+const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
+
+// Resize constraints
+const MIN_WIDTH = 400;
+const MAX_WIDTH = 700;
+
+interface Bounds {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+}
+
+function ResizeGrip() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ display: 'block' }}>
+      <rect x="9" y="2" width="1" height="1" fill="#808080" />
+      <rect x="10" y="1" width="1" height="1" fill="#DFDFDF" />
+      <rect x="6" y="5" width="1" height="1" fill="#808080" />
+      <rect x="7" y="4" width="1" height="1" fill="#DFDFDF" />
+      <rect x="9" y="5" width="1" height="1" fill="#808080" />
+      <rect x="10" y="4" width="1" height="1" fill="#DFDFDF" />
+      <rect x="3" y="8" width="1" height="1" fill="#808080" />
+      <rect x="4" y="7" width="1" height="1" fill="#DFDFDF" />
+      <rect x="6" y="8" width="1" height="1" fill="#808080" />
+      <rect x="7" y="7" width="1" height="1" fill="#DFDFDF" />
+      <rect x="9" y="8" width="1" height="1" fill="#808080" />
+      <rect x="10" y="7" width="1" height="1" fill="#DFDFDF" />
+    </svg>
+  );
+}
 
 // Different signal lost messages for variety
 const SIGNAL_MESSAGES = [
@@ -173,126 +203,164 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
 }
 
 export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridProps) {
-  const windowRef = useRef<HTMLDivElement>(null);
-  const lastDimensions = useRef({ width: INITIAL_WIDTH, height: INITIAL_HEIGHT });
-  const isAdjusting = useRef(false);
-  const rafId = useRef<number | null>(null);
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [bounds, setBounds] = useState<Bounds | undefined>(undefined);
+  const [dimensions, setDimensions] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeStartRef = useRef({ mouseX: 0, mouseY: 0, width: BASE_WIDTH, height: BASE_HEIGHT });
 
-  // Aspect ratio locking on resize
-  useEffect(() => {
-    const element = windowRef.current;
-    if (!element) return;
+  const calculateBounds = useCallback(() => {
+    if (!nodeRef.current) return;
 
-    // Initialize dimensions
-    lastDimensions.current = { width: element.offsetWidth, height: element.offsetHeight };
+    const windowRect = nodeRef.current.getBoundingClientRect();
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
 
-    const handleResize = () => {
-      // Skip if we're currently adjusting to prevent feedback loop
-      if (isAdjusting.current) return;
+    const initialLeft = windowRect.left - position.x;
+    const initialTop = windowRect.top - position.y;
 
-      const width = element.offsetWidth;
-      const height = element.offsetHeight;
-      const lastWidth = lastDimensions.current.width;
-      const lastHeight = lastDimensions.current.height;
-
-      // Determine which dimension changed more (that's the one being dragged)
-      const widthDelta = Math.abs(width - lastWidth);
-      const heightDelta = Math.abs(height - lastHeight);
-
-      if (widthDelta < 1 && heightDelta < 1) return; // No significant change
-
-      let newWidth: number;
-      let newHeight: number;
-
-      if (widthDelta > heightDelta) {
-        // Width changed more, adjust height to match
-        newWidth = Math.max(width, MIN_WIDTH);
-        newHeight = newWidth / ASPECT_RATIO;
-      } else {
-        // Height changed more, adjust width to match
-        newHeight = Math.max(height, MIN_HEIGHT);
-        newWidth = newHeight * ASPECT_RATIO;
-      }
-
-      // Ensure both dimensions respect minimums
-      if (newWidth < MIN_WIDTH || newHeight < MIN_HEIGHT) {
-        newWidth = MIN_WIDTH;
-        newHeight = MIN_HEIGHT;
-      }
-
-      // Only update if dimensions actually changed
-      if (Math.abs(newWidth - width) > 0.5 || Math.abs(newHeight - height) > 0.5) {
-        isAdjusting.current = true;
-        element.style.width = `${newWidth}px`;
-        element.style.height = `${newHeight}px`;
-
-        // Use double RAF to ensure browser has applied changes before allowing new observations
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            isAdjusting.current = false;
-          });
-        });
-      }
-
-      lastDimensions.current = { width: newWidth, height: newHeight };
-    };
-
-    const resizeObserver = new ResizeObserver(() => {
-      // Cancel any pending RAF to avoid stacking
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current);
-      }
-      // Throttle using RAF for smooth updates
-      rafId.current = requestAnimationFrame(handleResize);
+    setBounds({
+      left: -initialLeft,
+      top: MENUBAR_HEIGHT - initialTop,
+      right: viewportWidth - initialLeft - windowRect.width,
+      bottom: viewportHeight - TASKBAR_HEIGHT - initialTop - windowRect.height,
     });
+  }, [position]);
 
-    resizeObserver.observe(element);
+  useEffect(() => {
+    calculateBounds();
+    window.addEventListener("resize", calculateBounds);
+    return () => window.removeEventListener("resize", calculateBounds);
+  }, [calculateBounds]);
 
-    return () => {
-      resizeObserver.disconnect();
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current);
-      }
-    };
+  const handleDrag = useCallback((_e: DraggableEvent, data: DraggableData) => {
+    setPosition({ x: data.x, y: data.y });
   }, []);
 
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    resizeStartRef.current = {
+      mouseX: e.clientX,
+      mouseY: e.clientY,
+      width: dimensions.width,
+      height: dimensions.height,
+    };
+    setIsResizing(true);
+  }, [dimensions]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaX = e.clientX - resizeStartRef.current.mouseX;
+      const deltaY = e.clientY - resizeStartRef.current.mouseY;
+
+      // Use larger delta to determine size, maintaining aspect ratio
+      const deltaForRatio = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY * ASPECT_RATIO;
+
+      let newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, resizeStartRef.current.width + deltaForRatio));
+      let newHeight = newWidth / ASPECT_RATIO;
+
+      // Prevent window from overlapping the taskbar
+      if (nodeRef.current) {
+        const windowTop = nodeRef.current.getBoundingClientRect().top;
+        const availableHeight = window.innerHeight - TASKBAR_HEIGHT - windowTop;
+
+        if (newHeight > availableHeight) {
+          newHeight = availableHeight;
+          newWidth = Math.max(MIN_WIDTH, newHeight * ASPECT_RATIO);
+          newHeight = newWidth / ASPECT_RATIO;
+        }
+      }
+
+      setDimensions({ width: newWidth, height: newHeight });
+    };
+
+    const handleMouseUp = () => setIsResizing(false);
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.body.style.cursor = 'nwse-resize';
+    document.body.style.userSelect = 'none';
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing]);
+
+  const scaleFactor = dimensions.width / BASE_WIDTH;
+
   return (
-    <Window
-      ref={windowRef}
-      className="w-[560px] h-[480px] absolute flex flex-col"
-      style={{
-        top: "10vh",
-        left: "50%",
-        transform: "translateX(-50%)",
-        minWidth: `${MIN_WIDTH}px`,
-        minHeight: `${MIN_HEIGHT}px`,
-      }}
+    <Draggable
+      nodeRef={nodeRef}
+      handle=".window-drag-handle"
+      position={position}
+      onDrag={handleDrag}
+      bounds={bounds}
     >
-      <WindowTitleBar>
-        <WindowTitle>Ant Hill - All Cameras</WindowTitle>
-        <WindowControls
-          showMaximize={false}
-          onMinimize={onMinimize}
-          onClose={onClose}
-        />
-      </WindowTitleBar>
+      <div
+        ref={nodeRef}
+        className="absolute z-30"
+        style={{
+          top: "10vh",
+          left: "50%",
+          marginLeft: -dimensions.width / 2,
+          width: dimensions.width,
+          height: dimensions.height,
+        }}
+      >
+        <Window
+          resizable={false}
+          draggable={false}
+          className="flex flex-col absolute top-0 left-0 origin-top-left"
+          style={{
+            width: BASE_WIDTH,
+            height: BASE_HEIGHT,
+            transform: `scale(${scaleFactor})`,
+            willChange: isResizing ? 'transform' : 'auto',
+          }}
+        >
+          <WindowTitleBar>
+            <WindowTitle>Ant Hill - All Cameras</WindowTitle>
+            <WindowControls
+              showMaximize={false}
+              onMinimize={onMinimize}
+              onClose={onClose}
+            />
+          </WindowTitleBar>
 
-      {/* 2x2 Grid of camera feeds */}
-      <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-1 p-1 bg-win98-surface">
-        <CameraCell cameraNumber={1} />
-        <CameraCell cameraNumber={2} />
-        <CameraCell cameraNumber={3} />
-        <CameraCell cameraNumber={4} />
-      </div>
+          {/* 2x2 Grid of camera feeds */}
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-1 p-1 bg-win98-surface">
+            <CameraCell cameraNumber={1} />
+            <CameraCell cameraNumber={2} />
+            <CameraCell cameraNumber={3} />
+            <CameraCell cameraNumber={4} />
+          </div>
 
-      {/* Status bar at bottom */}
-      <div className="h-[22px] flex items-center px-2 bg-win98-surface border-t border-win98-shadow">
-        <div className="win98-border-status px-2 py-0.5 flex-1">
-          <span className="text-[10px] text-win98-text">
-            All Cameras | 4 Feeds Active | Recording: Enabled
-          </span>
+          {/* Status bar at bottom */}
+          <div className="h-[22px] flex items-center px-2 bg-win98-surface border-t border-win98-shadow">
+            <div className="win98-border-status px-2 py-0.5 flex-1">
+              <span className="text-[10px] text-win98-text">
+                All Cameras | 4 Feeds Active | Recording: Enabled
+              </span>
+            </div>
+          </div>
+        </Window>
+
+        {/* Resize grip in bottom-right corner */}
+        <div
+          onMouseDown={handleResizeStart}
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
+          style={{ touchAction: 'none' }}
+        >
+          <ResizeGrip />
         </div>
       </div>
-    </Window>
+    </Draggable>
   );
 }
