@@ -82,13 +82,13 @@ export function StressReliefGallery({ onClose, onMinimize }: StressReliefGallery
       {/* Main content area */}
       <div className="flex-1 bg-[#c8b9a9] p-3 flex flex-col">
         {/* Image display area */}
-        <div className="flex-1 win98-border-sunken bg-[#f5f0eb] flex items-center justify-center overflow-hidden relative">
+        <div className="flex-1 win98-border-sunken bg-[#f5b5b5] flex items-center justify-center overflow-hidden relative">
           <div className="relative w-full h-full">
             <Image
               src={currentItem.image}
               alt={currentItem.label}
               fill
-              className="object-cover scale-110"
+              className="object-cover"
               priority
             />
           </div>
