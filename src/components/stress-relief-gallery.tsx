@@ -13,7 +13,7 @@ import {
 
 // Baby animal gallery items - images will be uploaded later
 const galleryItems = [
-  { id: "bunny", label: "Baby Bunny", image: "/images/stress-relief/bunny.jpg", message: "Take a deep breath and relax..." },
+  { id: "bunny", label: "Baby Bunny", image: "/images/baby bunny.png", message: "Take a deep breath and relax..." },
   { id: "kitten", label: "Baby Kitten", image: "/images/stress-relief/kitten.jpg", message: "Hang in there!" },
   { id: "puppy", label: "Baby Puppy", image: "/images/stress-relief/puppy.jpg", message: "Everyone makes mistakes..." },
   { id: "duckling", label: "Baby Duckling", image: "/images/stress-relief/duckling.jpg", message: "One step at a time..." },
