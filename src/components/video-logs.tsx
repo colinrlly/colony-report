@@ -393,14 +393,14 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
                     return (
                       <div
                         key={video.id}
-                        className="cursor-pointer flex-1 flex flex-col"
+                        className="cursor-pointer flex flex-col"
                         onClick={() => navigateToVideo(actualIndex)}
                       >
                         <div
-                          className={`w-full flex-1 win98-border-sunken flex items-center justify-center ${
+                          className={`w-full win98-border-sunken flex items-center justify-center ${
                             isSelected ? 'ring-2 ring-[#ffdd44]' : ''
                           }`}
-                          style={{ backgroundColor: video.placeholderColor }}
+                          style={{ backgroundColor: video.placeholderColor, aspectRatio: '636 / 540' }}
                         >
                           {/* TODO: Replace with actual thumbnail when available */}
                           <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
