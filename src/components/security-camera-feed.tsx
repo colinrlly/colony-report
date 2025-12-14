@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Draggable from "react-draggable";
 import {
   Window,
   WindowTitleBar,
   WindowTitle,
   WindowControls,
+  ResizeGrip,
 } from "@/components/ui/window";
+import { useWindowResize } from "@/hooks/use-window-resize";
 
 interface SecurityCameraFeedProps {
   cameraNumber: number;
@@ -15,7 +18,13 @@ interface SecurityCameraFeedProps {
   warningMode?: boolean;
 }
 
-// Different signal lost messages for variety
+// Window dimensions
+const BASE_WIDTH = 420;
+const BASE_HEIGHT = 360;
+const MIN_WIDTH = 300;
+const MAX_WIDTH = 560;
+
+// Signal messages for camera feed effects
 const SIGNAL_MESSAGES = [
   "SIGNAL LOST",
   "NO SIGNAL",
@@ -25,7 +34,6 @@ const SIGNAL_MESSAGES = [
   "RECONNECTING...",
 ];
 
-// Camera location names for each camera
 const CAMERA_LOCATIONS: Record<number, string> = {
   1: "MAIN TUNNEL - ENTRANCE",
   2: "FOOD STORAGE - SECTOR B",
@@ -33,7 +41,28 @@ const CAMERA_LOCATIONS: Record<number, string> = {
   4: "WEST HALLWAY A",
 };
 
-export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize, warningMode = false }: SecurityCameraFeedProps) {
+export function SecurityCameraFeed({
+  cameraNumber,
+  onClose,
+  onMinimize,
+  warningMode = false,
+}: SecurityCameraFeedProps) {
+  const {
+    nodeRef,
+    position,
+    bounds,
+    dimensions,
+    isResizing,
+    scaleFactor,
+    handleDrag,
+    handleResizeStart,
+  } = useWindowResize({
+    baseWidth: BASE_WIDTH,
+    baseHeight: BASE_HEIGHT,
+    minWidth: MIN_WIDTH,
+    maxWidth: MAX_WIDTH,
+  });
+
   const [isFlickering, setIsFlickering] = useState(false);
   const [isSignalLost, setIsSignalLost] = useState(false);
   const [signalMessage, setSignalMessage] = useState(SIGNAL_MESSAGES[0]);
@@ -42,29 +71,26 @@ export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize, warningM
   // Random flicker effect
   useEffect(() => {
     const triggerFlicker = () => {
-      // Random chance to flicker (roughly every 3-8 seconds on average)
       const flickerChance = Math.random();
 
       if (flickerChance < 0.15) {
-        // Quick flicker
         setIsFlickering(true);
         setTimeout(() => setIsFlickering(false), 100 + Math.random() * 150);
       } else if (flickerChance < 0.25) {
-        // Longer static burst
         setStaticIntensity(0.3 + Math.random() * 0.4);
         setTimeout(() => setStaticIntensity(0), 200 + Math.random() * 300);
-      } else if (flickerChance < 0.30) {
-        // Signal loss (longer duration)
+      } else if (flickerChance < 0.3) {
         setIsSignalLost(true);
-        setSignalMessage(SIGNAL_MESSAGES[Math.floor(Math.random() * SIGNAL_MESSAGES.length)]);
+        setSignalMessage(
+          SIGNAL_MESSAGES[Math.floor(Math.random() * SIGNAL_MESSAGES.length)]
+        );
         setTimeout(() => setIsSignalLost(false), 1500 + Math.random() * 2500);
       }
     };
 
-    // Check for flicker every second
     const interval = setInterval(triggerFlicker, 1000);
 
-    // Initial signal lost state for dramatic effect
+    // Initial connection animation
     setIsSignalLost(true);
     setSignalMessage("ESTABLISHING CONNECTION...");
     setTimeout(() => setIsSignalLost(false), 1500);
@@ -72,7 +98,6 @@ export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize, warningM
     return () => clearInterval(interval);
   }, []);
 
-  // Generate random static noise pattern
   const generateStaticStyle = useCallback(() => {
     if (staticIntensity === 0) return {};
     return {
@@ -84,126 +109,173 @@ export function SecurityCameraFeed({ cameraNumber, onClose, onMinimize, warningM
   const location = CAMERA_LOCATIONS[cameraNumber] || "UNKNOWN SECTOR";
 
   return (
-    <Window
-      className="w-[420px] h-[360px] absolute flex flex-col"
-      style={{
-        top: `${12 + (cameraNumber - 1) * 3}vh`,
-        left: `${20 + (cameraNumber - 1) * 4}vw`,
-      }}
+    <Draggable
+      nodeRef={nodeRef}
+      handle=".window-drag-handle"
+      position={position}
+      onDrag={handleDrag}
+      bounds={bounds}
     >
-      <WindowTitleBar>
-        <WindowTitle>Ant Hill - Cam {cameraNumber}</WindowTitle>
-        <WindowControls
-          showMaximize={false}
-          onMinimize={onMinimize}
-          onClose={onClose}
-        />
-      </WindowTitleBar>
+      <div
+        ref={nodeRef}
+        className="absolute z-30"
+        style={{
+          top: `${12 + (cameraNumber - 1) * 3}vh`,
+          left: `${20 + (cameraNumber - 1) * 4}vw`,
+          width: dimensions.width,
+          height: dimensions.height,
+        }}
+      >
+        <Window
+          resizable={false}
+          draggable={false}
+          className="flex flex-col absolute top-0 left-0 origin-top-left"
+          style={{
+            width: BASE_WIDTH,
+            height: BASE_HEIGHT,
+            transform: `scale(${scaleFactor})`,
+            willChange: isResizing ? "transform" : "auto",
+          }}
+        >
+          <WindowTitleBar>
+            <WindowTitle>Ant Hill - Cam {cameraNumber}</WindowTitle>
+            <WindowControls
+              showMaximize={false}
+              onMinimize={onMinimize}
+              onClose={onClose}
+            />
+          </WindowTitleBar>
 
-      {/* Video feed area - black background for the camera stream */}
-      <div className="flex-1 bg-black win98-border-sunken m-[2px] flex items-center justify-center overflow-hidden">
-        <div className="w-full h-full relative flex items-center justify-center">
-          {/* Scanline overlay effect for CRT monitor look */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-20"
-            style={{
-              background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.4) 2px, rgba(0, 0, 0, 0.4) 4px)',
-            }}
-          />
+          {/* Video feed area */}
+          <div className="flex-1 bg-black win98-border-sunken m-[2px] flex items-center justify-center overflow-hidden">
+            <div className="w-full h-full relative flex items-center justify-center">
+              {/* CRT scanline overlay */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-20"
+                style={{
+                  background:
+                    "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.4) 2px, rgba(0, 0, 0, 0.4) 4px)",
+                }}
+              />
 
-          {/* Static noise overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none mix-blend-overlay"
-            style={generateStaticStyle()}
-          />
+              {/* Static noise overlay */}
+              <div
+                className="absolute inset-0 pointer-events-none mix-blend-overlay"
+                style={generateStaticStyle()}
+              />
 
-          {/* Flicker overlay */}
-          {isFlickering && (
-            <div className="absolute inset-0 bg-white/20 pointer-events-none" />
-          )}
+              {/* Flicker overlay */}
+              {isFlickering && (
+                <div className="absolute inset-0 bg-white/20 pointer-events-none" />
+              )}
 
-          {/* Main content area */}
-          {isSignalLost ? (
-            // Signal lost screen
-            <div className="text-center">
-              <div className="text-gray-400 font-mono text-lg mb-2 animate-pulse">
-                {signalMessage}
+              {/* Main content */}
+              {isSignalLost ? (
+                <div className="text-center">
+                  <div className="text-gray-400 font-mono text-lg mb-2 animate-pulse">
+                    {signalMessage}
+                  </div>
+                  <div className="flex justify-center gap-1">
+                    <span
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"
+                      style={{ animationDelay: "0ms" }}
+                    />
+                    <span
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"
+                      style={{ animationDelay: "200ms" }}
+                    />
+                    <span
+                      className="w-2 h-2 bg-gray-500 rounded-full animate-pulse"
+                      style={{ animationDelay: "400ms" }}
+                    />
+                  </div>
+                  <div className="text-gray-600 font-mono text-xs mt-4">
+                    CAM_{cameraNumber.toString().padStart(2, "0")} // {location}
+                  </div>
+                </div>
+              ) : warningMode ? (
+                <div className="text-red-500 font-mono text-sm flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    <span className="animate-pulse">ALERT - MOVEMENT DETECTED</span>
+                  </div>
+                  <span className="text-xs text-red-400/80">
+                    [Warning GIF Placeholder]
+                  </span>
+                  <span className="text-xs text-red-400/60 mt-2">
+                    Unusual Activity Recorded
+                  </span>
+                </div>
+              ) : (
+                <div className="text-green-500 font-mono text-sm flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    <span>LIVE FEED</span>
+                  </div>
+                  <span className="text-xs text-green-400/60">
+                    [Animation Placeholder]
+                  </span>
+                  <span className="text-xs text-green-400/40 mt-2">
+                    Monitoring Active
+                  </span>
+                </div>
+              )}
+
+              {/* Camera ID overlay */}
+              <div className="absolute bottom-2 right-2 text-green-500/80 font-mono text-xs">
+                CAM_{cameraNumber.toString().padStart(2, "0")} // ANT_HILL
               </div>
-              <div className="flex justify-center gap-1">
-                <span className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
-                <span className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '200ms' }} />
-                <span className="w-2 h-2 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '400ms' }} />
+
+              {/* Location overlay */}
+              <div className="absolute bottom-2 left-2 text-green-500/60 font-mono text-[10px]">
+                {location}
               </div>
-              <div className="text-gray-600 font-mono text-xs mt-4">
-                CAM_{cameraNumber.toString().padStart(2, '0')} // {location}
+
+              {/* Recording indicator */}
+              {!isSignalLost && (
+                <div className="absolute top-2 left-2 flex items-center gap-1">
+                  <span className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
+                  <span className="text-red-500 font-mono text-xs">REC</span>
+                </div>
+              )}
+
+              {/* Camera number badge */}
+              <div className="absolute top-2 right-2 text-green-500/60 font-mono text-xs border border-green-500/30 px-2 py-0.5">
+                CAM {cameraNumber}
               </div>
+
+              {/* Vignette effect */}
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background:
+                    "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%)",
+                }}
+              />
             </div>
-          ) : warningMode ? (
-            // Warning mode - special animation placeholder for security alert
-            <div className="text-red-500 font-mono text-sm flex flex-col items-center gap-2">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                <span className="animate-pulse">ALERT - MOVEMENT DETECTED</span>
-              </div>
-              <span className="text-xs text-red-400/80">[Warning GIF Placeholder]</span>
-              <span className="text-xs text-red-400/60 mt-2">Unusual Activity Recorded</span>
-            </div>
-          ) : (
-            // Active feed placeholder - normal mode
-            <div className="text-green-500 font-mono text-sm flex flex-col items-center gap-2">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                <span>LIVE FEED</span>
-              </div>
-              <span className="text-xs text-green-400/60">[Animation Placeholder]</span>
-              <span className="text-xs text-green-400/40 mt-2">Monitoring Active</span>
-            </div>
-          )}
-
-          {/* Corner timestamp overlay - always visible */}
-          <div className="absolute bottom-2 right-2 text-green-500/80 font-mono text-xs">
-            CAM_{cameraNumber.toString().padStart(2, '0')} // ANT_HILL
           </div>
 
-          {/* Location overlay */}
-          <div className="absolute bottom-2 left-2 text-green-500/60 font-mono text-[10px]">
-            {location}
-          </div>
-
-          {/* Corner recording indicator */}
-          {!isSignalLost && (
-            <div className="absolute top-2 left-2 flex items-center gap-1">
-              <span className="w-2 h-2 bg-red-600 rounded-full animate-pulse" />
-              <span className="text-red-500 font-mono text-xs">REC</span>
+          {/* Status bar */}
+          <div className="h-[22px] flex items-center px-2 bg-win98-surface border-t border-win98-shadow">
+            <div className="win98-border-status px-2 py-0.5 flex-1">
+              <span className="text-[10px] text-win98-text">
+                {isSignalLost
+                  ? "Status: Reconnecting... | Signal: Weak"
+                  : "Status: Active | Signal: Good | Recording: Enabled"}
+              </span>
             </div>
-          )}
-
-          {/* Camera number in top right */}
-          <div className="absolute top-2 right-2 text-green-500/60 font-mono text-xs border border-green-500/30 px-2 py-0.5">
-            CAM {cameraNumber}
           </div>
+        </Window>
 
-          {/* Vignette effect for that old monitor look */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%)',
-            }}
-          />
+        {/* Resize grip */}
+        <div
+          onMouseDown={handleResizeStart}
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
+          style={{ touchAction: "none" }}
+        >
+          <ResizeGrip />
         </div>
       </div>
-
-      {/* Status bar at bottom */}
-      <div className="h-[22px] flex items-center px-2 bg-win98-surface border-t border-win98-shadow">
-        <div className="win98-border-status px-2 py-0.5 flex-1">
-          <span className="text-[10px] text-win98-text">
-            {isSignalLost
-              ? "Status: Reconnecting... | Signal: Weak"
-              : "Status: Active | Signal: Good | Recording: Enabled"
-            }
-          </span>
-        </div>
-      </div>
-    </Window>
+    </Draggable>
   );
 }

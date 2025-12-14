@@ -1,28 +1,28 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Draggable from "react-draggable";
 import {
   Window,
   WindowTitleBar,
   WindowTitle,
   WindowControls,
+  ResizeGrip,
 } from "@/components/ui/window";
+import { useWindowResize } from "@/hooks/use-window-resize";
 
 interface SecurityCameraGridProps {
   onClose?: () => void;
   onMinimize?: () => void;
 }
 
-// Initial dimensions and aspect ratio
-const INITIAL_WIDTH = 560;
-const INITIAL_HEIGHT = 480;
-const ASPECT_RATIO = INITIAL_WIDTH / INITIAL_HEIGHT;
+// Window dimensions
+const BASE_WIDTH = 560;
+const BASE_HEIGHT = 480;
+const MIN_WIDTH = 400;
+const MAX_WIDTH = 700;
 
-// Minimum dimensions (prevents window from shrinking too small)
-const MIN_WIDTH = 560;
-const MIN_HEIGHT = 480;
-
-// Different signal lost messages for variety
+// Signal messages for camera feed effects
 const SIGNAL_MESSAGES = [
   "SIGNAL LOST",
   "NO SIGNAL",
@@ -32,7 +32,6 @@ const SIGNAL_MESSAGES = [
   "RECONNECTING...",
 ];
 
-// Camera location names for each camera
 const CAMERA_LOCATIONS: Record<number, string> = {
   1: "MAIN TUNNEL - ENTRANCE",
   2: "FOOD STORAGE - SECTOR B",
@@ -55,32 +54,39 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
     staticIntensity: 0,
   });
 
-  // Random flicker effect
   useEffect(() => {
     const triggerFlicker = () => {
       const flickerChance = Math.random();
 
       if (flickerChance < 0.15) {
-        setState(prev => ({ ...prev, isFlickering: true }));
-        setTimeout(() => setState(prev => ({ ...prev, isFlickering: false })), 100 + Math.random() * 150);
+        setState((prev) => ({ ...prev, isFlickering: true }));
+        setTimeout(
+          () => setState((prev) => ({ ...prev, isFlickering: false })),
+          100 + Math.random() * 150
+        );
       } else if (flickerChance < 0.25) {
         const intensity = 0.3 + Math.random() * 0.4;
-        setState(prev => ({ ...prev, staticIntensity: intensity }));
-        setTimeout(() => setState(prev => ({ ...prev, staticIntensity: 0 })), 200 + Math.random() * 300);
-      } else if (flickerChance < 0.30) {
-        setState(prev => ({
+        setState((prev) => ({ ...prev, staticIntensity: intensity }));
+        setTimeout(
+          () => setState((prev) => ({ ...prev, staticIntensity: 0 })),
+          200 + Math.random() * 300
+        );
+      } else if (flickerChance < 0.3) {
+        setState((prev) => ({
           ...prev,
           isSignalLost: true,
-          signalMessage: SIGNAL_MESSAGES[Math.floor(Math.random() * SIGNAL_MESSAGES.length)],
+          signalMessage:
+            SIGNAL_MESSAGES[Math.floor(Math.random() * SIGNAL_MESSAGES.length)],
         }));
-        setTimeout(() => setState(prev => ({ ...prev, isSignalLost: false })), 1500 + Math.random() * 2500);
+        setTimeout(
+          () => setState((prev) => ({ ...prev, isSignalLost: false })),
+          1500 + Math.random() * 2500
+        );
       }
     };
 
     const interval = setInterval(triggerFlicker, 1000);
-
-    // Initial signal lost state for dramatic effect
-    setTimeout(() => setState(prev => ({ ...prev, isSignalLost: false })), 1500);
+    setTimeout(() => setState((prev) => ({ ...prev, isSignalLost: false })), 1500);
 
     return () => clearInterval(interval);
   }, []);
@@ -97,11 +103,12 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
 
   return (
     <div className="bg-black win98-border-sunken flex items-center justify-center overflow-hidden relative">
-      {/* Scanline overlay effect for CRT monitor look */}
+      {/* CRT scanline overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-20"
         style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.4) 2px, rgba(0, 0, 0, 0.4) 4px)',
+          background:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.4) 2px, rgba(0, 0, 0, 0.4) 4px)",
         }}
       />
 
@@ -116,16 +123,25 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         <div className="absolute inset-0 bg-white/20 pointer-events-none" />
       )}
 
-      {/* Main content area */}
+      {/* Main content */}
       {state.isSignalLost ? (
         <div className="text-center">
           <div className="text-gray-400 font-mono text-xs mb-1 animate-pulse">
             {state.signalMessage}
           </div>
           <div className="flex justify-center gap-1">
-            <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
-            <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '200ms' }} />
-            <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '400ms' }} />
+            <span
+              className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse"
+              style={{ animationDelay: "0ms" }}
+            />
+            <span
+              className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse"
+              style={{ animationDelay: "200ms" }}
+            />
+            <span
+              className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse"
+              style={{ animationDelay: "400ms" }}
+            />
           </div>
         </div>
       ) : (
@@ -138,9 +154,9 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         </div>
       )}
 
-      {/* Corner timestamp overlay */}
+      {/* Camera ID overlay */}
       <div className="absolute bottom-1 right-1 text-green-500/80 font-mono text-[8px]">
-        CAM_{cameraNumber.toString().padStart(2, '0')}
+        CAM_{cameraNumber.toString().padStart(2, "0")}
       </div>
 
       {/* Location overlay */}
@@ -148,7 +164,7 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         {location}
       </div>
 
-      {/* Corner recording indicator */}
+      {/* Recording indicator */}
       {!state.isSignalLost && (
         <div className="absolute top-1 left-1 flex items-center gap-0.5">
           <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse" />
@@ -156,7 +172,7 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         </div>
       )}
 
-      {/* Camera number in top right */}
+      {/* Camera number badge */}
       <div className="absolute top-1 right-1 text-green-500/60 font-mono text-[8px] border border-green-500/30 px-1">
         CAM {cameraNumber}
       </div>
@@ -165,134 +181,100 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%)',
+          background:
+            "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%)",
         }}
       />
     </div>
   );
 }
 
-export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridProps) {
-  const windowRef = useRef<HTMLDivElement>(null);
-  const lastDimensions = useRef({ width: INITIAL_WIDTH, height: INITIAL_HEIGHT });
-  const isAdjusting = useRef(false);
-  const rafId = useRef<number | null>(null);
-
-  // Aspect ratio locking on resize
-  useEffect(() => {
-    const element = windowRef.current;
-    if (!element) return;
-
-    // Initialize dimensions
-    lastDimensions.current = { width: element.offsetWidth, height: element.offsetHeight };
-
-    const handleResize = () => {
-      // Skip if we're currently adjusting to prevent feedback loop
-      if (isAdjusting.current) return;
-
-      const width = element.offsetWidth;
-      const height = element.offsetHeight;
-      const lastWidth = lastDimensions.current.width;
-      const lastHeight = lastDimensions.current.height;
-
-      // Determine which dimension changed more (that's the one being dragged)
-      const widthDelta = Math.abs(width - lastWidth);
-      const heightDelta = Math.abs(height - lastHeight);
-
-      if (widthDelta < 1 && heightDelta < 1) return; // No significant change
-
-      let newWidth: number;
-      let newHeight: number;
-
-      if (widthDelta > heightDelta) {
-        // Width changed more, adjust height to match
-        newWidth = Math.max(width, MIN_WIDTH);
-        newHeight = newWidth / ASPECT_RATIO;
-      } else {
-        // Height changed more, adjust width to match
-        newHeight = Math.max(height, MIN_HEIGHT);
-        newWidth = newHeight * ASPECT_RATIO;
-      }
-
-      // Ensure both dimensions respect minimums
-      if (newWidth < MIN_WIDTH || newHeight < MIN_HEIGHT) {
-        newWidth = MIN_WIDTH;
-        newHeight = MIN_HEIGHT;
-      }
-
-      // Only update if dimensions actually changed
-      if (Math.abs(newWidth - width) > 0.5 || Math.abs(newHeight - height) > 0.5) {
-        isAdjusting.current = true;
-        element.style.width = `${newWidth}px`;
-        element.style.height = `${newHeight}px`;
-
-        // Use double RAF to ensure browser has applied changes before allowing new observations
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            isAdjusting.current = false;
-          });
-        });
-      }
-
-      lastDimensions.current = { width: newWidth, height: newHeight };
-    };
-
-    const resizeObserver = new ResizeObserver(() => {
-      // Cancel any pending RAF to avoid stacking
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current);
-      }
-      // Throttle using RAF for smooth updates
-      rafId.current = requestAnimationFrame(handleResize);
-    });
-
-    resizeObserver.observe(element);
-
-    return () => {
-      resizeObserver.disconnect();
-      if (rafId.current) {
-        cancelAnimationFrame(rafId.current);
-      }
-    };
-  }, []);
+export function SecurityCameraGrid({
+  onClose,
+  onMinimize,
+}: SecurityCameraGridProps) {
+  const {
+    nodeRef,
+    position,
+    bounds,
+    dimensions,
+    isResizing,
+    scaleFactor,
+    handleDrag,
+    handleResizeStart,
+  } = useWindowResize({
+    baseWidth: BASE_WIDTH,
+    baseHeight: BASE_HEIGHT,
+    minWidth: MIN_WIDTH,
+    maxWidth: MAX_WIDTH,
+  });
 
   return (
-    <Window
-      ref={windowRef}
-      className="w-[560px] h-[480px] absolute flex flex-col"
-      style={{
-        top: "10vh",
-        left: "50%",
-        transform: "translateX(-50%)",
-        minWidth: `${MIN_WIDTH}px`,
-        minHeight: `${MIN_HEIGHT}px`,
-      }}
+    <Draggable
+      nodeRef={nodeRef}
+      handle=".window-drag-handle"
+      position={position}
+      onDrag={handleDrag}
+      bounds={bounds}
     >
-      <WindowTitleBar>
-        <WindowTitle>Ant Hill - All Cameras</WindowTitle>
-        <WindowControls
-          showMaximize={false}
-          onMinimize={onMinimize}
-          onClose={onClose}
-        />
-      </WindowTitleBar>
+      <div
+        ref={nodeRef}
+        className="absolute z-30"
+        style={{
+          top: "10vh",
+          left: "50%",
+          marginLeft: -dimensions.width / 2,
+          width: dimensions.width,
+          height: dimensions.height,
+        }}
+      >
+        <Window
+          resizable={false}
+          draggable={false}
+          className="flex flex-col absolute top-0 left-0 origin-top-left"
+          style={{
+            width: BASE_WIDTH,
+            height: BASE_HEIGHT,
+            transform: `scale(${scaleFactor})`,
+            willChange: isResizing ? "transform" : "auto",
+          }}
+        >
+          <WindowTitleBar>
+            <WindowTitle>Ant Hill - All Cameras</WindowTitle>
+            <WindowControls
+              showMaximize={false}
+              onMinimize={onMinimize}
+              onClose={onClose}
+            />
+          </WindowTitleBar>
 
-      {/* 2x2 Grid of camera feeds */}
-      <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-1 p-1 bg-win98-surface">
-        <CameraCell cameraNumber={1} />
-        <CameraCell cameraNumber={2} />
-        <CameraCell cameraNumber={3} />
-        <CameraCell cameraNumber={4} />
-      </div>
+          {/* 2x2 Camera grid */}
+          <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-1 p-1 bg-win98-surface">
+            <CameraCell cameraNumber={1} />
+            <CameraCell cameraNumber={2} />
+            <CameraCell cameraNumber={3} />
+            <CameraCell cameraNumber={4} />
+          </div>
 
-      {/* Status bar at bottom */}
-      <div className="h-[22px] flex items-center px-2 bg-win98-surface border-t border-win98-shadow">
-        <div className="win98-border-status px-2 py-0.5 flex-1">
-          <span className="text-[10px] text-win98-text">
-            All Cameras | 4 Feeds Active | Recording: Enabled
-          </span>
+          {/* Status bar */}
+          <div className="h-[22px] flex items-center px-2 bg-win98-surface border-t border-win98-shadow">
+            <div className="win98-border-status px-2 py-0.5 flex-1">
+              <span className="text-[10px] text-win98-text">
+                All Cameras | 4 Feeds Active | Recording: Enabled
+              </span>
+            </div>
+          </div>
+        </Window>
+
+        {/* Resize grip */}
+        <div
+          onMouseDown={handleResizeStart}
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
+          style={{ touchAction: "none" }}
+        >
+          <ResizeGrip />
         </div>
       </div>
-    </Window>
+    </Draggable>
   );
 }
