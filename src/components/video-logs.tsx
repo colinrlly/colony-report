@@ -378,7 +378,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
           </div>
 
           {/* Videos sidebar */}
-          <div className="w-[260px] flex gap-1">
+          <div className="w-[180px] flex gap-1">
             <div className="flex-1 flex flex-col win98-border-sunken bg-[#a09080]">
               <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold">
                 Videos
@@ -517,7 +517,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
           </div>
 
           {/* Video Notes */}
-          <div className="w-[260px] win98-border-sunken bg-[#5a4d42] px-3 py-2">
+          <div className="w-[180px] win98-border-sunken bg-[#5a4d42] px-3 py-2">
             <div className="text-[#d8c9b9] text-[12px] leading-relaxed">
               <span className="font-bold">Video Notes: </span>
               <span>{selectedVideo.notes}</span>
