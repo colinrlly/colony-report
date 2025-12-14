@@ -348,7 +348,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[920px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[760px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar>
         <div className="flex items-center gap-2">
