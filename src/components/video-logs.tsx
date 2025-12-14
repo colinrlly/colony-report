@@ -348,7 +348,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[760px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+      className="z-20 w-[920px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
     >
       <WindowTitleBar>
         <div className="flex items-center gap-2">
@@ -378,7 +378,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
           </div>
 
           {/* Videos sidebar */}
-          <div className="w-[260px] flex gap-1">
+          <div className="w-[180px] flex gap-1">
             <div className="flex-1 flex flex-col win98-border-sunken bg-[#a09080]">
               <div className="bg-[#8b7355] text-white text-xs px-2 py-1 font-bold">
                 Videos
