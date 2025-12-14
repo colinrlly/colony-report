@@ -360,11 +360,11 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
 
       <div className="flex-1 bg-[#c8b9a9] p-2 flex flex-col gap-2">
         {/* Top row: Main video + Thumbnails sidebar */}
-        <div className="flex-1 flex gap-2 min-h-0">
+        <div className="flex gap-2">
           {/* Main video display area */}
           <div
             className="flex-1 win98-border-sunken flex items-center justify-center"
-            style={{ backgroundColor: selectedVideo.placeholderColor }}
+            style={{ backgroundColor: selectedVideo.placeholderColor, aspectRatio: '4 / 3' }}
           >
             {/* TODO: Replace with actual video/gif when available */}
             {/* {selectedVideo.video ? (
@@ -400,7 +400,7 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
                           className={`w-full win98-border-sunken flex items-center justify-center ${
                             isSelected ? 'ring-2 ring-[#ffdd44]' : ''
                           }`}
-                          style={{ backgroundColor: video.placeholderColor, aspectRatio: '636 / 540' }}
+                          style={{ backgroundColor: video.placeholderColor, aspectRatio: '4 / 3' }}
                         >
                           {/* TODO: Replace with actual thumbnail when available */}
                           <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
