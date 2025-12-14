@@ -1,58 +1,28 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
+import { useState, useEffect, useCallback } from "react";
+import Draggable from "react-draggable";
 import {
   Window,
   WindowTitleBar,
   WindowTitle,
   WindowControls,
+  ResizeGrip,
 } from "@/components/ui/window";
+import { useWindowResize } from "@/hooks/use-window-resize";
 
 interface SecurityCameraGridProps {
   onClose?: () => void;
   onMinimize?: () => void;
 }
 
-const MENUBAR_HEIGHT = 36;
-const TASKBAR_HEIGHT = 40;
-
-// Base dimensions for the window content
+// Window dimensions
 const BASE_WIDTH = 560;
 const BASE_HEIGHT = 480;
-const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
-
-// Resize constraints
 const MIN_WIDTH = 400;
 const MAX_WIDTH = 700;
 
-interface Bounds {
-  left: number;
-  top: number;
-  right: number;
-  bottom: number;
-}
-
-function ResizeGrip() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ display: 'block' }}>
-      <rect x="9" y="2" width="1" height="1" fill="#808080" />
-      <rect x="10" y="1" width="1" height="1" fill="#DFDFDF" />
-      <rect x="6" y="5" width="1" height="1" fill="#808080" />
-      <rect x="7" y="4" width="1" height="1" fill="#DFDFDF" />
-      <rect x="9" y="5" width="1" height="1" fill="#808080" />
-      <rect x="10" y="4" width="1" height="1" fill="#DFDFDF" />
-      <rect x="3" y="8" width="1" height="1" fill="#808080" />
-      <rect x="4" y="7" width="1" height="1" fill="#DFDFDF" />
-      <rect x="6" y="8" width="1" height="1" fill="#808080" />
-      <rect x="7" y="7" width="1" height="1" fill="#DFDFDF" />
-      <rect x="9" y="8" width="1" height="1" fill="#808080" />
-      <rect x="10" y="7" width="1" height="1" fill="#DFDFDF" />
-    </svg>
-  );
-}
-
-// Different signal lost messages for variety
+// Signal messages for camera feed effects
 const SIGNAL_MESSAGES = [
   "SIGNAL LOST",
   "NO SIGNAL",
@@ -62,7 +32,6 @@ const SIGNAL_MESSAGES = [
   "RECONNECTING...",
 ];
 
-// Camera location names for each camera
 const CAMERA_LOCATIONS: Record<number, string> = {
   1: "MAIN TUNNEL - ENTRANCE",
   2: "FOOD STORAGE - SECTOR B",
@@ -85,32 +54,39 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
     staticIntensity: 0,
   });
 
-  // Random flicker effect
   useEffect(() => {
     const triggerFlicker = () => {
       const flickerChance = Math.random();
 
       if (flickerChance < 0.15) {
-        setState(prev => ({ ...prev, isFlickering: true }));
-        setTimeout(() => setState(prev => ({ ...prev, isFlickering: false })), 100 + Math.random() * 150);
+        setState((prev) => ({ ...prev, isFlickering: true }));
+        setTimeout(
+          () => setState((prev) => ({ ...prev, isFlickering: false })),
+          100 + Math.random() * 150
+        );
       } else if (flickerChance < 0.25) {
         const intensity = 0.3 + Math.random() * 0.4;
-        setState(prev => ({ ...prev, staticIntensity: intensity }));
-        setTimeout(() => setState(prev => ({ ...prev, staticIntensity: 0 })), 200 + Math.random() * 300);
-      } else if (flickerChance < 0.30) {
-        setState(prev => ({
+        setState((prev) => ({ ...prev, staticIntensity: intensity }));
+        setTimeout(
+          () => setState((prev) => ({ ...prev, staticIntensity: 0 })),
+          200 + Math.random() * 300
+        );
+      } else if (flickerChance < 0.3) {
+        setState((prev) => ({
           ...prev,
           isSignalLost: true,
-          signalMessage: SIGNAL_MESSAGES[Math.floor(Math.random() * SIGNAL_MESSAGES.length)],
+          signalMessage:
+            SIGNAL_MESSAGES[Math.floor(Math.random() * SIGNAL_MESSAGES.length)],
         }));
-        setTimeout(() => setState(prev => ({ ...prev, isSignalLost: false })), 1500 + Math.random() * 2500);
+        setTimeout(
+          () => setState((prev) => ({ ...prev, isSignalLost: false })),
+          1500 + Math.random() * 2500
+        );
       }
     };
 
     const interval = setInterval(triggerFlicker, 1000);
-
-    // Initial signal lost state for dramatic effect
-    setTimeout(() => setState(prev => ({ ...prev, isSignalLost: false })), 1500);
+    setTimeout(() => setState((prev) => ({ ...prev, isSignalLost: false })), 1500);
 
     return () => clearInterval(interval);
   }, []);
@@ -127,11 +103,12 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
 
   return (
     <div className="bg-black win98-border-sunken flex items-center justify-center overflow-hidden relative">
-      {/* Scanline overlay effect for CRT monitor look */}
+      {/* CRT scanline overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-20"
         style={{
-          background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.4) 2px, rgba(0, 0, 0, 0.4) 4px)',
+          background:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.4) 2px, rgba(0, 0, 0, 0.4) 4px)",
         }}
       />
 
@@ -146,16 +123,25 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         <div className="absolute inset-0 bg-white/20 pointer-events-none" />
       )}
 
-      {/* Main content area */}
+      {/* Main content */}
       {state.isSignalLost ? (
         <div className="text-center">
           <div className="text-gray-400 font-mono text-xs mb-1 animate-pulse">
             {state.signalMessage}
           </div>
           <div className="flex justify-center gap-1">
-            <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '0ms' }} />
-            <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '200ms' }} />
-            <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse" style={{ animationDelay: '400ms' }} />
+            <span
+              className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse"
+              style={{ animationDelay: "0ms" }}
+            />
+            <span
+              className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse"
+              style={{ animationDelay: "200ms" }}
+            />
+            <span
+              className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-pulse"
+              style={{ animationDelay: "400ms" }}
+            />
           </div>
         </div>
       ) : (
@@ -168,9 +154,9 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         </div>
       )}
 
-      {/* Corner timestamp overlay */}
+      {/* Camera ID overlay */}
       <div className="absolute bottom-1 right-1 text-green-500/80 font-mono text-[8px]">
-        CAM_{cameraNumber.toString().padStart(2, '0')}
+        CAM_{cameraNumber.toString().padStart(2, "0")}
       </div>
 
       {/* Location overlay */}
@@ -178,7 +164,7 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         {location}
       </div>
 
-      {/* Corner recording indicator */}
+      {/* Recording indicator */}
       {!state.isSignalLost && (
         <div className="absolute top-1 left-1 flex items-center gap-0.5">
           <span className="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse" />
@@ -186,7 +172,7 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
         </div>
       )}
 
-      {/* Camera number in top right */}
+      {/* Camera number badge */}
       <div className="absolute top-1 right-1 text-green-500/60 font-mono text-[8px] border border-green-500/30 px-1">
         CAM {cameraNumber}
       </div>
@@ -195,105 +181,33 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%)',
+          background:
+            "radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%)",
         }}
       />
     </div>
   );
 }
 
-export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridProps) {
-  const nodeRef = useRef<HTMLDivElement>(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [bounds, setBounds] = useState<Bounds | undefined>(undefined);
-  const [dimensions, setDimensions] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
-  const [isResizing, setIsResizing] = useState(false);
-  const resizeStartRef = useRef({ mouseX: 0, mouseY: 0, width: BASE_WIDTH, height: BASE_HEIGHT });
-
-  const calculateBounds = useCallback(() => {
-    if (!nodeRef.current) return;
-
-    const windowRect = nodeRef.current.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
-    const initialLeft = windowRect.left - position.x;
-    const initialTop = windowRect.top - position.y;
-
-    setBounds({
-      left: -initialLeft,
-      top: MENUBAR_HEIGHT - initialTop,
-      right: viewportWidth - initialLeft - windowRect.width,
-      bottom: viewportHeight - TASKBAR_HEIGHT - initialTop - windowRect.height,
-    });
-  }, [position]);
-
-  useEffect(() => {
-    calculateBounds();
-    window.addEventListener("resize", calculateBounds);
-    return () => window.removeEventListener("resize", calculateBounds);
-  }, [calculateBounds]);
-
-  const handleDrag = useCallback((_e: DraggableEvent, data: DraggableData) => {
-    setPosition({ x: data.x, y: data.y });
-  }, []);
-
-  const handleResizeStart = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    resizeStartRef.current = {
-      mouseX: e.clientX,
-      mouseY: e.clientY,
-      width: dimensions.width,
-      height: dimensions.height,
-    };
-    setIsResizing(true);
-  }, [dimensions]);
-
-  useEffect(() => {
-    if (!isResizing) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const deltaX = e.clientX - resizeStartRef.current.mouseX;
-      const deltaY = e.clientY - resizeStartRef.current.mouseY;
-
-      // Use larger delta to determine size, maintaining aspect ratio
-      const deltaForRatio = Math.abs(deltaX) > Math.abs(deltaY) ? deltaX : deltaY * ASPECT_RATIO;
-
-      let newWidth = Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, resizeStartRef.current.width + deltaForRatio));
-      let newHeight = newWidth / ASPECT_RATIO;
-
-      // Prevent window from overlapping the taskbar
-      if (nodeRef.current) {
-        const windowTop = nodeRef.current.getBoundingClientRect().top;
-        const availableHeight = window.innerHeight - TASKBAR_HEIGHT - windowTop;
-
-        if (newHeight > availableHeight) {
-          newHeight = availableHeight;
-          newWidth = Math.max(MIN_WIDTH, newHeight * ASPECT_RATIO);
-          newHeight = newWidth / ASPECT_RATIO;
-        }
-      }
-
-      setDimensions({ width: newWidth, height: newHeight });
-    };
-
-    const handleMouseUp = () => setIsResizing(false);
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.body.style.cursor = 'nwse-resize';
-    document.body.style.userSelect = 'none';
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
-    };
-  }, [isResizing]);
-
-  const scaleFactor = dimensions.width / BASE_WIDTH;
+export function SecurityCameraGrid({
+  onClose,
+  onMinimize,
+}: SecurityCameraGridProps) {
+  const {
+    nodeRef,
+    position,
+    bounds,
+    dimensions,
+    isResizing,
+    scaleFactor,
+    handleDrag,
+    handleResizeStart,
+  } = useWindowResize({
+    baseWidth: BASE_WIDTH,
+    baseHeight: BASE_HEIGHT,
+    minWidth: MIN_WIDTH,
+    maxWidth: MAX_WIDTH,
+  });
 
   return (
     <Draggable
@@ -322,7 +236,7 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
             width: BASE_WIDTH,
             height: BASE_HEIGHT,
             transform: `scale(${scaleFactor})`,
-            willChange: isResizing ? 'transform' : 'auto',
+            willChange: isResizing ? "transform" : "auto",
           }}
         >
           <WindowTitleBar>
@@ -334,7 +248,7 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
             />
           </WindowTitleBar>
 
-          {/* 2x2 Grid of camera feeds */}
+          {/* 2x2 Camera grid */}
           <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-1 p-1 bg-win98-surface">
             <CameraCell cameraNumber={1} />
             <CameraCell cameraNumber={2} />
@@ -342,7 +256,7 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
             <CameraCell cameraNumber={4} />
           </div>
 
-          {/* Status bar at bottom */}
+          {/* Status bar */}
           <div className="h-[22px] flex items-center px-2 bg-win98-surface border-t border-win98-shadow">
             <div className="win98-border-status px-2 py-0.5 flex-1">
               <span className="text-[10px] text-win98-text">
@@ -352,11 +266,11 @@ export function SecurityCameraGrid({ onClose, onMinimize }: SecurityCameraGridPr
           </div>
         </Window>
 
-        {/* Resize grip in bottom-right corner */}
+        {/* Resize grip */}
         <div
           onMouseDown={handleResizeStart}
           className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize flex items-center justify-center z-50"
-          style={{ touchAction: 'none' }}
+          style={{ touchAction: "none" }}
         >
           <ResizeGrip />
         </div>
