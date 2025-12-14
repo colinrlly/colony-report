@@ -88,7 +88,7 @@ export function StressReliefGallery({ onClose, onMinimize }: StressReliefGallery
               src={currentItem.image}
               alt={currentItem.label}
               fill
-              className="object-contain"
+              className="object-cover"
               priority
             />
           </div>
