@@ -123,10 +123,10 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
         <div className="h-full w-full bg-[#5a9c5a]" />
       </div>
 
-      <div className="flex-1 bg-[#c8b9a9] flex items-center justify-between px-1">
+      <div className="flex-1 bg-[#c8b9a9] flex items-center justify-between">
         <button
           onClick={handlePreviousNote}
-          className="flex-shrink-0 hover:scale-110 transition-transform cursor-pointer"
+          className="flex-shrink-0 hover:scale-110 transition-transform cursor-pointer px-1"
           aria-label="Previous note"
         >
           <NavigationArrow direction="left" />
@@ -142,7 +142,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
 
         <button
           onClick={handleNextNote}
-          className="flex-shrink-0 hover:scale-110 transition-transform cursor-pointer"
+          className="flex-shrink-0 hover:scale-110 transition-transform cursor-pointer px-1"
           aria-label="Next note"
         >
           <NavigationArrow direction="right" />
