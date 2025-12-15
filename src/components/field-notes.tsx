@@ -254,14 +254,16 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
                 backgroundColor: BACKGROUND_COLOR,
               }}
             >
-              <div
+              <img
+                src={FIELD_NOTES_IMAGES[selectedIndex]}
+                alt=""
                 style={{
-                  width: "100%",
-                  height: "100%",
-                  backgroundImage: `url(${FIELD_NOTES_IMAGES[selectedIndex]})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: `${magnifierPos.imgWidth * ZOOM_LEVEL}px ${magnifierPos.imgHeight * ZOOM_LEVEL}px`,
-                  backgroundPosition: `${MAGNIFIER_SIZE / 2 - magnifierPos.imgX * ZOOM_LEVEL}px ${MAGNIFIER_SIZE / 2 - magnifierPos.imgY * ZOOM_LEVEL}px`,
+                  position: "absolute",
+                  width: magnifierPos.imgWidth * ZOOM_LEVEL,
+                  height: magnifierPos.imgHeight * ZOOM_LEVEL,
+                  maxWidth: "none",
+                  left: MAGNIFIER_SIZE / 2 - magnifierPos.imgX * ZOOM_LEVEL,
+                  top: MAGNIFIER_SIZE / 2 - magnifierPos.imgY * ZOOM_LEVEL,
                 }}
               />
             </div>
