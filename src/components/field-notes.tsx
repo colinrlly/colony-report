@@ -269,6 +269,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
             src={currentImage}
             alt={`Field Notes ${selectedIndex + 1}`}
             className="w-full h-full object-contain"
+            style={{ cursor: magnifierEnabled && !cursorInRevealZone ? "none" : "default" }}
           />
 
           {magnifierEnabled && magnifierPos.visible && (
