@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/window";
 
 const ICON_COLUMN_RIGHT_EDGE = 132;
+const BACKGROUND_COLOR = "#c8b9a9";
 
 const FIELD_NOTES_IMAGES = [
   "/images/Field Notes 1.png",
@@ -123,7 +124,10 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
         <div className="h-full w-full bg-[#5a9c5a]" />
       </div>
 
-      <div className="flex-1 bg-[#c8b9a9] flex items-center justify-between">
+      <div
+        className="flex-1 flex items-center justify-between"
+        style={{ backgroundColor: BACKGROUND_COLOR }}
+      >
         <button
           onClick={handlePreviousNote}
           className="flex-shrink-0 hover:scale-110 transition-transform cursor-pointer px-1"
@@ -132,7 +136,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
           <NavigationArrow direction="left" />
         </button>
 
-        <div className="flex-1 h-full flex items-center justify-center bg-[#c8b9a9] overflow-hidden">
+        <div className="flex-1 h-full flex items-center justify-center overflow-hidden">
           <img
             src={FIELD_NOTES_IMAGES[selectedIndex]}
             alt={`Field Notes ${selectedIndex + 1}`}
