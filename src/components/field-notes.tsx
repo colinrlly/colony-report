@@ -132,7 +132,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
           <NavigationArrow direction="left" />
         </button>
 
-        <div className="flex-1 mx-4 h-[calc(100%-40px)] flex items-center justify-center bg-[#c8b9a9] overflow-hidden">
+        <div className="flex-1 mx-2 h-[calc(100%-20px)] flex items-center justify-center bg-[#c8b9a9] overflow-hidden">
           <img
             src={FIELD_NOTES_IMAGES[selectedIndex]}
             alt={`Field Notes ${selectedIndex + 1}`}
