@@ -14,7 +14,7 @@ const ICON_COLUMN_RIGHT_EDGE = 132;
 
 const FIELD_NOTES_IMAGES = [
   "/images/Field Notes 1.png",
-  // Add more images here: "/images/Field Notes 2.png", etc.
+  "/images/Field Notes 2.png",
 ];
 
 function NotebookIcon() {
