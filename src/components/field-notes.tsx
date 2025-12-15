@@ -112,14 +112,21 @@ interface FieldNotesProps {
   onMinimize?: () => void;
 }
 
-const MAGNIFIER_SIZE = 150;
+const MAGNIFIER_SIZE = 300;
 const ZOOM_LEVEL = 2.5;
 
 export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [magnifierEnabled, setMagnifierEnabled] = useState(false);
-  const [magnifierPos, setMagnifierPos] = useState({ x: 0, y: 0, visible: false });
-  const [imageRect, setImageRect] = useState<DOMRect | null>(null);
+  const [magnifierPos, setMagnifierPos] = useState({
+    x: 0,
+    y: 0,
+    imgX: 0,
+    imgY: 0,
+    imgWidth: 0,
+    imgHeight: 0,
+    visible: false
+  });
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -132,24 +139,35 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
   }, []);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!magnifierEnabled || !imageRef.current) return;
+    if (!magnifierEnabled || !imageRef.current || !imageContainerRef.current) return;
 
     const imgRect = imageRef.current.getBoundingClientRect();
-    const containerRect = imageContainerRef.current?.getBoundingClientRect();
-    if (!containerRect) return;
+    const containerRect = imageContainerRef.current.getBoundingClientRect();
 
+    // Position relative to container (for magnifier placement)
     const x = e.clientX - containerRect.left;
     const y = e.clientY - containerRect.top;
 
-    // Check if mouse is over the actual image (not just the container)
-    const isOverImage =
-      e.clientX >= imgRect.left &&
-      e.clientX <= imgRect.right &&
-      e.clientY >= imgRect.top &&
-      e.clientY <= imgRect.bottom;
+    // Position relative to the image itself (for background positioning)
+    const imgX = e.clientX - imgRect.left;
+    const imgY = e.clientY - imgRect.top;
 
-    setImageRect(imgRect);
-    setMagnifierPos({ x, y, visible: isOverImage });
+    // Check if mouse is over the actual image
+    const isOverImage =
+      imgX >= 0 &&
+      imgX <= imgRect.width &&
+      imgY >= 0 &&
+      imgY <= imgRect.height;
+
+    setMagnifierPos({
+      x,
+      y,
+      imgX,
+      imgY,
+      imgWidth: imgRect.width,
+      imgHeight: imgRect.height,
+      visible: isOverImage
+    });
   }, [magnifierEnabled]);
 
   const handleMouseLeave = useCallback(() => {
@@ -203,7 +221,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
           />
 
           {/* Magnifier lens */}
-          {magnifierEnabled && magnifierPos.visible && imageRect && imageContainerRef.current && (
+          {magnifierEnabled && magnifierPos.visible && (
             <div
               className="absolute pointer-events-none border-4 border-[#1a1a1a] shadow-lg"
               style={{
@@ -213,7 +231,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
                 top: magnifierPos.y - MAGNIFIER_SIZE / 2,
                 borderRadius: "50%",
                 overflow: "hidden",
-                backgroundColor: "#fff",
+                backgroundColor: BACKGROUND_COLOR,
               }}
             >
               <div
@@ -222,12 +240,8 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
                   height: "100%",
                   backgroundImage: `url(${FIELD_NOTES_IMAGES[selectedIndex]})`,
                   backgroundRepeat: "no-repeat",
-                  backgroundSize: `${imageRect.width * ZOOM_LEVEL}px ${imageRect.height * ZOOM_LEVEL}px`,
-                  backgroundPosition: `${
-                    -((magnifierPos.x - (imageRect.left - imageContainerRef.current.getBoundingClientRect().left)) * ZOOM_LEVEL - MAGNIFIER_SIZE / 2)
-                  }px ${
-                    -((magnifierPos.y - (imageRect.top - imageContainerRef.current.getBoundingClientRect().top)) * ZOOM_LEVEL - MAGNIFIER_SIZE / 2)
-                  }px`,
+                  backgroundSize: `${magnifierPos.imgWidth * ZOOM_LEVEL}px ${magnifierPos.imgHeight * ZOOM_LEVEL}px`,
+                  backgroundPosition: `${MAGNIFIER_SIZE / 2 - magnifierPos.imgX * ZOOM_LEVEL}px ${MAGNIFIER_SIZE / 2 - magnifierPos.imgY * ZOOM_LEVEL}px`,
                 }}
               />
             </div>
