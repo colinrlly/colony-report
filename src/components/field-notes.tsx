@@ -117,7 +117,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
             SCANNED IN FIELD NOTES - FORMICA DIVISION
           </WindowTitle>
         </div>
-        <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
+        <WindowControls showMaximize={true} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
       <div className="h-[6px] bg-[#2a2a2a]">
