@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import {
   Window,
   WindowTitleBar,
@@ -30,6 +30,25 @@ function NotebookIcon() {
       <rect x="10" y="10" width="8" height="1" fill="#8B7355" />
       <rect x="10" y="14" width="8" height="1" fill="#8B7355" />
       <rect x="10" y="18" width="6" height="1" fill="#8B7355" />
+    </svg>
+  );
+}
+
+function MagnifyingGlassIcon({ active }: { active?: boolean }) {
+  const color = active ? "#5a9c5a" : "#1a1a1a";
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" shapeRendering="crispEdges">
+      <rect x="6" y="2" width="6" height="2" fill={color} />
+      <rect x="4" y="4" width="2" height="2" fill={color} />
+      <rect x="12" y="4" width="2" height="2" fill={color} />
+      <rect x="2" y="6" width="2" height="6" fill={color} />
+      <rect x="14" y="6" width="2" height="6" fill={color} />
+      <rect x="4" y="12" width="2" height="2" fill={color} />
+      <rect x="12" y="12" width="2" height="2" fill={color} />
+      <rect x="6" y="14" width="6" height="2" fill={color} />
+      <rect x="12" y="14" width="2" height="2" fill={color} />
+      <rect x="14" y="16" width="2" height="2" fill={color} />
+      <rect x="16" y="18" width="2" height="2" fill={color} />
     </svg>
   );
 }
@@ -93,8 +112,16 @@ interface FieldNotesProps {
   onMinimize?: () => void;
 }
 
+const MAGNIFIER_SIZE = 150;
+const ZOOM_LEVEL = 2.5;
+
 export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [magnifierEnabled, setMagnifierEnabled] = useState(false);
+  const [magnifierPos, setMagnifierPos] = useState({ x: 0, y: 0, visible: false });
+  const [imageRect, setImageRect] = useState<DOMRect | null>(null);
+  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   const handlePreviousNote = useCallback(() => {
     setSelectedIndex((prev) => (prev === 0 ? FIELD_NOTES_IMAGES.length - 1 : prev - 1));
@@ -102,6 +129,31 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
 
   const handleNextNote = useCallback(() => {
     setSelectedIndex((prev) => (prev === FIELD_NOTES_IMAGES.length - 1 ? 0 : prev + 1));
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!magnifierEnabled || !imageRef.current) return;
+
+    const imgRect = imageRef.current.getBoundingClientRect();
+    const containerRect = imageContainerRef.current?.getBoundingClientRect();
+    if (!containerRect) return;
+
+    const x = e.clientX - containerRect.left;
+    const y = e.clientY - containerRect.top;
+
+    // Check if mouse is over the actual image (not just the container)
+    const isOverImage =
+      e.clientX >= imgRect.left &&
+      e.clientX <= imgRect.right &&
+      e.clientY >= imgRect.top &&
+      e.clientY <= imgRect.bottom;
+
+    setImageRect(imgRect);
+    setMagnifierPos({ x, y, visible: isOverImage });
+  }, [magnifierEnabled]);
+
+  const handleMouseLeave = useCallback(() => {
+    setMagnifierPos(prev => ({ ...prev, visible: false }));
   }, []);
 
   return (
@@ -117,7 +169,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
             SCANNED IN FIELD NOTES - FORMICA DIVISION
           </WindowTitle>
         </div>
-        <WindowControls showMaximize={true} onMinimize={onMinimize} onClose={onClose} />
+        <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
       <div className="h-[6px] bg-[#2a2a2a]">
@@ -136,12 +188,50 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
           <NavigationArrow direction="left" />
         </button>
 
-        <div className="flex-1 h-full flex items-center justify-center overflow-hidden">
+        <div
+          ref={imageContainerRef}
+          className="flex-1 h-full flex items-center justify-center overflow-hidden relative"
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ cursor: magnifierEnabled ? "none" : "default" }}
+        >
           <img
+            ref={imageRef}
             src={FIELD_NOTES_IMAGES[selectedIndex]}
             alt={`Field Notes ${selectedIndex + 1}`}
             className="w-full h-full object-contain"
           />
+
+          {/* Magnifier lens */}
+          {magnifierEnabled && magnifierPos.visible && imageRect && imageContainerRef.current && (
+            <div
+              className="absolute pointer-events-none border-4 border-[#1a1a1a] shadow-lg"
+              style={{
+                width: MAGNIFIER_SIZE,
+                height: MAGNIFIER_SIZE,
+                left: magnifierPos.x - MAGNIFIER_SIZE / 2,
+                top: magnifierPos.y - MAGNIFIER_SIZE / 2,
+                borderRadius: "50%",
+                overflow: "hidden",
+                backgroundColor: "#fff",
+              }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundImage: `url(${FIELD_NOTES_IMAGES[selectedIndex]})`,
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: `${imageRect.width * ZOOM_LEVEL}px ${imageRect.height * ZOOM_LEVEL}px`,
+                  backgroundPosition: `${
+                    -((magnifierPos.x - (imageRect.left - imageContainerRef.current.getBoundingClientRect().left)) * ZOOM_LEVEL - MAGNIFIER_SIZE / 2)
+                  }px ${
+                    -((magnifierPos.y - (imageRect.top - imageContainerRef.current.getBoundingClientRect().top)) * ZOOM_LEVEL - MAGNIFIER_SIZE / 2)
+                  }px`,
+                }}
+              />
+            </div>
+          )}
         </div>
 
         <button
@@ -154,8 +244,20 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
       </div>
 
       <WindowStatusBar>
+        <button
+          onClick={() => setMagnifierEnabled(!magnifierEnabled)}
+          className={`flex items-center gap-1 px-2 py-0.5 mr-2 border-2 cursor-pointer transition-colors ${
+            magnifierEnabled
+              ? "border-t-[#808080] border-l-[#808080] border-b-white border-r-white bg-[#d4d0c8]"
+              : "border-t-white border-l-white border-b-[#808080] border-r-[#808080] bg-[#c8b9a9] hover:bg-[#d4c4b4]"
+          }`}
+          title={magnifierEnabled ? "Disable magnifier" : "Enable magnifier"}
+        >
+          <MagnifyingGlassIcon active={magnifierEnabled} />
+          <span className="text-[11px] font-bold">{magnifierEnabled ? "ZOOM ON" : "ZOOM"}</span>
+        </button>
         <WindowStatusField className="flex-1 text-right pr-2">
-          Field notes to be processed into colony reports at a later time
+          {magnifierEnabled ? "Hover over image to magnify" : "Field notes to be processed into colony reports at a later time"}
         </WindowStatusField>
       </WindowStatusBar>
     </Window>
