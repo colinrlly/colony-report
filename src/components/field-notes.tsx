@@ -12,17 +12,9 @@ import {
 
 const ICON_COLUMN_RIGHT_EDGE = 132;
 
-const NOTE_COLORS = [
-  "#8B7355",
-  "#A67B5B",
-  "#6B8E6B",
-  "#C4A77D",
-  "#8B4513",
-  "#9C8B7D",
-  "#704214",
-  "#B8A088",
-  "#5C4033",
-  "#7B9971",
+const FIELD_NOTES_IMAGES = [
+  "/images/Field Notes 1.png",
+  // Add more images here: "/images/Field Notes 2.png", etc.
 ];
 
 function NotebookIcon() {
@@ -104,11 +96,11 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handlePreviousNote = useCallback(() => {
-    setSelectedIndex((prev) => (prev === 0 ? NOTE_COLORS.length - 1 : prev - 1));
+    setSelectedIndex((prev) => (prev === 0 ? FIELD_NOTES_IMAGES.length - 1 : prev - 1));
   }, []);
 
   const handleNextNote = useCallback(() => {
-    setSelectedIndex((prev) => (prev === NOTE_COLORS.length - 1 ? 0 : prev + 1));
+    setSelectedIndex((prev) => (prev === FIELD_NOTES_IMAGES.length - 1 ? 0 : prev + 1));
   }, []);
 
   return (
@@ -140,13 +132,12 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
           <NavigationArrow direction="left" />
         </button>
 
-        <div
-          className="flex-1 mx-4 h-[calc(100%-40px)] win98-border-sunken flex items-center justify-center"
-          style={{ backgroundColor: NOTE_COLORS[selectedIndex] }}
-        >
-          <div className="text-[#e8dcc0] text-2xl font-bold text-center">
-            image goes here
-          </div>
+        <div className="flex-1 mx-4 h-[calc(100%-40px)] win98-border-sunken flex items-center justify-center bg-[#2a2a2a] overflow-hidden">
+          <img
+            src={FIELD_NOTES_IMAGES[selectedIndex]}
+            alt={`Field Notes ${selectedIndex + 1}`}
+            className="w-full h-full object-contain"
+          />
         </div>
 
         <button
