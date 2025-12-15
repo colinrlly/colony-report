@@ -17,6 +17,7 @@ const BACKGROUND_COLOR = "#c8b9a9";
 // Magnifier configuration
 const MAGNIFIER_SIZE = 300;
 const ZOOM_LEVEL = 2.5;
+const CURSOR_REVEAL_ZONE = 60; // Pixels from bottom to reveal cursor for zoom button access
 
 const FIELD_NOTES_IMAGES = [
   "/images/Field Notes 1.png",
@@ -145,6 +146,7 @@ function getRenderedImageBounds(img: HTMLImageElement) {
 export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [magnifierEnabled, setMagnifierEnabled] = useState(false);
+  const [cursorInRevealZone, setCursorInRevealZone] = useState(false);
   const [magnifierPos, setMagnifierPos] = useState<MagnifierPosition>({
     x: 0,
     y: 0,
@@ -172,15 +174,22 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!magnifierEnabled || !imageRef.current || !imageContainerRef.current) return;
+      if (!imageContainerRef.current) return;
 
-      const img = imageRef.current;
       const containerRect = imageContainerRef.current.getBoundingClientRect();
-      const imgRect = img.getBoundingClientRect();
 
       // Position relative to container (for magnifier placement)
       const x = e.clientX - containerRect.left;
       const y = e.clientY - containerRect.top;
+
+      // Check if cursor is near the bottom (reveal zone for accessing zoom button)
+      const distanceFromBottom = containerRect.height - y;
+      setCursorInRevealZone(distanceFromBottom <= CURSOR_REVEAL_ZONE);
+
+      if (!magnifierEnabled || !imageRef.current) return;
+
+      const img = imageRef.current;
+      const imgRect = img.getBoundingClientRect();
 
       // Calculate actual rendered image bounds (accounting for object-contain)
       const { renderedWidth, renderedHeight, offsetX, offsetY } = getRenderedImageBounds(img);
@@ -211,6 +220,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
 
   const handleMouseLeave = useCallback(() => {
     setMagnifierPos((prev) => ({ ...prev, visible: false }));
+    setCursorInRevealZone(false);
   }, []);
 
   const currentImage = FIELD_NOTES_IMAGES[selectedIndex];
@@ -252,7 +262,7 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
           className="flex-1 h-full flex items-center justify-center overflow-hidden relative"
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          style={{ cursor: magnifierEnabled ? "none" : "default" }}
+          style={{ cursor: magnifierEnabled && !cursorInRevealZone ? "none" : "default" }}
         >
           <img
             ref={imageRef}
