@@ -141,31 +141,51 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!magnifierEnabled || !imageRef.current || !imageContainerRef.current) return;
 
-    const imgRect = imageRef.current.getBoundingClientRect();
+    const img = imageRef.current;
     const containerRect = imageContainerRef.current.getBoundingClientRect();
 
     // Position relative to container (for magnifier placement)
     const x = e.clientX - containerRect.left;
     const y = e.clientY - containerRect.top;
 
-    // Position relative to the image itself (for background positioning)
-    const imgX = e.clientX - imgRect.left;
-    const imgY = e.clientY - imgRect.top;
+    // Calculate actual rendered image dimensions (object-contain scales and centers)
+    const naturalWidth = img.naturalWidth;
+    const naturalHeight = img.naturalHeight;
+    const elementWidth = img.clientWidth;
+    const elementHeight = img.clientHeight;
 
-    // Check if mouse is over the actual image
+    // Calculate scale factor used by object-contain
+    const scale = Math.min(elementWidth / naturalWidth, elementHeight / naturalHeight);
+    const renderedWidth = naturalWidth * scale;
+    const renderedHeight = naturalHeight * scale;
+
+    // Calculate offset (image is centered)
+    const offsetX = (elementWidth - renderedWidth) / 2;
+    const offsetY = (elementHeight - renderedHeight) / 2;
+
+    // Get image element position relative to container
+    const imgRect = img.getBoundingClientRect();
+    const imgElementX = imgRect.left - containerRect.left;
+    const imgElementY = imgRect.top - containerRect.top;
+
+    // Position relative to actual rendered image (not the element)
+    const actualImgX = x - imgElementX - offsetX;
+    const actualImgY = y - imgElementY - offsetY;
+
+    // Check if mouse is over the actual rendered image
     const isOverImage =
-      imgX >= 0 &&
-      imgX <= imgRect.width &&
-      imgY >= 0 &&
-      imgY <= imgRect.height;
+      actualImgX >= 0 &&
+      actualImgX <= renderedWidth &&
+      actualImgY >= 0 &&
+      actualImgY <= renderedHeight;
 
     setMagnifierPos({
       x,
       y,
-      imgX,
-      imgY,
-      imgWidth: imgRect.width,
-      imgHeight: imgRect.height,
+      imgX: actualImgX,
+      imgY: actualImgY,
+      imgWidth: renderedWidth,
+      imgHeight: renderedHeight,
       visible: isOverImage
     });
   }, [magnifierEnabled]);
