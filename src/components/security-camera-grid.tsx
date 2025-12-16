@@ -14,6 +14,8 @@ import { useWindowResize } from "@/hooks/use-window-resize";
 interface SecurityCameraGridProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 // Window dimensions
@@ -192,6 +194,8 @@ function CameraCell({ cameraNumber }: { cameraNumber: number }) {
 export function SecurityCameraGrid({
   onClose,
   onMinimize,
+  zIndex,
+  onFocus,
 }: SecurityCameraGridProps) {
   const {
     nodeRef,
@@ -219,13 +223,14 @@ export function SecurityCameraGrid({
     >
       <div
         ref={nodeRef}
-        className="absolute z-30"
+        className="absolute"
         style={{
           top: "10vh",
           left: "50%",
           marginLeft: -dimensions.width / 2,
           width: dimensions.width,
           height: dimensions.height,
+          zIndex,
         }}
       >
         <Window
@@ -238,6 +243,7 @@ export function SecurityCameraGrid({
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? "transform" : "auto",
           }}
+          onFocus={onFocus}
         >
           <WindowTitleBar>
             <WindowTitle>Ant Hill - All Cameras</WindowTitle>
