@@ -117,7 +117,7 @@ export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ 
       )}
       {...props}
       style={{ ...style, zIndex }}
-      onMouseDown={handleMouseDown}
+      onMouseDownCapture={handleMouseDown}
     >
       {children}
     </div>
