@@ -12,7 +12,7 @@ import {
 
 // Layout constants
 const ICON_COLUMN_RIGHT_EDGE = 132;
-const BACKGROUND_COLOR = "#c8b9a9";
+const BACKGROUND_COLOR = "#1b1d19";
 
 // Magnifier configuration
 const MAGNIFIER_SIZE = 300;
