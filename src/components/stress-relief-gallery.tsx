@@ -24,6 +24,8 @@ const galleryItems = [
 interface StressReliefGalleryProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 // Navigation arrow icons
@@ -59,7 +61,7 @@ function RightArrowIcon() {
   );
 }
 
-export function StressReliefGallery({ onClose, onMinimize }: StressReliefGalleryProps) {
+export function StressReliefGallery({ onClose, onMinimize, zIndex, onFocus }: StressReliefGalleryProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const currentItem = galleryItems[currentIndex];
@@ -73,7 +75,7 @@ export function StressReliefGallery({ onClose, onMinimize }: StressReliefGallery
   };
 
   return (
-    <Window className="w-[500px] h-[500px] absolute top-[15vh] left-1/2 -translate-x-1/2 flex flex-col" resizable={false}>
+    <Window className="w-[500px] h-[500px] absolute top-[15vh] left-1/2 -translate-x-1/2 flex flex-col" resizable={false} zIndex={zIndex} onFocus={onFocus}>
       <WindowTitleBar>
         <WindowTitle>Stress Relief - Baby Animals</WindowTitle>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
