@@ -257,12 +257,14 @@ function useDragHandler(
 interface VideoLogsProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 const VISIBLE_THUMBNAILS = 3;
 const ICON_COLUMN_RIGHT_EDGE = 132;
 
-export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
+export function VideoLogs({ onClose, onMinimize, zIndex, onFocus }: VideoLogsProps) {
   // State
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -348,7 +350,9 @@ export function VideoLogs({ onClose, onMinimize }: VideoLogsProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[920px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+      className="w-[920px] h-[680px] absolute top-[6vh] left-1/2 -translate-x-1/2 flex flex-col"
+      zIndex={zIndex}
+      onFocus={onFocus}
     >
       <WindowTitleBar>
         <div className="flex items-center gap-2">

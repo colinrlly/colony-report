@@ -36,6 +36,8 @@ interface MagnifierPosition {
 interface FieldNotesProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 function NotebookIcon() {
@@ -142,7 +144,7 @@ function getRenderedImageBounds(img: HTMLImageElement) {
   return { renderedWidth, renderedHeight, offsetX, offsetY };
 }
 
-export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
+export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [magnifierEnabled, setMagnifierEnabled] = useState(false);
   const [magnifierPos, setMagnifierPos] = useState<MagnifierPosition>({
@@ -242,7 +244,9 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
     <Window
       resizable={false}
       leftSnapBoundary={ICON_COLUMN_RIGHT_EDGE}
-      className="z-20 w-[1150px] h-[750px] max-h-[calc(100vh-6vh-50px)] absolute top-[6vh] left-[calc(50%+48px)] -translate-x-1/2 flex flex-col"
+      className="w-[1150px] h-[750px] max-h-[calc(100vh-6vh-50px)] absolute top-[6vh] left-[calc(50%+48px)] -translate-x-1/2 flex flex-col"
+      zIndex={zIndex}
+      onFocus={onFocus}
     >
       <WindowTitleBar className="h-[36px]">
         <div className="flex items-center gap-2">

@@ -387,6 +387,8 @@ function EmployeeImagePreloader({ employees, currentId }: { employees: EmployeeP
 interface EmployeeFilesProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 // Resize grip icon component
@@ -417,7 +419,7 @@ const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 700;
 const MAX_WIDTH = 1400;
 
-export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
+export function EmployeeFiles({ onClose, onMinimize, zIndex, onFocus }: EmployeeFilesProps) {
   const [selectedEmployeeId, setSelectedEmployeeId] = useState<string>(employeeProfiles[0].id);
   const [activeTab, setActiveTab] = useState<TabType>("profile");
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -570,7 +572,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
       onStop={handleDragStop}
       bounds={bounds}
     >
-      <div ref={nodeRef} className="z-20 absolute top-[44px] left-1/2 -translate-x-1/2 flex">
+      <div ref={nodeRef} className="absolute top-[44px] left-1/2 -translate-x-1/2 flex" style={{ zIndex }} onMouseDown={onFocus}>
       {/* Manila Folder Tabs - Outside window, on the left */}
       <div className="flex flex-col justify-start pt-[100px] relative z-10 mr-[-4px]">
         {employeeProfiles.map((employee) => {
@@ -658,6 +660,7 @@ export function EmployeeFiles({ onClose, onMinimize }: EmployeeFilesProps) {
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? 'transform' : 'auto',
           }}
+          onFocus={onFocus}
         >
         <WindowTitleBar className="h-[36px]">
           <div className="flex items-center gap-2">

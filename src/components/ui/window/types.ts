@@ -8,6 +8,10 @@ export interface WindowProps extends HTMLAttributes<HTMLDivElement> {
   leftSnapBoundary?: number;
   /** If false, disables the window's internal drag behavior (default: true) */
   draggable?: boolean;
+  /** z-index for window stacking order */
+  zIndex?: number;
+  /** Called when window is clicked/focused */
+  onFocus?: () => void;
 }
 
 export interface WindowTitleBarProps extends HTMLAttributes<HTMLDivElement> {

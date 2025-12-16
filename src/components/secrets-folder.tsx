@@ -94,16 +94,18 @@ interface SecretsFolderProps {
   onOpenNothing?: () => void;
   onOpenStressRelief?: () => void;
   onFolderOpen?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
-export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStressRelief, onFolderOpen }: SecretsFolderProps) {
+export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStressRelief, onFolderOpen, zIndex, onFocus }: SecretsFolderProps) {
   const handleFolderClick = (openHandler?: () => void) => {
     onFolderOpen?.();
     openHandler?.();
   };
 
   return (
-    <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col">
+    <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col" zIndex={zIndex} onFocus={onFocus}>
       <WindowTitleBar>
         <WindowTitle>.secrets</WindowTitle>
         <WindowControls

@@ -96,9 +96,11 @@ function ResizeGrip() {
 interface PhotoLibraryProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
-export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
+export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibraryProps) {
   // Photo selection state
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -293,8 +295,9 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
     >
       <div
         ref={nodeRef}
-        className="z-20 absolute top-[6vh] left-1/2 -translate-x-1/2"
-        style={{ width: dimensions.width, height: dimensions.height }}
+        className="absolute top-[6vh] left-1/2 -translate-x-1/2"
+        style={{ width: dimensions.width, height: dimensions.height, zIndex }}
+        onMouseDown={onFocus}
       >
         <Window
           resizable={false}
@@ -306,6 +309,7 @@ export function PhotoLibrary({ onClose, onMinimize }: PhotoLibraryProps) {
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? 'transform' : 'auto',
           }}
+          onFocus={onFocus}
         >
           <WindowTitleBar>
             <div className="flex items-center gap-2">

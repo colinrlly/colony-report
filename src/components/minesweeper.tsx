@@ -11,6 +11,8 @@ import {
 interface GermsweeperProps {
   onClose: () => void;
   onMinimize: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 // Pixel art germ icon component
@@ -241,7 +243,7 @@ const NUMBER_COLORS: Record<number, string> = {
   8: "#808080",
 };
 
-export function Germsweeper({ onClose, onMinimize }: GermsweeperProps) {
+export function Germsweeper({ onClose, onMinimize, zIndex, onFocus }: GermsweeperProps) {
   const [board, setBoard] = useState<CellState[][]>(createEmptyBoard);
   const [gameState, setGameState] = useState<GameState>("playing");
   const [isFirstClick, setIsFirstClick] = useState(true);
@@ -336,7 +338,7 @@ export function Germsweeper({ onClose, onMinimize }: GermsweeperProps) {
   };
 
   return (
-    <Window className="absolute top-[15vh] left-[30vw] flex flex-col !resize-none !overflow-hidden">
+    <Window className="absolute top-[15vh] left-[30vw] flex flex-col !resize-none !overflow-hidden" zIndex={zIndex} onFocus={onFocus}>
       <WindowTitleBar>
         <WindowTitle>Germsweeper</WindowTitle>
         <WindowControls showMaximize={false} onClose={onClose} onMinimize={onMinimize} />

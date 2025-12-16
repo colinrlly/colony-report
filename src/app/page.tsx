@@ -322,6 +322,24 @@ export default function Home() {
   // Camera 3 warning mode (separate from notification visibility)
   const [isCam3WarningMode, setIsCam3WarningMode] = useState(false);
 
+  // Window stack for z-index management - windows at end of array are on top
+  const [windowStack, setWindowStack] = useState<string[]>([]);
+
+  // Bring a window to the front of the stack
+  const bringToFront = useCallback((windowId: string) => {
+    setWindowStack(prev => {
+      const filtered = prev.filter(id => id !== windowId);
+      return [...filtered, windowId];
+    });
+  }, []);
+
+  // Get z-index for a window based on its position in the stack
+  const getWindowZIndex = useCallback((windowId: string) => {
+    const index = windowStack.indexOf(windowId);
+    // Base z-index of 20, plus position in stack
+    return index === -1 ? 20 : 20 + index;
+  }, [windowStack]);
+
   // Track positions for each icon - initialized to their starting positions
   const [iconPositions, setIconPositions] = useState<Record<string, { x: number; y: number }>>(
     () => DESKTOP_ICONS.reduce((acc, icon) => {
@@ -430,26 +448,31 @@ export default function Home() {
         minimizeOtherFolders("colony-reports");
         setIsColonyReportsOpen(true);
         setIsColonyReportsMinimized(false);
+        bringToFront('colony-reports');
         break;
       case "photo-library":
         minimizeOtherFolders("photo-library");
         setIsPhotoLibraryOpen(true);
         setIsPhotoLibraryMinimized(false);
+        bringToFront('photo-library');
         break;
       case "field-notes":
         minimizeOtherFolders("field-notes");
         setIsFieldNotesOpen(true);
         setIsFieldNotesMinimized(false);
+        bringToFront('field-notes');
         break;
       case "video-logs":
         minimizeOtherFolders("video-logs");
         setIsVideoLogsOpen(true);
+        bringToFront('video-logs');
         setIsVideoLogsMinimized(false);
         break;
       case "employee-files":
         minimizeOtherFolders("employee-files");
         setIsEmployeeFilesOpen(true);
         setIsEmployeeFilesMinimized(false);
+        bringToFront('employee-files');
         break;
     }
   };
@@ -505,6 +528,7 @@ export default function Home() {
       setIsAllCamerasOpen(false);
       setIsAllCamerasMinimized(false);
       setIsCam3WarningMode(false);
+      setWindowStack([]);
     }, 100);
 
     // End the flicker animation after a short delay
@@ -565,6 +589,7 @@ export default function Home() {
       setIsAllCamerasOpen(false);
       setIsAllCamerasMinimized(false);
       setIsCam3WarningMode(false);
+      setWindowStack([]);
     }, 1800); // Just after progress bar completes
 
     // Start the flicker-out phase and play startup sound
@@ -650,6 +675,7 @@ export default function Home() {
         { label: "Germsweeper", onClick: () => {
           setIsMinesweeperOpen(true);
           setIsMinesweeperMinimized(false);
+          bringToFront('minesweeper');
         }},
       ],
     },
@@ -662,6 +688,7 @@ export default function Home() {
           setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 1: true }));
           setMinimizedCameras(prev => ({ ...prev, 1: false }));
+          bringToFront('camera-1');
         }},
         { label: "Ant Hill- Cam 2", onClick: () => {
           // Close grid view when opening single camera
@@ -669,6 +696,7 @@ export default function Home() {
           setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 2: true }));
           setMinimizedCameras(prev => ({ ...prev, 2: false }));
+          bringToFront('camera-2');
         }},
         { label: "Ant Hill- Cam 3", onClick: () => {
           // Close grid view when opening single camera
@@ -677,6 +705,7 @@ export default function Home() {
           setOpenCameras(prev => ({ ...prev, 3: true }));
           setMinimizedCameras(prev => ({ ...prev, 3: false }));
           setIsCam3WarningMode(false); // Reset warning mode when opening from menu
+          bringToFront('camera-3');
         }},
         { label: "Ant Hill- Cam 4", onClick: () => {
           // Close grid view when opening single camera
@@ -684,6 +713,7 @@ export default function Home() {
           setIsAllCamerasMinimized(false);
           setOpenCameras(prev => ({ ...prev, 4: true }));
           setMinimizedCameras(prev => ({ ...prev, 4: false }));
+          bringToFront('camera-4');
         }},
         { label: "See all security cameras", onClick: () => {
           // Close all single cameras when opening grid view
@@ -691,6 +721,7 @@ export default function Home() {
           setMinimizedCameras({});
           setIsAllCamerasOpen(true);
           setIsAllCamerasMinimized(false);
+          bringToFront('all-cameras');
         }},
       ],
     },
@@ -703,6 +734,7 @@ export default function Home() {
     { label: "Contact HR", onClick: () => {
       setIsContactHROpen(true);
       setIsContactHRMinimized(false);
+      bringToFront('contact-hr');
     }},
   ];
 
@@ -893,6 +925,7 @@ export default function Home() {
               onClick={() => {
                 playFolderOpenSound();
                 setIsSecretsFolderOpen(true);
+                bringToFront('secrets');
               }}
             />
           </div>
@@ -906,17 +939,25 @@ export default function Home() {
               setIsColonyReportsMinimized(false);
             }}
             onMinimize={() => setIsColonyReportsMinimized(true)}
+            zIndex={getWindowZIndex('colony-reports')}
+            onFocus={() => bringToFront('colony-reports')}
           />
         )}
         {isSecretsFolderOpen && (
           <SecretsFolder
             onClose={() => setIsSecretsFolderOpen(false)}
-            onOpenNothing={() => setIsNothingOpen(true)}
+            onOpenNothing={() => {
+              setIsNothingOpen(true);
+              bringToFront('nothing');
+            }}
             onOpenStressRelief={() => {
               setIsStressReliefOpen(true);
               setIsStressReliefMinimized(false);
+              bringToFront('stress-relief');
             }}
             onFolderOpen={playFolderOpenSound}
+            zIndex={getWindowZIndex('secrets')}
+            onFocus={() => bringToFront('secrets')}
           />
         )}
 
@@ -926,9 +967,14 @@ export default function Home() {
             title="Nothing..."
             childFolderLabel="Seriously Nothing…"
             onClose={() => setIsNothingOpen(false)}
-            onOpenChild={() => setIsSeriouslyNothingOpen(true)}
+            onOpenChild={() => {
+              setIsSeriouslyNothingOpen(true);
+              bringToFront('seriously-nothing');
+            }}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "20vh", left: "32vw" }}
+            zIndex={getWindowZIndex('nothing')}
+            onFocus={() => bringToFront('nothing')}
           />
         )}
         {isSeriouslyNothingOpen && (
@@ -936,9 +982,14 @@ export default function Home() {
             title="Seriously Nothing…"
             childFolderLabel="Please Stop"
             onClose={() => setIsSeriouslyNothingOpen(false)}
-            onOpenChild={() => setIsPleaseStopOpen(true)}
+            onOpenChild={() => {
+              setIsPleaseStopOpen(true);
+              bringToFront('please-stop');
+            }}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "22vh", left: "36vw" }}
+            zIndex={getWindowZIndex('seriously-nothing')}
+            onFocus={() => bringToFront('seriously-nothing')}
           />
         )}
         {isPleaseStopOpen && (
@@ -946,9 +997,14 @@ export default function Home() {
             title="Please Stop"
             childFolderLabel="Go No Further"
             onClose={() => setIsPleaseStopOpen(false)}
-            onOpenChild={() => setIsGoNoFurtherOpen(true)}
+            onOpenChild={() => {
+              setIsGoNoFurtherOpen(true);
+              bringToFront('go-no-further');
+            }}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "24vh", left: "40vw" }}
+            zIndex={getWindowZIndex('please-stop')}
+            onFocus={() => bringToFront('please-stop')}
           />
         )}
         {isGoNoFurtherOpen && (
@@ -956,9 +1012,14 @@ export default function Home() {
             title="Go No Further"
             childFolderLabel="Are You Serious"
             onClose={() => setIsGoNoFurtherOpen(false)}
-            onOpenChild={() => setIsAreYouSeriousOpen(true)}
+            onOpenChild={() => {
+              setIsAreYouSeriousOpen(true);
+              bringToFront('are-you-serious');
+            }}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "26vh", left: "44vw" }}
+            zIndex={getWindowZIndex('go-no-further')}
+            onFocus={() => bringToFront('go-no-further')}
           />
         )}
         {isAreYouSeriousOpen && (
@@ -967,9 +1028,14 @@ export default function Home() {
             childFolderLabel="Unbelievable"
             showSkullOnChild={true}
             onClose={() => setIsAreYouSeriousOpen(false)}
-            onOpenChild={() => setIsUghFineOpen(true)}
+            onOpenChild={() => {
+              setIsUghFineOpen(true);
+              bringToFront('ugh-fine');
+            }}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "28vh", left: "48vw" }}
+            zIndex={getWindowZIndex('are-you-serious')}
+            onFocus={() => bringToFront('are-you-serious')}
           />
         )}
         {isUghFineOpen && (
@@ -987,9 +1053,14 @@ export default function Home() {
               setIsSeriouslyNothingOpen(false);
               setIsNothingOpen(false);
             }}
-            onOpenChild={() => setIsPetMonitorOpen(true)}
+            onOpenChild={() => {
+              setIsPetMonitorOpen(true);
+              bringToFront('pet-monitor');
+            }}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "30vh", left: "52vw" }}
+            zIndex={getWindowZIndex('ugh-fine')}
+            onFocus={() => bringToFront('ugh-fine')}
           />
         )}
 
@@ -1008,6 +1079,8 @@ export default function Home() {
               setIsNothingOpen(false);
             }}
             onMinimize={() => setIsPetMonitorMinimized(true)}
+            zIndex={getWindowZIndex('pet-monitor')}
+            onFocus={() => bringToFront('pet-monitor')}
           />
         )}
 
@@ -1019,6 +1092,8 @@ export default function Home() {
               setIsMinesweeperMinimized(false);
             }}
             onMinimize={() => setIsMinesweeperMinimized(true)}
+            zIndex={getWindowZIndex('minesweeper')}
+            onFocus={() => bringToFront('minesweeper')}
           />
         )}
 
@@ -1030,6 +1105,8 @@ export default function Home() {
               setIsContactHRMinimized(false);
             }}
             onMinimize={() => setIsContactHRMinimized(true)}
+            zIndex={getWindowZIndex('contact-hr')}
+            onFocus={() => bringToFront('contact-hr')}
           />
         )}
 
@@ -1044,6 +1121,8 @@ export default function Home() {
                 setMinimizedCameras(prev => ({ ...prev, [camNum]: false }));
               }}
               onMinimize={() => setMinimizedCameras(prev => ({ ...prev, [camNum]: true }))}
+              zIndex={getWindowZIndex(`camera-${camNum}`)}
+              onFocus={() => bringToFront(`camera-${camNum}`)}
             />
           )
         ))}
@@ -1055,6 +1134,8 @@ export default function Home() {
             warningMode={isCam3WarningMode}
             onClose={handleCam3Close}
             onMinimize={() => setMinimizedCameras(prev => ({ ...prev, 3: true }))}
+            zIndex={getWindowZIndex('camera-3')}
+            onFocus={() => bringToFront('camera-3')}
           />
         )}
 
@@ -1066,6 +1147,8 @@ export default function Home() {
               setIsAllCamerasMinimized(false);
             }}
             onMinimize={() => setIsAllCamerasMinimized(true)}
+            zIndex={getWindowZIndex('all-cameras')}
+            onFocus={() => bringToFront('all-cameras')}
           />
         )}
 
@@ -1077,6 +1160,8 @@ export default function Home() {
               setIsStressReliefMinimized(false);
             }}
             onMinimize={() => setIsStressReliefMinimized(true)}
+            zIndex={getWindowZIndex('stress-relief')}
+            onFocus={() => bringToFront('stress-relief')}
           />
         )}
 
@@ -1088,6 +1173,8 @@ export default function Home() {
               setIsPhotoLibraryMinimized(false);
             }}
             onMinimize={() => setIsPhotoLibraryMinimized(true)}
+            zIndex={getWindowZIndex('photo-library')}
+            onFocus={() => bringToFront('photo-library')}
           />
         )}
 
@@ -1099,6 +1186,8 @@ export default function Home() {
               setIsFieldNotesMinimized(false);
             }}
             onMinimize={() => setIsFieldNotesMinimized(true)}
+            zIndex={getWindowZIndex('field-notes')}
+            onFocus={() => bringToFront('field-notes')}
           />
         )}
 
@@ -1110,6 +1199,8 @@ export default function Home() {
               setIsVideoLogsMinimized(false);
             }}
             onMinimize={() => setIsVideoLogsMinimized(true)}
+            zIndex={getWindowZIndex('video-logs')}
+            onFocus={() => bringToFront('video-logs')}
           />
         )}
 
@@ -1121,6 +1212,8 @@ export default function Home() {
               setIsEmployeeFilesMinimized(false);
             }}
             onMinimize={() => setIsEmployeeFilesMinimized(true)}
+            zIndex={getWindowZIndex('employee-files')}
+            onFocus={() => bringToFront('employee-files')}
           />
         )}
 
