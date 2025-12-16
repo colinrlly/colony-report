@@ -139,6 +139,7 @@ interface NestedFolderWindowProps {
   onOpenChild?: () => void;
   onFolderOpen?: () => void;
   position?: { top: string; left: string };
+  zIndex?: number;
 }
 
 export function NestedFolderWindow({
@@ -149,6 +150,7 @@ export function NestedFolderWindow({
   onOpenChild,
   onFolderOpen,
   position = { top: "18vh", left: "35vw" },
+  zIndex,
 }: NestedFolderWindowProps) {
   const handleFolderClick = () => {
     onFolderOpen?.();
@@ -158,7 +160,7 @@ export function NestedFolderWindow({
   return (
     <Window
       className="w-[350px] h-[220px] absolute flex flex-col"
-      style={{ top: position.top, left: position.left }}
+      style={{ top: position.top, left: position.left, zIndex }}
     >
       <WindowTitleBar>
         <WindowTitle>{title}</WindowTitle>

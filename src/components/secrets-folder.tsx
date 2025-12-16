@@ -103,7 +103,7 @@ export function SecretsFolder({ onClose, onMinimize, onOpenNothing, onOpenStress
   };
 
   return (
-    <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col">
+    <Window className="w-[400px] h-[280px] absolute top-[15vh] left-[30vw] flex flex-col" style={{ zIndex: 30 }}>
       <WindowTitleBar>
         <WindowTitle>.secrets</WindowTitle>
         <WindowControls

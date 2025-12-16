@@ -929,6 +929,7 @@ export default function Home() {
             onOpenChild={() => setIsSeriouslyNothingOpen(true)}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "20vh", left: "32vw" }}
+            zIndex={31}
           />
         )}
         {isSeriouslyNothingOpen && (
@@ -939,6 +940,7 @@ export default function Home() {
             onOpenChild={() => setIsPleaseStopOpen(true)}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "22vh", left: "36vw" }}
+            zIndex={32}
           />
         )}
         {isPleaseStopOpen && (
@@ -949,6 +951,7 @@ export default function Home() {
             onOpenChild={() => setIsGoNoFurtherOpen(true)}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "24vh", left: "40vw" }}
+            zIndex={33}
           />
         )}
         {isGoNoFurtherOpen && (
@@ -959,6 +962,7 @@ export default function Home() {
             onOpenChild={() => setIsAreYouSeriousOpen(true)}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "26vh", left: "44vw" }}
+            zIndex={34}
           />
         )}
         {isAreYouSeriousOpen && (
@@ -970,6 +974,7 @@ export default function Home() {
             onOpenChild={() => setIsUghFineOpen(true)}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "28vh", left: "48vw" }}
+            zIndex={35}
           />
         )}
         {isUghFineOpen && (
@@ -990,6 +995,7 @@ export default function Home() {
             onOpenChild={() => setIsPetMonitorOpen(true)}
             onFolderOpen={playFolderOpenSound}
             position={{ top: "30vh", left: "52vw" }}
+            zIndex={36}
           />
         )}
 

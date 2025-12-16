@@ -48,8 +48,8 @@ export function SecretPetMonitor({ onClose, onMinimize }: SecretPetMonitorProps)
     >
       <div
         ref={nodeRef}
-        className="absolute top-[12vh] left-[25vw] z-30"
-        style={{ width: dimensions.width, height: dimensions.height }}
+        className="absolute top-[12vh] left-[25vw]"
+        style={{ width: dimensions.width, height: dimensions.height, zIndex: 37 }}
       >
         <Window
           resizable={false}
