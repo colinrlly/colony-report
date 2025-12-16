@@ -115,9 +115,9 @@ export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ 
           : resizable ? "resize overflow-auto" : "overflow-auto",
         className
       )}
+      {...props}
       style={{ ...style, zIndex }}
       onMouseDown={handleMouseDown}
-      {...props}
     >
       {children}
     </div>
