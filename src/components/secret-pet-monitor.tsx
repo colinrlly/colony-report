@@ -13,6 +13,8 @@ import { useWindowResize } from "@/hooks/use-window-resize";
 interface SecretPetMonitorProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 // Window dimensions
@@ -21,7 +23,7 @@ const BASE_HEIGHT = 400;
 const MIN_WIDTH = 320;
 const MAX_WIDTH = 600;
 
-export function SecretPetMonitor({ onClose, onMinimize }: SecretPetMonitorProps) {
+export function SecretPetMonitor({ onClose, onMinimize, zIndex, onFocus }: SecretPetMonitorProps) {
   const {
     nodeRef,
     position,
@@ -48,8 +50,9 @@ export function SecretPetMonitor({ onClose, onMinimize }: SecretPetMonitorProps)
     >
       <div
         ref={nodeRef}
-        className="absolute top-[12vh] left-[25vw] z-30"
-        style={{ width: dimensions.width, height: dimensions.height }}
+        className="absolute top-[12vh] left-[25vw]"
+        style={{ width: dimensions.width, height: dimensions.height, zIndex }}
+        onMouseDown={onFocus}
       >
         <Window
           resizable={false}

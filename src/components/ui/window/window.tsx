@@ -22,7 +22,7 @@ export const useWindowContext = () => useContext(WindowContext);
 const MENUBAR_HEIGHT = 36;
 const TASKBAR_HEIGHT = 40;
 
-export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ className, active = true, resizable = true, draggable = true, children, ...props }, ref) {
+export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ className, active = true, resizable = true, draggable = true, zIndex, onFocus, children, ...props }, ref) {
   const nodeRef = useRef<HTMLDivElement>(null);
 
   // Expose the internal ref to the parent via forwardRef
@@ -111,6 +111,8 @@ export const Window = forwardRef<HTMLDivElement, WindowProps>(function Window({ 
           : resizable ? "resize overflow-auto" : "overflow-auto",
         className
       )}
+      style={{ ...props.style, zIndex }}
+      onMouseDown={onFocus}
       {...props}
     >
       {children}

@@ -13,6 +13,8 @@ import {
 interface ContactHRFormProps {
   onClose?: () => void;
   onMinimize?: () => void;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 type SubjectType =
@@ -187,7 +189,7 @@ function SmileyCrying({ selected, onClick }: { selected: boolean; onClick: () =>
   );
 }
 
-export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
+export function ContactHRForm({ onClose, onMinimize, zIndex, onFocus }: ContactHRFormProps) {
   const [employeeName, setEmployeeName] = useState("");
   const [replyEmail, setReplyEmail] = useState("");
   const [rating, setRating] = useState<RatingType>(0);
@@ -251,7 +253,7 @@ export function ContactHRForm({ onClose, onMinimize }: ContactHRFormProps) {
   };
 
   return (
-    <Window className="w-[500px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col">
+    <Window className="w-[500px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col" zIndex={zIndex} onFocus={onFocus}>
       <WindowTitleBar>
         <WindowTitle>Contact Human Resources</WindowTitle>
         <WindowControls onMinimize={onMinimize} onClose={onClose} showMaximize={false} />

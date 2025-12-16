@@ -16,6 +16,8 @@ interface SecurityCameraFeedProps {
   onClose?: () => void;
   onMinimize?: () => void;
   warningMode?: boolean;
+  zIndex?: number;
+  onFocus?: () => void;
 }
 
 // Window dimensions
@@ -46,6 +48,8 @@ export function SecurityCameraFeed({
   onClose,
   onMinimize,
   warningMode = false,
+  zIndex,
+  onFocus,
 }: SecurityCameraFeedProps) {
   const {
     nodeRef,
@@ -118,13 +122,15 @@ export function SecurityCameraFeed({
     >
       <div
         ref={nodeRef}
-        className="absolute z-30"
+        className="absolute"
         style={{
           top: `${12 + (cameraNumber - 1) * 3}vh`,
           left: `${20 + (cameraNumber - 1) * 4}vw`,
           width: dimensions.width,
           height: dimensions.height,
+          zIndex,
         }}
+        onMouseDown={onFocus}
       >
         <Window
           resizable={false}
