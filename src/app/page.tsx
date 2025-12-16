@@ -957,7 +957,7 @@ export default function Home() {
             }}
             onFolderOpen={playFolderOpenSound}
             zIndex={getWindowZIndex('secrets')}
-            onWindowFocus={() => bringToFront('secrets')}
+            onFocus={() => bringToFront('secrets')}
           />
         )}
 
@@ -974,7 +974,7 @@ export default function Home() {
             onFolderOpen={playFolderOpenSound}
             position={{ top: "20vh", left: "32vw" }}
             zIndex={getWindowZIndex('nothing')}
-            onWindowFocus={() => bringToFront('nothing')}
+            onFocus={() => bringToFront('nothing')}
           />
         )}
         {isSeriouslyNothingOpen && (
@@ -989,7 +989,7 @@ export default function Home() {
             onFolderOpen={playFolderOpenSound}
             position={{ top: "22vh", left: "36vw" }}
             zIndex={getWindowZIndex('seriously-nothing')}
-            onWindowFocus={() => bringToFront('seriously-nothing')}
+            onFocus={() => bringToFront('seriously-nothing')}
           />
         )}
         {isPleaseStopOpen && (
@@ -1004,7 +1004,7 @@ export default function Home() {
             onFolderOpen={playFolderOpenSound}
             position={{ top: "24vh", left: "40vw" }}
             zIndex={getWindowZIndex('please-stop')}
-            onWindowFocus={() => bringToFront('please-stop')}
+            onFocus={() => bringToFront('please-stop')}
           />
         )}
         {isGoNoFurtherOpen && (
@@ -1019,7 +1019,7 @@ export default function Home() {
             onFolderOpen={playFolderOpenSound}
             position={{ top: "26vh", left: "44vw" }}
             zIndex={getWindowZIndex('go-no-further')}
-            onWindowFocus={() => bringToFront('go-no-further')}
+            onFocus={() => bringToFront('go-no-further')}
           />
         )}
         {isAreYouSeriousOpen && (
@@ -1035,7 +1035,7 @@ export default function Home() {
             onFolderOpen={playFolderOpenSound}
             position={{ top: "28vh", left: "48vw" }}
             zIndex={getWindowZIndex('are-you-serious')}
-            onWindowFocus={() => bringToFront('are-you-serious')}
+            onFocus={() => bringToFront('are-you-serious')}
           />
         )}
         {isUghFineOpen && (
@@ -1060,7 +1060,7 @@ export default function Home() {
             onFolderOpen={playFolderOpenSound}
             position={{ top: "30vh", left: "52vw" }}
             zIndex={getWindowZIndex('ugh-fine')}
-            onWindowFocus={() => bringToFront('ugh-fine')}
+            onFocus={() => bringToFront('ugh-fine')}
           />
         )}
 
