@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import {
   Window,
   WindowTitleBar,
@@ -165,6 +165,29 @@ export function FieldNotes({ onClose, onMinimize }: FieldNotesProps) {
   const handleNextNote = useCallback(() => {
     setSelectedIndex((prev) => (prev === FIELD_NOTES_IMAGES.length - 1 ? 0 : prev + 1));
   }, []);
+
+  // Keyboard navigation with arrow keys
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
+        return;
+      }
+
+      switch (e.key) {
+        case "ArrowLeft":
+          handlePreviousNote();
+          break;
+        case "ArrowRight":
+          handleNextNote();
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePreviousNote, handleNextNote]);
 
   const toggleMagnifier = useCallback(() => {
     setMagnifierEnabled((prev) => !prev);
