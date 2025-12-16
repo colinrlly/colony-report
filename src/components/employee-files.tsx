@@ -660,6 +660,7 @@ export function EmployeeFiles({ onClose, onMinimize, zIndex, onFocus }: Employee
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? 'transform' : 'auto',
           }}
+          onFocus={onFocus}
         >
         <WindowTitleBar className="h-[36px]">
           <div className="flex items-center gap-2">

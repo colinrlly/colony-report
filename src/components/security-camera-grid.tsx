@@ -244,6 +244,7 @@ export function SecurityCameraGrid({
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? "transform" : "auto",
           }}
+          onFocus={onFocus}
         >
           <WindowTitleBar>
             <WindowTitle>Ant Hill - All Cameras</WindowTitle>

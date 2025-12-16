@@ -309,6 +309,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? 'transform' : 'auto',
           }}
+          onFocus={onFocus}
         >
           <WindowTitleBar>
             <div className="flex items-center gap-2">

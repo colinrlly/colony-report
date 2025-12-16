@@ -142,6 +142,7 @@ export function SecurityCameraFeed({
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? "transform" : "auto",
           }}
+          onFocus={onFocus}
         >
           <WindowTitleBar>
             <WindowTitle>Ant Hill - Cam {cameraNumber}</WindowTitle>

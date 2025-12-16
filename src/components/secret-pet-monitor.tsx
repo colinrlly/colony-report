@@ -64,6 +64,7 @@ export function SecretPetMonitor({ onClose, onMinimize, zIndex, onFocus }: Secre
             transform: `scale(${scaleFactor})`,
             willChange: isResizing ? "transform" : "auto",
           }}
+          onFocus={onFocus}
         >
           <WindowTitleBar>
             <WindowTitle>secret_pet_monitor</WindowTitle>
