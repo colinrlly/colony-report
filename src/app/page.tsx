@@ -648,9 +648,12 @@ export default function Home() {
     setOpenCameras(prev => ({ ...prev, 3: true }));
     setMinimizedCameras(prev => ({ ...prev, 3: false }));
 
+    // Bring camera window to front so it's visible above other windows
+    bringToFront('camera-3');
+
     // Complete the notification (advances to next in queue)
     handleNotificationComplete();
-  }, [handleNotificationComplete]);
+  }, [handleNotificationComplete, bringToFront]);
 
   // Handle camera 3 close - reset warning mode
   const handleCam3Close = useCallback(() => {
