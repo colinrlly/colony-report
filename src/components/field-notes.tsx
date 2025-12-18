@@ -21,6 +21,7 @@ const ZOOM_LEVEL = 2.5;
 const FIELD_NOTES_IMAGES = [
   "/images/Field Notes 1.png",
   "/images/Field Notes 2.png",
+  "/images/Field Notes 3.png",
 ];
 
 interface MagnifierPosition {
