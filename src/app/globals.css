@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Magnifier cursor hiding - applied to html element when magnifier is active */
+html.magnifier-active,
+html.magnifier-active * {
+  cursor: none !important;
+}
+
 /* Windows 98 Color Palette - Tan/Beige variant */
 :root {
   /* Base surface colors */

@@ -195,19 +195,17 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
     setMagnifierEnabled((prev) => !prev);
   }, []);
 
-  // Hide cursor globally when magnifier is active and visible
+  // Hide cursor globally when magnifier is active
   useEffect(() => {
-    if (magnifierEnabled && magnifierPos.visible) {
-      // Create a style element to force cursor: none on all elements
-      const style = document.createElement("style");
-      style.id = "magnifier-cursor-hide";
-      style.textContent = "* { cursor: none !important; }";
-      document.head.appendChild(style);
-      return () => {
-        style.remove();
-      };
+    if (magnifierEnabled) {
+      document.documentElement.classList.add("magnifier-active");
+    } else {
+      document.documentElement.classList.remove("magnifier-active");
     }
-  }, [magnifierEnabled, magnifierPos.visible]);
+    return () => {
+      document.documentElement.classList.remove("magnifier-active");
+    };
+  }, [magnifierEnabled]);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
