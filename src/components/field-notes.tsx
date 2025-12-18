@@ -198,13 +198,15 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
   // Hide cursor globally when magnifier is active and visible
   useEffect(() => {
     if (magnifierEnabled && magnifierPos.visible) {
-      document.body.style.cursor = "none";
-    } else {
-      document.body.style.cursor = "";
+      // Create a style element to force cursor: none on all elements
+      const style = document.createElement("style");
+      style.id = "magnifier-cursor-hide";
+      style.textContent = "* { cursor: none !important; }";
+      document.head.appendChild(style);
+      return () => {
+        style.remove();
+      };
     }
-    return () => {
-      document.body.style.cursor = "";
-    };
   }, [magnifierEnabled, magnifierPos.visible]);
 
   const handleMouseMove = useCallback(
