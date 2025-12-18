@@ -195,6 +195,18 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
     setMagnifierEnabled((prev) => !prev);
   }, []);
 
+  // Hide cursor globally when magnifier is active and visible
+  useEffect(() => {
+    if (magnifierEnabled && magnifierPos.visible) {
+      document.body.style.cursor = "none";
+    } else {
+      document.body.style.cursor = "";
+    }
+    return () => {
+      document.body.style.cursor = "";
+    };
+  }, [magnifierEnabled, magnifierPos.visible]);
+
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!magnifierEnabled || !imageRef.current || !imageContainerRef.current) return;
