@@ -22,6 +22,8 @@ const FIELD_NOTES_IMAGES = [
   "/images/Field Notes 1.png",
   "/images/Field Notes 2.png",
   "/images/Field Notes 3.png",
+  "/images/Field Notes 4.png",
+  "/images/Field Notes 5.png",
 ];
 
 interface MagnifierPosition {
