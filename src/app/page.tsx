@@ -21,6 +21,7 @@ import { ReminderNotification, RedactedText } from "@/components/reminder-notifi
 import { PlantAlarmNotification } from "@/components/plant-alarm-notification";
 import { SecurityWarningNotification } from "@/components/security-warning-notification";
 import { useNotificationQueue } from "@/hooks/use-notification-queue";
+import { DeskScene } from "@/components/desk-scene";
 import { DesktopIcon } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
@@ -243,6 +244,9 @@ const getReminderNotifications = () => [
 ];
 
 export default function Home() {
+  // Desk scene landing page - shown on first load
+  const [showDeskScene, setShowDeskScene] = useState(true);
+
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
   const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
@@ -743,6 +747,11 @@ export default function Home() {
 
   return (
     <>
+      {/* Desk Scene Landing Page - Click screen to enter */}
+      {showDeskScene && (
+        <DeskScene onEnter={() => setShowDeskScene(false)} />
+      )}
+
       {/* Screen flicker animation overlay */}
       {isRefreshing && (
         <div
