@@ -894,6 +894,16 @@ export default function Home() {
         {/* CRT Screen Effect Overlay - behind all content, only affects wallpaper */}
         <div className="crt-overlay pointer-events-none -z-5" />
 
+        {/* Small smiley face decoration */}
+        <div className="absolute bottom-16 right-32 z-5 pointer-events-none opacity-80">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" fill="#FFD93D" stroke="#E6B800" strokeWidth="1"/>
+            <circle cx="8" cy="10" r="1.5" fill="#333"/>
+            <circle cx="16" cy="10" r="1.5" fill="#333"/>
+            <path d="M7 14.5C8.5 17 15.5 17 17 14.5" stroke="#333" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+        </div>
+
         {/* Desktop Icons - each independently draggable */}
         {DESKTOP_ICONS.map((iconConfig) => (
           <div
