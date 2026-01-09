@@ -23,6 +23,7 @@ const MAX_WIDTH = 1000;
 
 // Photo library data
 const photoItems = [
+  { id: "photolog-4", label: "Photo Log 4", image: "/images/photolog4.png", coordinates: "47.6062° N, 122.3320° W", location: "Field Station", date: "2157.03.14", time: "14:23:00", color: "#7A8B6E" },
   { id: "photolog-2", label: "Photo Log 2", image: "/images/photolog2.png", coordinates: "47.6058° N, 122.3315° W", location: "Field Station", date: "2157.03.14", time: "14:21:30", color: "#7A8B6E" },
   { id: "photolog-3", label: "Photo Log 3", image: "/images/photolog3.png", coordinates: "47.6060° N, 122.3318° W", location: "Field Station", date: "2157.03.14", time: "14:22:45", color: "#7A8B6E" },
   { id: "photolog-1", label: "Photo Log 1", image: "/images/photolog1.png", coordinates: "47.6055° N, 122.3310° W", location: "Field Station", date: "2157.03.14", time: "14:20:00", color: "#7A8B6E" },
