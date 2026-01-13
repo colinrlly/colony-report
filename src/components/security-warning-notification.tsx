@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useNotificationAnimation } from "@/hooks/use-notification-animation";
 
 interface SecurityWarningNotificationProps {
   isVisible: boolean;
   onViewCamera: () => void;
+  onDismiss: () => void;
 }
-
-const ANIMATION_DURATION_MS = 400;
 
 // Pixel art warning/shield icon component
 function WarningIcon() {
@@ -49,37 +48,13 @@ function WarningIcon() {
 export function SecurityWarningNotification({
   isVisible,
   onViewCamera,
+  onDismiss,
 }: SecurityWarningNotificationProps) {
-  const [shouldRender, setShouldRender] = useState(false);
-  const [animationClass, setAnimationClass] = useState("");
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const clearPendingTimeout = useCallback(() => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-  }, []);
-
-  // Cleanup on unmount
-  useEffect(() => clearPendingTimeout, [clearPendingTimeout]);
-
-  // Handle visibility changes
-  useEffect(() => {
-    clearPendingTimeout();
-
-    if (isVisible) {
-      setShouldRender(true);
-      setAnimationClass("notification-slide-in");
-    } else {
-      // Slide out animation
-      setAnimationClass("notification-slide-out");
-      timeoutRef.current = setTimeout(() => {
-        setShouldRender(false);
-        setAnimationClass("");
-      }, ANIMATION_DURATION_MS);
-    }
-  }, [isVisible, clearPendingTimeout]);
+  const { shouldRender, animationClass, swipeX, isDragging, swipeHandlers } = useNotificationAnimation({
+    isVisible,
+    onComplete: onDismiss,
+    displayDuration: 60000, // Long duration - user should interact with it
+  });
 
   if (!shouldRender) {
     return null;
@@ -90,10 +65,18 @@ export function SecurityWarningNotification({
     onViewCamera();
   };
 
+  // Calculate opacity based on swipe distance (fade out as it's swiped)
+  const swipeOpacity = Math.max(0, 1 - swipeX / 200);
+
   return (
     <div
-      className={`fixed top-[340px] right-4 z-[9000] ${animationClass}`}
-      style={{ pointerEvents: "auto" }}
+      className={`fixed top-[340px] right-4 z-[9000] ${animationClass} notification-swipeable ${isDragging ? 'notification-dragging' : 'notification-spring-back'}`}
+      style={{
+        pointerEvents: "auto",
+        transform: swipeX > 0 ? `translateX(${swipeX}px)` : undefined,
+        opacity: swipeX > 0 ? swipeOpacity : undefined,
+      }}
+      {...swipeHandlers}
     >
       {/* Notification container with Win98 styling */}
       <div
