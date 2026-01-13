@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import {
   Window,
@@ -23,16 +24,17 @@ const MAX_WIDTH = 1000;
 
 // Photo library data
 const photoItems = [
-  { id: "img-1", label: "img.1", image: "/images/photo-library/img-1.jpg", coordinates: "47.6062° N, 122.3321° W", location: "Mushroom Forest", date: "2157.03.14", time: "14:23:07", color: "#8B7355" },
-  { id: "img-2", label: "img.2", image: "/images/photo-library/img-2.jpg", coordinates: "47.6088° N, 122.3359° W", location: "Amber Dunes", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
-  { id: "img-3", label: "img.3", image: "/images/photo-library/img-3.jpg", coordinates: "47.6101° N, 122.3412° W", location: "Mosslands", date: "2157.03.14", time: "14:28:45", color: "#6B8E6B" },
-  { id: "img-4", label: "img.4", image: "/images/photo-library/img-4.jpg", coordinates: "47.6134° N, 122.3478° W", location: "Pale Flats", date: "2157.03.14", time: "14:32:19", color: "#C4A77D" },
-  { id: "img-5", label: "img.5", image: "/images/photo-library/img-5.jpg", coordinates: "47.6156° N, 122.3521° W", location: "Rust Canyons", date: "2157.03.14", time: "14:35:52", color: "#8B4513" },
-  { id: "img-6", label: "img.6", image: "/images/photo-library/img-6.jpg", coordinates: "47.6178° N, 122.3567° W", location: "Ashen Basin", date: "2157.03.14", time: "14:39:08", color: "#9C8B7D" },
-  { id: "img-7", label: "img.7", image: "/images/photo-library/img-7.jpg", coordinates: "47.6192° N, 122.3601° W", location: "Spore Hollow", date: "2157.03.15", time: "08:12:33", color: "#704214" },
-  { id: "img-8", label: "img.8", image: "/images/photo-library/img-8.jpg", coordinates: "47.6215° N, 122.3645° W", location: "Crystal Steppes", date: "2157.03.15", time: "08:15:47", color: "#B8A088" },
-  { id: "img-9", label: "img.9", image: "/images/photo-library/img-9.jpg", coordinates: "47.6238° N, 122.3689° W", location: "Obsidian Marsh", date: "2157.03.15", time: "08:19:22", color: "#5C4033" },
-  { id: "img-10", label: "img.10", image: "/images/photo-library/img-10.jpg", coordinates: "47.6261° N, 122.3732° W", location: "Fern Wilds", date: "2157.03.15", time: "08:22:56", color: "#7B9971" },
+  { id: "photolog-1", label: "img.1", image: "/images/PhotoLog1.jpg", coordinates: "47.6055° N, 122.3298° W", location: "West Forest- Anomaly", date: "2157.03.14", time: "14:20:00", color: "#7A6B5E" },
+  { id: "img-1", label: "img.2", image: "/images/photo-library/img-1.jpg", coordinates: "47.6062° N, 122.3321° W", location: "Mushroom Forest", date: "2157.03.14", time: "14:23:07", color: "#8B7355" },
+  { id: "img-2", label: "img.3", image: "/images/photo-library/img-2.jpg", coordinates: "47.6088° N, 122.3359° W", location: "Amber Dunes", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
+  { id: "img-3", label: "img.4", image: "/images/photo-library/img-3.jpg", coordinates: "47.6101° N, 122.3412° W", location: "Mosslands", date: "2157.03.14", time: "14:28:45", color: "#6B8E6B" },
+  { id: "img-4", label: "img.5", image: "/images/photo-library/img-4.jpg", coordinates: "47.6134° N, 122.3478° W", location: "Pale Flats", date: "2157.03.14", time: "14:32:19", color: "#C4A77D" },
+  { id: "img-5", label: "img.6", image: "/images/photo-library/img-5.jpg", coordinates: "47.6156° N, 122.3521° W", location: "Rust Canyons", date: "2157.03.14", time: "14:35:52", color: "#8B4513" },
+  { id: "img-6", label: "img.7", image: "/images/photo-library/img-6.jpg", coordinates: "47.6178° N, 122.3567° W", location: "Ashen Basin", date: "2157.03.14", time: "14:39:08", color: "#9C8B7D" },
+  { id: "img-7", label: "img.8", image: "/images/photo-library/img-7.jpg", coordinates: "47.6192° N, 122.3601° W", location: "Spore Hollow", date: "2157.03.15", time: "08:12:33", color: "#704214" },
+  { id: "img-8", label: "img.9", image: "/images/photo-library/img-8.jpg", coordinates: "47.6215° N, 122.3645° W", location: "Crystal Steppes", date: "2157.03.15", time: "08:15:47", color: "#B8A088" },
+  { id: "img-9", label: "img.10", image: "/images/photo-library/img-9.jpg", coordinates: "47.6238° N, 122.3689° W", location: "Obsidian Marsh", date: "2157.03.15", time: "08:19:22", color: "#5C4033" },
+  { id: "img-10", label: "img.11", image: "/images/photo-library/img-10.jpg", coordinates: "47.6261° N, 122.3732° W", location: "Fern Wilds", date: "2157.03.15", time: "08:22:56", color: "#7B9971" },
 ];
 
 // Icon components
@@ -325,11 +327,14 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
               className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden"
               style={{ backgroundColor: selectedPhoto.color }}
             >
-              <div className="relative w-full h-full flex items-center justify-center">
-                <div className="text-white/80 text-xl font-bold text-center drop-shadow-[1px_1px_2px_rgba(0,0,0,0.5)]">
-                  <div>image to go here</div>
-                  <div>placeholder</div>
-                </div>
+              <div className="relative w-full h-full">
+                <Image
+                  src={selectedPhoto.image}
+                  alt={selectedPhoto.label}
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </div>
 
@@ -390,13 +395,15 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                         {photo.label}
                       </div>
                       <div
-                        className={`w-[115px] h-[90px] win98-border-sunken flex items-center justify-center ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
+                        className={`w-[115px] h-[90px] win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
                         style={{ backgroundColor: photo.color }}
                       >
-                        <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
-                          <div>img.</div>
-                          <div>placeholder</div>
-                        </div>
+                        <Image
+                          src={photo.image}
+                          alt={photo.label}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
                     </div>
                   );
