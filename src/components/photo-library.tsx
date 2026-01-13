@@ -152,6 +152,29 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
     setSelectedIndex(index);
   }, []);
 
+  // Keyboard navigation with arrow keys
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
+        return;
+      }
+
+      switch (e.key) {
+        case "ArrowLeft":
+          handlePreviousImage();
+          break;
+        case "ArrowRight":
+          handleNextImage();
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePreviousImage, handleNextImage]);
+
   // Scrollbar handlers
   const handleScrollbarMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
