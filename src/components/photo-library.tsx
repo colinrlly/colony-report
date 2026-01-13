@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import {
   Window,
@@ -326,11 +327,14 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
               className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden"
               style={{ backgroundColor: selectedPhoto.color }}
             >
-              <div className="relative w-full h-full flex items-center justify-center">
-                <div className="text-white/80 text-xl font-bold text-center drop-shadow-[1px_1px_2px_rgba(0,0,0,0.5)]">
-                  <div>image to go here</div>
-                  <div>placeholder</div>
-                </div>
+              <div className="relative w-full h-full">
+                <Image
+                  src={selectedPhoto.image}
+                  alt={selectedPhoto.label}
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
             </div>
 
@@ -391,13 +395,15 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                         {photo.label}
                       </div>
                       <div
-                        className={`w-[115px] h-[90px] win98-border-sunken flex items-center justify-center ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
+                        className={`w-[115px] h-[90px] win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
                         style={{ backgroundColor: photo.color }}
                       >
-                        <div className="text-white/80 text-[10px] text-center drop-shadow-[1px_1px_1px_rgba(0,0,0,0.5)]">
-                          <div>img.</div>
-                          <div>placeholder</div>
-                        </div>
+                        <Image
+                          src={photo.image}
+                          alt={photo.label}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
                     </div>
                   );
