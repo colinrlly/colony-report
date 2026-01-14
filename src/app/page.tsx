@@ -1279,10 +1279,11 @@ export default function Home() {
         onDismiss={handleNotificationComplete}
       />
 
-      {/* Security Warning Notification - stays until button clicked */}
+      {/* Security Warning Notification - can be swiped away or button clicked */}
       <SecurityWarningNotification
         isVisible={isNotificationVisible && currentNotification === "security-warning"}
         onViewCamera={handleSecurityWarningViewCamera}
+        onDismiss={handleNotificationComplete}
       />
 
       {/* Screensaver */}
