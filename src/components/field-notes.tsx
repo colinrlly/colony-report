@@ -301,6 +301,7 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
                 left: magnifierPos.x - MAGNIFIER_SIZE / 2,
                 top: magnifierPos.y - MAGNIFIER_SIZE / 2,
                 backgroundColor: BACKGROUND_COLOR,
+                cursor: "none",
               }}
             >
               <img
@@ -313,6 +314,7 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
                   maxWidth: "none",
                   left: MAGNIFIER_SIZE / 2 - magnifierPos.imgX * ZOOM_LEVEL,
                   top: MAGNIFIER_SIZE / 2 - magnifierPos.imgY * ZOOM_LEVEL,
+                  cursor: "none",
                 }}
               />
             </div>
