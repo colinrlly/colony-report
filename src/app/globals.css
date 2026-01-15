@@ -74,6 +74,12 @@ body {
   font-size: 11px;
 }
 
+/* Magnifier cursor hiding - needs !important to override all other cursor styles */
+.magnifier-cursor-hidden,
+.magnifier-cursor-hidden * {
+  cursor: none !important;
+}
+
 /* Screen flicker animation for refresh desktop effect */
 @keyframes flicker {
   0% {

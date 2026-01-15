@@ -279,17 +279,15 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
 
         <div
           ref={imageContainerRef}
-          className="flex-1 h-full flex items-center justify-center overflow-hidden relative"
+          className={`flex-1 h-full flex items-center justify-center overflow-hidden relative ${magnifierEnabled ? "magnifier-cursor-hidden" : ""}`}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          style={{ cursor: magnifierEnabled ? "none" : "default" }}
         >
           <img
             ref={imageRef}
             src={currentImage}
             alt={`Field Notes ${selectedIndex + 1}`}
             className="w-full h-full object-contain"
-            style={{ cursor: magnifierEnabled ? "none" : "default" }}
           />
 
           {magnifierEnabled && magnifierPos.visible && (
@@ -301,7 +299,6 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
                 left: magnifierPos.x - MAGNIFIER_SIZE / 2,
                 top: magnifierPos.y - MAGNIFIER_SIZE / 2,
                 backgroundColor: BACKGROUND_COLOR,
-                cursor: "none",
               }}
             >
               <img
@@ -314,7 +311,6 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
                   maxWidth: "none",
                   left: MAGNIFIER_SIZE / 2 - magnifierPos.imgX * ZOOM_LEVEL,
                   top: MAGNIFIER_SIZE / 2 - magnifierPos.imgY * ZOOM_LEVEL,
-                  cursor: "none",
                 }}
               />
             </div>
