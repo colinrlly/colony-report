@@ -163,6 +163,19 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
+  // Hide cursor globally when magnifier is active and visible
+  useEffect(() => {
+    if (magnifierEnabled && magnifierPos.visible) {
+      document.body.style.cursor = 'none';
+    } else {
+      document.body.style.cursor = '';
+    }
+
+    return () => {
+      document.body.style.cursor = '';
+    };
+  }, [magnifierEnabled, magnifierPos.visible]);
+
   const handlePreviousNote = useCallback(() => {
     setSelectedIndex((prev) => (prev === 0 ? FIELD_NOTES_IMAGES.length - 1 : prev - 1));
   }, []);
