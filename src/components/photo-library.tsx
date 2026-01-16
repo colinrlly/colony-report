@@ -25,8 +25,8 @@ const MAX_WIDTH = 1000;
 // Photo library data
 const photoItems = [
   { id: "photolog-1", label: "img.1", image: "/images/PhotoLog1.jpg", coordinates: "47.6055° N, 122.3298° W", location: "West Forest- Anomaly", date: "2157.03.14", time: "14:20:00", color: "#7A6B5E" },
-  { id: "photolog-2", label: "img.2", image: "/images/PhotoLog2.jpg", coordinates: "47.6062° N, 122.3321° W", location: "Pale Flats", date: "2157.03.14", time: "14:23:07", color: "#8B7355" },
-  { id: "img-2", label: "img.3", image: "/images/photo-library/img-2.jpg", coordinates: "47.6088° N, 122.3359° W", location: "Amber Dunes", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
+  { id: "img-2", label: "img.2", image: "/images/PhotoLog3.jpg", coordinates: "47.6088° N, 122.3359° W", location: "Eastern Meadows", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
+  { id: "photolog-2", label: "img.3", image: "/images/PhotoLog2.jpg", coordinates: "47.6062° N, 122.3321° W", location: "Pale Flats", date: "2157.03.14", time: "14:23:07", color: "#8B7355" },
   { id: "img-3", label: "img.4", image: "/images/photo-library/img-3.jpg", coordinates: "47.6101° N, 122.3412° W", location: "Mosslands", date: "2157.03.14", time: "14:28:45", color: "#6B8E6B" },
   { id: "img-4", label: "img.5", image: "/images/photo-library/img-4.jpg", coordinates: "47.6134° N, 122.3478° W", location: "Pale Flats", date: "2157.03.14", time: "14:32:19", color: "#C4A77D" },
   { id: "img-5", label: "img.6", image: "/images/photo-library/img-5.jpg", coordinates: "47.6156° N, 122.3521° W", location: "Rust Canyons", date: "2157.03.14", time: "14:35:52", color: "#8B4513" },
