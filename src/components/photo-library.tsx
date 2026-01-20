@@ -156,14 +156,15 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
   // Scroll wheel handler for thumbnail strip
   const handleThumbnailScroll = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     // Use deltaY for vertical scroll, deltaX for horizontal scroll
     const delta = e.deltaY !== 0 ? e.deltaY : e.deltaX;
     if (delta > 0) {
-      // Scroll right (down scroll or right scroll)
-      setScrollPosition(prev => Math.min(maxScroll, prev + 1));
+      // Scroll right - jump to end
+      setScrollPosition(maxScroll);
     } else if (delta < 0) {
-      // Scroll left (up scroll or left scroll)
-      setScrollPosition(prev => Math.max(0, prev - 1));
+      // Scroll left - jump to beginning
+      setScrollPosition(0);
     }
   }, [maxScroll]);
 
