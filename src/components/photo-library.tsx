@@ -21,6 +21,7 @@ const BASE_HEIGHT = 700;
 const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 500;
 const MAX_WIDTH = 1000;
+const VISIBLE_THUMBNAILS = 6;
 
 // Photo library data
 const photoItems = [
@@ -122,9 +123,8 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
 
   // Derived values
   const selectedPhoto = photoItems[selectedIndex];
-  const visibleThumbnails = 6;
-  const maxScroll = Math.max(0, photoItems.length - visibleThumbnails);
-  const scrollbarThumbWidthPercent = (visibleThumbnails / photoItems.length) * 100;
+  const maxScroll = Math.max(0, photoItems.length - VISIBLE_THUMBNAILS);
+  const scrollbarThumbWidthPercent = (VISIBLE_THUMBNAILS / photoItems.length) * 100;
   const scrollbarThumbPositionPercent = maxScroll > 0 ? (scrollPosition / maxScroll) * (100 - scrollbarThumbWidthPercent) : 0;
   const scaleFactor = dimensions.width / BASE_WIDTH;
 
@@ -134,24 +134,31 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
     setSelectedIndex(newIndex);
     if (newIndex < scrollPosition) {
       setScrollPosition(newIndex);
-    } else if (newIndex >= scrollPosition + visibleThumbnails) {
-      setScrollPosition(newIndex - visibleThumbnails + 1);
+    } else if (newIndex >= scrollPosition + VISIBLE_THUMBNAILS) {
+      setScrollPosition(newIndex - VISIBLE_THUMBNAILS + 1);
     }
-  }, [selectedIndex, scrollPosition, visibleThumbnails]);
+  }, [selectedIndex, scrollPosition]);
 
   const handleNextImage = useCallback(() => {
     const newIndex = selectedIndex === photoItems.length - 1 ? 0 : selectedIndex + 1;
     setSelectedIndex(newIndex);
     if (newIndex < scrollPosition) {
       setScrollPosition(newIndex);
-    } else if (newIndex >= scrollPosition + visibleThumbnails) {
-      setScrollPosition(newIndex - visibleThumbnails + 1);
+    } else if (newIndex >= scrollPosition + VISIBLE_THUMBNAILS) {
+      setScrollPosition(newIndex - VISIBLE_THUMBNAILS + 1);
     }
-  }, [selectedIndex, scrollPosition, visibleThumbnails]);
+  }, [selectedIndex, scrollPosition]);
 
   const handleThumbnailClick = useCallback((index: number) => {
     setSelectedIndex(index);
   }, []);
+
+  const handleThumbnailScroll = useCallback((e: React.WheelEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const delta = e.deltaY || e.deltaX;
+    setScrollPosition(delta > 0 ? maxScroll : 0);
+  }, [maxScroll]);
 
   // Keyboard navigation with arrow keys
   useEffect(() => {
@@ -403,9 +410,12 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
             </div>
 
             {/* Thumbnail strip */}
-            <div className="bg-[#8b7d72] win98-border-sunken p-2">
+            <div
+              className="bg-[#8b7d72] win98-border-sunken p-2"
+              onWheel={handleThumbnailScroll}
+            >
               <div className="flex gap-3 overflow-hidden justify-center">
-                {photoItems.slice(scrollPosition, scrollPosition + visibleThumbnails).map((photo, displayIndex) => {
+                {photoItems.slice(scrollPosition, scrollPosition + VISIBLE_THUMBNAILS).map((photo, displayIndex) => {
                   const actualIndex = scrollPosition + displayIndex;
                   const isSelected = actualIndex === selectedIndex;
 
