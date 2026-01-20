@@ -35,6 +35,7 @@ const photoItems = [
   { id: "img-8", label: "img.9", image: "/images/photo-library/img-8.jpg", coordinates: "47.6215° N, 122.3645° W", location: "Crystal Steppes", date: "2157.03.15", time: "08:15:47", color: "#B8A088" },
   { id: "img-9", label: "img.10", image: "/images/photo-library/img-9.jpg", coordinates: "47.6238° N, 122.3689° W", location: "Obsidian Marsh", date: "2157.03.15", time: "08:19:22", color: "#5C4033" },
   { id: "img-10", label: "img.11", image: "/images/photo-library/img-10.jpg", coordinates: "47.6261° N, 122.3732° W", location: "Fern Wilds", date: "2157.03.15", time: "08:22:56", color: "#7B9971" },
+  { id: "photolog-4", label: "img.12", image: "/images/PhotoLog4.jpg", coordinates: "47.6284° N, 122.3776° W", location: "Amber Grove", date: "2157.03.15", time: "08:26:34", color: "#8B7355" },
 ];
 
 // Icon components
