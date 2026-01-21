@@ -115,6 +115,11 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
   const [isResizing, setIsResizing] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [bounds, setBounds] = useState<{ left: number; top: number; right: number; bottom: number } | undefined>(undefined);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [preFullscreenState, setPreFullscreenState] = useState<{
+    dimensions: { width: number; height: number };
+    position: { x: number; y: number };
+  } | null>(null);
 
   // Refs
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -317,6 +322,63 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
     }
   }, []);
 
+  // Fullscreen toggle handler
+  const handleFullscreen = useCallback(() => {
+    if (isFullscreen) {
+      // Restore previous state
+      if (preFullscreenState) {
+        setDimensions(preFullscreenState.dimensions);
+        setPosition(preFullscreenState.position);
+      }
+      setIsFullscreen(false);
+      setPreFullscreenState(null);
+    } else {
+      // Save current state
+      setPreFullscreenState({
+        dimensions: { ...dimensions },
+        position: { ...position },
+      });
+
+      // Calculate available space
+      const availableWidth = window.innerWidth - ICON_COLUMN_RIGHT_EDGE - 20; // 20px padding
+      const availableHeight = window.innerHeight - MENUBAR_HEIGHT - TASKBAR_HEIGHT - 20; // 20px padding
+
+      // Calculate max dimensions while maintaining aspect ratio
+      let newWidth = availableWidth;
+      let newHeight = newWidth / ASPECT_RATIO;
+
+      if (newHeight > availableHeight) {
+        newHeight = availableHeight;
+        newWidth = newHeight * ASPECT_RATIO;
+      }
+
+      // Clamp to max width
+      if (newWidth > MAX_WIDTH) {
+        newWidth = MAX_WIDTH;
+        newHeight = newWidth / ASPECT_RATIO;
+      }
+
+      // Calculate centered position
+      // The window starts at left-1/2 -translate-x-1/2 and top-[6vh]
+      // We need to calculate the position relative to that initial position
+      const viewportWidth = window.innerWidth;
+      const initialLeft = viewportWidth / 2;
+      const initialTop = window.innerHeight * 0.06;
+
+      // Target center position (accounting for icon column)
+      const targetCenterX = ICON_COLUMN_RIGHT_EDGE + (availableWidth / 2);
+      const targetCenterY = MENUBAR_HEIGHT + (availableHeight / 2) + 10;
+
+      // Calculate position offset needed
+      const newX = targetCenterX - initialLeft;
+      const newY = targetCenterY - initialTop - (newHeight / 2);
+
+      setDimensions({ width: newWidth, height: newHeight });
+      setPosition({ x: newX, y: newY });
+      setIsFullscreen(true);
+    }
+  }, [isFullscreen, preFullscreenState, dimensions, position]);
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -349,7 +411,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
               <CameraIcon />
               <WindowTitle>PHOTO LIBRARY</WindowTitle>
             </div>
-            <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
+            <WindowControls showMaximize={false} showFullscreen={true} onMinimize={onMinimize} onFullscreen={handleFullscreen} onClose={onClose} />
           </WindowTitleBar>
 
           <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-2">

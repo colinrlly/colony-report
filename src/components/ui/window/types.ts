@@ -30,18 +30,21 @@ export interface WindowTitleProps extends HTMLAttributes<HTMLHeadingElement> {
 export interface WindowControlsProps extends HTMLAttributes<HTMLDivElement> {
   showMinimize?: boolean;
   showMaximize?: boolean;
+  showFullscreen?: boolean;
   showClose?: boolean;
   minimizeIcon?: ReactNode;
   maximizeIcon?: ReactNode;
+  fullscreenIcon?: ReactNode;
   closeIcon?: ReactNode;
   onMinimize?: () => void;
   onMaximize?: () => void;
+  onFullscreen?: () => void;
   onClose?: () => void;
 }
 
 export interface WindowControlButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: "minimize" | "maximize" | "close";
+  variant: "minimize" | "maximize" | "fullscreen" | "close";
   icon?: ReactNode;
 }
 
