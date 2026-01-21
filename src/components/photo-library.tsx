@@ -22,6 +22,7 @@ const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 500;
 const MAX_WIDTH = 1000;
 const VISIBLE_THUMBNAILS = 6;
+const FULLSCREEN_PADDING = 20;
 
 // Photo library data
 const photoItems = [
@@ -115,6 +116,11 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
   const [isResizing, setIsResizing] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [bounds, setBounds] = useState<{ left: number; top: number; right: number; bottom: number } | undefined>(undefined);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [preFullscreenState, setPreFullscreenState] = useState<{
+    dimensions: { width: number; height: number };
+    position: { x: number; y: number };
+  } | null>(null);
 
   // Refs
   const nodeRef = useRef<HTMLDivElement>(null);
@@ -317,6 +323,46 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
     }
   }, []);
 
+  // Fullscreen toggle handler
+  const handleFullscreen = useCallback(() => {
+    if (isFullscreen && preFullscreenState) {
+      setDimensions(preFullscreenState.dimensions);
+      setPosition(preFullscreenState.position);
+      setIsFullscreen(false);
+      setPreFullscreenState(null);
+      return;
+    }
+
+    setPreFullscreenState({ dimensions: { ...dimensions }, position: { ...position } });
+
+    const availableWidth = window.innerWidth - ICON_COLUMN_RIGHT_EDGE - FULLSCREEN_PADDING;
+    const availableHeight = window.innerHeight - MENUBAR_HEIGHT - TASKBAR_HEIGHT - FULLSCREEN_PADDING;
+
+    // Calculate max dimensions while maintaining aspect ratio
+    let newWidth = availableWidth;
+    let newHeight = newWidth / ASPECT_RATIO;
+
+    if (newHeight > availableHeight) {
+      newHeight = availableHeight;
+      newWidth = newHeight * ASPECT_RATIO;
+    }
+
+    if (newWidth > MAX_WIDTH) {
+      newWidth = MAX_WIDTH;
+      newHeight = newWidth / ASPECT_RATIO;
+    }
+
+    // Calculate centered position relative to initial window position (left-1/2 -translate-x-1/2, top-[6vh])
+    const initialLeft = window.innerWidth / 2;
+    const initialTop = window.innerHeight * 0.06;
+    const targetCenterX = ICON_COLUMN_RIGHT_EDGE + availableWidth / 2;
+    const targetCenterY = MENUBAR_HEIGHT + availableHeight / 2 + FULLSCREEN_PADDING / 2;
+
+    setDimensions({ width: newWidth, height: newHeight });
+    setPosition({ x: targetCenterX - initialLeft, y: targetCenterY - initialTop - newHeight / 2 });
+    setIsFullscreen(true);
+  }, [isFullscreen, preFullscreenState, dimensions, position]);
+
   return (
     <Draggable
       nodeRef={nodeRef}
@@ -349,7 +395,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
               <CameraIcon />
               <WindowTitle>PHOTO LIBRARY</WindowTitle>
             </div>
-            <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
+            <WindowControls showMaximize={false} showFullscreen={true} onMinimize={onMinimize} onFullscreen={handleFullscreen} onClose={onClose} />
           </WindowTitleBar>
 
           <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-2">

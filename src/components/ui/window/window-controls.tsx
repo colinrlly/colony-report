@@ -42,6 +42,12 @@ const RestoreIcon = () => (
   </svg>
 );
 
+const FullscreenIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" className="fill-current">
+    <path d="M0 0h5v2H2v3H0V0zM7 0h5v5h-2V2H7V0zM0 7h2v3h3v2H0V7zM10 7h2v5H7v-2h3V7z" />
+  </svg>
+);
+
 const CloseIcon = () => (
   <svg width="12" height="11" viewBox="0 0 12 11" className="fill-current">
     <path d="M0 0h2.5l3.5 4.5 3.5-4.5H12L7.5 5.5 12 11H9.5L6 6.5 2.5 11H0l4.5-5.5z" />
@@ -57,6 +63,7 @@ export const WindowControlButton = forwardRef<
   const defaultIcons = {
     minimize: <MinimizeIcon />,
     maximize: isMaximized ? <RestoreIcon /> : <MaximizeIcon />,
+    fullscreen: <FullscreenIcon />,
     close: <CloseIcon />,
   };
 
@@ -87,12 +94,15 @@ export const WindowControls = forwardRef<HTMLDivElement, WindowControlsProps>(
       className,
       showMinimize = true,
       showMaximize = true,
+      showFullscreen = false,
       showClose = true,
       minimizeIcon,
       maximizeIcon,
+      fullscreenIcon,
       closeIcon,
       onMinimize,
       onMaximize,
+      onFullscreen,
       onClose,
       ...props
     },
@@ -125,6 +135,14 @@ export const WindowControls = forwardRef<HTMLDivElement, WindowControlsProps>(
             icon={maximizeIcon}
             onClick={handleMaximize}
             aria-label="Maximize"
+          />
+        )}
+        {showFullscreen && (
+          <WindowControlButton
+            variant="fullscreen"
+            icon={fullscreenIcon}
+            onClick={onFullscreen}
+            aria-label="Fullscreen"
           />
         )}
         {showClose && (
