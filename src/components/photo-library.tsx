@@ -22,6 +22,7 @@ const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 500;
 const MAX_WIDTH = 1000;
 const VISIBLE_THUMBNAILS = 6;
+const FULLSCREEN_PADDING = 20;
 
 // Photo library data
 const photoItems = [
@@ -324,59 +325,42 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
 
   // Fullscreen toggle handler
   const handleFullscreen = useCallback(() => {
-    if (isFullscreen) {
-      // Restore previous state
-      if (preFullscreenState) {
-        setDimensions(preFullscreenState.dimensions);
-        setPosition(preFullscreenState.position);
-      }
+    if (isFullscreen && preFullscreenState) {
+      setDimensions(preFullscreenState.dimensions);
+      setPosition(preFullscreenState.position);
       setIsFullscreen(false);
       setPreFullscreenState(null);
-    } else {
-      // Save current state
-      setPreFullscreenState({
-        dimensions: { ...dimensions },
-        position: { ...position },
-      });
-
-      // Calculate available space
-      const availableWidth = window.innerWidth - ICON_COLUMN_RIGHT_EDGE - 20; // 20px padding
-      const availableHeight = window.innerHeight - MENUBAR_HEIGHT - TASKBAR_HEIGHT - 20; // 20px padding
-
-      // Calculate max dimensions while maintaining aspect ratio
-      let newWidth = availableWidth;
-      let newHeight = newWidth / ASPECT_RATIO;
-
-      if (newHeight > availableHeight) {
-        newHeight = availableHeight;
-        newWidth = newHeight * ASPECT_RATIO;
-      }
-
-      // Clamp to max width
-      if (newWidth > MAX_WIDTH) {
-        newWidth = MAX_WIDTH;
-        newHeight = newWidth / ASPECT_RATIO;
-      }
-
-      // Calculate centered position
-      // The window starts at left-1/2 -translate-x-1/2 and top-[6vh]
-      // We need to calculate the position relative to that initial position
-      const viewportWidth = window.innerWidth;
-      const initialLeft = viewportWidth / 2;
-      const initialTop = window.innerHeight * 0.06;
-
-      // Target center position (accounting for icon column)
-      const targetCenterX = ICON_COLUMN_RIGHT_EDGE + (availableWidth / 2);
-      const targetCenterY = MENUBAR_HEIGHT + (availableHeight / 2) + 10;
-
-      // Calculate position offset needed
-      const newX = targetCenterX - initialLeft;
-      const newY = targetCenterY - initialTop - (newHeight / 2);
-
-      setDimensions({ width: newWidth, height: newHeight });
-      setPosition({ x: newX, y: newY });
-      setIsFullscreen(true);
+      return;
     }
+
+    setPreFullscreenState({ dimensions: { ...dimensions }, position: { ...position } });
+
+    const availableWidth = window.innerWidth - ICON_COLUMN_RIGHT_EDGE - FULLSCREEN_PADDING;
+    const availableHeight = window.innerHeight - MENUBAR_HEIGHT - TASKBAR_HEIGHT - FULLSCREEN_PADDING;
+
+    // Calculate max dimensions while maintaining aspect ratio
+    let newWidth = availableWidth;
+    let newHeight = newWidth / ASPECT_RATIO;
+
+    if (newHeight > availableHeight) {
+      newHeight = availableHeight;
+      newWidth = newHeight * ASPECT_RATIO;
+    }
+
+    if (newWidth > MAX_WIDTH) {
+      newWidth = MAX_WIDTH;
+      newHeight = newWidth / ASPECT_RATIO;
+    }
+
+    // Calculate centered position relative to initial window position (left-1/2 -translate-x-1/2, top-[6vh])
+    const initialLeft = window.innerWidth / 2;
+    const initialTop = window.innerHeight * 0.06;
+    const targetCenterX = ICON_COLUMN_RIGHT_EDGE + availableWidth / 2;
+    const targetCenterY = MENUBAR_HEIGHT + availableHeight / 2 + FULLSCREEN_PADDING / 2;
+
+    setDimensions({ width: newWidth, height: newHeight });
+    setPosition({ x: targetCenterX - initialLeft, y: targetCenterY - initialTop - newHeight / 2 });
+    setIsFullscreen(true);
   }, [isFullscreen, preFullscreenState, dimensions, position]);
 
   return (

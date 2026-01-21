@@ -43,24 +43,8 @@ const RestoreIcon = () => (
 );
 
 const FullscreenIcon = () => (
-  <svg
-    width="12"
-    height="12"
-    viewBox="0 0 12 12"
-    className="fill-current"
-  >
-    {/* Top-left arrow */}
-    <rect x="0" y="0" width="5" height="2" />
-    <rect x="0" y="0" width="2" height="5" />
-    {/* Top-right arrow */}
-    <rect x="7" y="0" width="5" height="2" />
-    <rect x="10" y="0" width="2" height="5" />
-    {/* Bottom-left arrow */}
-    <rect x="0" y="10" width="5" height="2" />
-    <rect x="0" y="7" width="2" height="5" />
-    {/* Bottom-right arrow */}
-    <rect x="7" y="10" width="5" height="2" />
-    <rect x="10" y="7" width="2" height="5" />
+  <svg width="12" height="12" viewBox="0 0 12 12" className="fill-current">
+    <path d="M0 0h5v2H2v3H0V0zM7 0h5v5h-2V2H7V0zM0 7h2v3h3v2H0V7zM10 7h2v5H7v-2h3V7z" />
   </svg>
 );
 
