@@ -109,6 +109,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isDraggingScrollbar, setIsDraggingScrollbar] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Window state
   const [dimensions, setDimensions] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
@@ -160,9 +161,24 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
     setScrollPosition(delta > 0 ? maxScroll : 0);
   }, [maxScroll]);
 
-  // Keyboard navigation with arrow keys
+  // Fullscreen handlers
+  const handleOpenFullscreen = useCallback(() => {
+    setIsFullscreen(true);
+  }, []);
+
+  const handleCloseFullscreen = useCallback(() => {
+    setIsFullscreen(false);
+  }, []);
+
+  // Keyboard navigation with arrow keys and Escape for fullscreen
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Handle Escape key to close fullscreen
+      if (e.key === "Escape" && isFullscreen) {
+        handleCloseFullscreen();
+        return;
+      }
+
       // Ignore if user is typing in an input field
       const target = e.target as HTMLElement;
       if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
@@ -181,7 +197,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handlePreviousImage, handleNextImage]);
+  }, [handlePreviousImage, handleNextImage, isFullscreen, handleCloseFullscreen]);
 
   // Scrollbar handlers
   const handleScrollbarMouseDown = useCallback((e: React.MouseEvent) => {
@@ -318,6 +334,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
   }, []);
 
   return (
+    <>
     <Draggable
       nodeRef={nodeRef}
       handle=".window-drag-handle"
@@ -355,8 +372,10 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
           <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-2">
             {/* Main image display */}
             <div
-              className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden"
+              className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden cursor-pointer"
               style={{ backgroundColor: selectedPhoto.color }}
+              onClick={handleOpenFullscreen}
+              title="Click to view fullscreen"
             >
               <div className="relative w-full h-full">
                 <Image
@@ -457,5 +476,51 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
         </div>
       </div>
     </Draggable>
+
+    {/* Fullscreen overlay */}
+    {isFullscreen && (
+      <div
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90"
+        onClick={handleCloseFullscreen}
+      >
+        {/* Close button */}
+        <button
+          onClick={handleCloseFullscreen}
+          className="absolute top-4 right-4 win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-8 h-8 flex items-center justify-center text-[#5a4d42] font-bold text-lg z-10"
+          aria-label="Close fullscreen"
+        >
+          ×
+        </button>
+
+        {/* Image info */}
+        <div className="absolute top-4 left-4 text-[#c8b9a9] text-sm bg-black/50 px-3 py-2 win98-border-sunken">
+          <div className="font-bold text-[#ffdd44]">{selectedPhoto.label}</div>
+          <div>{selectedPhoto.location}</div>
+          <div>{selectedPhoto.date} {selectedPhoto.time}</div>
+        </div>
+
+        {/* Navigation hint */}
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-[#808080] text-xs">
+          Press ESC or click anywhere to close • Use ← → to navigate
+        </div>
+
+        {/* Fullscreen image container */}
+        <div
+          className="relative max-w-[90vw] max-h-[85vh] win98-border-raised"
+          style={{ backgroundColor: selectedPhoto.color }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Image
+            src={selectedPhoto.image}
+            alt={selectedPhoto.label}
+            width={1920}
+            height={1080}
+            className="max-w-[90vw] max-h-[85vh] w-auto h-auto object-contain"
+            priority
+          />
+        </div>
+      </div>
+    )}
+    </>
   );
 }
