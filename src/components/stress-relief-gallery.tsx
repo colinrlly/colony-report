@@ -11,14 +11,14 @@ import {
   WindowStatusField,
 } from "@/components/ui/window";
 
-// Baby animal gallery items - images will be uploaded later
+// Baby animal gallery items
 const galleryItems = [
-  { id: "bunny", label: "Baby Bunny", image: "/images/stress-relief/bunny.jpg", message: "Take a deep breath and relax..." },
-  { id: "kitten", label: "Baby Kitten", image: "/images/stress-relief/kitten.jpg", message: "Hang in there!" },
-  { id: "puppy", label: "Baby Puppy", image: "/images/stress-relief/puppy.jpg", message: "Everyone makes mistakes..." },
-  { id: "duckling", label: "Baby Duckling", image: "/images/stress-relief/duckling.jpg", message: "One step at a time..." },
-  { id: "piglet", label: "Baby Piglet", image: "/images/stress-relief/piglet.jpg", message: "You're doing great!" },
-  { id: "lamb", label: "Baby Lamb", image: "/images/stress-relief/lamb.jpg", message: "Tomorrow is a new day..." },
+  { id: "puppy", label: "Baby Puppy", image: "/images/stress-relief/puppy.jpeg", message: "Everyone makes mistakes..." },
+  { id: "raccoon", label: "Baby Raccoon", image: "/images/stress-relief/raccoon.jpeg", message: "Take a deep breath and relax..." },
+  { id: "piglet", label: "Baby Piglet", image: "/images/stress-relief/piglet.jpeg", message: "You're doing great!" },
+  { id: "lamb", label: "Baby Lamb", image: "/images/stress-relief/lamb.jpeg", message: "Tomorrow is a new day..." },
+  { id: "kitten", label: "Baby Kitten", image: "/images/stress-relief/kitten.jpeg", message: "Hang in there!" },
+  { id: "duckling", label: "Baby Duckling", image: "/images/stress-relief/duckling.jpeg", message: "One step at a time..." },
 ];
 
 interface StressReliefGalleryProps {
