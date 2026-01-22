@@ -120,18 +120,77 @@ body {
 }
 
 /* ============================================
-   VINTAGE CURSOR UTILITY CLASSES
-   Apply vintage cursors globally
+   VINTAGE CURSOR UTILITY OVERRIDES
+   Override Tailwind's cursor utilities with vintage styles
+   Using @utility directives for Tailwind v4
    ============================================ */
 
-/* Override default cursor behaviors with vintage styles */
-*,
-*::before,
-*::after {
-  cursor: inherit;
+/* Tailwind v4 cursor utility overrides */
+@utility cursor-default {
+  cursor: var(--cursor-default) !important;
 }
 
-/* Clickable elements get vintage pointer */
+@utility cursor-pointer {
+  cursor: var(--cursor-pointer) !important;
+}
+
+@utility cursor-text {
+  cursor: var(--cursor-text) !important;
+}
+
+@utility cursor-wait {
+  cursor: var(--cursor-wait) !important;
+}
+
+@utility cursor-grab {
+  cursor: var(--cursor-grab) !important;
+}
+
+@utility cursor-grabbing {
+  cursor: var(--cursor-grabbing) !important;
+}
+
+@utility cursor-move {
+  cursor: var(--cursor-move) !important;
+}
+
+@utility cursor-nwse-resize {
+  cursor: var(--cursor-nwse-resize) !important;
+}
+
+@utility cursor-nesw-resize {
+  cursor: var(--cursor-nesw-resize) !important;
+}
+
+@utility cursor-ew-resize {
+  cursor: var(--cursor-ew-resize) !important;
+}
+
+@utility cursor-ns-resize {
+  cursor: var(--cursor-ns-resize) !important;
+}
+
+@utility cursor-col-resize {
+  cursor: var(--cursor-ew-resize) !important;
+}
+
+@utility cursor-row-resize {
+  cursor: var(--cursor-ns-resize) !important;
+}
+
+@utility cursor-not-allowed {
+  cursor: var(--cursor-not-allowed) !important;
+}
+
+@utility cursor-crosshair {
+  cursor: var(--cursor-crosshair) !important;
+}
+
+@utility cursor-none {
+  cursor: none !important;
+}
+
+/* Global clickable element styles */
 a,
 button,
 [role="button"],
@@ -140,13 +199,11 @@ button,
 [type="reset"],
 label[for],
 select,
-summary,
-[onclick],
-.cursor-pointer {
-  cursor: var(--cursor-pointer) !important;
+summary {
+  cursor: var(--cursor-pointer);
 }
 
-/* Text inputs get vintage text cursor */
+/* Text input elements */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -155,78 +212,15 @@ input[type="tel"],
 input[type="url"],
 input[type="number"],
 textarea,
-[contenteditable="true"],
-.cursor-text {
-  cursor: var(--cursor-text) !important;
+[contenteditable="true"] {
+  cursor: var(--cursor-text);
 }
 
-/* Grab/drag states - vintage hand cursors */
-.cursor-grab,
-[draggable="true"] {
-  cursor: var(--cursor-grab) !important;
-}
-
-.cursor-grabbing {
-  cursor: var(--cursor-grabbing) !important;
-}
-
-/* Move cursor for draggable elements */
-.cursor-move {
-  cursor: var(--cursor-move) !important;
-}
-
-/* Wait/loading states */
-.cursor-wait,
-[aria-busy="true"] {
-  cursor: var(--cursor-wait) !important;
-}
-
-/* Resize cursors - vintage double arrows */
-.cursor-nwse-resize {
-  cursor: var(--cursor-nwse-resize) !important;
-}
-
-.cursor-nesw-resize {
-  cursor: var(--cursor-nesw-resize) !important;
-}
-
-.cursor-ew-resize {
-  cursor: var(--cursor-ew-resize) !important;
-}
-
-.cursor-ns-resize {
-  cursor: var(--cursor-ns-resize) !important;
-}
-
-.cursor-col-resize {
-  cursor: var(--cursor-ew-resize) !important;
-}
-
-.cursor-row-resize {
-  cursor: var(--cursor-ns-resize) !important;
-}
-
-/* Not allowed state */
-.cursor-not-allowed,
+/* Disabled elements */
 :disabled,
 [disabled],
 [aria-disabled="true"] {
-  cursor: var(--cursor-not-allowed) !important;
-}
-
-/* Crosshair/precision */
-.cursor-crosshair {
-  cursor: var(--cursor-crosshair) !important;
-}
-
-/* Default cursor reset */
-.cursor-default {
-  cursor: var(--cursor-default) !important;
-}
-
-/* None cursor (for screensaver, etc.) */
-.cursor-none {
-  cursor: none !important;
+  cursor: var(--cursor-not-allowed);
 }
 
 /* Screen flicker animation for refresh desktop effect */
