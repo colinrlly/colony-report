@@ -38,6 +38,9 @@ const photoItems = [
   { id: "img-8", label: "img.10", image: "/images/photo-library/img-8.jpg", coordinates: "47.6215° N, 122.3645° W", location: "Crystal Steppes", date: "2157.03.15", time: "08:15:47", color: "#B8A088" },
   { id: "img-9", label: "img.11", image: "/images/photo-library/img-9.jpg", coordinates: "47.6238° N, 122.3689° W", location: "Obsidian Marsh", date: "2157.03.15", time: "08:19:22", color: "#5C4033" },
   { id: "img-10", label: "img.12", image: "/images/photo-library/img-10.jpg", coordinates: "47.6261° N, 122.3732° W", location: "Fern Wilds", date: "2157.03.15", time: "08:22:56", color: "#7B9971" },
+  { id: "photolog-5", label: "img.13", image: "/images/PhotoLog5.jpg", coordinates: "47.5842° N, 122.3856° W", location: "Southern Dune Pools", date: "2157.03.15", time: "10:45:18", color: "#C9A86C" },
+  { id: "photolog-6", label: "img.14", image: "/images/PhotoLog6.jpg", coordinates: "47.5923° N, 122.4012° W", location: "Coastal Tidewaters", date: "2157.03.15", time: "12:33:42", color: "#4A7B9D" },
+  { id: "photolog-7", label: "img.15", image: "/images/PhotoLog7.jpg", coordinates: "47.6512° N, 122.3124° W", location: "Aerial Northern Forest View", date: "2157.03.15", time: "15:08:27", color: "#3D6B4F" },
 ];
 
 // Icon components
