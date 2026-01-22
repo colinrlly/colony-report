@@ -22,6 +22,50 @@
   /* Text colors */
   --win98-text: #222222;
   --win98-text-disabled: #808080;
+
+  /* ============================================
+     VINTAGE WINDOWS 98 CURSORS
+     Classic cursor styles using SVG data URIs
+     ============================================ */
+
+  /* Default arrow cursor - classic Windows 98 pointer */
+  --cursor-default: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 4 L4 26 L10 20 L14 28 L18 26 L14 18 L22 18 Z' fill='white' stroke='black' stroke-width='2'/%3E%3C/svg%3E") 0 0, auto;
+
+  /* Pointer/hand cursor - for clickable elements */
+  --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M10 8 L10 22 L13 19 L16 26 L19 25 L16 18 L21 18 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M14 4 L14 12 M14 4 C14 2 18 2 18 4 L18 10' fill='white' stroke='black' stroke-width='1.5'/%3E%3Cellipse cx='16' cy='3' rx='3' ry='2' fill='%23f5deb3' stroke='black' stroke-width='1'/%3E%3C/svg%3E") 6 0, pointer;
+
+  /* Text/I-beam cursor */
+  --cursor-text: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M12 6 L20 6 M16 6 L16 26 M12 26 L20 26' fill='none' stroke='black' stroke-width='2'/%3E%3Cpath d='M12 6 L20 6 M16 6 L16 26 M12 26 L20 26' fill='none' stroke='white' stroke-width='1'/%3E%3C/svg%3E") 16 16, text;
+
+  /* Wait/hourglass cursor */
+  --cursor-wait: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect x='8' y='4' width='16' height='4' fill='%238b7355' stroke='black' stroke-width='1'/%3E%3Crect x='8' y='24' width='16' height='4' fill='%238b7355' stroke='black' stroke-width='1'/%3E%3Cpath d='M10 8 L10 12 L16 16 L22 12 L22 8 Z' fill='white' stroke='black' stroke-width='1'/%3E%3Cpath d='M10 24 L10 20 L16 16 L22 20 L22 24 Z' fill='%23c8b9a9' stroke='black' stroke-width='1'/%3E%3Cpath d='M14 20 L18 20 L16 17 Z' fill='%238b7355'/%3E%3C/svg%3E") 16 16, wait;
+
+  /* Grab cursor - open hand */
+  --cursor-grab: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M10 14 L10 24 C10 27 13 28 16 28 C19 28 22 27 22 24 L22 12' fill='white' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M10 14 L10 11 C10 9 12 9 12 11 L12 14' fill='white' stroke='black' stroke-width='1'/%3E%3Cpath d='M14 14 L14 9 C14 7 16 7 16 9 L16 14' fill='white' stroke='black' stroke-width='1'/%3E%3Cpath d='M18 14 L18 9 C18 7 20 7 20 9 L20 14' fill='white' stroke='black' stroke-width='1'/%3E%3Cpath d='M22 14 L22 11 C22 9 24 9 24 11 L24 16' fill='white' stroke='black' stroke-width='1'/%3E%3C/svg%3E") 16 8, grab;
+
+  /* Grabbing cursor - closed hand */
+  --cursor-grabbing: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M8 16 L8 24 C8 27 12 28 16 28 C20 28 24 27 24 24 L24 16 C24 13 20 12 16 12 C12 12 8 13 8 16 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3Cpath d='M10 16 C10 14 12 13 12 15 L12 16' fill='white' stroke='black' stroke-width='1'/%3E%3Cpath d='M14 15 C14 13 16 12 16 14 L16 15' fill='white' stroke='black' stroke-width='1'/%3E%3Cpath d='M18 15 C18 13 20 12 20 14 L20 15' fill='white' stroke='black' stroke-width='1'/%3E%3Cpath d='M22 16 C22 14 24 13 24 15 L24 16' fill='white' stroke='black' stroke-width='1'/%3E%3C/svg%3E") 16 16, grabbing;
+
+  /* Move cursor - four-way arrows */
+  --cursor-move: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 4 L12 10 L14 10 L14 14 L10 14 L10 12 L4 16 L10 20 L10 18 L14 18 L14 22 L12 22 L16 28 L20 22 L18 22 L18 18 L22 18 L22 20 L28 16 L22 12 L22 14 L18 14 L18 10 L20 10 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") 16 16, move;
+
+  /* Resize NW-SE diagonal cursor */
+  --cursor-nwse-resize: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M6 4 L6 14 L10 10 L22 22 L18 26 L28 26 L28 16 L24 20 L12 8 L16 4 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") 16 16, nwse-resize;
+
+  /* Resize NE-SW diagonal cursor */
+  --cursor-nesw-resize: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M26 4 L26 14 L22 10 L10 22 L14 26 L4 26 L4 16 L8 20 L20 8 L16 4 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") 16 16, nesw-resize;
+
+  /* Resize horizontal cursor */
+  --cursor-ew-resize: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 16 L10 10 L10 14 L22 14 L22 10 L28 16 L22 22 L22 18 L10 18 L10 22 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") 16 16, ew-resize;
+
+  /* Resize vertical cursor */
+  --cursor-ns-resize: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 4 L10 10 L14 10 L14 22 L10 22 L16 28 L22 22 L18 22 L18 10 L22 10 Z' fill='white' stroke='black' stroke-width='1.5'/%3E%3C/svg%3E") 16 16, ns-resize;
+
+  /* Not allowed cursor */
+  --cursor-not-allowed: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='10' fill='white' stroke='%23c00' stroke-width='3'/%3E%3Cpath d='M9 9 L23 23' stroke='%23c00' stroke-width='3'/%3E%3C/svg%3E") 16 16, not-allowed;
+
+  /* Crosshair/precision cursor */
+  --cursor-crosshair: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M16 4 L16 12 M16 20 L16 28 M4 16 L12 16 M20 16 L28 16' stroke='black' stroke-width='2'/%3E%3Cpath d='M16 4 L16 12 M16 20 L16 28 M4 16 L12 16 M20 16 L28 16' stroke='white' stroke-width='1'/%3E%3C/svg%3E") 16 16, crosshair;
 }
 
 @theme inline {
@@ -72,6 +116,117 @@ body {
   color: var(--win98-text);
   font-family: "MS Sans Serif", "Segoe UI", Tahoma, sans-serif;
   font-size: 11px;
+  cursor: var(--cursor-default);
+}
+
+/* ============================================
+   VINTAGE CURSOR UTILITY CLASSES
+   Apply vintage cursors globally
+   ============================================ */
+
+/* Override default cursor behaviors with vintage styles */
+*,
+*::before,
+*::after {
+  cursor: inherit;
+}
+
+/* Clickable elements get vintage pointer */
+a,
+button,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"],
+label[for],
+select,
+summary,
+[onclick],
+.cursor-pointer {
+  cursor: var(--cursor-pointer) !important;
+}
+
+/* Text inputs get vintage text cursor */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+textarea,
+[contenteditable="true"],
+.cursor-text {
+  cursor: var(--cursor-text) !important;
+}
+
+/* Grab/drag states - vintage hand cursors */
+.cursor-grab,
+[draggable="true"] {
+  cursor: var(--cursor-grab) !important;
+}
+
+.cursor-grabbing {
+  cursor: var(--cursor-grabbing) !important;
+}
+
+/* Move cursor for draggable elements */
+.cursor-move {
+  cursor: var(--cursor-move) !important;
+}
+
+/* Wait/loading states */
+.cursor-wait,
+[aria-busy="true"] {
+  cursor: var(--cursor-wait) !important;
+}
+
+/* Resize cursors - vintage double arrows */
+.cursor-nwse-resize {
+  cursor: var(--cursor-nwse-resize) !important;
+}
+
+.cursor-nesw-resize {
+  cursor: var(--cursor-nesw-resize) !important;
+}
+
+.cursor-ew-resize {
+  cursor: var(--cursor-ew-resize) !important;
+}
+
+.cursor-ns-resize {
+  cursor: var(--cursor-ns-resize) !important;
+}
+
+.cursor-col-resize {
+  cursor: var(--cursor-ew-resize) !important;
+}
+
+.cursor-row-resize {
+  cursor: var(--cursor-ns-resize) !important;
+}
+
+/* Not allowed state */
+.cursor-not-allowed,
+:disabled,
+[disabled],
+[aria-disabled="true"] {
+  cursor: var(--cursor-not-allowed) !important;
+}
+
+/* Crosshair/precision */
+.cursor-crosshair {
+  cursor: var(--cursor-crosshair) !important;
+}
+
+/* Default cursor reset */
+.cursor-default {
+  cursor: var(--cursor-default) !important;
+}
+
+/* None cursor (for screensaver, etc.) */
+.cursor-none {
+  cursor: none !important;
 }
 
 /* Screen flicker animation for refresh desktop effect */
@@ -440,17 +595,17 @@ body {
 
 /* Swipe-to-dismiss notification styling */
 .notification-swipeable {
-  cursor: grab;
+  cursor: var(--cursor-grab);
   touch-action: pan-y; /* Allow vertical scrolling but capture horizontal */
   user-select: none;
 }
 
 .notification-swipeable:active {
-  cursor: grabbing;
+  cursor: var(--cursor-grabbing);
 }
 
 .notification-dragging {
-  cursor: grabbing !important;
+  cursor: var(--cursor-grabbing) !important;
 }
 
 /* Spring-back transition when not dismissed */
