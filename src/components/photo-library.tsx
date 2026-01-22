@@ -27,11 +27,11 @@ const FULLSCREEN_PADDING = 20;
 // Photo library data
 const photoItems = [
   { id: "photolog-1", label: "img.1", image: "/images/PhotoLog1.jpg", coordinates: "47.6055° N, 122.3298° W", location: "West Forest- Anomaly", date: "2157.03.14", time: "09:15:02", color: "#7A6B5E" },
+  { id: "photolog-6", label: "img.6", image: "/images/PhotoLog6.jpg", coordinates: "47.5923° N, 122.4012° W", location: "Coastal Tidewaters", date: "2157.03.15", time: "12:33:42", color: "#4A7B9D" },
+  { id: "photolog-5", label: "img.5", image: "/images/PhotoLog5.jpg", coordinates: "47.5842° N, 122.3856° W", location: "Southern Dune Pools", date: "2157.03.15", time: "10:45:18", color: "#C9A86C" },
+  { id: "photolog-4", label: "img.4", image: "/images/PhotoLog4.jpg", coordinates: "47.6284° N, 122.3776° W", location: "Mosslands", date: "2157.03.15", time: "17:08:12", color: "#8B7355" },
   { id: "img-2", label: "img.2", image: "/images/PhotoLog3.jpg", coordinates: "47.6088° N, 122.3359° W", location: "Eastern Meadows", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
   { id: "photolog-2", label: "img.3", image: "/images/PhotoLog2.jpg", coordinates: "47.6062° N, 122.3321° W", location: "Pale Flats", date: "2157.03.14", time: "06:01:03", color: "#8B7355" },
-  { id: "photolog-4", label: "img.4", image: "/images/PhotoLog4.jpg", coordinates: "47.6284° N, 122.3776° W", location: "Mosslands", date: "2157.03.15", time: "17:08:12", color: "#8B7355" },
-  { id: "photolog-5", label: "img.5", image: "/images/PhotoLog5.jpg", coordinates: "47.5842° N, 122.3856° W", location: "Southern Dune Pools", date: "2157.03.15", time: "10:45:18", color: "#C9A86C" },
-  { id: "photolog-6", label: "img.6", image: "/images/PhotoLog6.jpg", coordinates: "47.5923° N, 122.4012° W", location: "Coastal Tidewaters", date: "2157.03.15", time: "12:33:42", color: "#4A7B9D" },
   { id: "photolog-7", label: "img.7", image: "/images/PhotoLog7.jpg", coordinates: "47.6512° N, 122.3124° W", location: "Aerial Northern Forest View", date: "2157.03.15", time: "15:08:27", color: "#3D6B4F" },
 ];
 
