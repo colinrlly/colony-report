@@ -470,23 +470,19 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                         {photo.label}
                       </div>
                       <div
-                        className={`win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
+                        className={`win98-border-sunken overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
                         style={{
                           backgroundColor: photo.color,
                           width: '115px',
                           height: '75px',
-                          minWidth: '115px',
-                          minHeight: '75px',
-                          maxWidth: '115px',
-                          maxHeight: '75px',
                         }}
                       >
                         <Image
                           src={photo.image}
                           alt={photo.label}
-                          fill
-                          sizes="115px"
-                          className="object-cover"
+                          width={115}
+                          height={75}
+                          className="object-cover w-full h-full"
                         />
                       </div>
                     </div>
