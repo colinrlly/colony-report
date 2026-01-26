@@ -24,14 +24,17 @@ const MAX_WIDTH = 1000;
 const VISIBLE_THUMBNAILS = 6;
 const FULLSCREEN_PADDING = 20;
 
+// Feature flags
+const SHOW_SCROLLBAR = false; // Set to true to re-enable the scrollbar
+
 // Photo library data
 const photoItems = [
   { id: "photolog-1", label: "img.1", image: "/images/PhotoLog1.jpg", coordinates: "43.2187° N, 118.4523° W", location: "West Forest- Anomaly", date: "2157.03.14", time: "09:15:02", color: "#7A6B5E" },
-  { id: "photolog-6", label: "img.6", image: "/images/PhotoLog6.jpg", coordinates: "41.8934° N, 124.1876° W", location: "Coastal Tidewaters", date: "2157.03.15", time: "12:33:42", color: "#4A7B9D" },
-  { id: "photolog-5", label: "img.5", image: "/images/PhotoLog5.jpg", coordinates: "38.7261° N, 121.8347° W", location: "Southern Dune Pools", date: "2157.03.15", time: "10:45:18", color: "#C9A86C" },
+  { id: "photolog-6", label: "img.2", image: "/images/PhotoLog6.jpg", coordinates: "41.8934° N, 124.1876° W", location: "Coastal Tidewaters", date: "2157.03.15", time: "12:33:42", color: "#4A7B9D" },
+  { id: "photolog-5", label: "img.3", image: "/images/PhotoLog5.jpg", coordinates: "38.7261° N, 121.8347° W", location: "Southern Dune Pools", date: "2157.03.15", time: "10:45:18", color: "#C9A86C" },
   { id: "photolog-4", label: "img.4", image: "/images/PhotoLog4.jpg", coordinates: "44.5612° N, 120.2938° W", location: "Mosslands", date: "2157.03.15", time: "17:08:12", color: "#8B7355" },
-  { id: "img-2", label: "img.2", image: "/images/PhotoLog3.jpg", coordinates: "42.3749° N, 116.5182° W", location: "Eastern Meadows", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
-  { id: "photolog-2", label: "img.3", image: "/images/PhotoLog2.jpg", coordinates: "40.1523° N, 119.7641° W", location: "Pale Flats", date: "2157.03.14", time: "06:01:03", color: "#8B7355" },
+  { id: "img-2", label: "img.5", image: "/images/PhotoLog3.jpg", coordinates: "42.3749° N, 116.5182° W", location: "Eastern Meadows", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
+  { id: "photolog-2", label: "img.6", image: "/images/PhotoLog2.jpg", coordinates: "40.1523° N, 119.7641° W", location: "Pale Flats", date: "2157.03.14", time: "06:01:03", color: "#8B7355" },
 ];
 
 // Icon components
@@ -416,7 +419,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
             </div>
 
             {/* Navigation bar */}
-            <div className="flex items-center gap-1 px-1">
+            <div className="flex items-center justify-center gap-1 px-1">
               <button
                 onClick={handlePreviousImage}
                 className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42]"
@@ -425,20 +428,23 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                 <LeftArrowIcon />
               </button>
 
-              <div
-                ref={scrollbarTrackRef}
-                onClick={handleTrackClick}
-                className="flex-1 h-5 win98-border-sunken bg-[#a09080] relative cursor-pointer"
-              >
+              {/* Scrollbar - hidden by default, set SHOW_SCROLLBAR to true to re-enable */}
+              {SHOW_SCROLLBAR && (
                 <div
-                  onMouseDown={handleScrollbarMouseDown}
-                  className={`absolute top-0 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
-                  style={{
-                    left: `${scrollbarThumbPositionPercent}%`,
-                    width: `${scrollbarThumbWidthPercent}%`,
-                  }}
-                />
-              </div>
+                  ref={scrollbarTrackRef}
+                  onClick={handleTrackClick}
+                  className="flex-1 h-5 win98-border-sunken bg-[#a09080] relative cursor-pointer"
+                >
+                  <div
+                    onMouseDown={handleScrollbarMouseDown}
+                    className={`absolute top-0 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
+                    style={{
+                      left: `${scrollbarThumbPositionPercent}%`,
+                      width: `${scrollbarThumbWidthPercent}%`,
+                    }}
+                  />
+                </div>
+              )}
 
               <button
                 onClick={handleNextImage}
