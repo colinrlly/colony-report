@@ -469,7 +469,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                         {photo.label}
                       </div>
                       <div
-                        className={`w-[170px] h-[130px] win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
+                        className={`w-[115px] h-[65px] win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
                         style={{ backgroundColor: photo.color }}
                       >
                         <Image
