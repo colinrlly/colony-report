@@ -190,7 +190,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
   }, []);
 
   const handleTrackClick = useCallback((e: React.MouseEvent) => {
-    if (!scrollbarTrackRef.current) return;
+    if (!scrollbarTrackRef.current || maxScroll === 0) return;
     const rect = scrollbarTrackRef.current.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
     const trackWidth = rect.width;
@@ -205,7 +205,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
     if (!isDraggingScrollbar) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      if (!scrollbarTrackRef.current) return;
+      if (!scrollbarTrackRef.current || maxScroll === 0) return;
       const rect = scrollbarTrackRef.current.getBoundingClientRect();
       const mouseX = e.clientX - rect.left;
       const trackWidth = rect.width;
