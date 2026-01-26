@@ -21,7 +21,7 @@ const BASE_HEIGHT = 700;
 const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 500;
 const MAX_WIDTH = 1000;
-const VISIBLE_THUMBNAILS = 6;
+const VISIBLE_THUMBNAILS = 4;
 const FULLSCREEN_PADDING = 20;
 
 // Photo library data
@@ -469,7 +469,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                         {photo.label}
                       </div>
                       <div
-                        className={`w-[115px] h-[90px] win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
+                        className={`w-[170px] h-[130px] win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
                         style={{ backgroundColor: photo.color }}
                       >
                         <Image
