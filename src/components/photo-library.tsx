@@ -395,7 +395,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
             <WindowControls showMaximize={false} showFullscreen={true} onMinimize={onMinimize} onFullscreen={handleFullscreen} onClose={onClose} />
           </WindowTitleBar>
 
-          <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-2">
+          <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-1">
             {/* Main image display */}
             <div
               className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden"
@@ -412,24 +412,34 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
               </div>
             </div>
 
-            {/* Info bar */}
-            <div className="flex justify-between items-center px-2 py-1 text-[#c8b9a9] text-[11px]">
-              <div>{selectedPhoto.coordinates}</div>
-              <div>{selectedPhoto.location} {selectedPhoto.date} {selectedPhoto.time}</div>
-            </div>
-
-            {/* Navigation bar */}
-            <div className="flex items-center justify-center gap-1 px-1">
+            {/* Info bar with navigation */}
+            <div className="flex items-center gap-1 px-1 text-[#c8b9a9] text-[11px]">
               <button
                 onClick={handlePreviousImage}
-                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42]"
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42] flex-shrink-0"
                 aria-label="Previous image"
               >
                 <LeftArrowIcon />
               </button>
 
-              {/* Scrollbar - hidden by default, set SHOW_SCROLLBAR to true to re-enable */}
-              {SHOW_SCROLLBAR && (
+              <div className="flex-1 flex justify-between items-center px-2">
+                <div>{selectedPhoto.coordinates}</div>
+                <div>{selectedPhoto.location} {selectedPhoto.date} {selectedPhoto.time}</div>
+              </div>
+
+              <button
+                onClick={handleNextImage}
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42] flex-shrink-0"
+                aria-label="Next image"
+              >
+                <RightArrowIcon />
+              </button>
+            </div>
+
+            {/* Scrollbar - hidden by default, set SHOW_SCROLLBAR to true to re-enable */}
+            {SHOW_SCROLLBAR && (
+              <div className="flex items-center gap-1 px-1">
+                <div className="w-6 flex-shrink-0" /> {/* Spacer to align with arrow above */}
                 <div
                   ref={scrollbarTrackRef}
                   onClick={handleTrackClick}
@@ -444,16 +454,9 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                     }}
                   />
                 </div>
-              )}
-
-              <button
-                onClick={handleNextImage}
-                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42]"
-                aria-label="Next image"
-              >
-                <RightArrowIcon />
-              </button>
-            </div>
+                <div className="w-6 flex-shrink-0" /> {/* Spacer to align with arrow above */}
+              </div>
+            )}
 
             {/* Thumbnail strip */}
             <div
