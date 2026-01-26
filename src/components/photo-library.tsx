@@ -406,9 +406,6 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                       className="flex flex-col items-center cursor-pointer flex-shrink-0"
                       onClick={() => handleThumbnailClick(actualIndex)}
                     >
-                      <div className={`text-[11px] mb-1 font-bold ${isSelected ? 'text-[#ffdd44]' : 'text-[#c8b9a9]'}`}>
-                        {photo.label}
-                      </div>
                       <div
                         className={`w-[115px] h-[90px] win98-border-sunken relative overflow-hidden ${isSelected ? 'ring-2 ring-[#ffdd44]' : ''}`}
                         style={{ backgroundColor: photo.color }}
