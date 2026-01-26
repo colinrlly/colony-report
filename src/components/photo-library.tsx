@@ -17,7 +17,7 @@ const ICON_COLUMN_RIGHT_EDGE = 132;
 
 // Window dimension constants
 const BASE_WIDTH = 750;
-const BASE_HEIGHT = 655;
+const BASE_HEIGHT = 660;
 const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 500;
 const MAX_WIDTH = 1000;
