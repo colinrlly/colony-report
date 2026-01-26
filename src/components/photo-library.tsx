@@ -32,7 +32,6 @@ const photoItems = [
   { id: "photolog-4", label: "img.4", image: "/images/PhotoLog4.jpg", coordinates: "44.5612° N, 120.2938° W", location: "Mosslands", date: "2157.03.15", time: "17:08:12", color: "#8B7355" },
   { id: "img-2", label: "img.2", image: "/images/PhotoLog3.jpg", coordinates: "42.3749° N, 116.5182° W", location: "Eastern Meadows", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
   { id: "photolog-2", label: "img.3", image: "/images/PhotoLog2.jpg", coordinates: "40.1523° N, 119.7641° W", location: "Pale Flats", date: "2157.03.14", time: "06:01:03", color: "#8B7355" },
-  { id: "photolog-7", label: "img.7", image: "/images/PhotoLog7.jpg", coordinates: "46.8295° N, 117.9463° W", location: "Aerial Northern Forest View", date: "2157.03.15", time: "15:08:27", color: "#3D6B4F" },
 ];
 
 // Icon components
@@ -104,7 +103,6 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
   // Photo selection state
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [isDraggingScrollbar, setIsDraggingScrollbar] = useState(false);
 
   // Window state
   const [dimensions, setDimensions] = useState({ width: BASE_WIDTH, height: BASE_HEIGHT });
@@ -119,14 +117,11 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
 
   // Refs
   const nodeRef = useRef<HTMLDivElement>(null);
-  const scrollbarTrackRef = useRef<HTMLDivElement>(null);
   const resizeStartRef = useRef({ mouseX: 0, mouseY: 0, width: BASE_WIDTH, height: BASE_HEIGHT });
 
   // Derived values
   const selectedPhoto = photoItems[selectedIndex];
   const maxScroll = Math.max(0, photoItems.length - VISIBLE_THUMBNAILS);
-  const scrollbarThumbWidthPercent = (VISIBLE_THUMBNAILS / photoItems.length) * 100;
-  const scrollbarThumbPositionPercent = maxScroll > 0 ? (scrollPosition / maxScroll) * (100 - scrollbarThumbWidthPercent) : 0;
   const scaleFactor = dimensions.width / BASE_WIDTH;
 
   // Navigation handlers
@@ -183,48 +178,6 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handlePreviousImage, handleNextImage]);
-
-  // Scrollbar handlers
-  const handleScrollbarMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsDraggingScrollbar(true);
-  }, []);
-
-  const handleTrackClick = useCallback((e: React.MouseEvent) => {
-    if (!scrollbarTrackRef.current) return;
-    const rect = scrollbarTrackRef.current.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const trackWidth = rect.width;
-    const thumbWidth = (scrollbarThumbWidthPercent / 100) * trackWidth;
-    const scrollableWidth = trackWidth - thumbWidth;
-    const newPosition = Math.round((clickX - thumbWidth / 2) / scrollableWidth * maxScroll);
-    setScrollPosition(Math.max(0, Math.min(maxScroll, newPosition)));
-  }, [scrollbarThumbWidthPercent, maxScroll]);
-
-  // Scrollbar drag effect
-  useEffect(() => {
-    if (!isDraggingScrollbar) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!scrollbarTrackRef.current) return;
-      const rect = scrollbarTrackRef.current.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const trackWidth = rect.width;
-      const thumbWidth = (scrollbarThumbWidthPercent / 100) * trackWidth;
-      const scrollableWidth = trackWidth - thumbWidth;
-      const newPosition = Math.round((mouseX - thumbWidth / 2) / scrollableWidth * maxScroll);
-      setScrollPosition(Math.max(0, Math.min(maxScroll, newPosition)));
-    };
-
-    const handleMouseUp = () => setIsDraggingScrollbar(false);
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, [isDraggingScrollbar, maxScroll, scrollbarThumbWidthPercent]);
 
   // Resize handlers
   const handleResizeStart = useCallback((e: React.MouseEvent) => {
@@ -426,20 +379,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
                 <LeftArrowIcon />
               </button>
 
-              <div
-                ref={scrollbarTrackRef}
-                onClick={handleTrackClick}
-                className="flex-1 h-5 win98-border-sunken bg-[#a09080] relative cursor-pointer"
-              >
-                <div
-                  onMouseDown={handleScrollbarMouseDown}
-                  className={`absolute top-0 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
-                  style={{
-                    left: `${scrollbarThumbPositionPercent}%`,
-                    width: `${scrollbarThumbWidthPercent}%`,
-                  }}
-                />
-              </div>
+              <div className="flex-1" />
 
               <button
                 onClick={handleNextImage}
