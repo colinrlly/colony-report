@@ -398,7 +398,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
           <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-1">
             {/* Main image display */}
             <div
-              className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden"
+              className="flex-1 min-h-0 win98-border-sunken flex items-center justify-center overflow-hidden"
               style={{ backgroundColor: selectedPhoto.color }}
             >
               <div className="relative w-full h-full">
