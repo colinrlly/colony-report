@@ -378,7 +378,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
         <Window
           resizable={false}
           draggable={false}
-          className="flex flex-col absolute top-0 left-0 origin-top-left"
+          className="flex flex-col absolute top-0 left-0 origin-top-left !overflow-hidden"
           style={{
             width: BASE_WIDTH,
             height: BASE_HEIGHT,
@@ -395,7 +395,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
             <WindowControls showMaximize={false} showFullscreen={true} onMinimize={onMinimize} onFullscreen={handleFullscreen} onClose={onClose} />
           </WindowTitleBar>
 
-          <div className="flex-1 min-h-0 bg-[#5a4d42] p-3 flex flex-col gap-1">
+          <div className="flex-1 min-h-0 overflow-hidden bg-[#5a4d42] p-3 flex flex-col gap-1">
             {/* Main image display */}
             <div
               className="flex-1 min-h-0 win98-border-sunken flex items-center justify-center overflow-hidden"
