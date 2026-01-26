@@ -17,7 +17,7 @@ const ICON_COLUMN_RIGHT_EDGE = 132;
 
 // Window dimension constants
 const BASE_WIDTH = 750;
-const BASE_HEIGHT = 660;
+const BASE_HEIGHT = 660; // Note: Increase to ~700 if re-enabling scrollbar
 const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 500;
 const MAX_WIDTH = 1000;
@@ -25,7 +25,8 @@ const VISIBLE_THUMBNAILS = 6;
 const FULLSCREEN_PADDING = 20;
 
 // Feature flags
-const SHOW_SCROLLBAR = false; // Set to true to re-enable the scrollbar
+// Set SHOW_SCROLLBAR to true when adding more than VISIBLE_THUMBNAILS images
+const SHOW_SCROLLBAR = false;
 
 // Photo library data
 const photoItems = [
