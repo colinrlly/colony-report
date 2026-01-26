@@ -17,22 +17,25 @@ const ICON_COLUMN_RIGHT_EDGE = 132;
 
 // Window dimension constants
 const BASE_WIDTH = 750;
-const BASE_HEIGHT = 700;
+const BASE_HEIGHT = 660; // Note: Increase to ~700 if re-enabling scrollbar
 const ASPECT_RATIO = BASE_WIDTH / BASE_HEIGHT;
 const MIN_WIDTH = 500;
 const MAX_WIDTH = 1000;
 const VISIBLE_THUMBNAILS = 6;
 const FULLSCREEN_PADDING = 20;
 
+// Feature flags
+// Set SHOW_SCROLLBAR to true when adding more than VISIBLE_THUMBNAILS images
+const SHOW_SCROLLBAR = false;
+
 // Photo library data
 const photoItems = [
   { id: "photolog-1", label: "img.1", image: "/images/PhotoLog1.jpg", coordinates: "43.2187° N, 118.4523° W", location: "West Forest- Anomaly", date: "2157.03.14", time: "09:15:02", color: "#7A6B5E" },
-  { id: "photolog-6", label: "img.6", image: "/images/PhotoLog6.jpg", coordinates: "41.8934° N, 124.1876° W", location: "Coastal Tidewaters", date: "2157.03.15", time: "12:33:42", color: "#4A7B9D" },
-  { id: "photolog-5", label: "img.5", image: "/images/PhotoLog5.jpg", coordinates: "38.7261° N, 121.8347° W", location: "Southern Dune Pools", date: "2157.03.15", time: "10:45:18", color: "#C9A86C" },
+  { id: "photolog-6", label: "img.2", image: "/images/PhotoLog6.jpg", coordinates: "41.8934° N, 124.1876° W", location: "Coastal Tidewaters", date: "2157.03.15", time: "12:33:42", color: "#4A7B9D" },
+  { id: "photolog-5", label: "img.3", image: "/images/PhotoLog5.jpg", coordinates: "38.7261° N, 121.8347° W", location: "Southern Dune Pools", date: "2157.03.15", time: "10:45:18", color: "#C9A86C" },
   { id: "photolog-4", label: "img.4", image: "/images/PhotoLog4.jpg", coordinates: "44.5612° N, 120.2938° W", location: "Mosslands", date: "2157.03.15", time: "17:08:12", color: "#8B7355" },
-  { id: "img-2", label: "img.2", image: "/images/PhotoLog3.jpg", coordinates: "42.3749° N, 116.5182° W", location: "Eastern Meadows", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
-  { id: "photolog-2", label: "img.3", image: "/images/PhotoLog2.jpg", coordinates: "40.1523° N, 119.7641° W", location: "Pale Flats", date: "2157.03.14", time: "06:01:03", color: "#8B7355" },
-  { id: "photolog-7", label: "img.7", image: "/images/PhotoLog7.jpg", coordinates: "46.8295° N, 117.9463° W", location: "Aerial Northern Forest View", date: "2157.03.15", time: "15:08:27", color: "#3D6B4F" },
+  { id: "img-2", label: "img.5", image: "/images/PhotoLog3.jpg", coordinates: "42.3749° N, 116.5182° W", location: "Eastern Meadows", date: "2157.03.14", time: "14:25:31", color: "#A67B5B" },
+  { id: "photolog-2", label: "img.6", image: "/images/PhotoLog2.jpg", coordinates: "40.1523° N, 119.7641° W", location: "Pale Flats", date: "2157.03.14", time: "06:01:03", color: "#8B7355" },
 ];
 
 // Icon components
@@ -376,7 +379,7 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
         <Window
           resizable={false}
           draggable={false}
-          className="flex flex-col absolute top-0 left-0 origin-top-left"
+          className="flex flex-col absolute top-0 left-0 origin-top-left !overflow-hidden"
           style={{
             width: BASE_WIDTH,
             height: BASE_HEIGHT,
@@ -393,10 +396,10 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
             <WindowControls showMaximize={false} showFullscreen={true} onMinimize={onMinimize} onFullscreen={handleFullscreen} onClose={onClose} />
           </WindowTitleBar>
 
-          <div className="flex-1 bg-[#5a4d42] p-3 flex flex-col gap-2">
+          <div className="flex-1 min-h-0 overflow-hidden bg-[#5a4d42] p-3 flex flex-col gap-1">
             {/* Main image display */}
             <div
-              className="flex-1 win98-border-sunken flex items-center justify-center overflow-hidden"
+              className="flex-1 min-h-0 win98-border-sunken flex items-center justify-center overflow-hidden"
               style={{ backgroundColor: selectedPhoto.color }}
             >
               <div className="relative w-full h-full">
@@ -410,45 +413,51 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
               </div>
             </div>
 
-            {/* Info bar */}
-            <div className="flex justify-between items-center px-2 py-1 text-[#c8b9a9] text-[11px]">
-              <div>{selectedPhoto.coordinates}</div>
-              <div>{selectedPhoto.location} {selectedPhoto.date} {selectedPhoto.time}</div>
-            </div>
-
-            {/* Navigation bar */}
-            <div className="flex items-center gap-1 px-1">
+            {/* Info bar with navigation */}
+            <div className="flex items-center gap-1 px-1 text-[#c8b9a9] text-[11px]">
               <button
                 onClick={handlePreviousImage}
-                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42]"
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42] flex-shrink-0"
                 aria-label="Previous image"
               >
                 <LeftArrowIcon />
               </button>
 
-              <div
-                ref={scrollbarTrackRef}
-                onClick={handleTrackClick}
-                className="flex-1 h-5 win98-border-sunken bg-[#a09080] relative cursor-pointer"
-              >
-                <div
-                  onMouseDown={handleScrollbarMouseDown}
-                  className={`absolute top-0 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
-                  style={{
-                    left: `${scrollbarThumbPositionPercent}%`,
-                    width: `${scrollbarThumbWidthPercent}%`,
-                  }}
-                />
+              <div className="flex-1 flex justify-between items-center px-2">
+                <div>{selectedPhoto.coordinates}</div>
+                <div>{selectedPhoto.location} {selectedPhoto.date} {selectedPhoto.time}</div>
               </div>
 
               <button
                 onClick={handleNextImage}
-                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42]"
+                className="win98-border-raised bg-[#c8b9a9] hover:bg-[#d8c9b9] active:win98-border-sunken w-6 h-5 flex items-center justify-center text-[#5a4d42] flex-shrink-0"
                 aria-label="Next image"
               >
                 <RightArrowIcon />
               </button>
             </div>
+
+            {/* Scrollbar - hidden by default, set SHOW_SCROLLBAR to true to re-enable */}
+            {SHOW_SCROLLBAR && (
+              <div className="flex items-center gap-1 px-1">
+                <div className="w-6 flex-shrink-0" /> {/* Spacer to align with arrow above */}
+                <div
+                  ref={scrollbarTrackRef}
+                  onClick={handleTrackClick}
+                  className="flex-1 h-5 win98-border-sunken bg-[#a09080] relative cursor-pointer"
+                >
+                  <div
+                    onMouseDown={handleScrollbarMouseDown}
+                    className={`absolute top-0 h-full win98-border-raised bg-[#c8b9a9] cursor-grab ${isDraggingScrollbar ? 'cursor-grabbing' : ''}`}
+                    style={{
+                      left: `${scrollbarThumbPositionPercent}%`,
+                      width: `${scrollbarThumbWidthPercent}%`,
+                    }}
+                  />
+                </div>
+                <div className="w-6 flex-shrink-0" /> {/* Spacer to align with arrow above */}
+              </div>
+            )}
 
             {/* Thumbnail strip */}
             <div
