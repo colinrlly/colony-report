@@ -61,10 +61,12 @@ export function ColonyReports({ onClose, onMinimize, zIndex, onFocus }: ColonyRe
 
       switch (e.key) {
         case "ArrowUp":
+        case "ArrowLeft":
           e.preventDefault();
           handlePreviousItem();
           break;
         case "ArrowDown":
+        case "ArrowRight":
           e.preventDefault();
           handleNextItem();
           break;
