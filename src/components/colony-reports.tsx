@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Window,
   WindowTitleBar,
@@ -36,6 +36,46 @@ export function ColonyReports({ onClose, onMinimize, zIndex, onFocus }: ColonyRe
 
   const selectedItem = navItems.find((item) => item.id === selectedId);
   const statusText = selectedItem?.statusText ?? "";
+
+  // Navigation handlers
+  const handlePreviousItem = useCallback(() => {
+    const currentIndex = navItems.findIndex((item) => item.id === selectedId);
+    const newIndex = currentIndex === 0 ? navItems.length - 1 : currentIndex - 1;
+    setSelectedId(navItems[newIndex].id);
+  }, [selectedId]);
+
+  const handleNextItem = useCallback(() => {
+    const currentIndex = navItems.findIndex((item) => item.id === selectedId);
+    const newIndex = currentIndex === navItems.length - 1 ? 0 : currentIndex + 1;
+    setSelectedId(navItems[newIndex].id);
+  }, [selectedId]);
+
+  // Keyboard navigation with arrow keys
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input field
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable) {
+        return;
+      }
+
+      switch (e.key) {
+        case "ArrowUp":
+        case "ArrowLeft":
+          e.preventDefault();
+          handlePreviousItem();
+          break;
+        case "ArrowDown":
+        case "ArrowRight":
+          e.preventDefault();
+          handleNextItem();
+          break;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handlePreviousItem, handleNextItem]);
 
   // Desktop icons are at x=24 with ~100px width, so snap boundary is at 132px (124 + 8px margin)
   const ICON_COLUMN_RIGHT_EDGE = 132;
