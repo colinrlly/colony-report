@@ -175,9 +175,11 @@ export function PhotoLibrary({ onClose, onMinimize, zIndex, onFocus }: PhotoLibr
 
       switch (e.key) {
         case "ArrowLeft":
+        case "ArrowUp":
           handlePreviousImage();
           break;
         case "ArrowRight":
+        case "ArrowDown":
           handleNextImage();
           break;
       }
