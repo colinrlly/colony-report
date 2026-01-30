@@ -747,28 +747,31 @@ export default function Home() {
     }},
   ];
 
+  // Entry animation timing constants (sync with CSS durations)
+  const ZOOM_DURATION = 600;
+  const ENTRY_FLICKER_DURATION = 200;
+  const DESKTOP_FLICKER_DURATION = 250;
+
   // Handle entry animation sequence
-  const handleMonitorClick = () => {
-    if (isEnteringAnimation) return; // Prevent double-clicking
+  const handleMonitorClick = useCallback(() => {
+    if (isEnteringAnimation) return;
 
     setIsEnteringAnimation(true);
 
-    // After zoom animation completes (600ms), show flicker
+    // Sequence: zoom → entry flicker → desktop appears with flicker
     setTimeout(() => {
       setShowEntryFlicker(true);
 
-      // After flicker completes (200ms), enter the app with desktop flicker
       setTimeout(() => {
         setHasEntered(true);
         setShowDesktopFlicker(true);
 
-        // Clear desktop flicker after animation completes
         setTimeout(() => {
           setShowDesktopFlicker(false);
-        }, 250);
-      }, 200);
-    }, 600);
-  };
+        }, DESKTOP_FLICKER_DURATION);
+      }, ENTRY_FLICKER_DURATION);
+    }, ZOOM_DURATION);
+  }, [isEnteringAnimation]);
 
   // Entry screen - full-screen computer scene with clickable monitor
   if (!hasEntered) {
@@ -780,10 +783,10 @@ export default function Home() {
           className={`w-full h-full object-cover select-none ${isEnteringAnimation ? 'entry-zoom' : ''}`}
           draggable={false}
         />
-        {/* Invisible clickable zone positioned over the monitor screen */}
+        {/* Clickable zone over the monitor screen */}
         <button
           onClick={handleMonitorClick}
-          className={`absolute ${isEnteringAnimation ? 'pointer-events-none' : 'cursor-pointer'}`}
+          className={`absolute outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-sm ${isEnteringAnimation ? 'pointer-events-none' : 'cursor-pointer'}`}
           style={{ left: '45%', top: '13%', width: '30%', height: '52%' }}
           aria-label="Click monitor to enter"
         />
