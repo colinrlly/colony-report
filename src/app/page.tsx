@@ -247,6 +247,7 @@ export default function Home() {
   const [hasEntered, setHasEntered] = useState(false);
   const [isEnteringAnimation, setIsEnteringAnimation] = useState(false);
   const [showEntryFlicker, setShowEntryFlicker] = useState(false);
+  const [showDesktopFlicker, setShowDesktopFlicker] = useState(false);
 
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
@@ -756,10 +757,16 @@ export default function Home() {
     setTimeout(() => {
       setShowEntryFlicker(true);
 
-      // After flicker completes (500ms), enter the app
+      // After flicker completes (200ms), enter the app with desktop flicker
       setTimeout(() => {
         setHasEntered(true);
-      }, 500);
+        setShowDesktopFlicker(true);
+
+        // Clear desktop flicker after animation completes
+        setTimeout(() => {
+          setShowDesktopFlicker(false);
+        }, 250);
+      }, 200);
     }, 600);
   };
 
@@ -801,6 +808,11 @@ export default function Home() {
         >
           <div className="absolute inset-0 bg-white/30 animate-pulse" />
         </div>
+      )}
+
+      {/* Desktop flicker on entry */}
+      {showDesktopFlicker && (
+        <div className="fixed inset-0 z-[9999] pointer-events-none bg-black desktop-flicker" />
       )}
 
       {/* Restart animation overlay */}
