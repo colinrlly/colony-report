@@ -262,15 +262,16 @@ body {
 /* Zoom into monitor animation */
 @keyframes zoomIntoMonitor {
   0% {
-    transform: scale(1) translate(0, 0);
+    transform: scale(1);
   }
   100% {
-    /* Zoom and center on the monitor area */
-    transform: scale(3) translate(3%, 18%);
+    transform: scale(3.5);
   }
 }
 
 .entry-zoom {
+  /* Transform origin set to center of the monitor screen area */
+  transform-origin: 60% 39%;
   animation: zoomIntoMonitor 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
