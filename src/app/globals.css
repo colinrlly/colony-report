@@ -256,6 +256,41 @@ body {
 }
 
 /* ============================================
+   ENTRY SCREEN ANIMATIONS
+   ============================================ */
+
+/* Zoom into monitor animation - 600ms duration */
+@keyframes zoomIntoMonitor {
+  from { transform: scale(1); }
+  to { transform: scale(1.8); }
+}
+
+.entry-zoom {
+  transform-origin: 65% 33%; /* Center of monitor screen area */
+  animation: zoomIntoMonitor 0.6s ease-out forwards;
+  will-change: transform;
+}
+
+/* CRT screen flicker effect - 200ms duration */
+@keyframes screenFlicker {
+  0%, 10%, 20%, 50% { opacity: 0.1; }
+  5%, 15%, 25%, 40%, 60%, 80% { opacity: 0.9; }
+  30%, 70% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+.entry-flicker {
+  animation: screenFlicker 0.2s steps(1) forwards;
+  will-change: opacity;
+}
+
+/* Desktop flicker on entry - 250ms duration */
+.desktop-flicker {
+  animation: screenFlicker 0.25s steps(1) forwards;
+  will-change: opacity;
+}
+
+/* ============================================
    WALLPAPER STYLES
    ============================================ */
 

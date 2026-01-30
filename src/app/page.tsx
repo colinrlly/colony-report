@@ -245,6 +245,9 @@ const getReminderNotifications = () => [
 export default function Home() {
   // Entry screen state - starts as false, user must click computer screen to enter
   const [hasEntered, setHasEntered] = useState(false);
+  const [isEnteringAnimation, setIsEnteringAnimation] = useState(false);
+  const [showEntryFlicker, setShowEntryFlicker] = useState(false);
+  const [showDesktopFlicker, setShowDesktopFlicker] = useState(false);
 
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
@@ -744,23 +747,53 @@ export default function Home() {
     }},
   ];
 
+  // Entry animation timing constants (sync with CSS durations)
+  const ZOOM_DURATION = 600;
+  const ENTRY_FLICKER_DURATION = 200;
+  const DESKTOP_FLICKER_DURATION = 250;
+
+  // Handle entry animation sequence
+  const handleMonitorClick = useCallback(() => {
+    if (isEnteringAnimation) return;
+
+    setIsEnteringAnimation(true);
+
+    // Sequence: zoom → entry flicker → desktop appears with flicker
+    setTimeout(() => {
+      setShowEntryFlicker(true);
+
+      setTimeout(() => {
+        setHasEntered(true);
+        setShowDesktopFlicker(true);
+
+        setTimeout(() => {
+          setShowDesktopFlicker(false);
+        }, DESKTOP_FLICKER_DURATION);
+      }, ENTRY_FLICKER_DURATION);
+    }, ZOOM_DURATION);
+  }, [isEnteringAnimation]);
+
   // Entry screen - full-screen computer scene with clickable monitor
   if (!hasEntered) {
     return (
-      <div className="fixed inset-0 bg-black">
+      <div className="fixed inset-0 bg-black overflow-hidden">
         <img
           src="/images/computer scene 1.jpg"
           alt="Computer workstation"
-          className="w-full h-full object-cover select-none"
+          className={`w-full h-full object-cover select-none ${isEnteringAnimation ? 'entry-zoom' : ''}`}
           draggable={false}
         />
-        {/* Invisible clickable zone positioned over the monitor screen */}
+        {/* Clickable zone over the monitor screen */}
         <button
-          onClick={() => setHasEntered(true)}
-          className="absolute cursor-pointer"
+          onClick={handleMonitorClick}
+          className={`absolute outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-sm ${isEnteringAnimation ? 'pointer-events-none' : 'cursor-pointer'}`}
           style={{ left: '45%', top: '13%', width: '30%', height: '52%' }}
           aria-label="Click monitor to enter"
         />
+        {/* Screen flicker overlay after zoom */}
+        {showEntryFlicker && (
+          <div className="fixed inset-0 bg-black entry-flicker" />
+        )}
       </div>
     );
   }
@@ -778,6 +811,11 @@ export default function Home() {
         >
           <div className="absolute inset-0 bg-white/30 animate-pulse" />
         </div>
+      )}
+
+      {/* Desktop flicker on entry */}
+      {showDesktopFlicker && (
+        <div className="fixed inset-0 z-[9999] pointer-events-none bg-black desktop-flicker" />
       )}
 
       {/* Restart animation overlay */}
