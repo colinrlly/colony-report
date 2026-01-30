@@ -266,7 +266,7 @@ body {
 }
 
 .entry-zoom {
-  transform-origin: 60% 39%; /* Center of monitor screen area */
+  transform-origin: 55% 45%; /* Center of monitor screen area */
   animation: zoomIntoMonitor 0.6s ease-out forwards;
   will-change: transform;
 }
