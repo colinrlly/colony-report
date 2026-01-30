@@ -760,13 +760,13 @@ export default function Home() {
           {/* Positioned to cover the green screen area of the monitor */}
           <button
             onClick={() => setHasEntered(true)}
-            className="absolute cursor-pointer hover:bg-white/10 transition-colors duration-200 rounded-sm"
+            className="absolute cursor-pointer"
             style={{
-              // These percentages position the clickable area over the green screen
-              left: '37%',
+              // These percentages position the clickable area over the monitor screen
+              left: '45%',
               top: '13%',
-              width: '26%',
-              height: '42%',
+              width: '30%',
+              height: '52%',
             }}
             aria-label="Click to enter"
           />
