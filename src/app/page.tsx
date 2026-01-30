@@ -752,7 +752,7 @@ export default function Home() {
 
     setIsEnteringAnimation(true);
 
-    // After zoom animation completes (800ms), show flicker
+    // After zoom animation completes (600ms), show flicker
     setTimeout(() => {
       setShowEntryFlicker(true);
 
@@ -760,7 +760,7 @@ export default function Home() {
       setTimeout(() => {
         setHasEntered(true);
       }, 500);
-    }, 800);
+    }, 600);
   };
 
   // Entry screen - full-screen computer scene with clickable monitor
