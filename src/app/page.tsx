@@ -744,33 +744,23 @@ export default function Home() {
     }},
   ];
 
-  // Entry screen - show computer image with clickable screen area
+  // Entry screen - full-screen computer scene with clickable monitor
   if (!hasEntered) {
     return (
-      <div className="fixed inset-0 bg-black overflow-hidden">
-        {/* Full-screen computer scene image */}
-        <div className="relative w-full h-full flex items-center justify-center">
-          <img
-            src="/images/computer scene 1.jpg"
-            alt="Computer scene"
-            className="w-full h-full object-cover"
-            draggable={false}
-          />
-          {/* Clickable zone over the green monitor screen */}
-          {/* Positioned to cover the green screen area of the monitor */}
-          <button
-            onClick={() => setHasEntered(true)}
-            className="absolute cursor-pointer"
-            style={{
-              // These percentages position the clickable area over the monitor screen
-              left: '45%',
-              top: '13%',
-              width: '30%',
-              height: '52%',
-            }}
-            aria-label="Click to enter"
-          />
-        </div>
+      <div className="fixed inset-0 bg-black">
+        <img
+          src="/images/computer scene 1.jpg"
+          alt="Computer workstation"
+          className="w-full h-full object-cover select-none"
+          draggable={false}
+        />
+        {/* Invisible clickable zone positioned over the monitor screen */}
+        <button
+          onClick={() => setHasEntered(true)}
+          className="absolute cursor-pointer"
+          style={{ left: '45%', top: '13%', width: '30%', height: '52%' }}
+          aria-label="Click monitor to enter"
+        />
       </div>
     );
   }
