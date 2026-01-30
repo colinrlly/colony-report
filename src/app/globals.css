@@ -256,6 +256,47 @@ body {
 }
 
 /* ============================================
+   ENTRY SCREEN ANIMATIONS
+   ============================================ */
+
+/* Zoom into monitor animation */
+@keyframes zoomIntoMonitor {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    /* Zoom and center on the monitor area */
+    transform: scale(3) translate(3%, 18%);
+  }
+}
+
+.entry-zoom {
+  animation: zoomIntoMonitor 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Screen flicker on entry */
+@keyframes entryFlicker {
+  0% { opacity: 0; }
+  5% { opacity: 1; }
+  10% { opacity: 0; }
+  15% { opacity: 0.8; }
+  20% { opacity: 0.1; }
+  25% { opacity: 0.9; }
+  30% { opacity: 0.2; }
+  40% { opacity: 0.7; }
+  50% { opacity: 0.1; }
+  60% { opacity: 0.9; }
+  70% { opacity: 0.3; }
+  80% { opacity: 0.95; }
+  90% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.entry-flicker {
+  animation: entryFlicker 0.5s ease-out forwards;
+}
+
+/* ============================================
    WALLPAPER STYLES
    ============================================ */
 

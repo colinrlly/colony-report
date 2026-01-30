@@ -245,6 +245,8 @@ const getReminderNotifications = () => [
 export default function Home() {
   // Entry screen state - starts as false, user must click computer screen to enter
   const [hasEntered, setHasEntered] = useState(false);
+  const [isEnteringAnimation, setIsEnteringAnimation] = useState(false);
+  const [showEntryFlicker, setShowEntryFlicker] = useState(false);
 
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
@@ -744,23 +746,44 @@ export default function Home() {
     }},
   ];
 
+  // Handle entry animation sequence
+  const handleMonitorClick = () => {
+    if (isEnteringAnimation) return; // Prevent double-clicking
+
+    setIsEnteringAnimation(true);
+
+    // After zoom animation completes (800ms), show flicker
+    setTimeout(() => {
+      setShowEntryFlicker(true);
+
+      // After flicker completes (500ms), enter the app
+      setTimeout(() => {
+        setHasEntered(true);
+      }, 500);
+    }, 800);
+  };
+
   // Entry screen - full-screen computer scene with clickable monitor
   if (!hasEntered) {
     return (
-      <div className="fixed inset-0 bg-black">
+      <div className="fixed inset-0 bg-black overflow-hidden">
         <img
           src="/images/computer scene 1.jpg"
           alt="Computer workstation"
-          className="w-full h-full object-cover select-none"
+          className={`w-full h-full object-cover select-none ${isEnteringAnimation ? 'entry-zoom' : ''}`}
           draggable={false}
         />
         {/* Invisible clickable zone positioned over the monitor screen */}
         <button
-          onClick={() => setHasEntered(true)}
-          className="absolute cursor-pointer"
+          onClick={handleMonitorClick}
+          className={`absolute ${isEnteringAnimation ? 'pointer-events-none' : 'cursor-pointer'}`}
           style={{ left: '45%', top: '13%', width: '30%', height: '52%' }}
           aria-label="Click monitor to enter"
         />
+        {/* Screen flicker overlay after zoom */}
+        {showEntryFlicker && (
+          <div className="fixed inset-0 bg-black entry-flicker" />
+        )}
       </div>
     );
   }
