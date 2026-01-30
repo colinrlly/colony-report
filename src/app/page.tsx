@@ -243,6 +243,9 @@ const getReminderNotifications = () => [
 ];
 
 export default function Home() {
+  // Entry screen state - starts as false, user must click computer screen to enter
+  const [hasEntered, setHasEntered] = useState(false);
+
   const [isColonyReportsOpen, setIsColonyReportsOpen] = useState(false);
   const [isColonyReportsMinimized, setIsColonyReportsMinimized] = useState(false);
   const [isSecretsFolderOpen, setIsSecretsFolderOpen] = useState(false);
@@ -740,6 +743,27 @@ export default function Home() {
       bringToFront('contact-hr');
     }},
   ];
+
+  // Entry screen - full-screen computer scene with clickable monitor
+  if (!hasEntered) {
+    return (
+      <div className="fixed inset-0 bg-black">
+        <img
+          src="/images/computer scene 1.jpg"
+          alt="Computer workstation"
+          className="w-full h-full object-cover select-none"
+          draggable={false}
+        />
+        {/* Invisible clickable zone positioned over the monitor screen */}
+        <button
+          onClick={() => setHasEntered(true)}
+          className="absolute cursor-pointer"
+          style={{ left: '45%', top: '13%', width: '30%', height: '52%' }}
+          aria-label="Click monitor to enter"
+        />
+      </div>
+    );
+  }
 
   return (
     <>
