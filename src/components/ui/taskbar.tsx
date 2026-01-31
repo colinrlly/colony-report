@@ -7,6 +7,7 @@ interface TaskbarProps {
   children?: React.ReactNode;
   onRestart?: () => void;
   onSleep?: () => void;
+  onShutdown?: () => void;
 }
 
 function AntIcon() {
@@ -61,15 +62,16 @@ interface StartMenuProps {
   onClose: () => void;
   onRestart?: () => void;
   onSleep?: () => void;
+  onShutdown?: () => void;
 }
 
-function StartMenu({ isOpen, onClose, onRestart, onSleep }: StartMenuProps) {
+function StartMenu({ isOpen, onClose, onRestart, onSleep, onShutdown }: StartMenuProps) {
   if (!isOpen) return null;
 
   const menuItems = [
     { label: "Restart...", onClick: () => { onClose(); onRestart?.(); } },
     { label: "Sleep", onClick: () => { onClose(); onSleep?.(); } },
-    { label: "Shut Down...", onClick: () => { onClose(); } },
+    { label: "Shut Down...", onClick: () => { onClose(); onShutdown?.(); } },
   ];
 
   return (
@@ -99,7 +101,7 @@ function StartMenu({ isOpen, onClose, onRestart, onSleep }: StartMenuProps) {
   );
 }
 
-export function Taskbar({ children, onRestart, onSleep }: TaskbarProps) {
+export function Taskbar({ children, onRestart, onSleep, onShutdown }: TaskbarProps) {
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const startButtonRef = useRef<HTMLDivElement>(null);
 
@@ -147,7 +149,7 @@ export function Taskbar({ children, onRestart, onSleep }: TaskbarProps) {
           <AntIcon />
           Start
         </button>
-        <StartMenu isOpen={startMenuOpen} onClose={() => setStartMenuOpen(false)} onRestart={onRestart} onSleep={onSleep} />
+        <StartMenu isOpen={startMenuOpen} onClose={() => setStartMenuOpen(false)} onRestart={onRestart} onSleep={onSleep} onShutdown={onShutdown} />
       </div>
 
       {/* Divider */}

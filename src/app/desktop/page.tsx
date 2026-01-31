@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { StressReliefGallery } from "@/components/stress-relief-gallery";
@@ -225,6 +226,8 @@ const getReminderNotifications = () => [
 ];
 
 export default function Desktop() {
+  const router = useRouter();
+
   // Desktop flicker on entry
   const [showDesktopFlicker, setShowDesktopFlicker] = useState(true);
 
@@ -626,6 +629,12 @@ export default function Desktop() {
   const handleSleep = useCallback(() => {
     setIsScreensaverActive(true);
   }, []);
+
+  // Handle shutdown - navigate back to starting scene
+  const handleShutdown = useCallback(() => {
+    playShutdownSound();
+    router.push('/');
+  }, [playShutdownSound, router]);
 
   // Handle screensaver exit
   const handleScreensaverExit = useCallback(() => {
@@ -1289,7 +1298,7 @@ export default function Desktop() {
         <Screensaver onExit={handleScreensaverExit} />
       )}
 
-      <Taskbar onRestart={handleRestart} onSleep={handleSleep}>
+      <Taskbar onRestart={handleRestart} onSleep={handleSleep} onShutdown={handleShutdown}>
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
