@@ -69,10 +69,15 @@ function StartMenu({ isOpen, onClose, onRestart, onSleep, onShutdown }: StartMen
   if (!isOpen) return null;
 
   const menuItems = [
-    { label: "Restart...", onClick: () => { onClose(); onRestart?.(); } },
-    { label: "Sleep", onClick: () => { onClose(); onSleep?.(); } },
-    { label: "Shut Down...", onClick: () => { onClose(); onShutdown?.(); } },
+    { label: "Restart...", action: onRestart },
+    { label: "Sleep", action: onSleep },
+    { label: "Shut Down...", action: onShutdown },
   ];
+
+  const handleItemClick = (action?: () => void) => {
+    onClose();
+    action?.();
+  };
 
   return (
     <div
@@ -84,18 +89,20 @@ function StartMenu({ isOpen, onClose, onRestart, onSleep, onShutdown }: StartMen
         "text-[14px]",
         "min-w-[140px]"
       )}
+      role="menu"
     >
-      {menuItems.map((item, index) => (
-        <div
-          key={index}
-          onClick={item.onClick}
+      {menuItems.map((item) => (
+        <button
+          key={item.label}
+          onClick={() => handleItemClick(item.action)}
           className={cn(
-            "px-4 py-1 cursor-pointer whitespace-nowrap",
+            "w-full px-4 py-1 text-left cursor-pointer whitespace-nowrap",
             "hover:bg-win98-title-active hover:text-white"
           )}
+          role="menuitem"
         >
           {item.label}
-        </div>
+        </button>
       ))}
     </div>
   );
