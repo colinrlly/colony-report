@@ -291,6 +291,46 @@ body {
 }
 
 /* ============================================
+   EXIT/SHUTDOWN SCREEN ANIMATIONS
+   Reverse of entry animations - used when clicking
+   "Shut Down" to return to the starting scene
+   ============================================ */
+
+/* Zoom out from monitor - reverse of entry zoom, 600ms duration
+   Starts zoomed in (scale 1.8) and animates back to normal (scale 1) */
+@keyframes zoomOutFromMonitor {
+  from { transform: scale(1.8); }
+  to { transform: scale(1); }
+}
+
+.exit-zoom {
+  transform-origin: 65% 33%; /* Same center as entry zoom (monitor screen area) */
+  animation: zoomOutFromMonitor 0.6s ease-in forwards;
+  will-change: transform;
+}
+
+/* Exit flicker effect - CRT turning off style, 200ms duration
+   Simulates old monitor flickering as it powers down, ends at opacity 0 */
+@keyframes exitFlicker {
+  0% { opacity: 0; }
+  10% { opacity: 0.8; }
+  20% { opacity: 0.2; }
+  30% { opacity: 0.9; }
+  40% { opacity: 0.1; }
+  50% { opacity: 0.7; }
+  60% { opacity: 0.3; }
+  70% { opacity: 0.6; }
+  80% { opacity: 0.2; }
+  90% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+.exit-flicker {
+  animation: exitFlicker 0.2s steps(1) forwards;
+  will-change: opacity;
+}
+
+/* ============================================
    WALLPAPER STYLES
    ============================================ */
 

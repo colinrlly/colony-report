@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { ColonyReports } from "@/components/colony-reports";
 import { SecretsFolder } from "@/components/secrets-folder";
 import { StressReliefGallery } from "@/components/stress-relief-gallery";
@@ -225,6 +226,8 @@ const getReminderNotifications = () => [
 ];
 
 export default function Desktop() {
+  const router = useRouter();
+
   // Desktop flicker on entry
   const [showDesktopFlicker, setShowDesktopFlicker] = useState(true);
 
@@ -242,6 +245,7 @@ export default function Desktop() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isRestarting, setIsRestarting] = useState(false);
   const [restartPhase, setRestartPhase] = useState<'black' | 'flicker'>('black');
+  const [isShuttingDown, setIsShuttingDown] = useState(false);
   const [showHiddenFiles, setShowHiddenFiles] = useState(false);
   const [currentWallpaper, setCurrentWallpaper] = useState<WallpaperType>(0);
   const [isAntWiggling, setIsAntWiggling] = useState(false);
@@ -627,6 +631,19 @@ export default function Desktop() {
     setIsScreensaverActive(true);
   }, []);
 
+  // Handle shutdown - navigate back to starting scene with exit animation
+  const handleShutdown = useCallback(() => {
+    if (isShuttingDown) return;
+
+    playShutdownSound();
+    setIsShuttingDown(true);
+
+    // Show exit flicker, then navigate to home with exit animation
+    setTimeout(() => {
+      router.push('/?exiting=true');
+    }, 200); // Wait for exit flicker animation
+  }, [playShutdownSound, router, isShuttingDown]);
+
   // Handle screensaver exit
   const handleScreensaverExit = useCallback(() => {
     setIsScreensaverActive(false);
@@ -752,6 +769,11 @@ export default function Desktop() {
       {/* Desktop flicker on entry */}
       {showDesktopFlicker && (
         <div className="fixed inset-0 z-[9999] pointer-events-none bg-black desktop-flicker" />
+      )}
+
+      {/* Shutdown exit flicker */}
+      {isShuttingDown && (
+        <div className="fixed inset-0 z-[9999] pointer-events-none bg-black exit-flicker" />
       )}
 
       {/* Restart animation overlay */}
@@ -1289,7 +1311,7 @@ export default function Desktop() {
         <Screensaver onExit={handleScreensaverExit} />
       )}
 
-      <Taskbar onRestart={handleRestart} onSleep={handleSleep}>
+      <Taskbar onRestart={handleRestart} onSleep={handleSleep} onShutdown={handleShutdown}>
         {isColonyReportsOpen && (
           <TaskbarButton
             title="COLONY REPORTS"
