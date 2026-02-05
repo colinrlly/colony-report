@@ -8,7 +8,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const STORAGE_KEY = "notification-queue-state";
 const GAP_BETWEEN_NOTIFICATIONS = 60000; // 60 seconds between notifications
-const INITIAL_DELAY = 45000; // 45 seconds before first notification
+const INITIAL_DELAY = 500; // Show first notification quickly for preview
 
 // ============================================
 // Types
@@ -144,18 +144,12 @@ export function useNotificationQueue(): UseNotificationQueueReturn {
 
   // Initialize from localStorage on mount
   useEffect(() => {
-    const storedState = loadState();
-
-    if (storedState) {
-      setQueue(storedState.queue);
-      setCurrentIndex(storedState.currentIndex);
-    } else {
-      // First time - create new shuffled queue
-      const newQueue = shuffleWithConstraint(ALL_NOTIFICATION_TYPES, null);
-      setQueue(newQueue);
-      setCurrentIndex(0);
-      saveState({ queue: newQueue, currentIndex: 0 });
-    }
+    // Start with plant-alarm first for preview, then shuffle the rest
+    const rest = ALL_NOTIFICATION_TYPES.filter((t) => t !== "plant-alarm");
+    const newQueue: NotificationType[] = ["plant-alarm", ...shuffleArray(rest)];
+    setQueue(newQueue);
+    setCurrentIndex(0);
+    saveState({ queue: newQueue, currentIndex: 0 });
 
     setIsInitialized(true);
   }, []);

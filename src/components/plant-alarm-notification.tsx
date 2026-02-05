@@ -12,10 +12,10 @@ const CONFETTI_PARTICLE_COUNT = 30;
 const POPUP_VERTICAL_OFFSET = "96px";
 
 // Alarm sound configuration
-const ALARM_FREQUENCY_HIGH = 880; // Hz - A5 note
-const ALARM_FREQUENCY_LOW = 440; // Hz - A4 note
-const ALARM_BEEP_DURATION = 150; // ms
-const ALARM_VOLUME = 0.15;
+const ALARM_FREQUENCY_HIGH = 523; // Hz - C5 note (gentle chime)
+const ALARM_FREQUENCY_LOW = 392; // Hz - G4 note (pleasant fourth interval)
+const ALARM_BEEP_DURATION = 200; // ms
+const ALARM_VOLUME = 0.06;
 const ALARM_AUTO_STOP_MS = 2500; // Auto-stop beeping after 2.5 seconds
 
 const CONFETTI_COLORS = [
@@ -102,7 +102,7 @@ function useAlarmSound() {
     oscillator.connect(gainNode);
     gainNode.connect(ctx.destination);
 
-    oscillator.type = "square";
+    oscillator.type = "sine";
     oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
 
     gainNode.gain.setValueAtTime(ALARM_VOLUME, ctx.currentTime);
@@ -142,7 +142,7 @@ function useAlarmSound() {
     playAlarmPattern();
 
     // Continue pattern
-    intervalRef.current = setInterval(playAlarmPattern, ALARM_BEEP_DURATION * 2);
+    intervalRef.current = setInterval(playAlarmPattern, 500);
   }, [playBeep]);
 
   const stopAlarm = useCallback(() => {
