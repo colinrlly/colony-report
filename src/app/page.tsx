@@ -66,7 +66,7 @@ function HomeContent() {
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">
       <video
-        src="/images/Starting Scene_3.mp4"
+        src="/images/Starting Scene_5.mp4"
         autoPlay
         loop
         muted
