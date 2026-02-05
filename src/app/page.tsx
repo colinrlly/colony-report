@@ -8,6 +8,8 @@ const ZOOM_DURATION = 600;
 const FLICKER_DURATION = 200;
 const TOTAL_ANIMATION_DURATION = ZOOM_DURATION + FLICKER_DURATION;
 
+const STARTUP_VIDEO_SRC = "/images/Handbrake Copy.mp4";
+
 function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -65,18 +67,22 @@ function HomeContent() {
 
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">
-      <img
-        src="/images/computer scene 1.jpg"
-        alt="Computer workstation"
+      <video
+        src={STARTUP_VIDEO_SRC}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        disablePictureInPicture
         className={`w-full h-full object-cover select-none ${animationClass}`}
-        draggable={false}
       />
+      {/* Invisible button overlay positioned over the monitor screen */}
       <button
         onClick={handleMonitorClick}
         disabled={isAnimating}
-        className="absolute outline-none cursor-pointer disabled:pointer-events-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-sm"
-        style={{ left: "45%", top: "13%", width: "30%", height: "52%" }}
         aria-label="Click monitor to enter"
+        className="absolute left-[45%] top-[13%] w-[30%] h-[52%] outline-none cursor-pointer disabled:pointer-events-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-sm"
       />
       {showEntryFlicker && (
         <div className="fixed inset-0 bg-black entry-flicker" />
