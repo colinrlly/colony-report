@@ -65,11 +65,13 @@ function HomeContent() {
 
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">
-      <img
-        src="/images/computer scene 1.jpg"
-        alt="Computer workstation"
+      <video
+        src="/images/Starting Scene.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
         className={`w-full h-full object-cover select-none ${animationClass}`}
-        draggable={false}
       />
       <button
         onClick={handleMonitorClick}
