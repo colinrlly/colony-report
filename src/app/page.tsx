@@ -8,7 +8,7 @@ const ZOOM_DURATION = 600;
 const FLICKER_DURATION = 200;
 const TOTAL_ANIMATION_DURATION = ZOOM_DURATION + FLICKER_DURATION;
 
-const STARTUP_VIDEO_SRC = "/images/With Sound.mp4";
+const STARTUP_VIDEO_SRC = "/images/FINAL With Sound.mp4";
 
 const SoundOffIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
