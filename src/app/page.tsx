@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect, Suspense } from "react";
+import { useState, useCallback, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 // Animation timing constants (synced with CSS durations in globals.css)
@@ -8,7 +8,7 @@ const ZOOM_DURATION = 600;
 const FLICKER_DURATION = 200;
 const TOTAL_ANIMATION_DURATION = ZOOM_DURATION + FLICKER_DURATION;
 
-const STARTUP_VIDEO_SRC = "/images/Handbrake Copy.mp4";
+const STARTUP_VIDEO_SRC = "/images/With Sound.mp4";
 
 function HomeContent() {
   const router = useRouter();
@@ -19,6 +19,8 @@ function HomeContent() {
   const [showEntryFlicker, setShowEntryFlicker] = useState(false);
   const [isExitAnimation, setIsExitAnimation] = useState(false);
   const [showExitFlicker, setShowExitFlicker] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Handle exit animation sequence (returning from desktop via shutdown)
   useEffect(() => {
@@ -58,6 +60,15 @@ function HomeContent() {
     });
   }, [router]);
 
+  const toggleSound = useCallback(() => {
+    setIsMuted((prev) => {
+      if (videoRef.current) {
+        videoRef.current.muted = !prev;
+      }
+      return !prev;
+    });
+  }, []);
+
   const isAnimating = isEnteringAnimation || isExitAnimation;
   const animationClass = isEnteringAnimation
     ? "entry-zoom"
@@ -68,10 +79,11 @@ function HomeContent() {
   return (
     <div className="fixed inset-0 bg-black overflow-hidden">
       <video
+        ref={videoRef}
         src={STARTUP_VIDEO_SRC}
         autoPlay
         loop
-        muted
+        muted={isMuted}
         playsInline
         preload="auto"
         disablePictureInPicture
@@ -84,6 +96,26 @@ function HomeContent() {
         aria-label="Click monitor to enter"
         className="absolute left-[45%] top-[13%] w-[30%] h-[52%] outline-none cursor-pointer disabled:pointer-events-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded-sm"
       />
+      {/* Sound toggle button */}
+      <button
+        onClick={toggleSound}
+        aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+        className="absolute left-4 bottom-4 p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors text-white/80 hover:text-white"
+      >
+        {isMuted ? (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        )}
+      </button>
       {showEntryFlicker && (
         <div className="fixed inset-0 bg-black entry-flicker" />
       )}
