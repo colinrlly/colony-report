@@ -12,7 +12,7 @@ const CONFETTI_PARTICLE_COUNT = 30;
 const POPUP_VERTICAL_OFFSET = "96px";
 
 // Alarm sound configuration
-const ALARM_SOUND_SRC = "/images/844037__josefpres__piano-loops-204-octave-short-loop-120-bpm_2.mp3";
+const ALARM_SOUND_SRC = "/images/alarm sound.mp3";
 const ALARM_VOLUME = 0.3;
 
 const CONFETTI_COLORS = [
