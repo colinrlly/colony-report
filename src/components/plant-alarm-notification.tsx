@@ -12,11 +12,8 @@ const CONFETTI_PARTICLE_COUNT = 30;
 const POPUP_VERTICAL_OFFSET = "96px";
 
 // Alarm sound configuration
-const ALARM_FREQUENCY_HIGH = 880; // Hz - A5 note
-const ALARM_FREQUENCY_LOW = 440; // Hz - A4 note
-const ALARM_BEEP_DURATION = 150; // ms
-const ALARM_VOLUME = 0.15;
-const ALARM_AUTO_STOP_MS = 2500; // Auto-stop beeping after 2.5 seconds
+const ALARM_SOUND_SRC = "/images/alarm sound.mp3";
+const ALARM_VOLUME = 0.3;
 
 const CONFETTI_COLORS = [
   "#60a5fa", // light blue
@@ -88,81 +85,29 @@ interface ConfettiParticleProps {
 // ============================================
 
 function useAlarmSound() {
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const isPlayingRef = useRef(false);
-
-  const playBeep = useCallback((frequency: number) => {
-    if (!audioContextRef.current) return;
-
-    const ctx = audioContextRef.current;
-    const oscillator = ctx.createOscillator();
-    const gainNode = ctx.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(ctx.destination);
-
-    oscillator.type = "square";
-    oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
-
-    gainNode.gain.setValueAtTime(ALARM_VOLUME, ctx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(
-      0.01,
-      ctx.currentTime + ALARM_BEEP_DURATION / 1000
-    );
-
-    oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + ALARM_BEEP_DURATION / 1000);
-  }, []);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const startAlarm = useCallback(() => {
-    if (isPlayingRef.current) return;
+    if (audioRef.current) return;
 
-    // Create audio context on user interaction or when alarm starts
-    if (!audioContextRef.current) {
-      audioContextRef.current = new AudioContext();
-    }
-
-    // Resume context if suspended (browser autoplay policy)
-    if (audioContextRef.current.state === "suspended") {
-      audioContextRef.current.resume();
-    }
-
-    isPlayingRef.current = true;
-    let isHigh = true;
-
-    // Play alternating beeps
-    const playAlarmPattern = () => {
-      if (!isPlayingRef.current) return;
-      playBeep(isHigh ? ALARM_FREQUENCY_HIGH : ALARM_FREQUENCY_LOW);
-      isHigh = !isHigh;
-    };
-
-    // Start immediately
-    playAlarmPattern();
-
-    // Continue pattern
-    intervalRef.current = setInterval(playAlarmPattern, ALARM_BEEP_DURATION * 2);
-  }, [playBeep]);
+    const audio = new Audio(ALARM_SOUND_SRC);
+    audio.volume = ALARM_VOLUME;
+    audioRef.current = audio;
+    audio.play().catch(() => {
+      // Browser may block autoplay
+    });
+  }, []);
 
   const stopAlarm = useCallback(() => {
-    isPlayingRef.current = false;
-
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
   }, []);
 
   // Cleanup on unmount
   useEffect(() => {
-    return () => {
-      stopAlarm();
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-        audioContextRef.current = null;
-      }
-    };
+    return () => stopAlarm();
   }, [stopAlarm]);
 
   return { startAlarm, stopAlarm };
@@ -511,13 +456,6 @@ export function PlantAlarmNotification({
       setShouldRender(true);
       setAnimationClass("alarm-slide-in");
       startAlarm();
-
-      // Auto-stop the alarm beeping after 2.5 seconds
-      const autoStopTimeout = setTimeout(() => {
-        stopAlarm();
-      }, ALARM_AUTO_STOP_MS);
-
-      return () => clearTimeout(autoStopTimeout);
     } else {
       stopAlarm();
       resetState();
