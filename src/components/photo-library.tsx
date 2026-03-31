@@ -80,9 +80,23 @@ function RightArrowIcon() {
 function InfoIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" shapeRendering="crispEdges">
-      <rect x="5" y="2" width="4" height="4" fill="currentColor" />
-      <rect x="4" y="6" width="6" height="2" fill="currentColor" />
-      <rect x="5" y="8" width="4" height="4" fill="currentColor" />
+      {/* Circle */}
+      <rect x="4" y="0" width="6" height="1" fill="currentColor" />
+      <rect x="2" y="1" width="2" height="1" fill="currentColor" />
+      <rect x="10" y="1" width="2" height="1" fill="currentColor" />
+      <rect x="1" y="2" width="1" height="2" fill="currentColor" />
+      <rect x="12" y="2" width="1" height="2" fill="currentColor" />
+      <rect x="0" y="4" width="1" height="6" fill="currentColor" />
+      <rect x="13" y="4" width="1" height="6" fill="currentColor" />
+      <rect x="1" y="10" width="1" height="2" fill="currentColor" />
+      <rect x="12" y="10" width="1" height="2" fill="currentColor" />
+      <rect x="2" y="12" width="2" height="1" fill="currentColor" />
+      <rect x="10" y="12" width="2" height="1" fill="currentColor" />
+      <rect x="4" y="13" width="6" height="1" fill="currentColor" />
+      {/* Dot */}
+      <rect x="6" y="3" width="2" height="2" fill="currentColor" />
+      {/* Stem */}
+      <rect x="6" y="6" width="2" height="5" fill="currentColor" />
     </svg>
   );
 }
