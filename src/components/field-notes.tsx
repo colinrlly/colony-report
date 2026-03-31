@@ -255,7 +255,7 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
         <div className="flex items-center gap-2">
           <NotebookIcon />
           <WindowTitle className="font-bold text-[13px] tracking-wide">
-            SCANNED IN FIELD NOTES - FORMICA DIVISION
+            FIELD NOTES - FORMICA DIVISION
           </WindowTitle>
         </div>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
