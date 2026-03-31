@@ -297,7 +297,7 @@ export function FieldNotes({ onClose, onMinimize, zIndex, onFocus }: FieldNotesP
                 onMouseEnter={() => setShowInfo(true)}
                 onMouseLeave={() => setShowInfo(false)}
               >
-                Notes and drawings collected by the Formica team while out in the field
+                Notes and drawings collected by the Formica team while out in the field and scanned in here for research collection
               </div>
             )}
           </div>
