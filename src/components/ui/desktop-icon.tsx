@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock" | "rocket";
+export type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock" | "rocket";
 
 interface DesktopIconProps {
   label: string;

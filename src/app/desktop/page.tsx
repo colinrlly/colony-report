@@ -23,7 +23,7 @@ import { ReminderNotification, RedactedText } from "@/components/reminder-notifi
 import { PlantAlarmNotification } from "@/components/plant-alarm-notification";
 import { SecurityWarningNotification } from "@/components/security-warning-notification";
 import { useNotificationQueue } from "@/hooks/use-notification-queue";
-import { DesktopIcon } from "@/components/ui/desktop-icon";
+import { DesktopIcon, type IconType } from "@/components/ui/desktop-icon";
 import { Taskbar, TaskbarButton } from "@/components/ui/taskbar";
 import { Menubar, MenubarItem, MenubarLogo, MenubarProfile, MenuItemData } from "@/components/ui/menubar";
 
@@ -155,8 +155,6 @@ const historyMenuItems: MenuItemData[] = [
   { label: "BuzzQuiz - which cryptid are you based on your work style", isHistoryItem: true },
   { label: "How long does it take to grow back eyebrows", isHistoryItem: true },
 ];
-
-type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock" | "rocket";
 
 interface DesktopIconConfig {
   id: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import {
   Window,
   WindowTitleBar,
@@ -15,7 +15,6 @@ interface MissionStatementPlayerProps {
   onFocus?: () => void;
 }
 
-// SVG icon helpers
 function PlayIcon() {
   return (
     <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -56,6 +55,9 @@ function SpeakerOffIcon() {
   );
 }
 
+const VIDEO_SRC = "/images/Welcome Video- test- will be replaced.mp4";
+const MAX_PLAYER_WIDTH = 700;
+
 export function MissionStatementPlayer({
   onClose,
   onMinimize,
@@ -63,14 +65,23 @@ export function MissionStatementPlayer({
   onFocus,
 }: MissionStatementPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const lastTimeUpdateRef = useRef(0);
   const [hasStarted, setHasStarted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  // Dynamic sizing: start at 4:3 default, updated once metadata loads
   const [playerWidth, setPlayerWidth] = useState(620);
-  const [playerHeight, setPlayerHeight] = useState(465);
+  const [videoAspectRatio, setVideoAspectRatio] = useState(620 / 465);
+
+  const playerHeight = Math.round(playerWidth / videoAspectRatio);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    return () => {
+      video?.pause();
+    };
+  }, []);
 
   const handlePlayOverlayClick = useCallback(() => {
     if (!videoRef.current) return;
@@ -85,14 +96,19 @@ export function MissionStatementPlayer({
         // Browser blocked autoplay with sound — play muted then unmute
         if (!videoRef.current) return;
         videoRef.current.muted = true;
-        videoRef.current.play().then(() => {
-          setHasStarted(true);
-          setIsPlaying(true);
-          if (videoRef.current) {
-            videoRef.current.muted = false;
-            setIsMuted(false);
-          }
-        });
+        videoRef.current
+          .play()
+          .then(() => {
+            setHasStarted(true);
+            setIsPlaying(true);
+            if (videoRef.current) {
+              videoRef.current.muted = false;
+              setIsMuted(false);
+            }
+          })
+          .catch(() => {
+            // Playback blocked entirely — nothing more to do
+          });
       });
   }, []);
 
@@ -129,6 +145,9 @@ export function MissionStatementPlayer({
 
   const handleTimeUpdate = useCallback(() => {
     if (!videoRef.current) return;
+    const now = Date.now();
+    if (now - lastTimeUpdateRef.current < 80) return;
+    lastTimeUpdateRef.current = now;
     setCurrentTime(videoRef.current.currentTime);
   }, []);
 
@@ -138,12 +157,8 @@ export function MissionStatementPlayer({
     const vw = videoRef.current.videoWidth;
     const vh = videoRef.current.videoHeight;
     if (vw && vh) {
-      // Cap width at 700px, derive height from true aspect ratio
-      const maxWidth = 700;
-      const w = Math.min(vw, maxWidth);
-      const h = Math.round(w * (vh / vw));
-      setPlayerWidth(w);
-      setPlayerHeight(h);
+      setPlayerWidth(Math.min(vw, MAX_PLAYER_WIDTH));
+      setVideoAspectRatio(vw / vh);
     }
   }, []);
 
@@ -170,11 +185,10 @@ export function MissionStatementPlayer({
       </WindowTitleBar>
 
       <div className="flex flex-col" style={{ width: playerWidth }}>
-        {/* Video area — sized to exact video dimensions, no letterbox bars */}
         <div className="relative overflow-hidden" style={{ height: playerHeight }}>
           <video
             ref={videoRef}
-            src="/images/Welcome Video- test- will be replaced.mp4"
+            src={VIDEO_SRC}
             className="w-full h-full object-fill cursor-pointer"
             onEnded={handleVideoEnded}
             onTimeUpdate={handleTimeUpdate}
@@ -184,12 +198,10 @@ export function MissionStatementPlayer({
             preload="metadata"
           />
 
-          {/* Big play overlay — shown until user clicks play */}
           {!hasStarted && (
             <button
               onClick={handlePlayOverlayClick}
-              className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 hover:bg-black/40 transition-colors cursor-pointer w-full border-0"
-              style={{ outline: "none" }}
+              className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 hover:bg-black/40 transition-colors cursor-pointer w-full border-0 outline-none"
             >
               <div
                 className="flex items-center justify-center rounded-full border-4 border-white bg-white/10 hover:bg-white/25 transition-colors"
@@ -218,12 +230,10 @@ export function MissionStatementPlayer({
           )}
         </div>
 
-        {/* Controls area */}
         <div
           className="bg-win98-surface flex-shrink-0 px-2 pt-2 pb-2"
           style={{ borderTop: "2px solid #808080" }}
         >
-          {/* Scrub / progress bar */}
           <div className="mb-2 px-1">
             <input
               type="range"
@@ -233,21 +243,17 @@ export function MissionStatementPlayer({
               value={currentTime}
               onChange={handleScrub}
               disabled={!hasStarted}
-              className="w-full disabled:cursor-default"
+              className="w-full cursor-pointer disabled:cursor-default"
               style={{
                 accentColor: "#000080",
-                cursor: hasStarted ? "pointer" : "default",
                 height: 14,
-                // Sunken track via box-shadow on the overall element
                 boxShadow: "inset 1px 1px 0 #808080, inset -1px -1px 0 #ffffff",
                 background: `linear-gradient(to right, #000080 ${scrubPercent}%, #c0c0c0 ${scrubPercent}%)`,
               }}
             />
           </div>
 
-          {/* Button row: [▶ ⏸ ■]  ···  [🔊] */}
           <div className="flex items-center justify-between px-1">
-            {/* Transport buttons */}
             <div className="flex items-center gap-1">
               <button
                 onClick={handlePlay}
@@ -280,7 +286,6 @@ export function MissionStatementPlayer({
               </button>
             </div>
 
-            {/* Mute toggle */}
             <button
               onClick={handleToggleMute}
               disabled={!hasStarted}
