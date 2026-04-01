@@ -172,7 +172,7 @@ const DESKTOP_ICONS: DesktopIconConfig[] = [
   { id: "employee-files", label: "Employee Files", icon: "badge", initialPosition: { x: 24, y: 313 } },
   { id: "photo-library", label: "Photo Library", icon: "camera", initialPosition: { x: 24, y: 443 } },
   { id: "video-logs", label: "Video Logs", icon: "video-camera", initialPosition: { x: 24, y: 573 } },
-  { id: "mission-statement", label: "Mission Statement", icon: "rocket", initialPosition: { x: 1150, y: 95 } },
+  { id: "mission-statement", label: "Mission Statement Video", icon: "rocket", initialPosition: { x: 1150, y: 95 } },
 ];
 
 // Hidden file configuration - appears at bottom right
