@@ -159,7 +159,7 @@ export function MissionStatementPlayer({
   return (
     <Window
       className="absolute"
-      style={{ top: "calc(50vh - 290px)", left: "calc(50vw - 320px)", zIndex }}
+      style={{ top: "calc(50vh - 380px)", left: "calc(50vw - 320px)", zIndex }}
       onFocus={onFocus}
       resizable={false}
       draggable
@@ -175,10 +175,11 @@ export function MissionStatementPlayer({
           <video
             ref={videoRef}
             src="/images/Welcome Video- test- will be replaced.mp4"
-            className="w-full h-full object-fill"
+            className="w-full h-full object-fill cursor-pointer"
             onEnded={handleVideoEnded}
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
+            onClick={hasStarted ? (isPlaying ? handlePause : handlePlay) : undefined}
             playsInline
             preload="metadata"
           />
