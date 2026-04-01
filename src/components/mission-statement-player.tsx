@@ -68,6 +68,9 @@ export function MissionStatementPlayer({
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  // Dynamic sizing: start at 4:3 default, updated once metadata loads
+  const [playerWidth, setPlayerWidth] = useState(620);
+  const [playerHeight, setPlayerHeight] = useState(465);
 
   const handlePlayOverlayClick = useCallback(() => {
     if (!videoRef.current) return;
@@ -132,6 +135,16 @@ export function MissionStatementPlayer({
   const handleLoadedMetadata = useCallback(() => {
     if (!videoRef.current) return;
     setDuration(videoRef.current.duration);
+    const vw = videoRef.current.videoWidth;
+    const vh = videoRef.current.videoHeight;
+    if (vw && vh) {
+      // Cap width at 700px, derive height from true aspect ratio
+      const maxWidth = 700;
+      const w = Math.min(vw, maxWidth);
+      const h = Math.round(w * (vh / vw));
+      setPlayerWidth(w);
+      setPlayerHeight(h);
+    }
   }, []);
 
   const handleScrub = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,13 +169,13 @@ export function MissionStatementPlayer({
         <WindowControls onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
-      <div className="flex flex-col" style={{ width: 620 }}>
-        {/* Video area */}
-        <div className="relative bg-black overflow-hidden" style={{ height: 360 }}>
+      <div className="flex flex-col" style={{ width: playerWidth }}>
+        {/* Video area — sized to exact video dimensions, no letterbox bars */}
+        <div className="relative overflow-hidden" style={{ height: playerHeight }}>
           <video
             ref={videoRef}
             src="/images/Welcome Video- test- will be replaced.mp4"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-fill"
             onEnded={handleVideoEnded}
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}

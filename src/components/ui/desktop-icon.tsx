@@ -392,9 +392,7 @@ function RocketIcon() {
     <img
       src="/images/rocket.png"
       alt="Rocket"
-      width="96"
-      height="96"
-      className="w-24 h-24 object-contain"
+      className="w-32 h-auto object-contain"
     />
   );
 }
