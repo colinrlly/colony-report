@@ -892,7 +892,7 @@ export default function Desktop() {
                 {/* Large Earth Logo */}
                 <img
                   className="mx-auto mb-6"
-                  src="/images/earth logo_.png"
+                  src="/images/earth logo_ for web.png"
                   alt="Earth logo"
                   width="240"
                   height="240"
