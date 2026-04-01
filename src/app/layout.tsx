@@ -13,6 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" as="image" href="/images/earth logo_ for web.png" />
+      </head>
       <body>{children}</body>
     </html>
   );

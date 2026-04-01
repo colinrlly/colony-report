@@ -804,10 +804,6 @@ export default function Desktop() {
         <MenubarProfile />
       </Menubar>
 
-      {/* Preload wallpaper images */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/images/earth logo_ for web.png" alt="" style={{ display: 'none' }} />
-
       <main ref={mainRef} className="min-h-screen relative p-4 pt-[46px] pb-[50px]">
         {/* Wallpaper Backgrounds */}
         {currentWallpaper === 0 && (
