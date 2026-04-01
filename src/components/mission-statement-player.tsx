@@ -158,14 +158,14 @@ export function MissionStatementPlayer({
 
   return (
     <Window
-      className="absolute top-[12vh] left-[54%]"
-      style={{ zIndex }}
+      className="absolute"
+      style={{ top: "calc(50vh - 290px)", left: "calc(50vw - 320px)", zIndex }}
       onFocus={onFocus}
       resizable={false}
       draggable
     >
       <WindowTitleBar>
-        <WindowTitle>Mission Statement</WindowTitle>
+        <WindowTitle>Mission Statement Video</WindowTitle>
         <WindowControls onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
 
