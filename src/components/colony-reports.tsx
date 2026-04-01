@@ -2,29 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 
-function InfoIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" shapeRendering="crispEdges">
-      {/* Circle */}
-      <rect x="4" y="0" width="6" height="1" fill="currentColor" />
-      <rect x="2" y="1" width="2" height="1" fill="currentColor" />
-      <rect x="10" y="1" width="2" height="1" fill="currentColor" />
-      <rect x="1" y="2" width="1" height="2" fill="currentColor" />
-      <rect x="12" y="2" width="1" height="2" fill="currentColor" />
-      <rect x="0" y="4" width="1" height="6" fill="currentColor" />
-      <rect x="13" y="4" width="1" height="6" fill="currentColor" />
-      <rect x="1" y="10" width="1" height="2" fill="currentColor" />
-      <rect x="12" y="10" width="1" height="2" fill="currentColor" />
-      <rect x="2" y="12" width="2" height="1" fill="currentColor" />
-      <rect x="10" y="12" width="2" height="1" fill="currentColor" />
-      <rect x="4" y="13" width="6" height="1" fill="currentColor" />
-      {/* Dot */}
-      <rect x="6" y="3" width="2" height="2" fill="currentColor" />
-      {/* Stem */}
-      <rect x="6" y="6" width="2" height="5" fill="currentColor" />
-    </svg>
-  );
-}
 import {
   Window,
   WindowTitleBar,
@@ -35,6 +12,7 @@ import {
 } from "@/components/ui/window";
 import { SidebarNav } from "@/components/ui/sidebar-nav";
 import { ReportContent } from "@/components/ui/report-content";
+import { InfoTooltip } from "@/components/ui/info-tooltip";
 
 const navItems = [
   { id: "bee", icon: "bee" as const, label: "Bee Studies", statusText: "Tracker Placed on Hive Mother // Coordinates relayed to base every 03:00 hours" },
@@ -57,7 +35,6 @@ interface ColonyReportsProps {
 
 export function ColonyReports({ onClose, onMinimize, zIndex, onFocus }: ColonyReportsProps) {
   const [selectedId, setSelectedId] = useState("bee");
-  const [showInfo, setShowInfo] = useState(false);
 
   const selectedItem = navItems.find((item) => item.id === selectedId);
   const statusText = selectedItem?.statusText ?? "";
@@ -110,26 +87,7 @@ export function ColonyReports({ onClose, onMinimize, zIndex, onFocus }: ColonyRe
       <WindowTitleBar>
         <div className="flex items-center gap-2">
           <WindowTitle>COLONY REPORTS</WindowTitle>
-          <div className="relative">
-            <button
-              onClick={() => setShowInfo(!showInfo)}
-              onMouseEnter={() => setShowInfo(true)}
-              onMouseLeave={() => setShowInfo(false)}
-              className="w-5 h-5 flex items-center justify-center rounded-sm text-[#c8b9a9] hover:text-[#ffdd44] transition-colors"
-              aria-label="Colony reports info"
-            >
-              <InfoIcon />
-            </button>
-            {showInfo && (
-              <div
-                className="absolute top-full left-0 mt-1 z-50 win98-border-raised bg-[#c8b9a9] px-3 py-2 text-[11px] text-[#2a2a2a] whitespace-nowrap shadow-md"
-                onMouseEnter={() => setShowInfo(true)}
-                onMouseLeave={() => setShowInfo(false)}
-              >
-                Reports ready to be sent to corporate
-              </div>
-            )}
-          </div>
+          <InfoTooltip label="Colony reports info">Reports ready to be sent to corporate</InfoTooltip>
         </div>
         <WindowControls showMaximize={false} onMinimize={onMinimize} onClose={onClose} />
       </WindowTitleBar>
