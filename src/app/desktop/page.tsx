@@ -8,6 +8,7 @@ import { StressReliefGallery } from "@/components/stress-relief-gallery";
 import { PhotoLibrary } from "@/components/photo-library";
 import { FieldNotes } from "@/components/field-notes";
 import { VideoLogs } from "@/components/video-logs";
+import { MissionStatementPlayer } from "@/components/mission-statement-player";
 import { EmployeeFiles } from "@/components/employee-files";
 import { NestedFolderWindow } from "@/components/nested-folder-window";
 import { SecretPetMonitor } from "@/components/secret-pet-monitor";
@@ -155,7 +156,7 @@ const historyMenuItems: MenuItemData[] = [
   { label: "How long does it take to grow back eyebrows", isHistoryItem: true },
 ];
 
-type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock";
+type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock" | "rocket";
 
 interface DesktopIconConfig {
   id: string;
@@ -171,6 +172,7 @@ const DESKTOP_ICONS: DesktopIconConfig[] = [
   { id: "employee-files", label: "Employee Files", icon: "badge", initialPosition: { x: 24, y: 313 } },
   { id: "photo-library", label: "Photo Library", icon: "camera", initialPosition: { x: 24, y: 443 } },
   { id: "video-logs", label: "Video Logs", icon: "video-camera", initialPosition: { x: 24, y: 573 } },
+  { id: "mission-statement", label: "Mission Statement", icon: "rocket", initialPosition: { x: 680, y: 280 } },
 ];
 
 // Hidden file configuration - appears at bottom right
@@ -295,6 +297,10 @@ export default function Desktop() {
   // Employee Files state
   const [isEmployeeFilesOpen, setIsEmployeeFilesOpen] = useState(false);
   const [isEmployeeFilesMinimized, setIsEmployeeFilesMinimized] = useState(false);
+
+  // Mission Statement player state
+  const [isMissionStatementOpen, setIsMissionStatementOpen] = useState(false);
+  const [isMissionStatementMinimized, setIsMissionStatementMinimized] = useState(false);
 
   // Tutorial helper state
   const [isTutorialHelperVisible, setIsTutorialHelperVisible] = useState(false);
@@ -471,6 +477,11 @@ export default function Desktop() {
         setIsEmployeeFilesMinimized(false);
         bringToFront('employee-files');
         break;
+      case "mission-statement":
+        setIsMissionStatementOpen(true);
+        setIsMissionStatementMinimized(false);
+        bringToFront('mission-statement');
+        break;
     }
   };
 
@@ -519,6 +530,8 @@ export default function Desktop() {
       setIsVideoLogsMinimized(false);
       setIsEmployeeFilesOpen(false);
       setIsEmployeeFilesMinimized(false);
+      setIsMissionStatementOpen(false);
+      setIsMissionStatementMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -580,6 +593,8 @@ export default function Desktop() {
       setIsVideoLogsMinimized(false);
       setIsEmployeeFilesOpen(false);
       setIsEmployeeFilesMinimized(false);
+      setIsMissionStatementOpen(false);
+      setIsMissionStatementMinimized(false);
       setIsTutorialHelperVisible(false);
       setOpenCameras({});
       setMinimizedCameras({});
@@ -1240,6 +1255,19 @@ export default function Desktop() {
           />
         )}
 
+        {/* Mission Statement Player */}
+        {isMissionStatementOpen && !isMissionStatementMinimized && (
+          <MissionStatementPlayer
+            onClose={() => {
+              setIsMissionStatementOpen(false);
+              setIsMissionStatementMinimized(false);
+            }}
+            onMinimize={() => setIsMissionStatementMinimized(true)}
+            zIndex={getWindowZIndex('mission-statement')}
+            onFocus={() => bringToFront('mission-statement')}
+          />
+        )}
+
         {/* Tutorial Helper (Clippy knockoff) */}
         {isTutorialHelperVisible && (
           <TutorialHelper
@@ -1397,6 +1425,13 @@ export default function Desktop() {
             title="Employee Files"
             isActive={!isEmployeeFilesMinimized}
             onClick={() => setIsEmployeeFilesMinimized(!isEmployeeFilesMinimized)}
+          />
+        )}
+        {isMissionStatementOpen && (
+          <TaskbarButton
+            title="Mission Statement"
+            isActive={!isMissionStatementMinimized}
+            onClick={() => setIsMissionStatementMinimized(!isMissionStatementMinimized)}
           />
         )}
       </Taskbar>

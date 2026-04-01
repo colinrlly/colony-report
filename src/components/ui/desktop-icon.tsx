@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock";
+type IconType = "folder" | "notebook" | "badge" | "camera" | "video-camera" | "lock" | "rocket";
 
 interface DesktopIconProps {
   label: string;
@@ -387,6 +387,19 @@ function VideoCameraIcon() {
   );
 }
 
+function RocketIcon() {
+  return (
+    <img
+      src="/images/rocket.png"
+      alt="Rocket"
+      width="80"
+      height="80"
+      className="w-20 h-20 object-contain"
+      style={{ imageRendering: "pixelated" }}
+    />
+  );
+}
+
 function LockIcon() {
   return (
     <svg
@@ -463,6 +476,8 @@ export function DesktopIcon({ label, icon = "folder", onClick }: DesktopIconProp
         return <VideoCameraIcon />;
       case "lock":
         return <LockIcon />;
+      case "rocket":
+        return <RocketIcon />;
       case "folder":
       default:
         return <FolderIcon />;
