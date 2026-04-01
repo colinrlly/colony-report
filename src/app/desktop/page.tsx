@@ -894,8 +894,8 @@ export default function Desktop() {
                   className="mx-auto mb-6"
                   src="/images/earth logo_.png"
                   alt="Earth logo"
-                  width="180"
-                  height="180"
+                  width="240"
+                  height="240"
                 />
                 <div className="text-[56px] font-bold tracking-[0.1em] text-[#39ff14]" style={{ fontFamily: 'Arial Black, sans-serif', textShadow: '0 0 4px rgba(57, 255, 20, 0.8), 2px 2px 0px #1a4d0a' }}>
                   NEW EDEN
